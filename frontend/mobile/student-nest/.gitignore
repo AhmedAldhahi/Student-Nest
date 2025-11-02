@@ -1,0 +1,150 @@
+# ───────────────────────────────
+# 👾 Node & Expo / React Native
+# ───────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+.pnpm-debug.log*
+
+# Metro / Expo cache & logs
+.expo/
+.expo-shared/
+.expo/web-build/
+.expo/packager-info.json
+.expo/settings.json
+.expo-dev-client/
+.web-build/
+dist/
+build/
+.cache/
+tmp/
+*.tmp
+*.log
+
+# Babel & Metro cache
+babel.config.js.map
+metro-cache/
+.haste/
+.watchmanconfig
+
+# ───────────────────────────────
+# 🧠 TypeScript & Transpilation
+# ───────────────────────────────
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# ───────────────────────────────
+# 🔐 Environment & Secrets
+# ───────────────────────────────
+.env
+.env.*
+.env.local
+.env.production
+.env.development
+.env.test
+.env.staging
+*.key
+*.pem
+*.p12
+*.crt
+*.cert
+*.mobileprovision
+google-services.json
+GoogleService-Info.plist
+eas.json
+firebase.json
+supabase.json
+keys/
+secrets/
+.secret/
+
+# ───────────────────────────────
+# 🧰 OS / Editor Specific
+# ───────────────────────────────
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# VS Code
+.vscode/
+.history/
+.idea/
+*.swp
+
+# ───────────────────────────────
+# 📱 Android / iOS (if using prebuild later)
+# ───────────────────────────────
+android/
+ios/
+*.keystore
+*.jks
+*.xcuserstate
+*.xcworkspace
+*.xcuserdata/
+Pods/
+Podfile.lock
+DerivedData/
+fastlane/report.xml
+fastlane/screenshots/
+fastlane/test_output/
+*.ipa
+*.apk
+*.aab
+
+# ───────────────────────────────
+# 🧪 Testing & Coverage
+# ───────────────────────────────
+coverage/
+.nyc_output/
+jest-cache/
+jest-html-reporters-*
+jest-results.json
+test-results.xml
+
+# ───────────────────────────────
+# 🧮 Misc & Tools
+# ───────────────────────────────
+*.iml
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Logs and temporary files
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# Local data files
+data/
+database.sqlite
+*.db
+*.db-journal
+
+# ───────────────────────────────
+# 📦 Expo Build Artifacts
+# ───────────────────────────────
+*.tar.gz
+*.zip
+*.apk
+*.aab
+*.ipa
+
+# ───────────────────────────────
+# ⚙️ Optional Local Scripts
+# ───────────────────────────────
+scripts/local/
+scripts/private/
