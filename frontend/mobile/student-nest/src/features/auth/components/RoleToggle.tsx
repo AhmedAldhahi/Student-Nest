@@ -3,28 +3,29 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-export default function RoleToggle() {
-  const [selected, setSelected] = useState<"student" | "landlord">("student");
+type Props = {
+  role: "student" | "landlord";
+  setRole: (role: "student" | "landlord") => void;
+};
 
+export default function RoleToggle({ role, setRole }: Props) {
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={[
           styles.button,
 
-          selected === "student" && styles.activeButton,
+          role === "student" && styles.activeButton,
           styles.btn1,
         ]}
-        onPress={() => setSelected("student")}
+        onPress={() => setRole("student")}
       >
         <MaterialCommunityIcons
           name="school"
           size={24}
-          color={selected === "student" ? "white" : "black"}
+          color={role === "student" ? "white" : "black"}
         />
-        <Text
-          style={[styles.text, selected === "student" && styles.activeText]}
-        >
+        <Text style={[styles.text, role === "student" && styles.activeText]}>
           Student
         </Text>
       </TouchableOpacity>
@@ -32,19 +33,17 @@ export default function RoleToggle() {
       <TouchableOpacity
         style={[
           styles.button,
-          selected === "landlord" && styles.activeButton,
+          role === "landlord" && styles.activeButton,
           styles.btn2,
         ]}
-        onPress={() => setSelected("landlord")}
+        onPress={() => setRole("landlord")}
       >
         <MaterialCommunityIcons
           name="key"
           size={24}
-          color={selected === "landlord" ? "white" : "black"}
+          color={role === "landlord" ? "white" : "black"}
         />
-        <Text
-          style={[styles.text, selected === "landlord" && styles.activeText]}
-        >
+        <Text style={[styles.text, role === "landlord" && styles.activeText]}>
           Landlord
         </Text>
       </TouchableOpacity>

@@ -3,15 +3,50 @@ import GenricRegisterScreen from "../features/auth/screens/Register/GenericRegis
 import { PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import StudentRegisterScreen from "../features/auth/screens/Register/StudentRegisterScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { StatusBar } from "expo-status-bar";
+import { RootStackParamList } from "../navigation/types";
+import LandlordRegisterScreen from "../features/auth/screens/Register/LandlordRegisterScreen";
+import { RegistrationProvider } from "../context/RegistrationContext";
+import OTPScreen from "../features/auth/screens/Register/OTPScreen";
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
-    <SafeAreaProvider>
-    <PaperProvider>
-      {/* <GenricRegisterScreen></GenricRegisterScreen> */}
-      <StudentRegisterScreen></StudentRegisterScreen>
-    </PaperProvider>
-    </SafeAreaProvider>
+    <>
+      <NavigationContainer>
+        <SafeAreaProvider>
+          <PaperProvider>
+            <RegistrationProvider>
+              <Stack.Navigator>
+                <Stack.Screen
+                  name="GenericRegisterScreen"
+                  component={GenricRegisterScreen}
+                  options={{
+                    headerShown: false,
+                    presentation: "transparentModal",
+                  }}
+                />
+                <Stack.Screen
+                  name="StudentRegisterScreen"
+                  component={StudentRegisterScreen}
+                />
+                <Stack.Screen
+                  name="LandlordRegisterScreen"
+                  component={LandlordRegisterScreen}
+                />
+                <Stack.Screen
+                  name="OTPScreen"
+                  component={OTPScreen}
+                />
+              </Stack.Navigator>
+            </RegistrationProvider>
+          </PaperProvider>
+        </SafeAreaProvider>
+      </NavigationContainer>
+    </>
   );
 }
 
