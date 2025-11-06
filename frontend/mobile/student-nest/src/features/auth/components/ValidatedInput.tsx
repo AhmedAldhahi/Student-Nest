@@ -1,4 +1,3 @@
-// components/ValidatedInput.tsx
 import React, { useState } from "react";
 import { Text, StyleSheet } from "react-native";
 import { TextInput } from "react-native-paper";
@@ -45,7 +44,7 @@ export default function ValidatedInput({
             right={
               secure ? (
                 <TextInput.Icon
-                  icon={showPassword ? "eye-off" : "eye"}
+                  icon={showPassword ? "eye" : "eye-off"}
                   onPress={() => setShowPassword(!showPassword)}
                 />
               ) : undefined

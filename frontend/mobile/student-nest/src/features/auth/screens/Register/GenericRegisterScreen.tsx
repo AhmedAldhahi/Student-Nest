@@ -1,12 +1,7 @@
 import {
-  View,
   StyleSheet,
   TouchableOpacity,
   Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
-  KeyboardAvoidingView,
-  ScrollView,
 } from "react-native";
 import { Button, Text, TextInput } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -32,16 +27,10 @@ type Props = NativeStackScreenProps<
 export default function GenericRegisterScreen({ navigation }: Props) {
   const { setGenericData } = useRegistration();
 
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState<"student" | "landlord">("student");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+ 
 
   const {
     control,
@@ -61,23 +50,6 @@ export default function GenericRegisterScreen({ navigation }: Props) {
     );
   }
 
-  // function pressHandler() {
-  //   setGenericData({
-  //     fullName,
-  //     email,
-  //     showDatePicker,
-  //     phoneNumber,
-  //     password,
-  //     role,
-  //   });
-  //   if (password != confirmPassword) {
-  //     alert("password do not match!");
-  //   } else {
-  //     navigation.navigate(
-  //       role === "student" ? "StudentRegisterScreen" : "LandlordRegisterScreen"
-  //     );
-  //   }
-  // }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -180,7 +152,7 @@ export default function GenericRegisterScreen({ navigation }: Props) {
 
         <Button
           style={style.btn}
-          mode="outlined"
+          mode="contained"
           onPress={handleSubmit(onSubmit)}
         >
           Next
@@ -194,6 +166,7 @@ const style = StyleSheet.create({
   btn: {
     width: "50%",
     alignSelf: "center",
+    backgroundColor:"#3F51B5"
   },
   date:{
     marginLeft: 10

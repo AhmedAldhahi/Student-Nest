@@ -1,12 +1,16 @@
 import { View, StyleSheet } from "react-native";
-import { Button, Text, TextInput } from "react-native-paper";
+import { Button } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../../components/Header";
 import Greeting from "../../components/Greeting";
 import { useRegistration } from "../../../../context/RegistrationContext";
-import { useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../../../navigation/types";
+import { landlordRegisterSchema } from "../../../../validation/landlordRegisterSchema";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import ValidatedInput from "../../components/ValidatedInput";
 
 type Props = NativeStackScreenProps<
   RootStackParamList,
@@ -15,47 +19,65 @@ type Props = NativeStackScreenProps<
 
 export default function LandlordRegisterScreen({ navigation }: Props) {
   const { setLandlordData } = useRegistration();
-  const [cliqAccount, setCliqAccount] = useState("");
-  const [landlordGovId, setLandlordGovId] = useState("");
 
-  function pressHandler() {
-    setLandlordData({
-      cliqAccount,
-      landlordGovId,
-    });
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(landlordRegisterSchema),
+    defaultValues: {
+      cliqAccount: "",
+      landlordGovId: "",
+    },
+  });
+
+  function onSubmit(data: any) {
+    console.log("Landlord Data:", data); // ✅ Debug
+    setLandlordData(data);
     navigation.navigate("OTPScreen");
   }
 
   return (
     <SafeAreaView>
-      <View>
+      <KeyboardAwareScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        enableOnAndroid={true}
+        extraScrollHeight={20} // adds padding above keyboard
+        keyboardOpeningTime={250} // smooth animation
+        keyboardShouldPersistTaps="handled"
+      >
         <Header></Header>
         <Greeting
           title="Landlord Register"
           description="Complete register for Landlord"
         />
         <View style={style.InnerCon}>
-          <TextInput
-            style={[style.input, style.margin]}
-            mode="outlined"
-            placeholder="Cliq Account"
-            value={cliqAccount}
-            onChangeText={setCliqAccount}
+          <ValidatedInput
+            control={control}
+            name="cliqAccount"
+            label="CliQ Account"
+            textContentType="none"
+            autoComplete="off"
           />
-          <TextInput style={style.input} mode="outlined" placeholder="Email" />
-          <TextInput
-            style={style.input}
-            mode="outlined"
-            placeholder="Lanlord Goverment ID"
-            value={landlordGovId}
-            onChangeText={setLandlordGovId}
+          <ValidatedInput
+            control={control}
+            name="landlordGovId"
+            label="Landlord Government ID"
+            keyboardType="phone-pad"
+            textContentType="none"
+            autoComplete="off"
           />
         </View>
 
-        <Button style={style.btn} mode="outlined" onPress={pressHandler}>
+        <Button
+          style={style.btn}
+          mode="contained"
+          onPress={handleSubmit(onSubmit)}
+        >
           Next
         </Button>
-      </View>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 }
@@ -68,6 +90,7 @@ const style = StyleSheet.create({
   btn: {
     width: "50%",
     alignSelf: "center",
+    backgroundColor:"#3F51B5"
   },
   margin: {
     marginTop: 10,
