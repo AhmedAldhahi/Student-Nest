@@ -1,104 +1,106 @@
 import { UserRole } from "../enum/UserRole.enum";
 import { IUser } from "../interfaces/IUser.interface";
+import { InvalidPhoneNumberException } from "../exceptions/InvalidPhoneNumberFormat.exception";
+import { InvalidUserNameException } from "../exceptions/InvalidNameException.exception";
+import { InvalidDateOfBirthException } from "../exceptions/InvalidDateOfBirthException.exception";
+import { InvalidUserRoleErrorException } from "../exceptions/InvalidUserRoleException.exception";
+import { InvalidIsActiveException } from "../exceptions/InvalidIsActiveException.exception";
 
+export class User implements IUser {
+  // ===== Auto-increment ID =====
+  private static lastId = 0;
 
-export abstract class User implements IUser {
-  private userId: number;
-  private email: string;
-  private emailVerfied: boolean;
-  private name: string;
-  private password: string;
-  private role: UserRole;
-  private dateOfBirth: Date;
-  private phoneNumber: string;
-  private isActive: boolean;
-  private photo?: string;
-  private address?: string;
+  protected userId: number;
+  protected email: string;
+  protected emailVerfied: boolean = false;
+  protected name: string;
+  protected password: string;
+  protected role: UserRole;
+  protected dateOfBirth: Date;
+  protected isActive: boolean = true;
+  protected phoneNumber: string;
+  protected otpCode?: string;
+  protected otpExpired?: Date;
+  protected photo?: string;
+  protected address?: string;
 
   constructor(
-    userId: number,
     email: string,
-    emailVerfied: boolean,
     name: string,
     password: string,
     role: UserRole,
     dateOfBirth: Date,
     phoneNumber: string,
-    isActive: boolean,
-    address?: string,
-    photo?: string
+    isActive?: boolean
   ) {
-    this.userId = userId;
-    this.email = email;
-    this.emailVerfied = emailVerfied;
-    this.name = name;
+    this.userId = User.getNextId();
+    this.setEmail(email);
+    this.setName(name);
     this.password = password;
+    this.setUserRole(role);
+    this.setDateOfBirth(dateOfBirth);
+    this.setPhoneNumber(phoneNumber);
+    if (isActive !== undefined) this.setIsActive(isActive);
+  }
+
+  private static getNextId(): number {
+    return ++User.lastId;
+  }
+
+  // ===== Getters & Setters =====
+  public getUserId(): number { return this.userId; }
+
+  public setEmail(email: string): void {
+    if (!email) throw new InvalidPhoneNumberException();
+    this.email = email;
+  }
+  public getUserEmail(): string { return this.email; }
+
+  public setName(name: string): void {
+    if (!name) throw new InvalidUserNameException();
+    this.name = name;
+  }
+  public getName(): string { return this.name; }
+
+  public setUserRole(role: UserRole): void {
+    if (!role) throw new InvalidUserRoleErrorException();
     this.role = role;
-    this.dateOfBirth = dateOfBirth;
-    this.phoneNumber = phoneNumber;
+  }
+  public getUserRole(): UserRole { return this.role; }
+
+  public setDateOfBirth(date: Date): void {
+    if (!date) throw new InvalidDateOfBirthException();
+    this.dateOfBirth = date;
+  }
+  public getDateOfBirth(): Date { return this.dateOfBirth; }
+
+  public setIsActive(isActive: boolean): void {
+    if (!isActive) throw new InvalidIsActiveException();
     this.isActive = isActive;
-    this.address = address;
-    this.photo = photo;
+  }
+  public getIsActive(): boolean { return this.isActive; }
+
+  public setPhoneNumber(phone: string): void {
+    if (!phone) throw new InvalidPhoneNumberException();
+    this.phoneNumber = phone;
+  }
+  public getPhoneNumer(): string { return this.phoneNumber; }
+
+  public setOtpCode(otp: string): void { this.otpCode = otp; }
+  public getOtpCode(): string {
+    if (!this.otpCode) throw new Error("No OTP code has been sent!");
+    return this.otpCode;
   }
 
-  // ===== Generic Getters and Setters =====
+  public setOtpExpired(date: Date): void { this.otpExpired = date; }
+  public getOtpExpired(): Date | undefined { return this.otpExpired; }
 
-  public get getUserId() : number { 
-    return this.userId;
-} 
+  public setAddress(address: string): void { this.address = address; }
+  public getAddress(): string | undefined { return this.address; }
 
-public set setUserId(userId: number)  {
-    this.userId = userId;
+  public setPhoto(photo: string): void { this.photo = photo; }
+  public getPhoto(): string | undefined { return this.photo; }
+
+  public setEmailVerified(emailVerified: boolean): void { this.emailVerfied = emailVerified; }
+  public getEmailVerified(): boolean { return this.emailVerfied; }
 }
-
-  public get getUserEmail(): string {
-    return this.email;
-  }
-
-  public set setUserEmail(userEmail: string) {
-    this.email = userEmail;
-  }
-
-  
-
-  public get getUserEmailVerfied(): boolean {
-    return this.emailVerfied;
-  }
-public set setUserEmailVerfied(userEmailVerfid: boolean) {
-    this.emailVerfied =userEmailVerfid;
-} 
-
-  public get getUserName(): string {
-    return this.name;
-  }
-  public getUserRole(): UserRole {
-    return this.role;
-  }
-
-  public getDateOfBirth(): Date {
-    return this.dateOfBirth;
-  }
-
-  public getPhoneNumber(): string {
-    return this.phoneNumber;
-  }
-
-  public getUserIsActive() : boolean {
-    return this.isActive;
-  }
-
-  public getUserAddress(){
-    return this.address? this.address: null;
-  } 
-
-  public getUserPhoto() {
-    return this.photo? this.photo : null;
-  }
-
-  public getUserPass(): string {
-    return this.password;
-  } 
-
-
-}
-
