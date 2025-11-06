@@ -1,8 +1,4 @@
-import {
-  StyleSheet,
-  TouchableOpacity,
-  Platform,
-} from "react-native";
+import { StyleSheet, TouchableOpacity, Platform } from "react-native";
 import { Button, Text, TextInput } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../../components/Header";
@@ -30,7 +26,6 @@ export default function GenericRegisterScreen({ navigation }: Props) {
   const [birthDate, setBirthDate] = useState("");
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [role, setRole] = useState<"student" | "landlord">("student");
- 
 
   const {
     control,
@@ -49,7 +44,6 @@ export default function GenericRegisterScreen({ navigation }: Props) {
       role === "student" ? "StudentRegisterScreen" : "LandlordRegisterScreen"
     );
   }
-
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -121,7 +115,9 @@ export default function GenericRegisterScreen({ navigation }: Props) {
             </>
           )}
         />
-        {errors.birthDate && <Text style={style.inputError}>{errors.birthDate.message}</Text>}
+        {errors.birthDate && (
+          <Text style={style.inputError}>{errors.birthDate.message}</Text>
+        )}
 
         <ValidatedInput
           control={control}
@@ -157,6 +153,13 @@ export default function GenericRegisterScreen({ navigation }: Props) {
         >
           Next
         </Button>
+        <Button
+          style={style.linkBtn}
+          mode="text"
+          onPress={() => navigation.navigate("SignInScreen")}
+        >
+          Already have an account? Sign In
+        </Button>
       </KeyboardAwareScrollView>
     </SafeAreaView>
   );
@@ -166,13 +169,17 @@ const style = StyleSheet.create({
   btn: {
     width: "50%",
     alignSelf: "center",
-    backgroundColor:"#3F51B5"
+    backgroundColor: "#3F51B5",
   },
-  date:{
-    marginLeft: 10
+  date: {
+    marginLeft: 10,
   },
-  inputError:{
+  inputError: {
     color: "red",
-    marginLeft: 10
-  }
+    marginLeft: 10,
+  },
+  linkBtn: {
+    marginTop: 10,
+    alignSelf: "center",
+  },
 });

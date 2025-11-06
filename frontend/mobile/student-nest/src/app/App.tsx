@@ -10,6 +10,7 @@ import { RootStackParamList } from "../navigation/types";
 import LandlordRegisterScreen from "../features/auth/screens/Register/LandlordRegisterScreen";
 import { RegistrationProvider } from "../context/RegistrationContext";
 import OTPScreen from "../features/auth/screens/Register/OTPScreen";
+import SignInScreen from "../features/auth/screens/SignInScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -23,11 +24,16 @@ export default function App() {
             <RegistrationProvider>
               <Stack.Navigator>
                 <Stack.Screen
+                  name="SignInScreen"
+                  component={SignInScreen}
+                  options={{headerShown: false}}
+                />
+                <Stack.Screen
                   name="GenericRegisterScreen"
                   component={GenricRegisterScreen}
                   options={{
                     headerShown: false,
-                    presentation: "transparentModal",
+                    presentation: "card",
                   }}
                 />
                 <Stack.Screen
