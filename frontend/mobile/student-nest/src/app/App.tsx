@@ -16,6 +16,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function App() {
   return (
     <>
+    <StatusBar style="dark"/>
       <NavigationContainer>
         <SafeAreaProvider>
           <PaperProvider>

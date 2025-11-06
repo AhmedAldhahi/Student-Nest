@@ -51,7 +51,6 @@ export default function StudentRegisterScreen({navigation}: Props) {
           value={major}
           onChangeText={setMajor}
         />
-        <TextInput style={style.input} mode="outlined" placeholder="Email" />
         <TextInput
           style={style.input}
           mode="outlined"
