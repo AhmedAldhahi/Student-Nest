@@ -17,7 +17,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function App() {
   return (
     <>
-    <StatusBar style="dark"/>
+      <StatusBar style="dark" />
       <NavigationContainer>
         <SafeAreaProvider>
           <PaperProvider>
@@ -26,7 +26,7 @@ export default function App() {
                 <Stack.Screen
                   name="SignInScreen"
                   component={SignInScreen}
-                  options={{headerShown: false}}
+                  options={{ headerShown: false }}
                 />
                 <Stack.Screen
                   name="GenericRegisterScreen"
@@ -44,10 +44,7 @@ export default function App() {
                   name="LandlordRegisterScreen"
                   component={LandlordRegisterScreen}
                 />
-                <Stack.Screen
-                  name="OTPScreen"
-                  component={OTPScreen}
-                />
+                <Stack.Screen name="OTPScreen" component={OTPScreen} />
               </Stack.Navigator>
             </RegistrationProvider>
           </PaperProvider>
