@@ -11,6 +11,8 @@ import LandlordRegisterScreen from "../features/auth/screens/Register/LandlordRe
 import { RegistrationProvider } from "../context/RegistrationContext";
 import OTPScreen from "../features/auth/screens/Register/OTPScreen";
 import SignInScreen from "../features/auth/screens/SignInScreen";
+import Dashboard from "../features/dashboard/DashboardScreen";
+import DashboardScreen from "../features/dashboard/DashboardScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -23,7 +25,7 @@ export default function App() {
           <PaperProvider>
             <RegistrationProvider>
               <Stack.Navigator>
-                <Stack.Screen
+                {/* <Stack.Screen
                   name="SignInScreen"
                   component={SignInScreen}
                   options={{ headerShown: false }}
@@ -44,7 +46,8 @@ export default function App() {
                   name="LandlordRegisterScreen"
                   component={LandlordRegisterScreen}
                 />
-                <Stack.Screen name="OTPScreen" component={OTPScreen} />
+                <Stack.Screen name="OTPScreen" component={OTPScreen} /> */}
+                <Stack.Screen name="DashboardScreen" component={DashboardScreen} />
               </Stack.Navigator>
             </RegistrationProvider>
           </PaperProvider>

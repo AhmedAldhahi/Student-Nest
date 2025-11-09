@@ -3,5 +3,6 @@ export type RootStackParamList = {
   GenericRegisterScreen: undefined;
   StudentRegisterScreen: undefined;
   LandlordRegisterScreen: undefined;
-  OTPScreen: undefined
+  OTPScreen: undefined;
+  DashboardScreen: undefined;
 };
