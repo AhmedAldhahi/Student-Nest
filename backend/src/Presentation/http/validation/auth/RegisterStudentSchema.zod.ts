@@ -1,15 +1,15 @@
 import { z } from "zod";
-import { graduationYearSchema } from "../../../Shared/utils/zodValidationMethod.util";
-import { DateOfBirth } from "../../../Shared/utils/zodValidationMethod.util";
-import { hasSequentialNumbers } from "../../../Shared/utils/zodValidationMethod.util";
-import { UserRole } from "../../../Core/enum/UserRole.enum";
-import { roleEnum } from "../../../Shared/constants/validationZod.constant";
+import { graduationYearSchema } from "../../../../Shared/utils/zodValidationMethod.util";
+import { DateOfBirth } from "../../../../Shared/utils/zodValidationMethod.util";
+import { hasSequentialNumbers } from "../../../../Shared/utils/zodValidationMethod.util";
+import { UserRole } from "../../../../Core/enum/UserRole.enum";
+import { roleEnum } from "../../../../Shared/constants/validationZod.constant";
 
 const basedUserSchema = z.object({
   email: z.email(),
   name: z
     .string()
-    .min(3, "studet name is too short")
+    .min(3, "student name is too short")
     .max(30, "student name is too long")
     .trim(),
   phoneNumber: z.string(),
@@ -33,9 +33,17 @@ export const RegisterStudetSchema = basedUserSchema
     graduatYear: graduationYearSchema,
     studentCardId: z.string(),
     unversityName: z.string(),
-    studentGovId:z.string(),
+    studentGovId: z.string(),
     role: roleEnum.default("student"),
     major: z.string(),
     address: z.string().optional(),
+  })
+  .strict();
+
+export const RegisterLandloardSchema = basedUserSchema
+  .extend({
+    cliQAccount: z.string(),
+    LandloardGovId: z.string(),
+    role: roleEnum.default("landloard"),
   })
   .strict();

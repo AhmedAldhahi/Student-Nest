@@ -9,7 +9,7 @@ export interface IStudentbuilder {
   buildStudentGovId(studentGovId: string): this;
   buildUserId(userId: string): this;
 
-  buildDateOfBirth(userBirth: Date): this;
+  buildDateOfBirth(userBirth: number): this;
 
   buildHash(userPass: string): this;
 

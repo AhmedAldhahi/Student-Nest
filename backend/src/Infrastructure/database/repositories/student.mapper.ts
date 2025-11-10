@@ -30,9 +30,7 @@ export class StudentMapper {
         domainStudent.setOtpExpired(dbStudent.user.otpExpired);
       }
 
-      if (dbStudent.user.emailVerfied) {
-        domainStudent.setVerfiedEmail();
-      }
+
       if (dbStudent.user.Photo) {
         domainStudent.setPhoto(dbStudent.user.Photo);
       }

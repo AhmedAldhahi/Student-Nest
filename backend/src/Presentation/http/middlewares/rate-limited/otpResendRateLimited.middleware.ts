@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 
 export const otpResendRateLimited = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 min window
-  limit: 3, // Max 3 resends per window
+  limit: 3, // Max 3 resend per window
   keyGenerator: (req: Request, res: Response) => req.body.email || req.ip, // per email or fallback to IP
   standardHeaders: "draft-8",
   legacyHeaders: false,

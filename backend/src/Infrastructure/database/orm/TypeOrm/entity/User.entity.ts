@@ -23,8 +23,8 @@ export class User {
   @Column({ type: "enum", enum: UserRole })
   Role: UserRole;
 
-  @Column({ type: "date" })
-  DateOfBirth: Date;
+  @Column({ type: "int" })
+  DateOfBirth: number;
 
   @Column({ type: "varchar", length: 15 })
   PhoneNumber: string;

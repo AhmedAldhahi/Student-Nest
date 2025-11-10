@@ -30,7 +30,9 @@ export class NodemailerService implements IEmailService {
   }
 
   // Registration OTP email
-  public async sendRegistrationEmail(to: string, otp: string): Promise<void> {
+  public async sendRegistrationEmail(to: string, otp: string): Promise<void> { 
+
+    
     try {
       await this.transporter.sendMail({
         from: `"Student Nest Application" <${this.emailServiceAddress}>`,

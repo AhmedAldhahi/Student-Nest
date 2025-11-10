@@ -6,7 +6,7 @@ export interface RegisterStudentRequest {
     name: string;
     password: string;
     role: UserRole.student;
-    dateOfBirth: Date;
+    dateOfBirth: number;
     phoneNumber: string;
     major: string;
     graduatYear: number;

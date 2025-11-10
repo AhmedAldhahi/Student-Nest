@@ -1,3 +1,4 @@
+import { defaultYear } from "../../Shared/constants/helperValue.constant";
 import { UserAccountStatus } from "../enum/UserAccountStatus.enum";
 import { UserRole } from "../enum/UserRole.enum";
 import { EmailFormateException } from "../exception/EmailEsception.exception";
@@ -24,7 +25,7 @@ export class Landloard implements ILandloard, IUser {
 
   protected name: string;
   protected role: UserRole;
-  protected dateOfBirth: Date;
+  protected dateOfBirth: number;
 
   protected phoneNumber: string;
   protected photo?: string;
@@ -91,17 +92,27 @@ export class Landloard implements ILandloard, IUser {
     return this.userId;
   }
   setUserId(userId: string): void {
+    if (!userId) throw new Error("user id is required");
     this.userId = userId;
   }
 
-  getDateOfBirth(): Date {
+  getDateOfBirth(): number {
     return this.dateOfBirth;
   }
 
-  //TODO: need to check that it date of birth is 18 or hight
-  public setDateOfBirth(dob: Date): void {
+  public setDateOfBirth(dob: number): void {
+    if (!dob) throw new Error("date of birth is required");
+
+    if (Number.isNaN(dob)) throw new Error("the date of birth must be number");
+
+    // if (defaultDate - dob )
+    if (defaultYear - dob < 18) {
+      throw new Error("the student must be at least 18 !!");
+    }
+
     this.dateOfBirth = dob;
   }
+
   getPassword(): string {
     return this.hashPassword;
   }
@@ -120,14 +131,7 @@ export class Landloard implements ILandloard, IUser {
       throw new EmailFormateException("A valid email is required.");
     }
 
-    if (this.role === UserRole.student) {
-      const emailStuFormate = email.endsWith(".edu.jo");
-      if (!emailStuFormate) {
-        throw new EmailFormateException();
-      }
-
-      this.email = email;
-    }
+    this.email = email;
   }
 
   setName(userName: string): void {
@@ -167,7 +171,7 @@ export class Landloard implements ILandloard, IUser {
   }
   setRole(role: UserRole): void {
     role = UserRole.landloard;
-    this.role = role;
+    this.role = UserRole.landloard;
   }
   getPhoeNumber(): string {
     return this.phoneNumber;

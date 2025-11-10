@@ -6,12 +6,14 @@ import { RegisterLandloardRequest } from "../dtos/RegisterLandloardRequest.dtos"
 import { RegisterLandloardRespone } from "../dtos/RegisterLandloardRespone.dtos";
 import { v4 as uuidv4 } from "uuid";
 import { OTP } from "../../Core/value-object/OTP.ValueObject";
+import { IEmailService } from "../../Core/services/IEmailService.service";
 
 export class RegisterLandloardUseCase {
   constructor(
     private readonly unitOfWork: IUnitOfWorkRepository,
     private readonly passwordService: IPasswordService,
-    private readonly landloardBuilder: LandloardBuilder
+    private readonly landloardBuilder: LandloardBuilder,
+    private readonly emailService: IEmailService
   ) {}
 
   public async execute(
@@ -29,11 +31,12 @@ export class RegisterLandloardUseCase {
         throw new UserExictException();
       }
 
-      const hashPassword = await this.passwordService.hash(dto.hashedPassword);
+      const hashPassword = await this.passwordService.hash(dto.password);
       const generatedUserId = uuidv4();
 
       const userBuilder = this.landloardBuilder
         .buildUserId(generatedUserId)
+        .buildRole(dto.role)
         .buildEmail(dto.email)
         .buildName(dto.name)
         .buildDateOfBirth(dto.dateOfBirth)
@@ -60,6 +63,10 @@ export class RegisterLandloardUseCase {
       // if select address add it if not do not add it
 
       await this.unitOfWork.LandloardReposotries.save(user);
+      await this.emailService.sendRegistrationEmail(
+        user.getEmail(),
+        otp.getValue()
+      );
       await this.unitOfWork.commit();
 
       return {

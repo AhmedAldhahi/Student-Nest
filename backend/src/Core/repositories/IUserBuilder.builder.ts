@@ -4,7 +4,7 @@ import { UserRole } from "../enum/UserRole.enum";
 export interface IUserBuilder  {
   buildUserId(userId: string): this;
 
-  buildDateOfBirth(userBirth: Date): this;
+  buildDateOfBirth(userBirth: number): this;
 
   buildHash(userPass: string): this;
 

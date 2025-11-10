@@ -1,11 +1,10 @@
 // src/infrastructure/database/repositories/landloard.mapper.ts
 
-import { Landloard as DomainLandlord } from '../../../Core/entites/landloard.entity'; 
-import { Landlord as TypeOrmLandloard } from '../orm/TypeOrm/entity/Landloard.entity'; 
-import { User as TypeOrmUser } from '../orm/TypeOrm/entity/User.entity';
+import { Landloard as DomainLandlord } from "../../../Core/entites/landloard.entity";
+import { Landlord as TypeOrmLandloard } from "../orm/TypeOrm/entity/Landloard.entity";
+import { User as TypeOrmUser } from "../orm/TypeOrm/entity/User.entity";
 
 export class LandlordMapper {
-  
   // The 'toDomain' method was correct and remains the same
   public static toDomain(dbLandlord: TypeOrmLandloard): DomainLandlord {
     const domainLandlord = new DomainLandlord();
@@ -19,10 +18,14 @@ export class LandlordMapper {
       domainLandlord.setDateOfBirth(dbLandlord.user.DateOfBirth);
       domainLandlord.setPhoneNumber(dbLandlord.user.PhoneNumber);
       domainLandlord.setAccountStatus(dbLandlord.user.isActive);
-      
-      if (dbLandlord.user.emailVerfied) {
-        domainLandlord.setVerfiedEmail();
+
+      if (dbLandlord.user.otpCode) {
+        domainLandlord.setOtpCode(dbLandlord.user.otpCode);
       }
+      if (dbLandlord.user.otpExpired) {
+        domainLandlord.setOtpExpired(dbLandlord.user.otpExpired);
+      }
+
       if (dbLandlord.user.Photo) {
         domainLandlord.setPhoto(dbLandlord.user.Photo);
       }
@@ -30,8 +33,8 @@ export class LandlordMapper {
         domainLandlord.setAddress(dbLandlord.user.Address);
       }
     }
-    
-    domainLandlord.setCliQAccount(dbLandlord.cliQAccount); 
+
+    domainLandlord.setCliQAccount(dbLandlord.cliQAccount);
     domainLandlord.setLandloardGovId(dbLandlord.landloardGovId);
 
     return domainLandlord;
@@ -41,7 +44,9 @@ export class LandlordMapper {
    * Converts a single Domain Landlord back into a TypeORM Landlord
    * and a nested TypeORM User for saving.
    */
-  public static toPersistence(domainLandlord: DomainLandlord): TypeOrmLandloard {
+  public static toPersistence(
+    domainLandlord: DomainLandlord
+  ): TypeOrmLandloard {
     // 1. Create the TypeOrmUser and map its properties
     const dbUser = new TypeOrmUser();
     dbUser.userId = domainLandlord.getUserId();
@@ -56,7 +61,9 @@ export class LandlordMapper {
     dbUser.Photo = domainLandlord.getPhoto();
     dbUser.Address = domainLandlord.getAddress();
 
-  
+    dbUser.otpCode = domainLandlord.getOtpCode();
+    dbUser.otpExpired = domainLandlord.getOtpExpired();
+
     // 2. Create the TypeOrmLandloard and map its properties
     const dbLandlord = new TypeOrmLandloard();
 

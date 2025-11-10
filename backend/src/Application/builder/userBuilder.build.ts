@@ -34,7 +34,7 @@ export class UserBuilder implements IUserBuilder {
     return this;
   }
 
-  buildDateOfBirth(userBirth: Date): this {
+  buildDateOfBirth(userBirth: number): this {
     this.user.setDateOfBirth(userBirth);
     return this;
   }

@@ -3,9 +3,13 @@ import { UserRole } from "../../Core/enum/UserRole.enum";
 import { ILandloardbuilder } from "../../Core/repositories/ILandloardbuilder.build";
 
 export class LandloardBuilder implements ILandloardbuilder {
-  private landloard: Landloard;
+  private landloard: Landloard; 
 
-  buildDateOfBirth(userBirth: Date): this {
+  constructor() {
+    this.landloard = new Landloard();
+  }
+
+  buildDateOfBirth(userBirth: number): this {
     this.landloard.setDateOfBirth(userBirth);
     return this;
   }
@@ -55,6 +59,8 @@ export class LandloardBuilder implements ILandloardbuilder {
     return this;
   }
 
+
+
   build(): Landloard {
     if (
       !this.landloard.getUserId() ||
@@ -62,14 +68,14 @@ export class LandloardBuilder implements ILandloardbuilder {
       !this.landloard.getEmail() ||
       !this.landloard.getName() ||
       !this.landloard.getRole() ||
-      !this.landloard.getDateOfBirth() ||
+      !this.landloard.getDateOfBirth() || // This is now correctly set by buildDateOfBirth
       !this.landloard.getPhoeNumber() ||
       !this.landloard.getcliQAccount() ||
       !this.landloard.getLandloardGovId()
     ) {
+      // This error will now only fire if a Landlord property is missing.
       throw new Error("Missing required properties to build User.");
     }
-
     return this.landloard;
   }
 }

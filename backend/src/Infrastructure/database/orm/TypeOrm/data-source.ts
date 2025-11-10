@@ -12,7 +12,7 @@ export const AppDataSource = new DataSource({
   logging: false,
 
   entities: [__dirname + "/entity/**/*.entity{.ts,.js}"],
-  dropSchema: true,
+  //dropSchema: true, // for dev only 
 
   migrations: [],
   subscribers: [],

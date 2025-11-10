@@ -38,7 +38,7 @@ export class StudentBuilder  implements IStudentbuilder {
     return this;
   }
 
-  buildDateOfBirth(userBirth: Date): this {
+  buildDateOfBirth(userBirth: number): this {
     this.student.setDateOfBirth(userBirth);
     return this;
   }

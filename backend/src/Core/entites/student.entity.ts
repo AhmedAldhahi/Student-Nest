@@ -12,6 +12,7 @@ import { phoneNumberFormateException } from "../exception/PhonNumberException.ex
 import { NameException } from "../exception/NameException.exception";
 import { EmailFormateException } from "../exception/EmailEsception.exception";
 import { OTP } from "../value-object/OTP.ValueObject";
+import { defaultYear } from "../../Shared/constants/helperValue.constant";
 
 export class Student implements IStudent, IUser {
   //protected readonly userId: number;
@@ -29,7 +30,7 @@ export class Student implements IStudent, IUser {
 
   protected name: string;
   protected role: UserRole;
-  protected dateOfBirth: Date;
+  protected dateOfBirth: number;
 
   protected phoneNumber: string;
   protected photo?: string;
@@ -79,16 +80,23 @@ export class Student implements IStudent, IUser {
     this.userId = userId;
   }
 
-  getDateOfBirth(): Date {
+  getDateOfBirth(): number {
     return this.dateOfBirth;
   }
 
-  //TODO: need to check that it date of birth is 18 or hight
-  public setDateOfBirth(dob: Date): void {
+  public setDateOfBirth(dob: number): void {
     if (!dob) throw new Error("date of birth is required");
+
+    if (Number.isNaN(dob)) throw new Error("the date of birth must be number");
+
+    // if (defaultDate - dob )
+    if (defaultYear - dob < 18) {
+      throw new Error("the student must be at least 18 !!");
+    }
 
     this.dateOfBirth = dob;
   }
+
   getPassword(): string {
     return this.hashPassword;
   }
@@ -268,7 +276,6 @@ export class Student implements IStudent, IUser {
       throw new UnversityException();
     }
 
-    // ❗️ FIX: Add this line
     this.unversityName = trimmedName;
   }
 

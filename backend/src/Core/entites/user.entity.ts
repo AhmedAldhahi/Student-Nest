@@ -4,6 +4,8 @@ import { UserAccountStatus } from "../enum/UserAccountStatus.enum";
 import { EmailFormateException } from "../exception/EmailEsception.exception";
 import { phoneNumberFormateException } from "../exception/PhonNumberException.exception";
 import { IUser } from "../repositories/IUser";
+import { defaultYear } from "../../Shared/constants/helperValue.constant";
+import { OTP } from "../value-object/OTP.ValueObject";
 
 export class User implements IUser {
   protected userId: string;
@@ -14,13 +16,46 @@ export class User implements IUser {
 
   protected name: string;
   protected role: UserRole;
-  protected dateOfBirth: Date;
+  protected dateOfBirth: number;
 
   protected accountStatus: UserAccountStatus = UserAccountStatus.activate;
 
   protected phoneNumber: string;
   protected photo?: string;
   protected address?: string;
+
+  protected otpCode?: string;
+  protected otpExpired?: Date;
+
+  public setOtp(otp: OTP): void {
+    this.otpCode = otp.getValue();
+    this.otpExpired = otp.getExpiresAt();
+  }
+
+  // for the infrastrcture to read it
+  public setOtpCode(code?: string): void {
+    this.otpCode = code || undefined;
+  }
+
+  public getOtpCode(): string {
+    if (!this.otpCode) throw new Error("no otp been found!");
+    return this.otpCode;
+  }
+
+  public getOtpExpired(): Date {
+    if (!this.otpExpired) throw new Error("no otp expired found !");
+    return this.otpExpired;
+  }
+
+  public setOtpExpired(date: Date | undefined | null): void {
+    // This handles mapping null/undefined from the database
+    this.otpExpired = date || undefined;
+  }
+
+  public clearOtp(): void {
+    this.otpCode = undefined;
+    this.otpExpired = undefined;
+  }
 
   getPhoto(): string | undefined {
     return this.photo;
@@ -33,7 +68,7 @@ export class User implements IUser {
     return this.userId;
   }
 
-  public getDateOfBirth(): Date {
+  public getDateOfBirth(): number {
     return this.dateOfBirth;
   }
 
@@ -85,7 +120,6 @@ export class User implements IUser {
         "Name can only contain letters, numbers, or underscores"
       );
     }
-
     this.name = trimmed;
   }
 
@@ -123,7 +157,15 @@ export class User implements IUser {
     this.role = role;
   }
 
-  public setDateOfBirth(dob: Date): void {
+  public setDateOfBirth(dob: number): void {
+    if (!dob) throw new Error("date of birth is required");
+
+    if (Number.isNaN(dob)) throw new Error("the date of birth must be number");
+
+    if (defaultYear - dob < 18) {
+      throw new Error("the student must be at least 18 !!");
+    }
+
     this.dateOfBirth = dob;
   }
 

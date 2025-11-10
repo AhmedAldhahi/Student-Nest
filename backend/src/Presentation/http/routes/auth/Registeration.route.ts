@@ -1,6 +1,12 @@
-import { Router } from 'express';
-import { AuthController } from '../../controllers/Registeration.controller';
-// We don't import the use case here
+import { Router } from "express";
+import { AuthController } from "../../controllers/Registeration.controller";
+import { validation } from "../../middlewares/validation.middleware";
+import { RegisterStudetSchema } from "../../validation/auth/RegisterStudentSchema.zod";
+import { RegisterLandloardSchema } from "../../validation/auth/RegisterStudentSchema.zod";
+import { registerApiRateLimited } from "../../middlewares/rate-limited/registerRatLimited.middleware";
+
+
+
 
 /**
  * Creates the auth router.
@@ -12,14 +18,26 @@ export const createAuthRouter = (authController: AuthController): Router => {
   const router = Router();
 
   // 2. Define the routes and connect them to controller methods
+  
   router.post(
-    '/register/student', 
+    "/register/student",
+    validation(RegisterStudetSchema),
+    registerApiRateLimited,
     authController.registerStudent
+  );
+
+  router.post(
+    "/register/landlord",
+    validation(RegisterLandloardSchema),
+    registerApiRateLimited,
+    authController.registerLandloard
   );
 
   // Add other auth routes here
   // router.post('/login', authController.login);
   // router.post('/forgot-password', authController.forgotPassword);
+  // verife otp
+  // update password
 
   // 3. Return the configured router
   return router;

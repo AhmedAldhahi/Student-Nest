@@ -1,20 +1,21 @@
-// title message otp year
 export function emailMessageStyleFormate(
     title: string,
     message: string,
     otp: string,
     year: Date
   ): string { 
+    
+    // Your chosen blue colors
+    const primaryColor = "#1E3A8A";   // Dark Blue
+    const secondaryColor = "#3B82F6"; // Lighter Blue
+
     return `<!DOCTYPE html>
   <html lang="en">
     <head>
       <meta charset="UTF-8">
       <title>${title}</title>
       <style>
-        :root {
-          --primarycolor: #1E3A8A;   /* dark blue */
-          --secondarycolor: #3B82F6; /* lighter blue */
-        }
+        /* CSS variables are removed as they are not supported in all email clients */
         body {
           font-family: 'Helvetica Neue', Arial, sans-serif;
           background-color: #f4f6fa;
@@ -36,7 +37,8 @@ export function emailMessageStyleFormate(
           overflow: hidden;
         }
         .email-header {
-          background-color: var(--primarycolor);
+          /* Use the hex code directly */
+          background-color: ${primaryColor}; 
           padding: 30px 20px;
           text-align: center;
           color: #ffffff;
@@ -62,8 +64,9 @@ export function emailMessageStyleFormate(
         .otp-code {
           font-size: 32px;
           font-weight: bold;
-          color: #ffffff;
-          background-color: var(--secondarycolor);
+          color:rgb(0, 0, 0); /* This is fine now */
+          /* Use the hex code directly */
+          background-color: ${secondaryColor}; 
           padding: 15px 40px;
           border-radius: 12px;
           letter-spacing: 4px;
@@ -81,7 +84,7 @@ export function emailMessageStyleFormate(
           padding: 20px;
           font-size: 12px;
           color: #aaa;
-          background-color: #f4f6fa;
+          background-color:rgb(44, 91, 185);
         }
         @media screen and (max-width: 480px) {
           .otp-code {
@@ -114,4 +117,3 @@ export function emailMessageStyleFormate(
     </body>
   </html>`;
   }
-  

@@ -10,9 +10,13 @@ import { StudentBuilder } from "./Application/builder/studentBuilder.build";
 import { RegisterStudentUseCase } from "./Application/use-case/RegisterStudentUseCase.usecase";
 import { AuthController } from "./Presentation/http/controllers/Registeration.controller";
 import { createAuthRouter } from "./Presentation/http/routes/auth/Registeration.route";
-import { validation } from "./Presentation/http/middlewares/validation.middleware";
-import { RegisterStudetSchema } from "./Presentation/http/validation/RegisterStudentSchema.zod";
 import { NodemailerService } from "./Infrastructure/services/email/NodemailerService.service";
+import { RegisterLandloardUseCase } from "./Application/use-case/RegisterLandloardUseCase.usecase";
+import { LandloardBuilder } from "./Application/builder/landloardBuilder.build";
+import { VerficationController } from "./Presentation/http/controllers/Verfication.controller";
+import { ResendOtpUseCase } from "./Application/use-case/ResendOtpUseCase.usecase";
+import { createVerficationRouter } from "./Presentation/http/routes/auth/Verfication.route";
+
 
 /**
  * This class encapsulates your server setup.
@@ -43,8 +47,8 @@ export class Server {
     const unitOfWork = new UnitOfWorkRepositories();
     const passwordService = new BcryptPasswordHasher();
     const studentBuilder = new StudentBuilder();
+    const landloardBuilder = new LandloardBuilder();
 
-    // ❗️ FIX 1: Create an instance of the email service
     const emailService = new NodemailerService();
 
     // Inject them into the use case
@@ -52,18 +56,38 @@ export class Server {
       unitOfWork,
       passwordService,
       studentBuilder,
-      emailService // ❗️ FIX 2: Pass the email service as the 4th argument
+      emailService 
     );
 
+    const registerLandloardUseCase = new RegisterLandloardUseCase(
+      unitOfWork,
+      passwordService,
+      landloardBuilder,
+      emailService
+    ); 
+
+    const resendOtpUseCase = new ResendOtpUseCase(emailService,unitOfWork);
+    
+
     // Inject the use case into the controller
-    const authController = new AuthController(registerStudentUseCase);
+    const authController = new AuthController(
+      registerStudentUseCase,
+      registerLandloardUseCase
+    ); 
+
+    const verficationController = new VerficationController(resendOtpUseCase);
+
+
+
 
     // Inject the controller into the router
     const authRouter = createAuthRouter(authController);
+    const verificationRouter = createVerficationRouter(verficationController);
 
     // 4. --- USE THE ROUTER ---
     // 'this.app' now works correctly
-    this.app.use("/api/v1/auth", validation(RegisterStudetSchema), authRouter);
+    this.app.use("/api/v1/auth",  authRouter);
+    this.app.use("/api/v1/verification/",verificationRouter);
   }
 
   /**

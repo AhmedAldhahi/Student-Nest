@@ -18,6 +18,13 @@ export class UserMapper {
     domainUser.setDateOfBirth(dbUser.DateOfBirth);
     domainUser.setPhoneNumber(dbUser.PhoneNumber);
 
+    if (dbUser.setOtpCode) {
+      domainUser.setOtpCode(dbUser.otpCode);
+    }
+    if (dbUser.getOtpExpired) {
+      domainUser.setOtpExpired(dbUser.otpExpired);
+    }
+
     // Handle optional properties
     if (dbUser.Photo) {
       domainUser.setPhoto(dbUser.Photo);
@@ -27,11 +34,6 @@ export class UserMapper {
     }
 
     // --- This is the fix for the problem I describe below ---
-
-    // Set the verification status from the DB
-    if (dbUser.emailVerfied === true) {
-      domainUser.setVerfiedEmail(); // Uses your existing method
-    }
 
     // Set the account status from the DB
     domainUser.setAccountStatus(dbUser.isActive);

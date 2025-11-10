@@ -4,8 +4,8 @@ export interface IUser {
   getUserId(): string;
   setUserId(userId: string): void;
 
-  getDateOfBirth(): Date;
-  setDateOfBirth(dob: Date): void;
+  getDateOfBirth(): number;
+  setDateOfBirth(dob: number): void;
 
   getPassword(): string;
   setPass(userPass: string): void;

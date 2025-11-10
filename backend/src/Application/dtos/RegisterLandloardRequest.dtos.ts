@@ -4,9 +4,9 @@ export interface RegisterLandloardRequest {
   // require
   email: string;
   name: string;
-  hashedPassword: string;
-  role: UserRole.student;
-  dateOfBirth: Date;
+  password: string;
+  role: UserRole.landloard;
+  dateOfBirth: number;
   phoneNumber: string;
 
   cliQAccount: string;

@@ -8,7 +8,7 @@ export interface IUnitOfWorkRepository {
   LandloardReposotries: ILandloardRepository;
 
   // method to connect with db 
-  startTransaction(): Promise<void>;
-  commit(): Promise<void>;
-  rollBack(): Promise<void>;
+  startTransaction(): Promise<void>; // start procces 
+  commit(): Promise<void>; // store procces
+  rollBack(): Promise<void>; // revoke procces
 }

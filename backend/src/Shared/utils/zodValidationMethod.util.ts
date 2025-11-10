@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { currentYear, MIN_AGE } from "../constants/validationZod.constant";
-// it start from current untill 8 year 
+// it start from current untill 8 year
 // 1. Get the current year
 
 // 2. Calculate the maximum allowed year
@@ -23,18 +23,17 @@ export const graduationYearSchema = z
   });
 
 export const DateOfBirth = z
-  .string()
-  .refine((val) => {
-    const date = new Date(val);
-    if (isNaN(date.getTime())) return false; // invalid date
-    const today = new Date();
-    let age = today.getFullYear() - date.getFullYear();
-    const monthDiff = today.getMonth() - date.getMonth();
-    const dayDiff = today.getDate() - date.getDate();
-    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) age--;
+  .number()
+  .int()
+  .refine((year) => {
+    const currentYear = new Date().getFullYear();
+    const age = currentYear - year;
     return age >= MIN_AGE;
   }, `User must be at least ${MIN_AGE} years old`)
-  .transform((val) => new Date(val));
+  .refine((year) => {
+    const currentYear = new Date().getFullYear();
+    return year > 1900 && year <= currentYear; // optional sanity check
+  }, "Year must be a valid number");
 
 export function hasSequentialNumbers(password: string): boolean {
   const sequences = ["0123456789", "1234567890", "9876543210", "876543210"];
@@ -45,6 +44,4 @@ export function hasSequentialNumbers(password: string): boolean {
     }
   }
   return false;
-} 
-
-
+}
