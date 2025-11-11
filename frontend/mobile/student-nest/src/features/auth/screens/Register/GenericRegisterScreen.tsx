@@ -14,6 +14,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import ValidatedInput from "../../components/ValidatedInput";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import OptionToggle from "../../../../components/OptionToggle";
 
 type Props = NativeStackScreenProps<
   RootStackParamList,
@@ -59,7 +60,14 @@ export default function GenericRegisterScreen({ navigation }: Props) {
           title="Create Account"
           description="Join our Community to find your perfect accommodation"
         />
-        <RoleToggle role={role} setRole={setRole} />
+        <OptionToggle
+          selected={role}
+          setSelected={setRole}
+          options={[
+            { label: "Student", value: "student", icon: "school" },
+            { label: "Landlord", value: "landlord", icon: "key" },
+          ]}
+        />
 
         {/* Inputs */}
         <ValidatedInput

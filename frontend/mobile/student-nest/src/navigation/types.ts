@@ -5,4 +5,5 @@ export type RootStackParamList = {
   LandlordRegisterScreen: undefined;
   OTPScreen: undefined;
   DashboardScreen: undefined;
+  ApartmentScreen: undefined;
 };

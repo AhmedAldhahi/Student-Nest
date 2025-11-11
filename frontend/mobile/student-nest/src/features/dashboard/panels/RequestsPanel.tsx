@@ -8,6 +8,12 @@ export default function RequestsPanel() {
       <List.Item title="Request from John Doe" description="Apartment #5" />
       <Button mode="contained" style={styles.btn}>Approve</Button>
       <Button mode="outlined" style={styles.btn}>Reject</Button>
+      <List.Item title="Request from John Doe" description="Apartment #5" />
+      <Button mode="contained" style={styles.btn}>Approve</Button>
+      <Button mode="outlined" style={styles.btn}>Reject</Button>
+      <List.Item title="Request from John Doe" description="Apartment #5" />
+      <Button mode="contained" style={styles.btn}>Approve</Button>
+      <Button mode="outlined" style={styles.btn}>Reject</Button>
     </View>
   );
 }
