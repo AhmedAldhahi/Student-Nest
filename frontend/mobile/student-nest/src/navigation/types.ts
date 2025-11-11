@@ -1,3 +1,5 @@
+import { Apartment } from "../features/apartments/types";
+
 export type RootStackParamList = {
   SignInScreen: undefined;
   GenericRegisterScreen: undefined;
@@ -6,4 +8,5 @@ export type RootStackParamList = {
   OTPScreen: undefined;
   DashboardScreen: undefined;
   ApartmentScreen: undefined;
+  ApartmentDetailsScreen: { apartment: Apartment }; // ✅ expects an apartment object
 };

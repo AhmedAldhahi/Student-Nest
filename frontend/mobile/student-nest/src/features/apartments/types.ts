@@ -1,7 +1,11 @@
 export type Apartment = {
-  id: string;
-  name: string;
+  apartmentId: string;
+  propertyStatus: "available" | "rented" | "pending";
+  title: string;
+  description: string;
   price: string;
-  address?: string;
-  image: any; // or ImageSourcePropType if you're using React Native types
+  address: string;
+  rooms: number;
+  beds: number;
+  images: (string | number)[]; 
 };

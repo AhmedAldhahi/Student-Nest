@@ -13,7 +13,8 @@ import OTPScreen from "../features/auth/screens/Register/OTPScreen";
 import SignInScreen from "../features/auth/screens/SignInScreen";
 import Dashboard from "../features/dashboard/DashboardScreen";
 import DashboardScreen from "../features/dashboard/DashboardScreen";
-import ApartmentsScreen from "../features/apartments/ApartmentsScreen";
+import ApartmentsScreen from "../features/apartments/screens/ApartmentsScreen";
+import ApartmentDetailsScreen from "../features/apartments/screens/ApartmentDetailsScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -50,6 +51,7 @@ export default function App() {
                 <Stack.Screen name="OTPScreen" component={OTPScreen} /> */}
                 {/* <Stack.Screen name="DashboardScreen" component={DashboardScreen} options={{ headerShown: false }} /> */}
                 <Stack.Screen name="ApartmentScreen" component={ApartmentsScreen} options={{headerShown: false}}/>
+                <Stack.Screen name="ApartmentDetailsScreen" component={ApartmentDetailsScreen}/>
               </Stack.Navigator>
             </RegistrationProvider>
           </PaperProvider>
