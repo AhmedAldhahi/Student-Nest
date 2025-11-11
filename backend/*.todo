@@ -1,0 +1,277 @@
+{
+  "todotree": {
+    "tree": [
+      {
+        "key": 1762550786000,
+        "children": [
+          {
+            "key": 1762550809249,
+            "children": [],
+            "todo": {
+              "content": "register as student",
+              "id": 1762550809249,
+              "level": "default",
+              "done": true,
+              "start": 1762550809249,
+              "focus": false,
+              "date": "1762581945,1762600020",
+              "end": 1762723057165
+            }
+          },
+          {
+            "key": 1762550865310,
+            "children": [],
+            "todo": {
+              "content": "send otp to student email",
+              "id": 1762550865310,
+              "level": "default",
+              "done": true,
+              "start": 1762550865310,
+              "focus": false,
+              "end": 1762785590015
+            }
+          },
+          {
+            "key": 1762550878379,
+            "children": [],
+            "todo": {
+              "content": "send email work for student",
+              "id": 1762550878379,
+              "level": "default",
+              "done": false,
+              "start": 1762550878379
+            }
+          },
+          {
+            "key": 1762550888041,
+            "children": [],
+            "todo": {
+              "content": "zod work and validate for stduent email formate",
+              "id": 1762550888041,
+              "level": "default",
+              "done": true,
+              "start": 1762550888041,
+              "focus": false,
+              "end": 1762785597153
+            }
+          },
+          {
+            "key": 1762550901975,
+            "children": [],
+            "todo": {
+              "content": "verfied otp work",
+              "id": 1762550901975,
+              "level": "default",
+              "done": false,
+              "start": 1762550901975
+            }
+          },
+          {
+            "key": 1762550908359,
+            "children": [],
+            "todo": {
+              "content": "resend otp",
+              "id": 1762550908359,
+              "level": "default",
+              "done": false,
+              "start": 1762550908359
+            }
+          }
+        ],
+        "todo": {
+          "content": "Create Registeration endPoints for Students",
+          "id": 1762550786000,
+          "level": "default",
+          "done": false,
+          "start": 1762550786000
+        }
+      },
+      {
+        "key": 1762550937268,
+        "children": [
+          {
+            "key": 1762550952430,
+            "children": [],
+            "todo": {
+              "content": "register as landloard",
+              "id": 1762550952430,
+              "level": "default",
+              "done": false,
+              "start": 1762550952430
+            }
+          },
+          {
+            "key": 1762550963417,
+            "children": [],
+            "todo": {
+              "content": "send otp for landloard email",
+              "id": 1762550963417,
+              "level": "default",
+              "done": false,
+              "start": 1762550963417
+            }
+          },
+          {
+            "key": 1762550976181,
+            "children": [],
+            "todo": {
+              "content": "zod work and validateor correctly",
+              "id": 1762550976181,
+              "level": "default",
+              "done": true,
+              "start": 1762550976181,
+              "focus": false,
+              "end": 1762786014941
+            }
+          },
+          {
+            "key": 1762550986259,
+            "children": [],
+            "todo": {
+              "content": "validate otp work",
+              "id": 1762550986259,
+              "level": "default",
+              "done": false,
+              "start": 1762550986259
+            }
+          },
+          {
+            "key": 1762550996155,
+            "children": [],
+            "todo": {
+              "content": "resend otp work",
+              "id": 1762550996155,
+              "level": "default",
+              "done": false,
+              "start": 1762550996156
+            }
+          }
+        ],
+        "todo": {
+          "content": "CreateRegisteration end proints for landloard",
+          "id": 1762550937268,
+          "level": "default",
+          "done": false,
+          "start": 1762550937268
+        }
+      },
+      {
+        "key": 1762551011591,
+        "children": [
+          {
+            "key": 1762551018496,
+            "children": [
+              {
+                "key": 1762551030124,
+                "children": [],
+                "todo": {
+                  "content": "create token",
+                  "id": 1762551030124,
+                  "level": "default",
+                  "done": false,
+                  "start": 1762551030124
+                }
+              },
+              {
+                "key": 1762551037501,
+                "children": [],
+                "todo": {
+                  "content": "create refresh token",
+                  "id": 1762551037501,
+                  "level": "default",
+                  "done": false,
+                  "start": 1762551037501
+                }
+              },
+              {
+                "key": 1762551045203,
+                "children": [],
+                "todo": {
+                  "content": "check if user not verfied resned otp to him again to veried account",
+                  "id": 1762551045203,
+                  "level": "default",
+                  "done": false,
+                  "start": 1762551045203
+                }
+              }
+            ],
+            "todo": {
+              "content": "check and validate data json for login",
+              "id": 1762551018496,
+              "level": "default",
+              "done": false,
+              "start": 1762551018496
+            }
+          }
+        ],
+        "todo": {
+          "content": "Login end point",
+          "id": 1762551011591,
+          "level": "default",
+          "done": false,
+          "start": 1762551011591
+        }
+      },
+      {
+        "key": 1762551092186,
+        "children": [],
+        "todo": {
+          "content": "Testing",
+          "id": 1762551092186,
+          "level": "default",
+          "done": false,
+          "start": 1762551092186
+        }
+      },
+      {
+        "key": 1762551103091,
+        "children": [
+          {
+            "key": 1762551111251,
+            "children": [],
+            "todo": {
+              "content": "Typedocs",
+              "id": 1762551111251,
+              "level": "default",
+              "done": false,
+              "start": 1762551111251
+            }
+          },
+          {
+            "key": 1762551117632,
+            "children": [],
+            "todo": {
+              "content": "swaggar",
+              "id": 1762551117632,
+              "level": "default",
+              "done": false,
+              "start": 1762551117632
+            }
+          }
+        ],
+        "todo": {
+          "content": "Documentation",
+          "id": 1762551103091,
+          "level": "default",
+          "done": false,
+          "start": 1762551103091
+        }
+      }
+    ],
+    "expandKeys": [
+      1762550786000
+    ],
+    "schema": "https://github.com/Saber2pr/vsc-ext-todolist/blob/master/src/api/type.ts#L3",
+    "add_mode": "bottom",
+    "virtual": false,
+    "timelines": [],
+    "showLine": false,
+    "playFontSize": 24,
+    "title": "*",
+    "autoSort": false,
+    "showEndTime": false,
+    "simpleMode": false,
+    "lang": "en",
+    "version": "1762786054723"
+  }
+}

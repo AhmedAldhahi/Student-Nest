@@ -1,0 +1,1 @@
+export const defaultYear: number = new Date().getFullYear();

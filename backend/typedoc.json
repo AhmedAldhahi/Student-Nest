@@ -1,0 +1,14 @@
+{
+  "entryPoints": ["./src/core/entites/"],
+  "out": "docs",
+  "includeVersion": true,
+  "tsconfig": "tsconfig.json",
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeExternals": false,
+  "hideGenerator": true,
+  "readme": "none",
+  "categorizeByGroup": true,
+  "excludeInternal": false,
+  "intentionallyNotExported": []
+}
