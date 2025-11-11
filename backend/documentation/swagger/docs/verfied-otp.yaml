@@ -1,0 +1,100 @@
+openapi: 3.0.0
+info:
+  title: Verification API
+  version: 1.0.0
+  description: API for verifying OTPs for email verification
+
+servers:
+  - url: http://localhost:4000/api/v1
+    description: Local development server
+  - url: https://api.student-nest.com/api/v1
+    description: Production server
+
+tags:
+  - name: Verification
+    description: Endpoints for OTP verification
+
+paths:
+  /verification/verified-otp:
+    post:
+      summary: Verify user's OTP
+      description: Verifies the OTP sent to the user's email and returns an access token.
+      tags:
+        - Verification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifiedOtpRequest'
+            example:
+              email: user@example.com
+              otpCode: "837860"
+      responses:
+        '200':
+          description: OTP verified successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifiedOtpResponse'
+              example:
+                message: Email verified successfully
+                token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        '400':
+          description: Bad request or invalid OTP
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: invalid otp code !!
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: no user been found !!
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Failed to verify OTP, please try again later.
+
+components:
+  schemas:
+    VerifiedOtpRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        otpCode:
+          type: string
+      required:
+        - email
+        - otpCode
+
+    VerifiedOtpResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        token:
+          type: string
+      required:
+        - message
+        - token

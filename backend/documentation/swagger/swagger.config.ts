@@ -5,7 +5,7 @@ import fs from "fs";
 import { Application } from "express";
 
 export const setupSwagger = (app: Application): void => {
-  const docsPath = path.join(__dirname, "docs");
+  const docsPath = path.resolve(__dirname, "../../documentation/swagger/docs");
   const yamlFiles = fs.readdirSync(docsPath).filter((file) => file.endsWith(".yaml"));
 
   const swaggerDocument: any = {
