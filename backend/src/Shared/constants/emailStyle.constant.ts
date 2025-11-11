@@ -64,7 +64,7 @@ export function emailMessageStyleFormate(
         .otp-code {
           font-size: 32px;
           font-weight: bold;
-          color:rgb(0, 0, 0); /* This is fine now */
+          color:rgb(255, 255, 255); /* This is fine now */
           /* Use the hex code directly */
           background-color: ${secondaryColor}; 
           padding: 15px 40px;

@@ -9,7 +9,7 @@ export interface IStudentbuilder {
   buildStudentGovId(studentGovId: string): this;
   buildUserId(userId: string): this;
 
-  buildDateOfBirth(userBirth: number): this;
+  buildDateOfBirth(userBirth: string): this;
 
   buildHash(userPass: string): this;
 
@@ -21,6 +21,10 @@ export interface IStudentbuilder {
 
   buildEmail(userEmail: string): this;
 
-  buildAddress(userAddress: string): this;
+  buildAddress(userAddress: string): this; 
+
+  //TODO: add builder for verfiedstudent document 
+
+  
   build(): Student;
 }

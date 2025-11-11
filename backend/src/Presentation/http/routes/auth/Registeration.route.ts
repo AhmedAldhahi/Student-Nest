@@ -4,9 +4,8 @@ import { validation } from "../../middlewares/validation.middleware";
 import { RegisterStudetSchema } from "../../validation/auth/RegisterStudentSchema.zod";
 import { RegisterLandloardSchema } from "../../validation/auth/RegisterStudentSchema.zod";
 import { registerApiRateLimited } from "../../middlewares/rate-limited/registerRatLimited.middleware";
-
-
-
+import { loginRateLimited } from "../../middlewares/rate-limited/loginRateLimit.middleware";
+import { loginSchema } from "../../validation/auth/loginUserSchema.zod";
 
 /**
  * Creates the auth router.
@@ -18,7 +17,7 @@ export const createAuthRouter = (authController: AuthController): Router => {
   const router = Router();
 
   // 2. Define the routes and connect them to controller methods
-  
+
   router.post(
     "/register/student",
     validation(RegisterStudetSchema),
@@ -31,6 +30,13 @@ export const createAuthRouter = (authController: AuthController): Router => {
     validation(RegisterLandloardSchema),
     registerApiRateLimited,
     authController.registerLandloard
+  );
+
+  router.post(
+    "/login",
+    validation(loginSchema),
+    loginRateLimited,
+    authController.loginUser
   );
 
   // Add other auth routes here

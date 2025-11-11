@@ -10,33 +10,29 @@ import { IUser } from "../repositories/IUser";
 import { OTP } from "../value-object/OTP.ValueObject";
 
 export class Landloard implements ILandloard, IUser {
-  //protected readonly userId: number;
-  protected major: string;
+  
+  private otpCode?: string;
+  private otpExpired?: Date;
+  protected accountStatus: UserAccountStatus = UserAccountStatus.activate;
+  protected address?: string;
+  protected cliQAccount: string;
+  protected dateOfBirth: string;
+  protected email: string;
+  protected emailVerfied: boolean = false;
   protected graduatYear: number;
+  protected hashPassword: string;
+  protected Landloard_Gov_Id: string;
+//protected readonly userId: number;
+  protected major: string;
   protected unversityName: string;
   protected studentCardId: string;
   protected student_Gov_Id: string;
 
   protected userId: string;
-  protected hashPassword: string;
-
-  protected email: string;
-  protected emailVerfied: boolean = false;
-
   protected name: string;
   protected role: UserRole;
-  protected dateOfBirth: number;
-
   protected phoneNumber: string;
   protected photo?: string;
-  protected address?: string;
-  protected accountStatus: UserAccountStatus = UserAccountStatus.activate;
-
-  protected cliQAccount: string;
-  protected Landloard_Gov_Id: string;
-  otpCode?: string;
-  otpExpired?: Date;
-
   public setOtp(otp: OTP): void {
     this.otpCode = otp.getValue();
     this.otpExpired = otp.getExpiresAt();
@@ -96,17 +92,20 @@ export class Landloard implements ILandloard, IUser {
     this.userId = userId;
   }
 
-  getDateOfBirth(): number {
+  getDateOfBirth(): string {
     return this.dateOfBirth;
   }
 
-  public setDateOfBirth(dob: number): void {
-    if (!dob) throw new Error("date of birth is required");
+  public setDateOfBirth(dob: string): void { 
+    
+    if (!dob) throw new Error("date of birth is required"); 
 
-    if (Number.isNaN(dob)) throw new Error("the date of birth must be number");
+    const Dob = Number.parseInt(dob);
+
+    if (Number.isNaN(Dob)) throw new Error("the date of birth must be number");
 
     // if (defaultDate - dob )
-    if (defaultYear - dob < 18) {
+    if (defaultYear - Dob < 18) {
       throw new Error("the student must be at least 18 !!");
     }
 

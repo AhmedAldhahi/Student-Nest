@@ -5,7 +5,7 @@ export interface ILandloardbuilder {
   buildCliqAccount(landloardCliq: string): this;
   buildLandloardGovId(landloardGovId: string): this;
 
-  buildDateOfBirth(userBirth: number): this;
+  buildDateOfBirth(userBirth: string): this;
 
   buildHash(userPass: string): this;
 
@@ -19,4 +19,4 @@ export interface ILandloardbuilder {
 
   buildAddress(userAddress: string): this;
   build(): Landloard;
-}
+} 

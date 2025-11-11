@@ -5,6 +5,7 @@ import {
   ITokenPayload,
   ITokenService,
 } from "../../Core/services/ITokenService.service";
+import { VerifiedOTpResponse } from "../dtos/VerifiedOtpRespone.dto";
 
 export class VerifiedOtpUseCase {
   // dto
@@ -25,7 +26,7 @@ export class VerifiedOtpUseCase {
     private readonly unitorWork: IUnitOfWorkRepository
   ) {}
 
-  public async execute(dto: VerifiedOTpRequest) {
+  public async execute(dto: VerifiedOTpRequest): Promise<VerifiedOTpResponse> {
     await this.unitorWork.startTransaction();
     try {
       const user = await this.unitorWork.userRepotories.findByEmail(dto.email);
@@ -43,7 +44,6 @@ export class VerifiedOtpUseCase {
         throw new Error("otp expired date recreate new one !!");
 
       if (otp !== dto.otpCode) throw new Error("invalid otp code !!");
-
 
       user.setVerfiedEmail();
       user.clearOtp();

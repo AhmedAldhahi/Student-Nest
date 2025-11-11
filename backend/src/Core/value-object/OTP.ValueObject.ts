@@ -1,20 +1,24 @@
 import { OtpCodeException } from "../exception/OTPException.exception";
 
 export class OTP {
-  private readonly value: string;
-  private readonly expiresAt: Date;
+  public static generate(): OTP {
+    const val = Math.floor(100000 + Math.random() * 900000).toString();
+    return new OTP(val);
+  }
 
+  private readonly expiresAt: Date;
+  private readonly value: string;
   constructor(value: string, expiresInMinutes = 10) {
     this.value = value;
     this.expiresAt = new Date(Date.now() + expiresInMinutes * 60000);
   }
 
-  public getValue(): string {
-    return this.value;
-  }
-
   public getExpiresAt(): Date {
     return this.expiresAt;
+  }
+
+  public getValue(): string {
+    return this.value;
   }
 
   public isExpired(): boolean {
@@ -34,10 +38,5 @@ export class OTP {
 
     // 3. If it's not expired and matches, it's valid
     return true;
-  }
-
-  public static generate(): OTP {
-    const val = Math.floor(100000 + Math.random() * 900000).toString();
-    return new OTP(val);
   }
 }

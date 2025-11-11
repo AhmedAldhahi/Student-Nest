@@ -2,17 +2,19 @@ import { Request, Response } from "express";
 // Use the path to your Use Case
 import { RegisterStudentUseCase } from "../../../Application/use-case/RegisterStudentUseCase.usecase";
 import { RegisterLandloardUseCase } from "../../../Application/use-case/RegisterLandloardUseCase.usecase";
-export class AuthController {
-  
-  public registerLandloard = async (req: Request, res: Response) => {
-    // take request
-    // assignment to the use case
-    // respone to error
+import { LoginUseCase } from "../../../Application/use-case/LoginUseCase.usecase";
 
+export class AuthController {
+  constructor(
+    private registerStudentUseCase: RegisterStudentUseCase,
+    private registerLandlordUseCase: RegisterLandloardUseCase,
+    private loginUserUseCase: LoginUseCase
+  ) {}
+  public registerLandloard = async (req: Request, res: Response) => {
     try {
       const dto = req.body;
-      const result = await this.registerLandloardUseCase.execute(dto);
-      // scussful
+      const result = await this.registerLandlordUseCase.execute(dto);
+      // scussfuly
       return res.status(201).json(result);
     } catch (err: any) {
       const status = err.statusCode;
@@ -40,9 +42,19 @@ export class AuthController {
         .json({ error: error.message || "Server error" });
     }
   };
-// 1. The Use Case is injected via the constructor
-  constructor(
-    private registerStudentUseCase: RegisterStudentUseCase,
-    private registerLandloardUseCase: RegisterLandloardUseCase
-  ) {}
+
+  public loginUser = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const dto = req.body;
+      const result = await this.loginUserUseCase.execute(dto);
+
+      return res.status(201).json(result);
+    } catch (err: any) {
+      const status = err.statusCode || 400;
+
+      return res
+        .status(status)
+        .json({ err: err.message || "internal server error" });
+    }
+  };
 }

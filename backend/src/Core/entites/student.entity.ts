@@ -15,39 +15,46 @@ import { OTP } from "../value-object/OTP.ValueObject";
 import { defaultYear } from "../../Shared/constants/helperValue.constant";
 
 export class Student implements IStudent, IUser {
+  protected accountStatus: UserAccountStatus = UserAccountStatus.activate;
+  protected address?: string;
+  protected dateOfBirth: string;
+  protected email: string;
+  protected emailVerfied: boolean = false;
+  protected graduatYear: number;
+  protected hashPassword: string;
   //protected readonly userId: number;
   protected major: string;
-  protected graduatYear: number;
   protected unversityName: string;
   protected studentCardId: string;
   protected student_Gov_Id: string;
 
   protected userId: string;
-  protected hashPassword: string;
-
-  protected email: string;
-  protected emailVerfied: boolean = false;
-
   protected name: string;
   protected role: UserRole;
-  protected dateOfBirth: number;
-
   protected phoneNumber: string;
+  protected validateStudentDocument: string;
   protected photo?: string;
-  protected address?: string;
-  protected accountStatus: UserAccountStatus = UserAccountStatus.activate;
-
   protected otpCode?: string;
   protected otpExpired?: Date;
 
-  // ...
+  public setValidateStudentDocument(validateStudentDocument: string): void {
+    if (!validateStudentDocument)
+      throw new Error("validate document is required !!");
+
+    this.validateStudentDocument = validateStudentDocument;
+  }
+
+  public getValidateStudentDocument(): string {
+    return this.validateStudentDocument;
+  }
+  
 
   public setOtp(otp: OTP): void {
     this.otpCode = otp.getValue();
     this.otpExpired = otp.getExpiresAt();
   }
 
-  // for the infrastrcture to read it
+  // for the infrastructure to read it
   public setOtpCode(code: string): void {
     this.otpCode = code;
   }
@@ -80,17 +87,19 @@ export class Student implements IStudent, IUser {
     this.userId = userId;
   }
 
-  getDateOfBirth(): number {
+  getDateOfBirth(): string {
     return this.dateOfBirth;
   }
 
-  public setDateOfBirth(dob: number): void {
+  public setDateOfBirth(dob: string): void {
     if (!dob) throw new Error("date of birth is required");
 
-    if (Number.isNaN(dob)) throw new Error("the date of birth must be number");
+    const Dob = Number.parseInt(dob);
+
+    if (Number.isNaN(Dob)) throw new Error("the date of birth must be number");
 
     // if (defaultDate - dob )
-    if (defaultYear - dob < 18) {
+    if (defaultYear - Dob < 18) {
       throw new Error("the student must be at least 18 !!");
     }
 
@@ -119,14 +128,7 @@ export class Student implements IStudent, IUser {
       throw new EmailFormateException("A valid email is required.");
     }
 
-    if (this.role === UserRole.student) {
-      const emailStuFormate = email.endsWith(".edu.jo");
-      if (!emailStuFormate) {
-        throw new EmailFormateException();
-      }
-
-      this.email = email;
-    }
+    this.email = email;
   }
 
   setName(userName: string): void {

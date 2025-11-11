@@ -8,33 +8,55 @@ import { defaultYear } from "../../Shared/constants/helperValue.constant";
 import { OTP } from "../value-object/OTP.ValueObject";
 
 export class User implements IUser {
-  protected userId: string;
-  protected hashPassword: string;
-
+  protected accountStatus: UserAccountStatus = UserAccountStatus.activate;
+  protected address?: string;
+  protected dateOfBirth: string;
   protected email: string;
   protected emailVerfied: boolean = false;
-
+  protected hashPassword: string;
   protected name: string;
-  protected role: UserRole;
-  protected dateOfBirth: number;
-
-  protected accountStatus: UserAccountStatus = UserAccountStatus.activate;
-
-  protected phoneNumber: string;
-  protected photo?: string;
-  protected address?: string;
-
   protected otpCode?: string;
   protected otpExpired?: Date;
+  protected phoneNumber: string;
+  protected photo?: string;
+  protected role: UserRole;
+  protected userId: string;
 
-  public setOtp(otp: OTP): void {
-    this.otpCode = otp.getValue();
-    this.otpExpired = otp.getExpiresAt();
+  public ActiveteAccount(): void {
+    this.accountStatus = UserAccountStatus.activate;
   }
 
-  // for the infrastrcture to read it
-  public setOtpCode(code?: string): void {
-    this.otpCode = code || undefined;
+  public bandedAccount(): void {
+    this.accountStatus = UserAccountStatus.banded;
+  }
+
+  public clearOtp(): void {
+    this.otpCode = undefined;
+    this.otpExpired = undefined;
+  }
+
+  public DeactivateAccount(): void {
+    this.accountStatus = UserAccountStatus.deactivate;
+  }
+
+  public getAccountStatus(): UserAccountStatus {
+    return this.accountStatus;
+  }
+
+  public getAddress(): string | undefined {
+    return this.address;
+  }
+
+  public getDateOfBirth(): string {
+    return this.dateOfBirth;
+  }
+
+  public getEmail(): string {
+    return this.email;
+  }
+
+  public getName(): string {
+    return this.name;
   }
 
   public getOtpCode(): string {
@@ -47,53 +69,63 @@ export class User implements IUser {
     return this.otpExpired;
   }
 
-  public setOtpExpired(date: Date | undefined | null): void {
-    // This handles mapping null/undefined from the database
-    this.otpExpired = date || undefined;
-  }
-
-  public clearOtp(): void {
-    this.otpCode = undefined;
-    this.otpExpired = undefined;
-  }
-
-  getPhoto(): string | undefined {
-    return this.photo;
-  }
-  setUserId(userId: string): void {
-    this.userId = userId;
-  }
-
-  public getUserId(): string {
-    return this.userId;
-  }
-
-  public getDateOfBirth(): number {
-    return this.dateOfBirth;
+  public hasOtpCode(): boolean {
+    return !!this.otpCode;
   }
 
   public getPassword(): string {
     return this.hashPassword;
   }
 
-  public getEmail(): string {
-    return this.email;
-  }
-  public getVerfiedEmail(): boolean {
-    return this.emailVerfied;
-  }
-  public getName(): string {
-    return this.name;
-  }
-  public getRole(): UserRole {
-    return this.role;
-  }
   public getPhoeNumber(): string {
     return this.phoneNumber;
   }
 
-  public getAddress(): string | undefined {
-    return this.address;
+  getPhoto(): string | undefined {
+    return this.photo;
+  }
+
+  public getRole(): UserRole {
+    return this.role;
+  }
+
+  public getUserId(): string {
+    return this.userId;
+  }
+
+  public getVerfiedEmail(): boolean {
+    return this.emailVerfied;
+  }
+
+  public setAccountStatus(status: UserAccountStatus): void {
+    this.accountStatus = status;
+  }
+
+  public setAddress(userAddress: string): void {
+    this.address = userAddress;
+  }
+
+  public setDateOfBirth(dob: string): void {
+    if (!dob) throw new Error("date of birth is required");
+
+    const Dob = Number.parseInt(dob);
+
+    if (Number.isNaN(Dob)) throw new Error("the date of birth must be number");
+
+    if (defaultYear - Dob < 18) {
+      throw new Error("the student must be at least 18 !!");
+    }
+
+    this.dateOfBirth = dob;
+  }
+
+  public setEmail(email: string): void {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email) || email.trim().length < 10) {
+      throw new EmailFormateException("A valid email is required.");
+    }
+
+    this.email = email;
   }
 
   public setName(userName: string): void {
@@ -109,12 +141,12 @@ export class User implements IUser {
       throw new NameException("Name cannot contain spaces");
     }
 
-    // first char must be alphabtic symbol
+    // first char must be alphabetic symbol
     if (!/^[A-Za-z]/.test(trimmed)) {
       throw new NameException("Name must start with a letter");
     }
 
-    //number, alphabtic, underscore just allow
+    //number, alphabetic, underscore just allow
     if (!/^[A-Za-z][A-Za-z0-9_]*$/.test(trimmed)) {
       throw new NameException(
         "Name can only contain letters, numbers, or underscores"
@@ -123,50 +155,35 @@ export class User implements IUser {
     this.name = trimmed;
   }
 
-  public setVerfiedEmail(): void {
-    this.emailVerfied = true;
+  public setOtp(otp: OTP): void {
+    this.otpCode = otp.getValue();
+    this.otpExpired = otp.getExpiresAt();
   }
 
-  public setAddress(userAddress: string): void {
-    this.address = userAddress;
+  // for the infrastructure to read it
+  public setOtpCode(code?: string): void {
+    this.otpCode = code || undefined;
+  }
+
+  public setOtpExpired(date: Date | undefined | null): void {
+    // This handles mapping null/undefined from the database
+    this.otpExpired = date || undefined;
+  }
+
+  setUserId(userId: string): void {
+    this.userId = userId;
+  }
+
+  public setVerfiedEmail(): void {
+    this.emailVerfied = true;
   }
 
   public setPass(userPass: string): void {
     this.hashPassword = userPass;
   }
 
-  public setEmail(email: string): void {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email) || email.trim().length < 10) {
-      throw new EmailFormateException("A valid email is required.");
-    }
-
-    if (this.role === UserRole.student) {
-      const emailStuFormate = email.endsWith(".edu.jo");
-      if (!emailStuFormate) {
-        throw new EmailFormateException();
-      }
-
-      this.email = email;
-    }
-
-    this.email = email;
-  }
-
   public setRole(role: UserRole): void {
     this.role = role;
-  }
-
-  public setDateOfBirth(dob: number): void {
-    if (!dob) throw new Error("date of birth is required");
-
-    if (Number.isNaN(dob)) throw new Error("the date of birth must be number");
-
-    if (defaultYear - dob < 18) {
-      throw new Error("the student must be at least 18 !!");
-    }
-
-    this.dateOfBirth = dob;
   }
 
   public setPhoneNumber(phone: string): void {
@@ -189,25 +206,5 @@ export class User implements IUser {
 
   public setPhoto(photoUrl: string): void {
     this.photo = photoUrl;
-  }
-
-  public ActiveteAccount(): void {
-    this.accountStatus = UserAccountStatus.activate;
-  }
-
-  public DeactivateAccount(): void {
-    this.accountStatus = UserAccountStatus.deactivate;
-  }
-
-  public bandedAccount(): void {
-    this.accountStatus = UserAccountStatus.banded;
-  }
-
-  public getAccountStatus(): UserAccountStatus {
-    return this.accountStatus;
-  }
-
-  public setAccountStatus(status: UserAccountStatus): void {
-    this.accountStatus = status;
   }
 }

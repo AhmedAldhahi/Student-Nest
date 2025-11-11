@@ -13,4 +13,8 @@ export interface IStudent {
 
   setStudentGovId(studentGovId: string): void;
   getStudentGovId(): string;
+
+  //TODO: need to apply next for document for verified the student 
+  // setValidateStudentDocument(validateStudentDocument: string): void;
+  // getValidateStudentDocument(): string;
 }
