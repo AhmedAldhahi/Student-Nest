@@ -18,10 +18,10 @@ export class UserMapper {
     domainUser.setDateOfBirth(dbUser.DateOfBirth);
     domainUser.setPhoneNumber(dbUser.PhoneNumber);
 
-    if (dbUser.setOtpCode) {
+    if (dbUser.otpCode) {
       domainUser.setOtpCode(dbUser.otpCode);
     }
-    if (dbUser.getOtpExpired) {
+    if (dbUser.otpExpired) {
       domainUser.setOtpExpired(dbUser.otpExpired);
     }
 
@@ -59,6 +59,11 @@ export class UserMapper {
     dbUser.isActive = domainUser.getAccountStatus(); // You'll need to add this getter
     dbUser.Photo = domainUser.getPhoto();
     dbUser.Address = domainUser.getAddress();
+
+    if (domainUser.hasOtpCode()) {
+      dbUser.otpCode = domainUser.getOtpCode();
+      dbUser.otpExpired = domainUser.getOtpExpired();
+    }
 
     return dbUser;
   }

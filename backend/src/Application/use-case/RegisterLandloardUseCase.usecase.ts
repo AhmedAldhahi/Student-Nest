@@ -58,7 +58,6 @@ export class RegisterLandloardUseCase {
       // concreate class ready now
       const user = userBuilder.build();
       user.setOtp(otp);
-      console.log(otp);
 
       // if select address add it if not do not add it
 

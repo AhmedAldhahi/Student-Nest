@@ -1,4 +1,4 @@
 export interface VerifiedOTpResponse {
     message: string;
-    // token
+    token : string;
 }

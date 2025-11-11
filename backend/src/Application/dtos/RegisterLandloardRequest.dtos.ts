@@ -6,7 +6,7 @@ export interface RegisterLandloardRequest {
   name: string;
   password: string;
   role: UserRole.landloard;
-  dateOfBirth: number;
+  dateOfBirth: string;
   phoneNumber: string;
 
   cliQAccount: string;

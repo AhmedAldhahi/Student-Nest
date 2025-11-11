@@ -1,6 +1,6 @@
-export interface VerifiedOTpRequest {
+export interface VerifiedOTpRequest { 
     otpCode: string;
-    message: string;
+    email: string;
 }
 
 

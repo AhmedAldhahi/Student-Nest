@@ -9,46 +9,6 @@ export class UserBuilder implements IUserBuilder {
     this.user = new User();
   }
 
-  buildUserId(userId: string): this {
-    this.user.setUserId(userId);
-    return this;
-  }
-
-  buildHash(userPass: string): this {
-    this.user.setPass(userPass);
-    return this;
-  }
-
-  buildName(userName: string): this {
-    this.user.setName(userName);
-    return this;
-  }
-
-  buildEmail(userEmail: string): this {
-    this.user.setEmail(userEmail);
-    return this;
-  }
-
-  buildRole(userRole: UserRole): this {
-    this.user.setRole(userRole);
-    return this;
-  }
-
-  buildDateOfBirth(userBirth: number): this {
-    this.user.setDateOfBirth(userBirth);
-    return this;
-  }
-
-  buildPhoneNumber(userPhone: string): this {
-    this.user.setPhoneNumber(userPhone);
-    return this;
-  }
-
-  buildAddress(userAddress: string): this {
-    this.user.setAddress(userAddress);
-    return this;
-  }
-
   build(): User {
     if (
       !this.user.getUserId() ||
@@ -63,5 +23,45 @@ export class UserBuilder implements IUserBuilder {
     }
 
     return this.user;
+  }
+
+  buildAddress(userAddress: string): this {
+    this.user.setAddress(userAddress);
+    return this;
+  }
+
+  buildDateOfBirth(userBirth: string): this {
+    this.user.setDateOfBirth(userBirth);
+    return this;
+  }
+
+  buildEmail(userEmail: string): this {
+    this.user.setEmail(userEmail);
+    return this;
+  }
+
+  buildHash(userPass: string): this {
+    this.user.setPass(userPass);
+    return this;
+  }
+
+  buildName(userName: string): this {
+    this.user.setName(userName);
+    return this;
+  }
+
+  buildPhoneNumber(userPhone: string): this {
+    this.user.setPhoneNumber(userPhone);
+    return this;
+  }
+
+  buildRole(userRole: UserRole): this {
+    this.user.setRole(userRole);
+    return this;
+  }
+
+  buildUserId(userId: string): this {
+    this.user.setUserId(userId);
+    return this;
   }
 }

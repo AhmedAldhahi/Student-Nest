@@ -20,17 +20,30 @@ export class ResendOtpUseCase {
   public async excute(dto: ResendOtpRequest): Promise<ResendOtpRespone> {
     await this.unitOfWork.startTransaction();
     const otp = OTP.generate();
+
+    const otpvalue = otp.getValue();
+    const otpExpired = otp.getExpiresAt();
+
     try {
       const user = await this.unitOfWork.userRepotories.findByEmail(dto.email);
       if (!user) {
-        throw new UserExictException("the user email not found !!");
+        throw new UserExictException("The user email not found.");
       }
 
-      await this.emailService.resendOtpEmail(dto.email, otp.getValue());
+      // Update domain object
+      user.setOtp(otp);
+      user.setOtpExpired(otpExpired);
+
+      // Persist changes
+      await this.unitOfWork.userRepotories.save(user);
+
+      // Send OTP email after saving to DB
+      await this.emailService.resendOtpEmail(dto.email, otpvalue);
+
       await this.unitOfWork.commit();
 
       return {
-        message: "otp been send to the email successful  verified you email !!",
+        message: "OTP has been resent successfully. Check your email.",
       };
     } catch (err: any) {
       await this.unitOfWork.rollBack();

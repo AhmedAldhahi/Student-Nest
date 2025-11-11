@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { graduationYearSchema } from "../../../../Shared/utils/zodValidationMethod.util";
-import { DateOfBirth } from "../../../../Shared/utils/zodValidationMethod.util";
+//import { DateOfBirth } from "../../../../Shared/utils/zodValidationMethod.util";
+
 import { hasSequentialNumbers } from "../../../../Shared/utils/zodValidationMethod.util";
 import { UserRole } from "../../../../Core/enum/UserRole.enum";
 import { roleEnum } from "../../../../Shared/constants/validationZod.constant";
@@ -13,7 +14,7 @@ const basedUserSchema = z.object({
     .max(30, "student name is too long")
     .trim(),
   phoneNumber: z.string(),
-  dateOfBirth: DateOfBirth,
+  dateOfBirth: z.string().trim().length(4, "invalid date of birth !!"),
   role: UserRole,
   password: z
     .string()

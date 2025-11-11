@@ -5,3 +5,10 @@ export const resendOtpSchema = z
     email: z.email(),
   })
   .strict();
+
+export const VerifiedOTpSchema = z.object({
+  otpCode: z.string(),
+  email: z.email(),
+}).strict();
+
+

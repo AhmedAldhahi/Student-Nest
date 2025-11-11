@@ -9,58 +9,6 @@ export class LandloardBuilder implements ILandloardbuilder {
     this.landloard = new Landloard();
   }
 
-  buildDateOfBirth(userBirth: number): this {
-    this.landloard.setDateOfBirth(userBirth);
-    return this;
-  }
-
-  buildHash(userPass: string): this {
-    this.landloard.setPass(userPass);
-    return this;
-  }
-
-  buildName(userName: string): this {
-    this.landloard.setName(userName);
-    return this;
-  }
-
-  buildRole(userRole: UserRole): this {
-    this.landloard.setRole(userRole);
-    return this;
-  }
-
-  buildPhoneNumber(userPhone: string): this {
-    this.landloard.setPhoneNumber(userPhone);
-    return this;
-  }
-
-  buildEmail(userEmail: string): this {
-    this.landloard.setEmail(userEmail);
-    return this;
-  }
-
-  buildAddress(userAddress: string): this {
-    this.landloard.setAddress(userAddress);
-    return this;
-  }
-
-  buildCliqAccount(landloardCliq: string): this {
-    this.landloard.setCliQAccount(landloardCliq);
-    return this;
-  }
-
-  buildLandloardGovId(landloardGovId: string): this {
-    this.landloard.setLandloardGovId(landloardGovId);
-    return this;
-  }
-
-  buildUserId(userId: string): this {
-    this.landloard.setUserId(userId);
-    return this;
-  }
-
-
-
   build(): Landloard {
     if (
       !this.landloard.getUserId() ||
@@ -77,5 +25,55 @@ export class LandloardBuilder implements ILandloardbuilder {
       throw new Error("Missing required properties to build User.");
     }
     return this.landloard;
+  }
+
+  buildAddress(userAddress: string): this {
+    this.landloard.setAddress(userAddress);
+    return this;
+  }
+
+  buildCliqAccount(landloardCliq: string): this {
+    this.landloard.setCliQAccount(landloardCliq);
+    return this;
+  }
+
+  buildDateOfBirth(userBirth: string): this {
+    this.landloard.setDateOfBirth(userBirth);
+    return this;
+  }
+
+  buildEmail(userEmail: string): this {
+    this.landloard.setEmail(userEmail);
+    return this;
+  }
+
+  buildHash(userPass: string): this {
+    this.landloard.setPass(userPass);
+    return this;
+  }
+
+  buildLandloardGovId(landloardGovId: string): this {
+    this.landloard.setLandloardGovId(landloardGovId);
+    return this;
+  }
+
+  buildName(userName: string): this {
+    this.landloard.setName(userName);
+    return this;
+  }
+
+  buildPhoneNumber(userPhone: string): this {
+    this.landloard.setPhoneNumber(userPhone);
+    return this;
+  }
+
+  buildRole(userRole: UserRole): this {
+    this.landloard.setRole(userRole);
+    return this;
+  }
+
+  buildUserId(userId: string): this {
+    this.landloard.setUserId(userId);
+    return this;
   }
 }

@@ -16,14 +16,38 @@ import { Student as TypeOrmStudent } from "../orm/TypeOrm/entity/Student.entity"
 import { Landlord as TypeOrmLandloard } from "../orm/TypeOrm/entity/Landloard.entity";
 
 export class UnitOfWorkRepositories implements IUnitOfWorkRepository {
-  userRepotories: IUserRepository;
-  StudentRepostoies: IStudentRepository;
-  LandloardReposotries: ILandloardRepository;
-
   private queryRunner: QueryRunner | null;
-
+  LandloardReposotries: ILandloardRepository;
+  StudentRepostoies: IStudentRepository;
+  userRepotories: IUserRepository;
   constructor() {
     this.queryRunner = null;
+  }
+
+  async commit(): Promise<void> {
+    if (!this.queryRunner) {
+      throw new Error(
+        "Transaction has not been started. Call startTransaction() first."
+      );
+    }
+    try {
+      await this.queryRunner.commitTransaction();
+    } finally {
+      await this.queryRunner.release();
+      this.queryRunner = null;
+    }
+  }
+
+  async rollBack(): Promise<void> {
+    if (!this.queryRunner) {
+      throw new Error("Transaction has not been started.");
+    }
+    try {
+      await this.queryRunner.rollbackTransaction();
+    } finally {
+      await this.queryRunner.release();
+      this.queryRunner = null;
+    }
   }
 
   async startTransaction(): Promise<void> {
@@ -53,31 +77,5 @@ export class UnitOfWorkRepositories implements IUnitOfWorkRepository {
       landlordManager,
       userManager
     );
-  }
-
-  async commit(): Promise<void> {
-    if (!this.queryRunner) {
-      throw new Error(
-        "Transaction has not been started. Call startTransaction() first."
-      );
-    }
-    try {
-      await this.queryRunner.commitTransaction();
-    } finally {
-      await this.queryRunner.release();
-      this.queryRunner = null;
-    }
-  }
-
-  async rollBack(): Promise<void> {
-    if (!this.queryRunner) {
-      throw new Error("Transaction has not been started.");
-    }
-    try {
-      await this.queryRunner.rollbackTransaction();
-    } finally {
-      await this.queryRunner.release();
-      this.queryRunner = null;
-    }
   }
 }

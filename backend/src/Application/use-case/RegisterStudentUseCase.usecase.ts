@@ -55,10 +55,9 @@ export class RegisterStudentUseCase {
         throw new Error("Student role requires 'major' (and 'university'.");
       }
 
-      // concreate class ready now
+      // concrete class ready now
       const user = studentBuilder.build();
       user.setOtp(otp);
-      console.log(otp);
 
       // now set otp that will send to email
 

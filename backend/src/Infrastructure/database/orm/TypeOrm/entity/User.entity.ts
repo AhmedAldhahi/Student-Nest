@@ -4,7 +4,23 @@ import { UserAccountStatus } from "../../../../../Core/enum/UserAccountStatus.en
 
 @Entity("user")
 export class User {
-  [x: string]: any;
+  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+
+  private createAt: Date;
+
+  @Column({
+    type: "timestamp",
+    default: () => "CURRENT_TIMESTAMP",
+    onUpdate: "CURRENT_TIMESTAMP",
+  })
+  
+  private updateAt: Date;
+  @Column({ type: "varchar", length: 100, nullable: true })
+  Address?: string;
+
+  @Column({ type: "varchar", length: 4 })
+  DateOfBirth: string;
+
   @PrimaryColumn()
   userId: string; // made public
 
@@ -22,19 +38,11 @@ export class User {
 
   @Column({ type: "enum", enum: UserRole })
   Role: UserRole;
-
-  @Column({ type: "int" })
-  DateOfBirth: number;
-
   @Column({ type: "varchar", length: 15 })
   PhoneNumber: string;
 
   @Column({ type: "varchar", length: 255, nullable: true })
   Photo?: string;
-
-  @Column({ type: "varchar", length: 100, nullable: true })
-  Address?: string;
-
   @Column({
     type: "enum",
     enum: UserAccountStatus,
@@ -47,14 +55,4 @@ export class User {
 
   @Column({ type: "date", nullable: true })
   otpExpired?: Date;
-
-  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
-  createAt: Date;
-
-  @Column({
-    type: "timestamp",
-    default: () => "CURRENT_TIMESTAMP",
-    onUpdate: "CURRENT_TIMESTAMP",
-  })
-  updateAt: Date;
 }

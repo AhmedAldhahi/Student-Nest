@@ -9,65 +9,6 @@ export class StudentBuilder  implements IStudentbuilder {
     this.student = new Student();
   }
 
-  buildMajor(studendMajor: string): this {
-    this.student.setMajor(studendMajor);
-    return this;
-  }
-  buildGraduateYear(studentGraduateYear: number): this {
-    this.student.setGraduateYear(studentGraduateYear);
-    return this;
-  }
-
-  buildUnversityName(studentUnversityName: string): this {
-    this.student.setUnversityName(studentUnversityName);
-    return this;
-  }
-
-  buildStudentCardId(studentCardId: string): this {
-    this.student.setstudentCardId(studentCardId);
-    return this;
-  }
-
-  buildStudentGovId(studentGovId: string): this {
-    this.student.setStudentGovId(studentGovId);
-    return this;
-  }
-
-  buildUserId(userId: string): this {
-    this.student.setUserId(userId);
-    return this;
-  }
-
-  buildDateOfBirth(userBirth: number): this {
-    this.student.setDateOfBirth(userBirth);
-    return this;
-  }
-  buildHash(userPass: string): this {
-    this.student.setPass(userPass);
-    return this;
-  }
-
-  buildName(userName: string): this {
-    this.student.setName(userName);
-    return this;
-  }
-  buildRole(userRole: UserRole): this {
-    this.student.setRole(userRole);
-    return this;
-  }
-  buildPhoneNumber(userPhone: string): this {
-    this.student.setPhoneNumber(userPhone);
-    return this;
-  }
-  buildEmail(userEmail: string): this {
-    this.student.setEmail(userEmail);
-    return this;
-  }
-  buildAddress(userAddress: string): this {
-    this.student.setAddress(userAddress);
-    return this;
-  }
-
   build(): Student {
     if (
       !this.student.getUserId() ||
@@ -87,5 +28,70 @@ export class StudentBuilder  implements IStudentbuilder {
     }
 
     return this.student;
+  }
+
+  buildAddress(userAddress: string): this {
+    this.student.setAddress(userAddress);
+    return this;
+  }
+
+  buildDateOfBirth(userBirth: string): this {
+    this.student.setDateOfBirth(userBirth);
+    return this;
+  }
+
+  buildEmail(userEmail: string): this {
+    this.student.setEmail(userEmail);
+    return this;
+  }
+
+  buildGraduateYear(studentGraduateYear: number): this {
+    this.student.setGraduateYear(studentGraduateYear);
+    return this;
+  }
+
+  buildHash(userPass: string): this {
+    this.student.setPass(userPass);
+    return this;
+  }
+
+  buildMajor(studendMajor: string): this {
+    this.student.setMajor(studendMajor);
+    return this;
+  }
+
+  buildName(userName: string): this {
+    this.student.setName(userName);
+    return this;
+  }
+
+  buildPhoneNumber(userPhone: string): this {
+    this.student.setPhoneNumber(userPhone);
+    return this;
+  }
+
+  buildRole(userRole: UserRole): this {
+    this.student.setRole(userRole);
+    return this;
+  }
+
+  buildStudentCardId(studentCardId: string): this {
+    this.student.setstudentCardId(studentCardId);
+    return this;
+  }
+
+  buildStudentGovId(studentGovId: string): this {
+    this.student.setStudentGovId(studentGovId);
+    return this;
+  }
+
+  buildUnversityName(studentUnversityName: string): this {
+    this.student.setUnversityName(studentUnversityName);
+    return this;
+  }
+
+  buildUserId(userId: string): this {
+    this.student.setUserId(userId);
+    return this;
   }
 }

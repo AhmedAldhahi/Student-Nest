@@ -2,7 +2,10 @@ import { Router } from "express";
 import { VerficationController } from "../../controllers/Verfication.controller";
 import { otpResendRateLimited } from "../../middlewares/rate-limited/otpResendRateLimited.middleware";
 import { validation } from "../../middlewares/validation.middleware";
-import { resendOtpSchema } from "../../validation/verfication/VerficationSchema.zod";
+import {
+  resendOtpSchema,
+  VerifiedOTpSchema,
+} from "../../validation/verfication/VerficationSchema.zod";
 
 export const createVerficationRouter = (
   verficationController: VerficationController
@@ -12,8 +15,14 @@ export const createVerficationRouter = (
   router.patch(
     "/resend-otp",
     validation(resendOtpSchema),
-  //  otpResendRateLimited,
+    //  otpResendRateLimited,
     verficationController.createResendOtp
+  );
+
+  router.post(
+    "/verified-otp",
+    validation(VerifiedOTpSchema),
+    verficationController.createVerfiedOtp
   );
 
   // need to add rate limit and the zod
