@@ -1,6 +1,6 @@
 import { Student } from "../../Core/entites/student.entity";
 import { UserRole } from "../../Core/enum/UserRole.enum";
-import { IStudentbuilder } from "../../Core/repositories/IStudentBuilder.builder";
+import { IStudentbuilder } from "../../Core/interface/IStudentBuilder.builder";
 
 export class StudentBuilder  implements IStudentbuilder {
   private student: Student;

@@ -5,7 +5,7 @@ import fs from "fs";
 import { Application } from "express";
 
 export const setupSwagger = (app: Application): void => {
-  // Make sure the path points to your docs folder
+  // Resolve path to docs folder
   const docsPath = path.resolve(__dirname, "./docs"); 
   if (!fs.existsSync(docsPath)) {
     console.error("Swagger docs folder not found:", docsPath);
@@ -28,38 +28,55 @@ export const setupSwagger = (app: Application): void => {
     },
     servers: [{ url: "http://localhost:4000/api/v1" }],
     paths: {},
-    components: { schemas: {} },
+    components: { schemas: {}, parameters: {}, responses: {} },
   };
 
   yamlFiles.forEach((file) => {
     const filePath = path.join(docsPath, file);
-    const doc = YAML.load(filePath);
+    let doc: any;
+    try {
+      doc = YAML.load(filePath);
+    } catch (err) {
+      console.error(`Failed to load YAML file: ${file}`, err);
+      return;
+    }
 
-    // Merge paths
-    swaggerDocument.paths = { ...swaggerDocument.paths, ...doc.paths };
+    // Merge paths safely
+    if (doc.paths && typeof doc.paths === "object") {
+      swaggerDocument.paths = { ...swaggerDocument.paths, ...doc.paths };
+    }
 
-    // Merge components.schemas
-    if (doc.components?.schemas) {
+    // Merge components.schemas safely
+    if (doc.components?.schemas && typeof doc.components.schemas === "object") {
       swaggerDocument.components.schemas = {
         ...swaggerDocument.components.schemas,
         ...doc.components.schemas,
       };
     }
 
-    // Merge other components (optional)
-    if (doc.components?.parameters) {
+    // Merge components.parameters safely
+    if (doc.components?.parameters && typeof doc.components.parameters === "object") {
       swaggerDocument.components.parameters = {
         ...swaggerDocument.components.parameters,
         ...doc.components.parameters,
       };
     }
-    if (doc.components?.responses) {
+
+    // Merge components.responses safely
+    if (doc.components?.responses && typeof doc.components.responses === "object") {
       swaggerDocument.components.responses = {
         ...swaggerDocument.components.responses,
         ...doc.components.responses,
       };
     }
   });
+
+  // Log merged paths for debug
+  if (Object.keys(swaggerDocument.paths).length === 0) {
+    console.warn("Warning: No paths were loaded from YAML files!");
+  } else {
+    console.log("Swagger paths loaded:", Object.keys(swaggerDocument.paths));
+  }
 
   // Serve Swagger UI
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));

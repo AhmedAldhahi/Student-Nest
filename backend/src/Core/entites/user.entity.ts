@@ -3,7 +3,7 @@ import { NameException } from "../exception/NameException.exception";
 import { UserAccountStatus } from "../enum/UserAccountStatus.enum";
 import { EmailFormateException } from "../exception/EmailEsception.exception";
 import { phoneNumberFormateException } from "../exception/PhonNumberException.exception";
-import { IUser } from "../repositories/IUser";
+import { IUser } from "../interface/IUser";
 import { defaultYear } from "../../Shared/constants/helperValue.constant";
 import { OTP } from "../value-object/OTP.ValueObject";
 
@@ -13,7 +13,7 @@ export class User implements IUser {
   protected dateOfBirth: string;
   protected email: string;
   protected emailVerfied: boolean = false;
-  protected hashPassword: string;
+  protected password: string;
   protected name: string;
   protected otpCode?: string;
   protected otpExpired?: Date;
@@ -21,6 +21,8 @@ export class User implements IUser {
   protected photo?: string;
   protected role: UserRole;
   protected userId: string;
+
+  /**/
 
   public ActiveteAccount(): void {
     this.accountStatus = UserAccountStatus.activate;
@@ -74,7 +76,7 @@ export class User implements IUser {
   }
 
   public getPassword(): string {
-    return this.hashPassword;
+    return this.password;
   }
 
   public getPhoeNumber(): string {
@@ -179,7 +181,7 @@ export class User implements IUser {
   }
 
   public setPass(userPass: string): void {
-    this.hashPassword = userPass;
+    this.password = userPass;
   }
 
   public setRole(role: UserRole): void {

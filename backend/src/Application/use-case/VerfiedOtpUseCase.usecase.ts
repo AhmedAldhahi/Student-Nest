@@ -32,7 +32,9 @@ export class VerifiedOtpUseCase {
       const user = await this.unitorWork.userRepotories.findByEmail(dto.email);
       if (!user) {
         throw new UserExictException("no user been found !!");
-      }
+      } 
+
+      if (user.getVerfiedEmail()) throw new Error ("user already verified !!");
 
       const otp = user.getOtpCode();
       const otpExpired = user.getOtpExpired();
@@ -46,7 +48,7 @@ export class VerifiedOtpUseCase {
       if (otp !== dto.otpCode) throw new Error("invalid otp code !!");
 
       user.setVerfiedEmail();
-      user.clearOtp();
+      user.clearOtp(); 
 
       await this.unitorWork.userRepotories.save(user);
 

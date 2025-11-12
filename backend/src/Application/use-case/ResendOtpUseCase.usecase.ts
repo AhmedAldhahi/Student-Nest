@@ -3,7 +3,7 @@ import { OTP } from "../../Core/value-object/OTP.ValueObject";
 import { ResendOtpRequest } from "../dtos/ResendOtpRequest.dto";
 import { ResendOtpRespone } from "../dtos/ResendOtpRespone.dto";
 import { IUnitOfWorkRepository } from "../../Core/repositories/UnitOfWorkRepository.repository";
-import { UserExictException } from "../Error/UserExictException.error";
+import { NoUserExistException } from "../Error/NoUseExictException.error";
 
 export class ResendOtpUseCase {
   constructor(
@@ -27,7 +27,7 @@ export class ResendOtpUseCase {
     try {
       const user = await this.unitOfWork.userRepotories.findByEmail(dto.email);
       if (!user) {
-        throw new UserExictException("The user email not found.");
+        throw new NoUserExistException();
       }
 
       // Update domain object
@@ -36,6 +36,7 @@ export class ResendOtpUseCase {
 
       // Persist changes
       await this.unitOfWork.userRepotories.save(user);
+      console.log(user.getPassword());
 
       // Send OTP email after saving to DB
       await this.emailService.resendOtpEmail(dto.email, otpvalue);
