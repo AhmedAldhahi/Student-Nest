@@ -3,11 +3,11 @@ import { DataSource } from "typeorm";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
-  host: "127.0.0.1",
-  port: 3306,
+  host: "shuttle.proxy.rlwy.net",
+  port: 42031,
   username: "root",
-  password: process.env.DATABASE_Pass_DEv,
-  database: "TEST",
+  password: process.env.DATABASE_Pass,
+  database: "railway",
   synchronize: true,
   logging: false,
 
