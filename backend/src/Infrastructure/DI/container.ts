@@ -25,7 +25,7 @@ export const buildDependencies = () => {
   const emailService = new NodemailerService();
 
   const studentBuilder = new StudentBuilder();
-  const landloardBuilder = new LandloardBuilder();
+  const landlordBuilder = new LandloardBuilder();
 
   const registerStudentUseCase = new RegisterStudentUseCase(
     unitOfWork,
@@ -34,10 +34,10 @@ export const buildDependencies = () => {
     emailService
   );
 
-  const registerLandloardUseCase = new RegisterLandloardUseCase(
+  const registerLandlordUseCase = new RegisterLandloardUseCase(
     unitOfWork,
     passwordService,
-    landloardBuilder,
+    landlordBuilder,
     emailService
   );
 
@@ -57,7 +57,7 @@ export const buildDependencies = () => {
   return {
     useCases: {
       registerStudentUseCase,
-      registerLandloardUseCase,
+      registerLandlordUseCase,
       loginUseCase,
       forgetPasswordUseCase,
       resendOtpUseCase,

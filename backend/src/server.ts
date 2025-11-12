@@ -2,9 +2,9 @@ import express from "express";
 import "dotenv/config";
 import { AppDataSource } from "./Infrastructure/database/orm/TypeOrm/data-source";
 import { setupSwagger } from "../documentation/swagger/swagger.config";
-import { createAuthRouter } from "./Presentation/http/routes/auth/Registeration.route";
-import { createVerficationRouter } from "./Presentation/http/routes/auth/Verfication.route";
-import { PasswordRecoveryRouter } from "./Presentation/http/routes/passwordRecovery/PasswordRecvery.route";
+import { createAuthRouter } from "./Presentation/http/routes/Registeration.route";
+import { createVerficationRouter } from "./Presentation/http/routes/Verfication.route";
+import { PasswordRecoveryRouter } from "./Presentation/http/routes/PasswordRecvery.route";
 import { buildControllers } from "./Presentation/http/controllers/index.controller";
 
 export class Server {

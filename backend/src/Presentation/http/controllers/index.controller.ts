@@ -8,7 +8,7 @@ export const buildControllers = () => {
 
   const authController = new AuthController(
     useCases.registerStudentUseCase,
-    useCases.registerLandloardUseCase,
+    useCases.registerLandlordUseCase,
     useCases.loginUseCase
   );
 
