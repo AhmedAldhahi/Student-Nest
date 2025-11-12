@@ -4,7 +4,7 @@ import { updateForgetPassword } from "../../middlewares/rate-limited/updateForge
 import { ForgetPasswordSchema } from "../../validation/PasswordRecovery/passwordRecovert.zod";
 import { validation } from "../../middlewares/validation.middleware";
 
-export const PasswordRecovery = (
+export const PasswordRecoveryRouter = (
   RecoveryPasswordController: PasswordRecoverController
 ): Router => {
   const router = Router();
