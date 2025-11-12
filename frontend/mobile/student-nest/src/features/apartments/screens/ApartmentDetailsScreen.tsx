@@ -1,49 +1,18 @@
-import { View, StyleSheet, FlatList, Image, ScrollView } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 import { Text, Button } from "react-native-paper";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../../navigation/types";
-import { Apartment } from "../types";
-import { useRef, useState, useEffect } from "react";
-import { resolveImageSource } from "../../../utils/resolveImageSource";
+import { ImageCarousel } from "../components/ImageCarousel";
+import { useAuth } from "../../../context/AuthContext"; // ✅ import your AuthContext
 
 type Props = NativeStackScreenProps<
   RootStackParamList,
   "ApartmentDetailsScreen"
 >;
 
-function ImageCarousel({ images }: { images: (string | number)[] }) {
-  const [index, setIndex] = useState(0);
-  const flatListRef = useRef<FlatList<any>>(null);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const nextIndex = (index + 1) % images.length;
-      setIndex(nextIndex);
-      flatListRef.current?.scrollToIndex({ index: nextIndex, animated: true });
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, [index, images.length]);
-
-  return (
-    <FlatList
-      ref={flatListRef}
-      data={images}
-      horizontal
-      pagingEnabled
-      showsHorizontalScrollIndicator={false}
-      keyExtractor={(img, idx) =>
-        typeof img === "string" ? img : `asset-${idx}`
-      }
-      renderItem={({ item }) => (
-        <Image source={resolveImageSource(item)} style={styles.image} />
-      )}
-    />
-  );
-}
-
-export default function ApartmentDetailsScreen({ route }: Props) {
+export default function ApartmentDetailsScreen({ navigation, route }: Props) {
   const { apartment } = route.params;
+  const { user, isStudent, isLandlord, isAdmin } = useAuth();
 
   return (
     <ScrollView contentContainerStyle={{ padding: 16 }}>
@@ -62,9 +31,29 @@ export default function ApartmentDetailsScreen({ route }: Props) {
         {apartment.rooms} rooms • {apartment.beds} beds
       </Text>
 
-      <Button mode="contained" style={styles.bookButton}>
-        Book Now
-      </Button>
+      <Text style={styles.sectionTitle}>Landlord</Text>
+      <Text style={styles.meta}>apartment landlordName
+        {/* {apartment.landlordName} */}
+        </Text>
+
+      {/* Role-based rendering */}
+      {isStudent && (
+        <Button
+          mode="contained"
+          style={styles.bookButton}
+          onPress={() =>
+            navigation.navigate("RequestLeaseForm", { apartment })
+          }
+        >
+          Request Lease
+        </Button>
+      )}
+
+      {(isLandlord || isAdmin) && (
+        <Text style={styles.notice}>
+          Only students can request leases. You can view apartment details.
+        </Text>
+      )}
     </ScrollView>
   );
 }
@@ -90,4 +79,10 @@ const styles = StyleSheet.create({
   description: { fontSize: 14, color: "#444", lineHeight: 20 },
   meta: { fontSize: 14, color: "#333", marginBottom: 16 },
   bookButton: { backgroundColor: "#3F51B5", marginTop: 20 },
+  notice: {
+    marginTop: 16,
+    fontSize: 14,
+    color: "#d9534f",
+    fontStyle: "italic",
+  },
 });

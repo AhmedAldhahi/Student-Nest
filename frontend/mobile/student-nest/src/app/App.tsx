@@ -15,6 +15,9 @@ import Dashboard from "../features/dashboard/DashboardScreen";
 import DashboardScreen from "../features/dashboard/DashboardScreen";
 import ApartmentsScreen from "../features/apartments/screens/ApartmentsScreen";
 import ApartmentDetailsScreen from "../features/apartments/screens/ApartmentDetailsScreen";
+import { RequestLeaseForm } from "../features/lease/screens/RequestLeaseForm";
+import { RequestLeaseScreen } from "../features/lease/screens/RequestLeaseScreen";
+import { AuthProvider } from "../context/AuthContext";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -25,6 +28,7 @@ export default function App() {
       <NavigationContainer>
         <SafeAreaProvider>
           <PaperProvider>
+            <AuthProvider>
             <RegistrationProvider>
               <Stack.Navigator>
                 {/* <Stack.Screen
@@ -49,11 +53,13 @@ export default function App() {
                   component={LandlordRegisterScreen}
                 />
                 <Stack.Screen name="OTPScreen" component={OTPScreen} /> */}
-                {/* <Stack.Screen name="DashboardScreen" component={DashboardScreen} options={{ headerShown: false }} /> */}
-                <Stack.Screen name="ApartmentScreen" component={ApartmentsScreen} options={{headerShown: false}}/>
+                <Stack.Screen name="DashboardScreen" component={DashboardScreen} options={{ headerShown: false }} />
+                {/* <Stack.Screen name="ApartmentScreen" component={ApartmentsScreen} options={{headerShown: false}}/>
                 <Stack.Screen name="ApartmentDetailsScreen" component={ApartmentDetailsScreen}/>
+                <Stack.Screen name="RequestLeaseForm" component={RequestLeaseScreen} /> */}
               </Stack.Navigator>
             </RegistrationProvider>
+            </AuthProvider>
           </PaperProvider>
         </SafeAreaProvider>
       </NavigationContainer>

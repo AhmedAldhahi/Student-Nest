@@ -9,4 +9,5 @@ export type RootStackParamList = {
   DashboardScreen: undefined;
   ApartmentScreen: undefined;
   ApartmentDetailsScreen: { apartment: Apartment }; // ✅ expects an apartment object
+  RequestLeaseForm: { apartment: Apartment };       // ✅ pass apartment into RequestLeaseForm
 };

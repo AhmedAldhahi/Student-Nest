@@ -69,6 +69,6 @@ export default function NotificationPanel() {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   title: { fontSize: 20, fontWeight: "bold", marginBottom: 10 },
-  card: { marginVertical: 8 },
+  card: { marginVertical: 8, marginHorizontal:2 },
   clearBtn: { marginTop: 16 },
 });
