@@ -103,7 +103,7 @@ components:
           type: string
         address:
           type: string
-          nullable: true
+          nullable: true   # optional now
 
     RegisterLandlordResponse:
       type: object
