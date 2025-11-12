@@ -1,4 +1,4 @@
-import { IUserBuilder } from "../../Core/repositories/IUserBuilder.builder";
+import { IUserBuilder } from "../../Core/interface/IUserBuilder.builder";
 import { User } from "../../Core/entites/user.entity";
 import { UserRole } from "../../Core/enum/UserRole.enum";
 

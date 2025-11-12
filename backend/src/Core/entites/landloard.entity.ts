@@ -5,8 +5,8 @@ import { EmailFormateException } from "../exception/EmailEsception.exception";
 import { NameException } from "../exception/NameException.exception";
 import { phoneNumberFormateException } from "../exception/PhonNumberException.exception";
 import { UserGovIdException } from "../exception/UserGovIdException.exception";
-import { ILandloard } from "../repositories/ILandloard";
-import { IUser } from "../repositories/IUser";
+import { ILandloard } from "../interface/ILandloard";
+import { IUser } from "../interface/IUser";
 import { OTP } from "../value-object/OTP.ValueObject";
 
 export class Landloard implements ILandloard, IUser {

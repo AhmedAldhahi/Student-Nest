@@ -20,6 +20,9 @@ import { JwtTokenService } from "./Infrastructure/database/service/TokenService.
 import { VerifiedOtpUseCase } from "./Application/use-case/VerfiedOtpUseCase.usecase";
 import { setupSwagger } from "../documentation/swagger/swagger.config";
 import { LoginUseCase } from "./Application/use-case/LoginUseCase.usecase";
+import { ForgetPasswordUseCase } from "./Application/use-case/ForgetPasswordUseCase.usecase";
+import { PasswordRecoverController } from "./Presentation/http/controllers/PasswordRecovery.controller";
+import { PasswordRecovery } from "./Presentation/http/routes/passwordRecovery/PasswordRecvery.route";
 
 /**
  * This class encapsulates your server setup.
@@ -76,6 +79,12 @@ export class Server {
       passwordService
     );
 
+    const forgetPasswordUseCase = new ForgetPasswordUseCase(
+      unitOfWork,
+      tokenService,
+      passwordService
+    );
+
     const resendOtpUseCase = new ResendOtpUseCase(emailService, unitOfWork);
 
     const verifiedOtpUseCase = new VerifiedOtpUseCase(tokenService, unitOfWork); // 5. Create Verify Use Case
@@ -92,14 +101,20 @@ export class Server {
       verifiedOtpUseCase
     );
 
+    const RecoveryPasswordController = new PasswordRecoverController(
+      forgetPasswordUseCase
+    );
+
     // Inject the controller into the router
     const authRouter = createAuthRouter(authController);
     const verificationRouter = createVerficationRouter(verficationController);
+    const recoverPassRouter = PasswordRecovery(RecoveryPasswordController);
 
     // 4. --- USE THE ROUTER ---
     // 'this.app' now works correctly
     this.app.use("/api/v1/auth", authRouter);
     this.app.use("/api/v1/verification/", verificationRouter);
+    this.app.use("/api/v1/recover-password",recoverPassRouter);
 
     setupSwagger(this.app);
   }

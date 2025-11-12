@@ -21,13 +21,16 @@ export class LoginUseCase {
         throw new Error("the password or email not correct ");
       }
 
+
       const isValid = await this.passwordService.compare(
         dto.password,
         user.getPassword()
       );
 
+      console.log(dto.password, user.getPassword())
+
       if (!isValid) {
-        throw new Error("the password or email not correct ");
+        throw new Error("the password or email not correct 1 ");
       }
 
       // be ready to
