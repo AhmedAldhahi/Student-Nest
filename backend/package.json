@@ -7,6 +7,7 @@
     "dev": "tsnd --respawn --pretty --transpile-only ./src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
+    "postinstall": "npm run build",
     "docs": "typedoc"
   },
   "author": "abdalrahman alkayyali",
