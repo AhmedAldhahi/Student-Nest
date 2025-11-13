@@ -9,6 +9,7 @@ const yamljs_1 = __importDefault(require("yamljs"));
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const setupSwagger = (app) => {
+    const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:4000/api/v1";
     const docsPath = path_1.default.resolve(__dirname, "./docs");
     if (!fs_1.default.existsSync(docsPath)) {
         console.error("Swagger docs folder not found:", docsPath);
@@ -26,7 +27,7 @@ const setupSwagger = (app) => {
             version: "1.0.0",
             description: "API documentation for Student Nest backend.",
         },
-        servers: [{ url: "http://localhost:4000/api/v1" }],
+        servers: [{ url: API_BASE_URL }],
         paths: {},
         components: { schemas: {}, parameters: {}, responses: {} },
     };
@@ -63,6 +64,6 @@ const setupSwagger = (app) => {
         }
     });
     app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerDocument));
-    console.log("Swagger UI available at http://localhost:4000/api-docs");
+    console.log(`Swagger UI available at ${API_BASE_URL.replace("/api/v1", "")}/api-docs`);
 };
 exports.setupSwagger = setupSwagger;
