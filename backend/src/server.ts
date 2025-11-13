@@ -1,7 +1,7 @@
 import express from "express";
 import "dotenv/config";
 import { AppDataSource } from "./Infrastructure/database/orm/TypeOrm/data-source";
-import { setupSwagger } from "../documentation/swagger/swagger.config";
+import { setupSwagger } from "./documentation/swagger/swagger.config";
 import { createAuthRouter } from "./Presentation/http/routes/Registeration.route";
 import { createVerficationRouter } from "./Presentation/http/routes/Verfication.route";
 import { PasswordRecoveryRouter } from "./Presentation/http/routes/PasswordRecvery.route";
