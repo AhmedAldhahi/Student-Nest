@@ -14,7 +14,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,           /* Allow importing .json files */
-    "types": ["node", "express", "nodemailer"],
+    "types": ["node"],
 
     /* Type Checking */
     "strict": true,
