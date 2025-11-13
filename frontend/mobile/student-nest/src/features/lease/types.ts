@@ -16,6 +16,5 @@ export interface RequestLeasePayload {
   message: string;
   startDate: string;     // ISO8601
   rentTerm: number;
-  rentAmount: number;
   endDate?: string;      // ISO8601, optional
 }

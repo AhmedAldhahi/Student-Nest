@@ -24,8 +24,6 @@ interface RequestLeaseFormValues {
   message: string;
   startDate: string;
   rentTerm: number;
-  rentAmount: number;
-  
 }
 
 export const RequestLeaseForm: React.FC<Props> = ({ apartment, onSubmit }) => {
@@ -43,7 +41,6 @@ export const RequestLeaseForm: React.FC<Props> = ({ apartment, onSubmit }) => {
       message: "",
       startDate: "",
       rentTerm: Number(""),
-      rentAmount: Number(apartment.price),
     },
   });
 
@@ -55,7 +52,6 @@ export const RequestLeaseForm: React.FC<Props> = ({ apartment, onSubmit }) => {
     message: data.message,
     startDate: data.startDate,
     rentTerm: data.rentTerm,
-    rentAmount: data.rentAmount,
   };
 
   // ✅ stringify before sending
@@ -100,13 +96,7 @@ export const RequestLeaseForm: React.FC<Props> = ({ apartment, onSubmit }) => {
       {/* Rent Term */}
       <ValidatedInput control={control} name="rentTerm" label="Rent term (e.g. 6 months)" />
 
-      {/* Rent Amount */}
-      <ValidatedInput
-        control={control}
-        name="rentAmount"
-        label="Rent amount"
-        keyboardType="phone-pad"
-      />
+  
 
       {/* Start Date */}
       <Controller
