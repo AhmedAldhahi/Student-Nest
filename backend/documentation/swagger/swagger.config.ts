@@ -63,7 +63,7 @@ export const setupSwagger = (app: Application): void => {
     }
 
     // Merge components.responses safely
-    if (doc.components?.responses && typeof doc.components.responses === "object") {
+    if (doc.components?.responses && typeof doc.components.responses === "object") { 
       swaggerDocument.components.responses = {
         ...swaggerDocument.components.responses,
         ...doc.components.responses,
@@ -72,11 +72,12 @@ export const setupSwagger = (app: Application): void => {
   });
 
   // Log merged paths for debug
-  if (Object.keys(swaggerDocument.paths).length === 0) {
-    console.warn("Warning: No paths were loaded from YAML files!");
-  } else {
-    console.log("Swagger paths loaded:", Object.keys(swaggerDocument.paths));
-  }
+  //IDEA: tracing
+  // if (Object.keys(swaggerDocument.paths).length === 0) {
+  //   console.warn("Warning: No paths were loaded from YAML files!");
+  // } else {
+  //   console.log("Swagger paths loaded:", Object.keys(swaggerDocument.paths));
+  // }
 
   // Serve Swagger UI
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));

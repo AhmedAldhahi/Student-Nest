@@ -5,7 +5,6 @@ import { UserAccountStatus } from "../../../../../Core/enum/UserAccountStatus.en
 @Entity("user")
 export class User {
   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
-
   private createAt: Date;
 
   @Column({
@@ -13,7 +12,6 @@ export class User {
     default: () => "CURRENT_TIMESTAMP",
     onUpdate: "CURRENT_TIMESTAMP",
   })
-  
   private updateAt: Date;
   @Column({ type: "varchar", length: 100, nullable: true })
   Address?: string;
@@ -50,9 +48,14 @@ export class User {
   })
   isActive: UserAccountStatus;
 
+  // --- THIS IS THE FIX ---
+  // We changed the type from "string?" to "string | null"
+  // This allows the class property to accept 'null'
   @Column({ type: "varchar", length: 10, nullable: true })
-  otpCode?: string;
+  otpCode: string | null;
 
+  // --- THIS IS THE FIX ---
+  // We changed the type from "Date?" to "Date | null"
   @Column({ type: "date", nullable: true })
-  otpExpired?: Date;
+  otpExpired: Date | null;
 }
