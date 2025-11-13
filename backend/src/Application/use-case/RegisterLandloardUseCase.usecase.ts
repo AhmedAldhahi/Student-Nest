@@ -51,7 +51,7 @@ export class RegisterLandloardUseCase {
 
       if (!dto.LandloardGovId || !dto.cliQAccount) {
         throw new Error(
-          "Landloard  role requires 'cliQ' and 'Landloard Gov Id'."
+          "Landlord  role requires 'cliQ' and 'Landlord Gov Id'."
         );
       }
 

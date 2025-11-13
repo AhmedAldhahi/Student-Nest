@@ -8,9 +8,6 @@ import {
 import { VerifiedOTpResponse } from "../dtos/VerifiedOtpRespone.dto";
 
 export class VerifiedOtpUseCase {
-  // dto
-  // email, otp, otpexpired
-
   // process
   /*
     1- check if the user exit 
@@ -20,55 +17,56 @@ export class VerifiedOtpUseCase {
     5- if pass varied and send token , refresh token
     6- if failed return result 
     */
-
   constructor(
     private readonly tokenService: ITokenService,
-    private readonly unitorWork: IUnitOfWorkRepository
+    private readonly unitOfrWork: IUnitOfWorkRepository
   ) {}
 
   public async execute(dto: VerifiedOTpRequest): Promise<VerifiedOTpResponse> {
-    await this.unitorWork.startTransaction();
+    await this.unitOfrWork.startTransaction();
     try {
-      const user = await this.unitorWork.userRepotories.findByEmail(dto.email);
+      const user = await this.unitOfrWork.userRepotories.findByEmail(dto.email);
       if (!user) {
         throw new UserExictException("no user been found !!");
       }
+
+      // This check will now work correctly thanks to the mapper fix
+      if (user.getVerfiedEmail()) throw new Error("user already verified !!");
 
       const otp = user.getOtpCode();
       const otpExpired = user.getOtpExpired();
 
       if (!otp || !otpExpired)
         throw new Error("no otp been send for this email !");
-
       if (new Date() > otpExpired)
         throw new Error("otp expired date recreate new one !!");
-
       if (otp !== dto.otpCode) throw new Error("invalid otp code !!");
 
-      user.setVerfiedEmail();
-      user.clearOtp();
+      console.log(user.getOtpCode());
+      console.log(user.getOtpExpired());
+      console.log("Before:", user.getVerfiedEmail());
 
-      await this.unitorWork.userRepotories.save(user);
+      user.setVerfiedEmail(); // This sets it to true
+      user.clearOtp(); // <-- The OTP is set to null HERE.
 
-      // generate token and reresh token
-      // token => payload
+      console.log("After:", user.getVerfiedEmail());
+      //console.log("After OTP:", user.getOtpCode());
+      
+      
+      await this.unitOfrWork.userRepotories.save(user);
+      await this.unitOfrWork.commit();
 
       const payload: ITokenPayload = {
         userId: user.getUserId(),
       };
-
       const Token = this.tokenService.generateAccessToken(payload);
-
-      await this.unitorWork.commit();
-
       return {
         message: "email verified scussfuly",
         token: Token,
       };
     } catch (err) {
       // Always roll back on any error
-      await this.unitorWork.rollBack();
-
+      await this.unitOfrWork.rollBack();
       console.error("Failed to verify OTP:", err);
 
       // Check for your *specific* known errors first
@@ -77,16 +75,20 @@ export class VerifiedOtpUseCase {
         throw err;
       }
 
-      // Check for the other simple errors
+      // --- THIS IS THE FIX for Bug 2 ---
+      // We've added "user already verified !!" to the list
+      // of "safe" errors that can be shown to the client.
       if (
         err instanceof Error &&
         (err.message.startsWith("no otp been send") ||
           err.message.startsWith("otp expired date") ||
-          err.message.startsWith("invalid otp code"))
+          err.message.startsWith("invalid otp code") ||
+          err.message.startsWith("user already verified !!"))
       ) {
         // These are client errors, just throw them
         throw err;
       }
+      // --- End of Fix ---
 
       // If it's an *unknown* error (like a database crash),
       // THEN show a generic message.

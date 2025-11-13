@@ -3,11 +3,7 @@ import { DataSource } from "typeorm";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
-  host: process.env.DATABASE_HOST_RENDER,
-  port: 5432,
-  username: "studentnest_user",
-  password: process.env.DATABASE_Pass_DEV_RENDER,
-  database: "studentnest",
+  url: process.env.DATABASE_URL,
   synchronize: true,
   logging: false,
 

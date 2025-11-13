@@ -1,6 +1,6 @@
 import { Landloard } from "../../Core/entites/landloard.entity";
 import { UserRole } from "../../Core/enum/UserRole.enum";
-import { ILandloardbuilder } from "../../Core/repositories/ILandloardbuilder.build";
+import { ILandloardbuilder } from "../../Core/interface/ILandloardbuilder.build";
 
 export class LandloardBuilder implements ILandloardbuilder {
   private landloard: Landloard; 
