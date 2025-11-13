@@ -4,15 +4,14 @@ exports.AppDataSource = void 0;
 require("reflect-metadata");
 const typeorm_1 = require("typeorm");
 exports.AppDataSource = new typeorm_1.DataSource({
-    type: "mysql",
-    host: "127.0.0.1",
-    port: 3306,
-    username: "root",
-    password: process.env.DATABASE_Pass_DEv,
-    database: "TEST",
+    type: "postgres",
+    url: process.env.DATABASE_URL,
     synchronize: true,
     logging: false,
     entities: [__dirname + "/entity/**/*.entity{.ts,.js}"],
     migrations: [],
     subscribers: [],
+    ssl: process.env.NODE_ENV === "production"
+        ? { rejectUnauthorized: false }
+        : false,
 });
