@@ -9,9 +9,10 @@ export const PasswordRecoveryRouter = (
 ): Router => {
   const router = Router();
 
+  /* todo: need to add the flag to check that otp been send and verified or not  */
   router.patch(
     "/forget-password",
-  //  updateForgetPassword,
+    updateForgetPassword,
     validation(ForgetPasswordSchema),
     RecoveryPasswordController.changeForgetPassword
   );

@@ -13,10 +13,10 @@ export const createVerficationRouter = (
 ): Router => {
   const router = Router();
 
-  router.patch(
+  router.post(
     "/resend-otp",
     validation(resendOtpSchema),
-    //otpResendRateLimited,
+    otpResendRateLimited,
     verficationController.createResendOtp
   );
 

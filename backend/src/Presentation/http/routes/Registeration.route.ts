@@ -21,30 +21,25 @@ export const createAuthRouter = (authController: AuthController): Router => {
   router.post(
     "/register/student",
     validation(RegisterStudetSchema),
-    //registerApiRateLimited,
+    registerApiRateLimited,
     authController.registerStudent
   );
 
   router.post(
     "/register/landlord",
     validation(RegisterLandloardSchema),
-    //registerApiRateLimited,
+    registerApiRateLimited,
     authController.registerLandloard
   );
 
   router.post(
     "/login",
     validation(loginSchema),
-    //loginRateLimited,
+    loginRateLimited,
     authController.loginUser
   );
 
-  // Add other auth routes here
-  // router.post('/login', authController.login);
-  // router.post('/forgot-password', authController.forgotPassword);
-  // verife otp
-  // update password
-
+ 
   // 3. Return the configured router
   return router;
 };

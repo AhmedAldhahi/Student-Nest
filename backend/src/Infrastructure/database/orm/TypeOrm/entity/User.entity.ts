@@ -56,6 +56,6 @@ export class User {
 
   // --- THIS IS THE FIX ---
   // We changed the type from "Date?" to "Date | null"
-  @Column({ type: "date", nullable: true })
+  @Column({ type: "timestamptz", nullable: true })
   otpExpired: Date | null;
 }
