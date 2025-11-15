@@ -47,7 +47,6 @@ export class Student implements IStudent, IUser {
   public getValidateStudentDocument(): string {
     return this.validateStudentDocument;
   }
-  
 
   public setOtp(otp: OTP): void {
     this.otpCode = otp.getValue();
@@ -282,8 +281,14 @@ export class Student implements IStudent, IUser {
   }
 
   public setGraduateYear(studentGraduateYear: number): void {
+    const dob = Number.parseInt(this.getDateOfBirth());
+
+    if (dob >= studentGraduateYear) {
+      throw new Error("student can not graduate if before or year he born !!");
+    }
+
     if (!studentGraduateYear)
-      throw new Error("dstudentGraduateYear is required");
+      throw new Error("studentGraduateYear is required");
 
     if (studentGraduateYear < currentYear) {
       throw new GraduatYearException();

@@ -31,4 +31,7 @@ export interface IUser {
   ActiveteAccount(): void;
   DeactivateAccount(): void;
   bandedAccount(): void;
+
+  /* TODO: add otpfor reset password and  otp expire 
+  */
 }
