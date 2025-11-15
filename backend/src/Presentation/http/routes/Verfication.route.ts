@@ -28,9 +28,10 @@ export const createVerficationRouter = (
     verficationController.createVerfiedOtp
   );
 
-  // 
+  //TODO: need to do 
   //router.get("/verification-status")
 
+  
 
   return router;
 };
