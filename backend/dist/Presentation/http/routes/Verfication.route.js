@@ -9,6 +9,7 @@ const createVerficationRouter = (verficationController) => {
     const router = (0, express_1.Router)();
     router.post("/resend-otp", (0, validation_middleware_1.validation)(VerficationSchema_zod_1.resendOtpSchema), otpResendRateLimited_middleware_1.otpResendRateLimited, verficationController.createResendOtp);
     router.post("/verified-otp", (0, validation_middleware_1.validation)(VerficationSchema_zod_1.VerifiedOTpSchema), verficationController.createVerfiedOtp);
+    router.get("/verification-status");
     return router;
 };
 exports.createVerficationRouter = createVerficationRouter;

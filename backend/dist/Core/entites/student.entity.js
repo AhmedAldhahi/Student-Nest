@@ -199,8 +199,12 @@ class Student {
         this.unversityName = trimmedName;
     }
     setGraduateYear(studentGraduateYear) {
+        const dob = Number.parseInt(this.getDateOfBirth());
+        if (dob >= studentGraduateYear) {
+            throw new Error("student can not graduate if before or year he born !!");
+        }
         if (!studentGraduateYear)
-            throw new Error("dstudentGraduateYear is required");
+            throw new Error("studentGraduateYear is required");
         if (studentGraduateYear < validationZod_constant_1.currentYear) {
             throw new GraduateYear_exception_exception_1.GraduatYearException();
         }

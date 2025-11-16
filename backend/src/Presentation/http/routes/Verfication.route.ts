@@ -29,7 +29,7 @@ export const createVerficationRouter = (
   );
 
   //TODO: need to do 
-  //router.get("/verification-status")
+  router.get("/verification-status")
 
   
 
