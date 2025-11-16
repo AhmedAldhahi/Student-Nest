@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, StyleSheet } from "react-native";
+import { Text, StyleSheet, StyleProp, TextStyle } from "react-native";
 import { TextInput } from "react-native-paper";
 import { Controller, Control } from "react-hook-form";
 
@@ -11,6 +11,9 @@ type ValidatedInputProps = {
   textContentType?: string;
   autoComplete?: string;
   keyboardType?: "default" | "email-address" | "phone-pad";
+  multiline?: boolean
+  numberOfLines?: number
+  style?: StyleProp<TextStyle>; // 👈 new optional style
 };
 
 export default function ValidatedInput({
@@ -21,6 +24,10 @@ export default function ValidatedInput({
   textContentType,
   autoComplete,
   keyboardType = "default",
+  multiline = false,
+  numberOfLines = 1,
+  style
+  
 }: ValidatedInputProps) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -31,12 +38,14 @@ export default function ValidatedInput({
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <>
           <TextInput
-            style={{ marginHorizontal: 5, marginBottom: 10 }}
+            style={[{ marginHorizontal: 5, marginBottom: 10 }, style]}
             label={label}
             mode="outlined"
-            value={value}
+            value={value?.toString() ?? ""}
             onChangeText={onChange}
             error={!!error}
+            multiline={multiline}
+            numberOfLines={numberOfLines}
             secureTextEntry={secure && !showPassword}
             textContentType={textContentType as any}
             autoComplete={autoComplete as any}
@@ -50,14 +59,14 @@ export default function ValidatedInput({
               ) : undefined
             }
           />
-          {error && <Text style={style.validated}>{error.message}</Text>}
+          {error && <Text style={styles.validated}>{error.message}</Text>}
         </>
       )}
     />
   );
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create<{ validated: TextStyle }>({
     validated:{
         marginLeft: 10,
         color: "red"

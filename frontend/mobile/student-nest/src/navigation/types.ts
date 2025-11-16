@@ -14,5 +14,6 @@ export type RootStackParamList = {
   TestRoleSwitcher: undefined; // 👈 add this for quick role switching
   MyApartmentsScreen: undefined
   AddApartmentForm: undefined
+  EditApartmentScreen: { apartment: Apartment}
 
 };

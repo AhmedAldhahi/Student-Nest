@@ -16,6 +16,7 @@ import ApartmentDetailsScreen from "../features/apartments/screens/ApartmentDeta
 import { RequestLeaseForm } from "../features/lease/screens/RequestLeaseForm";
 import { RequestLeaseScreen } from "../features/lease/screens/RequestLeaseScreen";
 import AddApartmentForm from "../features/apartments/screens/AddApartmentForm";
+import EditApartmentScreen from "../features/apartments/screens/EditApartmentScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -43,16 +44,17 @@ export default function RootNavigator() {
           <Stack.Screen name="ApartmentDetailsScreen" component={ApartmentDetailsScreen} options={{ headerShown: true, title: "Apartment Details" }} />
           <Stack.Screen name="RequestLeaseForm" component={RequestLeaseScreen} options={{ headerShown: true, title: "Lease Request" }}  />
           <Stack.Screen name="AddApartmentForm" component={AddApartmentForm} options={{
-    headerShown: true,
-    title: "Add Apartment",
-    headerStyle: {
-      backgroundColor: "#1E3A8A", // blue background
-    },
-    headerTintColor: "#fff",       // white text/icons
-    headerTitleStyle: {
-      fontWeight: "700",           // bold title
-    },
-  }} />
+              headerShown: true,
+              title: "Add Apartment",
+              headerStyle: {
+                backgroundColor: "#1E3A8A", // blue background
+              },
+              headerTintColor: "#fff",       // white text/icons
+              headerTitleStyle: {
+                fontWeight: "700",           // bold title
+              },
+            }} />
+          <Stack.Screen name="EditApartmentScreen" component={EditApartmentScreen} options={{ headerShown: true, title: "Edit Apartment"}} />
         </>
       )}
     </Stack.Navigator>

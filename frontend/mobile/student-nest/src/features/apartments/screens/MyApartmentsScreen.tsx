@@ -11,17 +11,19 @@ import { useAuth } from "../../../context/AuthContext";
 import { Apartment } from "../types";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { resolveImageSource } from "../../../utils/resolveImageSource";
-import { FAB } from "react-native-paper"; // 👈 use Paper's FAB
+import { FAB } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../../navigation/types";
 
 // 👇 typed navigation
-type NavigationProp = NativeStackNavigationProp<RootStackParamList, "MyApartmentsScreen">;
-
+type NavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "MyApartmentsScreen"
+>;
 
 // Mock landlord apartments — replace with API later
-const myApartments: Apartment[] = [
+export const myApartments: Apartment[] = [
   {
     apartmentId: "APT-001",
     propertyStatus: "available",
@@ -32,6 +34,7 @@ const myApartments: Apartment[] = [
     rooms: 3,
     beds: 2,
     images: [require("../assets/apartment-picture.jpg")],
+    verified: false, // 👈 add verified flag
   },
   {
     apartmentId: "APT-002",
@@ -43,6 +46,7 @@ const myApartments: Apartment[] = [
     rooms: 1,
     beds: 1,
     images: [require("../assets/apartment-picture-a.jpg")],
+    verified: true, // 👈 verified
   },
 ];
 
@@ -52,7 +56,12 @@ export default function MyApartmentsScreen() {
   const insets = useSafeAreaInsets();
 
   const renderApartment = ({ item }: { item: Apartment }) => (
-    <TouchableOpacity style={styles.card}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() =>
+        navigation.navigate("EditApartmentScreen", { apartment: item })
+      }
+    >
       <Image source={resolveImageSource(item.images[0])} style={styles.image} />
       <View style={styles.info}>
         <Text style={styles.title}>{item.title}</Text>
@@ -63,6 +72,16 @@ export default function MyApartmentsScreen() {
         </Text>
         <Text style={styles.details}>
           {item.rooms} rooms • {item.beds} beds
+        </Text>
+
+        {/* 👇 Verification badge */}
+        <Text
+          style={[
+            styles.verification,
+            item.verified ? styles.verified : styles.pending,
+          ]}
+        >
+          {item.verified ? "Verified" : "Not Verified"}
         </Text>
       </View>
     </TouchableOpacity>
@@ -102,7 +121,7 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   list: {
-    paddingBottom: 80, // leave space for FAB
+    paddingBottom: 80,
   },
   card: {
     backgroundColor: "#fff",
@@ -144,10 +163,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#444",
   },
+  verification: {
+    fontSize: 14,
+    fontWeight: "600",
+    marginTop: 6,
+  },
+  verified: {
+    color: "green",
+  },
+  pending: {
+    color: "orange",
+  },
   fab: {
     position: "absolute",
     right: 20,
     bottom: 20,
-    backgroundColor: "#1E3A8A", // blue circle
+    backgroundColor: "#1E3A8A",
   },
 });
