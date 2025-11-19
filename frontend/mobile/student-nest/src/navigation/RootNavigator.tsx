@@ -17,6 +17,10 @@ import { RequestLeaseForm } from "../features/lease/screens/RequestLeaseForm";
 import { RequestLeaseScreen } from "../features/lease/screens/RequestLeaseScreen";
 import AddApartmentForm from "../features/apartments/screens/AddApartmentForm";
 import EditApartmentScreen from "../features/apartments/screens/EditApartmentScreen";
+import RequestsScreen from "../features/dashboard/screens/RequestsScreen";
+import AdminDashboardScreen from "../features/dashboard/screens/AdminDashboardScreen";
+import LandlordDashboardScreen from "../features/dashboard/screens/LandlordDashboardScreen";
+import StudentDashboardScreen from "../features/dashboard/screens/StudentDashboardScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -38,9 +42,12 @@ export default function RootNavigator() {
         <>
           {/* 👇 Main tabs */}
           <Stack.Screen name="Main" component={BottomTabs} />
+          <Stack.Screen name="RequestsScreen" component={RequestsScreen} />
+          <Stack.Screen name="ApartmentDetailsScreen" component={ApartmentDetailsScreen} />
+          <Stack.Screen name="AddApartmentForm" component={AddApartmentForm} />
+          <Stack.Screen name="EditApartmentScreen" component={EditApartmentScreen} />
 
-          {/* 👇 Feature screens accessible after login */}
-          <Stack.Screen name="DashboardScreen" component={DashboardScreen} />
+          <Stack.Screen name="RequestsScreen" component={RequestsScreen} />
           <Stack.Screen name="ApartmentDetailsScreen" component={ApartmentDetailsScreen} options={{ headerShown: true, title: "Apartment Details" }} />
           <Stack.Screen name="RequestLeaseForm" component={RequestLeaseScreen} options={{ headerShown: true, title: "Lease Request" }}  />
           <Stack.Screen name="AddApartmentForm" component={AddApartmentForm} options={{

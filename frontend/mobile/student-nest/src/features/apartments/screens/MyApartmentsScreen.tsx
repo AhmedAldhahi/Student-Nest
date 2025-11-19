@@ -9,7 +9,10 @@ import {
 } from "react-native";
 import { useAuth } from "../../../context/AuthContext";
 import { Apartment } from "../types";
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { resolveImageSource } from "../../../utils/resolveImageSource";
 import { FAB } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
@@ -55,6 +58,8 @@ export default function MyApartmentsScreen() {
   const navigation = useNavigation<NavigationProp>();
   const insets = useSafeAreaInsets();
 
+  //use focus effect to fetch upon navigation
+
   const renderApartment = ({ item }: { item: Apartment }) => (
     <TouchableOpacity
       style={styles.card}
@@ -78,10 +83,18 @@ export default function MyApartmentsScreen() {
         <Text
           style={[
             styles.verification,
-            item.verified ? styles.verified : styles.pending,
+            item.verified
+              ? styles.verified
+              : item.apartmentDocumentId
+              ? styles.pending
+              : styles.notVerified,
           ]}
         >
-          {item.verified ? "Verified" : "Not Verified"}
+          {item.verified
+            ? "Verified"
+            : item.apartmentDocumentId
+            ? "Pending Verification"
+            : "Not Verified"}
         </Text>
       </View>
     </TouchableOpacity>
@@ -164,16 +177,27 @@ const styles = StyleSheet.create({
     color: "#444",
   },
   verification: {
-    fontSize: 14,
-    fontWeight: "600",
-    marginTop: 6,
+    fontSize: 12,
+    fontWeight: "700",
+    marginTop: 8,
+    alignSelf: "flex-start",
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    borderRadius: 12,
+    overflow: "hidden",
+    textAlign: "center",
+    color: "#fff", // 👈 text always white
   },
   verified: {
-    color: "green",
+    backgroundColor: "#2ecc71", // green
   },
   pending: {
-    color: "orange",
+    backgroundColor: "#f39c12", // orange/yellow
   },
+  notVerified: {
+    backgroundColor: "#e74c3c", // red
+  },
+
   fab: {
     position: "absolute",
     right: 20,

@@ -8,7 +8,8 @@ export type Apartment = {
   rooms: number;
   beds: number;
   images: (string | number)[];
-  verified: boolean
+  verified: boolean;
+  apartmentDocumentId?: number | null; // 👈 use this to infer pending
 };
 
 export interface AddApartmentFormValues {
