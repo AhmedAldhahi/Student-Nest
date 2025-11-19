@@ -29,6 +29,7 @@ type NavigationProp = NativeStackNavigationProp<
 export const myApartments: Apartment[] = [
   {
     apartmentId: "APT-001",
+    landlordId: 1,
     propertyStatus: "available",
     title: "Modern Loft in Downtown",
     description: "Spacious loft with open floor plan and city views.",
@@ -41,6 +42,7 @@ export const myApartments: Apartment[] = [
   },
   {
     apartmentId: "APT-002",
+    landlordId: 2,
     propertyStatus: "rented",
     title: "Cozy Studio near University",
     description: "Perfect for students, close to campus and cafes.",

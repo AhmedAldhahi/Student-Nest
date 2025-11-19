@@ -1,142 +1,3 @@
-// import React, { useState } from "react";
-// import { View, StyleSheet, FlatList } from "react-native";
-// import { Text, Card, Avatar, Searchbar, Chip, Button } from "react-native-paper";
-
-// const mockLandlords = [
-//   {
-//     landlordId: 1,
-//     name: "Ahmed Khalid",
-//     email: "ahmed@example.com",
-//     emailVerified: true,
-//     phoneNumber: "0791234567",
-//     photo: null,
-//     isActive: "activate",
-//     createdAt: "2025-01-10",
-//     clicQAccount: "LAND12345",
-//     verified: true,
-//     landlordGovID: "JRD123456789",
-//   },
-//   {
-//     landlordId: 2,
-//     name: "Sarah Ali",
-//     email: "sarah@example.com",
-//     emailVerified: false,
-//     phoneNumber: "0789876543",
-//     photo: null,
-//     isActive: "ban",
-//     createdAt: "2025-02-20",
-//     clicQAccount: "LAND67890",
-//     verified: false,
-//     landlordGovID: "JRD987654321",
-//   },
-// ];
-
-// export default function LandlordsScreen() {
-//   const [searchQuery, setSearchQuery] = useState("");
-//   const [landlords, setLandlords] = useState(mockLandlords);
-
-//   const filteredLandlords = landlords.filter(
-//     (l) =>
-//       l.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-//       l.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-//       l.clicQAccount.toLowerCase().includes(searchQuery.toLowerCase())
-//   );
-
-//   const renderLandlord = ({ item }: { item: typeof mockLandlords[0] }) => (
-//     <Card style={styles.card}>
-//       <Card.Title
-//         title={item.name}
-//         subtitle={item.email}
-//         left={(props) =>
-//           item.photo ? (
-//             <Avatar.Image {...props} source={{ uri: item.photo }} />
-//           ) : (
-//             <Avatar.Icon {...props} icon="account" />
-//           )
-//         }
-//         right={() => (
-//           <Chip
-//             style={[
-//               styles.statusChip,
-//               item.isActive === "activate"
-//                 ? styles.active
-//                 : item.isActive === "ban"
-//                 ? styles.banned
-//                 : styles.deactivated,
-//             ]}
-//           >
-//             {item.isActive}
-//           </Chip>
-//         )}
-//       />
-//       <Card.Content>
-//         <Text style={styles.detail}>Phone: {item.phoneNumber}</Text>
-//         <Text style={styles.detail}>Joined: {item.createdAt}</Text>
-//         <Text style={styles.detail}>clicQ Account: {item.clicQAccount}</Text>
-//         <Text style={styles.detail}>
-//           Gov ID: ****{item.landlordGovID.slice(-4)}
-//         </Text>
-//         <Chip
-//           icon={item.verified ? "check" : "alert"}
-//           style={[
-//             styles.verifyChip,
-//             item.verified ? styles.verified : styles.unverified,
-//           ]}
-//         >
-//           {item.verified ? "Verified Landlord" : "Not Verified"}
-//         </Chip>
-//       </Card.Content>
-//       <Card.Actions>
-//         <Button mode="outlined" style={styles.btn}>
-//           View Profile
-//         </Button>
-//         <Button
-//           mode="contained"
-//           style={styles.btn}
-//           buttonColor={item.verified ? "#e67e22" : "#2ecc71"}
-//         >
-//           {item.verified ? "Unverify" : "Verify"}
-//         </Button>
-//       </Card.Actions>
-//     </Card>
-//   );
-
-//   return (
-//     <View style={styles.container}>
-//       <Text style={styles.header}>All Landlords</Text>
-//       <Searchbar
-//         placeholder="Search by name, email, or account"
-//         value={searchQuery}
-//         onChangeText={setSearchQuery}
-//         style={styles.search}
-//       />
-//       <FlatList
-//         data={filteredLandlords}
-//         keyExtractor={(item) => item.landlordId.toString()}
-//         renderItem={renderLandlord}
-//         contentContainerStyle={{ paddingBottom: 20 }}
-//       />
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: { flex: 1, padding: 16, backgroundColor: "#f9f9f9" },
-//   header: { fontSize: 22, fontWeight: "700", marginBottom: 12, color: "#333" },
-//   search: { marginBottom: 16, borderRadius: 12 },
-//   card: { marginBottom: 16, borderRadius: 12, elevation: 3 },
-//   detail: { fontSize: 14, color: "#555", marginBottom: 4 },
-//   statusChip: { marginRight: 8 },
-//   active: { backgroundColor: "#2ecc71" },
-//   banned: { backgroundColor: "#e74c3c" },
-//   deactivated: { backgroundColor: "#95a5a6" },
-//   verifyChip: { marginTop: 8, alignSelf: "flex-start" },
-//   verified: { backgroundColor: "#2ecc71" },
-//   unverified: { backgroundColor: "#f39c12" },
-//   btn: { marginHorizontal: 4 },
-// });
-
-
 import React, { useState } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 import { Text, Card, Avatar, Searchbar, Chip, Button } from "react-native-paper";
@@ -173,68 +34,64 @@ export default function LandlordsScreen() {
   const navigation = useNavigation<NavigationProp>();
   const [searchQuery, setSearchQuery] = useState("");
   const [landlords, setLandlords] = useState(mockLandlords);
+  const [filter, setFilter] = useState<"ALL" | "VERIFIED" | "UNVERIFIED">("ALL");
 
-  const filteredLandlords = landlords.filter(
-    (l) =>
+  const filteredLandlords = landlords.filter((l) => {
+    const matchesSearch =
       l.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       l.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      l.clicQAccount.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+      l.clicQAccount.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesFilter =
+      filter === "ALL" ||
+      (filter === "VERIFIED" && l.verified) ||
+      (filter === "UNVERIFIED" && !l.verified);
+
+    return matchesSearch && matchesFilter;
+  });
 
   const renderLandlord = ({ item }: { item: typeof mockLandlords[0] }) => (
-    <Card style={styles.card} onPress={() => navigation.navigate("LandlordDetailScreen", { landlordId: item.landlordId })}>
-      <Card.Title
-        title={item.name}
-        subtitle={item.email}
-        left={(props) =>
-          item.photo ? (
-            <Avatar.Image {...props} source={{ uri: item.photo }} />
-          ) : (
-            <Avatar.Icon {...props} icon="account" />
-          )
-        }
-        right={() => (
-          <Chip
-            style={[
-              styles.statusChip,
-              item.isActive === "activate"
-                ? styles.active
-                : item.isActive === "ban"
-                ? styles.banned
-                : styles.deactivated,
-            ]}
-          >
-            {item.isActive}
-          </Chip>
-        )}
-      />
-      <Card.Content>
+  <Card
+    style={styles.card}
+    onPress={() =>
+      navigation.navigate("LandlordDetailScreen", { landlordId: item.landlordId })
+    }
+  >
+    <View style={styles.cardHeader}>
+      {item.photo ? (
+        <Avatar.Image size={48} source={{ uri: item.photo }} />
+      ) : (
+        <Avatar.Icon size={48} icon="account" />
+      )}
+      <View style={styles.info}>
+        <Text style={styles.name}>{item.name}</Text>
+        <Text style={styles.email}>{item.email}</Text>
+        <Text style={styles.detail}>Account: {item.clicQAccount}</Text>
         <Text style={styles.detail}>Phone: {item.phoneNumber}</Text>
-        <Text style={styles.detail}>clicQ Account: {item.clicQAccount}</Text>
-        <Chip
-          icon={item.verified ? "check" : "alert"}
-          style={[
-            styles.verifyChip,
-            item.verified ? styles.verified : styles.unverified,
-          ]}
-        >
-          {item.verified ? "Verified" : "Not Verified"}
-        </Chip>
-      </Card.Content>
-      <Card.Actions>
-        <Button mode="outlined" style={styles.btn}>
-          View Details
-        </Button>
-        <Button
-          mode="contained"
-          style={styles.btn}
-          buttonColor={item.verified ? "#e67e22" : "#2ecc71"}
-        >
-          {item.verified ? "Unverify" : "Verify"}
-        </Button>
-      </Card.Actions>
-    </Card>
-  );
+      </View>
+      <Chip
+        style={[
+          styles.verifyChip,
+          item.verified ? styles.verified : styles.unverified,
+        ]}
+      >
+        {item.verified ? "Verified" : "Not Verified"}
+      </Chip>
+    </View>
+
+    <View style={styles.cardFooter}>
+      <Button
+        mode="outlined"
+        style={styles.btn}
+        onPress={() =>
+          navigation.navigate("LandlordDetailScreen", { landlordId: item.landlordId })
+        }
+      >
+        View Dashboard
+      </Button>
+    </View>
+  </Card>
+);
 
   return (
     <View style={styles.container}>
@@ -245,6 +102,28 @@ export default function LandlordsScreen() {
         onChangeText={setSearchQuery}
         style={styles.search}
       />
+
+      {/* Filter chips */}
+      <View style={styles.filterRow}>
+        {["ALL", "VERIFIED", "UNVERIFIED"].map((type) => (
+          <Chip
+            key={type}
+            selected={filter === type}
+            onPress={() => setFilter(type as any)}
+            style={[
+              styles.filterChip,
+              type === "VERIFIED"
+                ? styles.verified
+                : type === "UNVERIFIED"
+                ? styles.unverified
+                : styles.all,
+            ]}
+          >
+            {type}
+          </Chip>
+        ))}
+      </View>
+
       <FlatList
         data={filteredLandlords}
         keyExtractor={(item) => item.landlordId.toString()}
@@ -259,14 +138,23 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, backgroundColor: "#f9f9f9" },
   header: { fontSize: 22, fontWeight: "700", marginBottom: 12, color: "#333" },
   search: { marginBottom: 16, borderRadius: 12 },
-  card: { marginBottom: 16, borderRadius: 12, elevation: 3 },
-  detail: { fontSize: 14, color: "#555", marginBottom: 4 },
-  statusChip: { marginRight: 8 },
+  filterRow: { flexDirection: "row", justifyContent: "space-around", marginBottom: 16 },
+  filterChip: { marginHorizontal: 4 },
+  card: { marginBottom: 16, borderRadius: 12, elevation: 3, padding: 12 },
+  cardHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  info: { flex: 1, marginLeft: 12 },
+  name: { fontSize: 16, fontWeight: "700", color: "#1E3A8A" },
+  email: { fontSize: 14, color: "#555" },
+  detail: { fontSize: 13, color: "#777" },
+  statusChip: { marginLeft: 8 },
   active: { backgroundColor: "#2ecc71" },
   banned: { backgroundColor: "#e74c3c" },
   deactivated: { backgroundColor: "#95a5a6" },
-  verifyChip: { marginTop: 8, alignSelf: "flex-start" },
+  cardFooter: { marginTop: 12, flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  verifyChip: { marginRight: 8 },
   verified: { backgroundColor: "#2ecc71" },
   unverified: { backgroundColor: "#f39c12" },
+  all: { backgroundColor: "#95a5a6" },
+  actions: { flexDirection: "row" },
   btn: { marginHorizontal: 4 },
 });

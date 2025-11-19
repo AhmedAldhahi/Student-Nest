@@ -1,10 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useAuth } from "../context/AuthContext";
 import ApartmentsScreen from "../features/apartments/screens/ApartmentsScreen";
-import DashboardScreen from "../features/dashboard/DashboardScreen";
 import MyApartmentsScreen from "../features/apartments/screens/MyApartmentsScreen";
 import { Ionicons } from "@expo/vector-icons";
-import { View } from "react-native";
 import AdminDashboardScreen from "../features/dashboard/screens/AdminDashboardScreen";
 import LandlordDashboardScreen from "../features/dashboard/screens/LandlordDashboardScreen";
 import StudentDashboardScreen from "../features/dashboard/screens/StudentDashboardScreen";

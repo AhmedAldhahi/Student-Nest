@@ -11,16 +11,21 @@ import BottomTabs from "./BottomTabs";
 import TestRoleSwitcher from "../features/auth/screens/TestRoleSwitcher";
 
 // 👇 import your feature screens
-import DashboardScreen from "../features/dashboard/DashboardScreen";
+
 import ApartmentDetailsScreen from "../features/apartments/screens/ApartmentDetailsScreen";
-import { RequestLeaseForm } from "../features/lease/screens/RequestLeaseForm";
 import { RequestLeaseScreen } from "../features/lease/screens/RequestLeaseScreen";
 import AddApartmentForm from "../features/apartments/screens/AddApartmentForm";
 import EditApartmentScreen from "../features/apartments/screens/EditApartmentScreen";
 import RequestsScreen from "../features/dashboard/screens/RequestsScreen";
-import AdminDashboardScreen from "../features/dashboard/screens/AdminDashboardScreen";
-import LandlordDashboardScreen from "../features/dashboard/screens/LandlordDashboardScreen";
-import StudentDashboardScreen from "../features/dashboard/screens/StudentDashboardScreen";
+import LeaseScreen from "../features/dashboard/screens/LeaseScreen";
+import SettingsScreen from "../features/dashboard/screens/SettingsScreen";
+import ProfileScreen from "../features/dashboard/screens/ProfileScreen";
+import AuditLogScreen from "../features/dashboard/screens/admin/AuditLogScreen";
+import StudentsScreen from "../features/dashboard/screens/admin/StudentsScreen";
+import LandlordsScreen from "../features/dashboard/screens/admin/LandlordsScreen";
+import LandlordDetailScreen from "../features/dashboard/screens/admin/LandlordDetailScreen";
+import AdminApartmentsScreen from "../features/dashboard/screens/admin/AdminApartmentsScreen";
+
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -42,12 +47,17 @@ export default function RootNavigator() {
         <>
           {/* 👇 Main tabs */}
           <Stack.Screen name="Main" component={BottomTabs} />
-          <Stack.Screen name="RequestsScreen" component={RequestsScreen} />
-          <Stack.Screen name="ApartmentDetailsScreen" component={ApartmentDetailsScreen} />
-          <Stack.Screen name="AddApartmentForm" component={AddApartmentForm} />
-          <Stack.Screen name="EditApartmentScreen" component={EditApartmentScreen} />
+          <Stack.Screen name="LeaseScreen" component={LeaseScreen} options={{ headerShown: true, title: "Leases" }}/>
+          <Stack.Screen name="SettingsScreen" component={SettingsScreen} options={{ headerShown: true, title: "Settings" }}/>
+          <Stack.Screen name="ProfileScreen" component={ProfileScreen}  options={{ headerShown: true, title: "Profile" }}/>
 
-          <Stack.Screen name="RequestsScreen" component={RequestsScreen} />
+          <Stack.Screen name="AuditLogScreen" component={AuditLogScreen} options={{headerShown: true, title: "AuditLog"}}/>
+          <Stack.Screen name="StudentsScreen" component={StudentsScreen} options={{headerShown: true, title: "All Students"}}/>
+          <Stack.Screen name="LandlordsScreen" component={LandlordsScreen} options={{headerShown: true, title: "All Landlords"}}/>
+          <Stack.Screen name="LandlordDetailScreen" component={LandlordDetailScreen} options={{headerShown: true, title: "landlord Details"}}/>
+          
+          <Stack.Screen name="AdminApartmentsScreen" component={AdminApartmentsScreen} options={{headerShown: true, title: "Apartments"}}/>
+
           <Stack.Screen name="ApartmentDetailsScreen" component={ApartmentDetailsScreen} options={{ headerShown: true, title: "Apartment Details" }} />
           <Stack.Screen name="RequestLeaseForm" component={RequestLeaseScreen} options={{ headerShown: true, title: "Lease Request" }}  />
           <Stack.Screen name="AddApartmentForm" component={AddApartmentForm} options={{

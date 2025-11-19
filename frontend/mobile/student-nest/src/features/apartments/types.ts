@@ -1,5 +1,6 @@
 export type Apartment = {
   apartmentId: string;
+  landlordId: number;   
   propertyStatus: "available" | "rented" | "pending";
   title: string;
   description: string;

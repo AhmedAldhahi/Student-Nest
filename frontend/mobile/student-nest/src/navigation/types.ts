@@ -7,17 +7,23 @@ export type RootStackParamList = {
   LandlordRegisterScreen: undefined;
   OTPScreen: undefined;
   Main: undefined; // 👈 This wraps BottomTabs
+
   AdminDashboardScreen: undefined;
-  LandlordDashboardScreen: undefined;
+  AuditLogScreen: undefined;
+  StudentsScreen: undefined;
+  LandlordsScreen: undefined;
+  LandlordDetailScreen: { landlordId: number };
+  AdminApartmentsScreen: { landlordId?: number }; 
+
   StudentDashboardScreen: undefined;
+  LandlordDashboardScreen: undefined;
+
   LeaseScreen: { landlordId?: number; studentId?: number } | undefined;
   ProfileScreen: undefined;
   RequestsScreen: undefined;
   SettingsScreen: undefined;
   ApartmentScreen: undefined;
-  StudentsScreen: undefined;
-  LandlordsScreen: undefined;
-  LandlordDetailScreen: { landlordId: number };
+
   ApartmentDetailsScreen: { apartment: Apartment }; // ✅ expects an apartment object
   RequestLeaseForm: { apartment: Apartment }; // ✅ pass apartment into RequestLeaseForm
   TestRoleSwitcher: undefined; // 👈 add this for quick role switching

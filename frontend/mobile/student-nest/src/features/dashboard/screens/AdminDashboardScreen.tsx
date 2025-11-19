@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../../navigation/types";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type NavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -22,17 +23,16 @@ const features = [
   { key: "StudentsScreen", label: "Students", icon: "school" },
   { key: "ReceiptsScreen", label: "Receipts", icon: "receipt" },
   { key: "AuditLogScreen", label: "Audit Log", icon: "list" },
-  { key: "ApartmentsScreen", label: "Apartments", icon: "home" },
+  { key: "AdminApartmentsScreen", label: "Apartments", icon: "home" },
 ];
 
 export default function AdminDashboardScreen() {
   const navigation = useNavigation<NavigationProp>();
 
-  const renderItem = ({ item }: { item: typeof features[0] }) => (
+  const renderItem = ({ item }: { item: (typeof features)[0] }) => (
     <Card
       style={styles.card}
       onPress={() => navigation.navigate(item.key as any)}
-
     >
       <View style={styles.cardContent}>
         <Ionicons name={item.icon as any} size={32} color="#1E3A8A" />
@@ -42,17 +42,19 @@ export default function AdminDashboardScreen() {
   );
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Admin Dashboard</Text>
-      <FlatList
-        data={features}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.key}
-        numColumns={2}
-        columnWrapperStyle={styles.row}
-        contentContainerStyle={{ paddingBottom: 20 }}
-      />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View>
+        <Text style={styles.header}>Admin Dashboard</Text>
+        <FlatList
+          data={features}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.key}
+          numColumns={2}
+          columnWrapperStyle={styles.row}
+          contentContainerStyle={{ paddingBottom: 20 }}
+        />
+      </View>
+    </SafeAreaView>
   );
 }
 
