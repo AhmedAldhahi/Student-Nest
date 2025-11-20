@@ -12,7 +12,11 @@ export class LandlordModel {
   @Column()
   LandlordGovId: string;
 
-  @OneToOne(() => UserModel, { cascade: true })
+  // ✅ FIX: Add onDelete: "CASCADE" here
+  @OneToOne(() => UserModel, { 
+      cascade: true, 
+      onDelete: "CASCADE" // This tells MySQL: "If User is deleted, delete this Landlord too"
+  })
   @JoinColumn({ name: "userId" })
   user: UserModel;
 }

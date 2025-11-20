@@ -47,15 +47,12 @@ export class RegisterLandloardUseCase {
 
     // Set OTP to the entity
     user.setOtpForEmail(otp);
-    console.log("OTP", otp);
 
     const landlord = new LandlordEntity({
       user: user,
       cliQAccount: dto.cliQAccount,
       landlordGovId: new GovernmentID(dto.LandloardGovId),
     });
-
-    console.log(landlord.getCliQAccount(), landlord.getGovId());
 
     // Start Transaction
     await this.unitOfWork.startTransaction();

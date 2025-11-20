@@ -3,8 +3,6 @@ import "dotenv/config";
 import { AppDataSource } from "./Infrastructure/database/orm/TypeOrm/data-source";
 import { setupSwagger } from "./Presentation/documentation/swagger/swagger.config";
 import { createAuthRouter } from "./Presentation/http/routes/Registeration.route";
-// import { createVerficationRouter } from "./Presentation/http/routes/Verfication.route";
-// import { PasswordRecoveryRouter } from "./Presentation/http/routes/PasswordRecvery.route";
 import { buildControllers } from "./Presentation/http/controllers/index.controller";
 
 export class Server {
@@ -13,24 +11,13 @@ export class Server {
 
   async configure() {
     await AppDataSource.initialize();
-    console.log("✅ Database connected.");
+    console.log(" Database connected.");
 
     this.app.use(express.json());
 
     const { authController } = buildControllers();
 
-    // --- Attach Routers ---
     this.app.use("/api/v1/auth", createAuthRouter(authController));
-
-    // Uncomment when verification and password recovery are implemented
-    // this.app.use(
-    //   "/api/v1/verification",
-    //   createVerficationRouter(verficationController)
-    // );
-    // this.app.use(
-    //   "/api/v1/recover-password",
-    //   PasswordRecoveryRouter(passwordRecoverController)
-    // );
 
     setupSwagger(this.app);
   }
