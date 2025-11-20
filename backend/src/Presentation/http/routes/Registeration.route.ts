@@ -18,12 +18,12 @@ export const createAuthRouter = (authController: AuthController): Router => {
 
   // 2. Define the routes and connect them to controller methods
 
-  router.post(
-    "/register/student",
-    validation(RegisterStudetSchema),
-    registerApiRateLimited,
-    authController.registerStudent
-  );
+  // router.post(
+  //   "/register/student",
+  //   validation(RegisterStudetSchema),
+  //   registerApiRateLimited,
+  //   authController.registerStudent
+  // );
 
   router.post(
     "/register/landlord",
@@ -32,12 +32,12 @@ export const createAuthRouter = (authController: AuthController): Router => {
     authController.registerLandloard
   );
 
-  router.post(
-    "/login",
-    validation(loginSchema),
-    loginRateLimited,
-    authController.loginUser
-  );
+  // router.post(
+  //   "/login",
+  //   validation(loginSchema),
+  //   loginRateLimited,
+  //   authController.loginUser
+  // );
 
  
   // 3. Return the configured router

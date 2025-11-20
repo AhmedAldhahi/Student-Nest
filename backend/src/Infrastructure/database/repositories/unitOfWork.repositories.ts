@@ -1,81 +1,58 @@
-import { IUserRepository } from "../../../Core/repositories/UserRepoitories.repositories";
-import { IStudentRepository } from "../../../Core/repositories/StudentRepoitories.repoitories";
-import { ILandloardRepository } from "../../../Core/repositories/LandloardRepositories.repositoris";
-import { IUnitOfWorkRepository } from "../../../Core/repositories/UnitOfWorkRepository.repository";
-
-// TypeORM and local classes
-import { AppDataSource } from "../orm/TypeOrm/data-source";
 import { QueryRunner } from "typeorm";
+import { IUnitOfWork } from "../../../Core/Repositories/UnitOfWorkRepositories.repositories";
 import { UserRepository } from "./user.repositories";
-import { StudentRepository } from "./student.repositories";
-import { LandloardRepository } from "./landloard.repositories";
+import { LandlordRepository } from "./landloard.repositories";
+import { AppDataSource } from "../orm/TypeOrm/data-source";
 
-// Import TypeORM entities
-import { User as TypeOrmUser } from "../orm/TypeOrm/entity/User.entity";
-import { Student as TypeOrmStudent } from "../orm/TypeOrm/entity/Student.entity";
-import { Landlord as TypeOrmLandloard } from "../orm/TypeOrm/entity/Landloard.entity";
+export class UnitOfWork implements IUnitOfWork {
+  private queryRunner: QueryRunner | null = null;
 
-export class UnitOfWorkRepositories implements IUnitOfWorkRepository {
-  private queryRunner: QueryRunner | null;
-  LandloardReposotries: ILandloardRepository;
-  StudentRepostoies: IStudentRepository;
-  userRepotories: IUserRepository;
-  constructor() {
-    this.queryRunner = null;
-  }
-
-  async commit(): Promise<void> {
-    if (!this.queryRunner) {
-      throw new Error(
-        "Transaction has not been started. Call startTransaction() first."
-      );
-    }
-    try {
-      await this.queryRunner.commitTransaction();
-    } finally {
-      await this.queryRunner.release();
-      this.queryRunner = null;
-    }
-  }
-
-  async rollBack(): Promise<void> {
-    if (!this.queryRunner) {
-      throw new Error("Transaction has not been started.");
-    }
-    try {
-      await this.queryRunner.rollbackTransaction();
-    } finally {
-      await this.queryRunner.release();
-      this.queryRunner = null;
-    }
-  }
+  public userRepo!: UserRepository;
+  public landlordRepo!: LandlordRepository;
 
   async startTransaction(): Promise<void> {
     this.queryRunner = AppDataSource.createQueryRunner();
     await this.queryRunner.connect();
     await this.queryRunner.startTransaction();
 
-    // --- THIS IS THE CORRECTED SECTION ---
+    const manager = this.queryRunner.manager;
 
-    // 1. Get transaction-aware entity managers
-    const userManager = this.queryRunner.manager.getRepository(TypeOrmUser);
-    const studentManager =
-      this.queryRunner.manager.getRepository(TypeOrmStudent);
-    const landlordManager =
-      this.queryRunner.manager.getRepository(TypeOrmLandloard);
+    // Inject the TRANSACTIONAL manager into repositories
+    this.userRepo = new UserRepository(manager);
+    this.landlordRepo = new LandlordRepository(manager);
+  }
 
-    // 2. Create new repository instances, passing the managers
+  async commitTransaction(): Promise<void> {
+    if (!this.queryRunner) return;
 
-    // UserRepository constructor takes 1 argument
-    this.userRepotories = new UserRepository(userManager);
+    try {
+      await this.queryRunner.commitTransaction();
+    } catch (err) {
+      await this.rollbackTransaction();
+      throw err;
+    } finally {
+      // ✅ FIX 1: You MUST release the connection after commit
+      await this.releaseTransaction();
+    }
+  }
 
-    // StudentRepository constructor takes 2 arguments
-    this.StudentRepostoies = new StudentRepository(studentManager, userManager);
+  async rollbackTransaction(): Promise<void> {
+    if (!this.queryRunner) return;
 
-    // LandloardRepository constructor takes 2 arguments
-    this.LandloardReposotries = new LandloardRepository(
-      landlordManager,
-      userManager
-    );
+    try {
+      if (this.queryRunner.isTransactionActive) {
+        await this.queryRunner.rollbackTransaction();
+      }
+    } finally {
+      // This ensures release happens even after rollback
+      await this.releaseTransaction();
+    }
+  }
+
+  async releaseTransaction(): Promise<void> {
+    if (this.queryRunner && !this.queryRunner.isReleased) {
+      await this.queryRunner.release();
+    }
+    this.queryRunner = null;
   }
 }

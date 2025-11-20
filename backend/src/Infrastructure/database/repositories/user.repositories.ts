@@ -1,58 +1,33 @@
-import { Repository } from "typeorm";
-// We no longer import AppDataSource here
+import { UserEntity } from "../../../Core/entites/userEntity.entity";
 import { UserMapper } from "./user.mapper";
-import { User as DomainUser } from "../../../Core/entites/user.entity";
-import { User as TypeOrmUser } from "../orm/TypeOrm/entity/User.entity";
-import { IUserRepository } from "../../../Core/repositories/UserRepoitories.repositories";
-/**
- * This is the corrected repository.
- * It is "transaction-aware" because it receives its
- * repository/manager from the constructor.
- */
+import { UserModel } from "../orm/TypeOrm/entity/User.entity";
+import { EntityManager } from "typeorm";
+import { IUserRepository } from "../../../Core/Repositories/UserRepositories.repositories";
+
 export class UserRepository implements IUserRepository {
-  /**
-   * THIS IS THE FIX.
-   * We are no longer creating the repository. We are *receiving* it.
-   * This is what fixes the "Expected 0 arguments, but got 1" error.
-   */
-  constructor(private readonly ormRepository: Repository<TypeOrmUser>) {}
+  constructor(private readonly manager: EntityManager) {}
 
-  /**
-   * Finds a user by their email.
-   */
-  async findByEmail(email: string): Promise<DomainUser | null> {
-    const dbUser = await this.ormRepository.findOne({
-      where: { Email: email },
-    });
-
-    if (!dbUser) {
-      return null;
-    }
-
-    return UserMapper.toDomain(dbUser);
+  async findById(id: string): Promise<UserEntity | null> {
+    const user = await this.manager.findOne(UserModel, { where: { userId: id } });
+    return user ? UserMapper.toEntity(user) : null;
   }
 
-  /**
-   * Finds a user by their ID.
-   */
-  async findById(id: string): Promise<DomainUser | null> {
-    // Make sure your IUserRepository interface uses (id: string)
-    const dbUser = await this.ormRepository.findOneBy({
-      userId: id,
-    });
-
-    if (!dbUser) {
-      return null;
-    }
-
-    return UserMapper.toDomain(dbUser);
+  async findByEmail(email: string): Promise<UserEntity | null> {
+    const user = await this.manager.findOne(UserModel, { where: { Email: email } });
+    return user ? UserMapper.toEntity(user) : null;
   }
 
-  /**
-   * Saves a user (creates or updates).
-   */
-  async save(user: DomainUser): Promise<void> {
-    const dbUser = UserMapper.toPersistence(user);
-    await this.ormRepository.save(dbUser);
+  async addNewUser(user: UserEntity): Promise<void> {
+    const model = UserMapper.toOrm(user);
+    await this.manager.save(UserModel, model);
+  }
+
+  async updateUser(user: UserEntity): Promise<void> {
+    const model = UserMapper.toOrm(user);
+    await this.manager.update(UserModel, { userId: model.userId }, model);
+  }
+
+  async deleteUser(id: string): Promise<void> {
+    await this.manager.delete(UserModel, { userId: id });
   }
 }

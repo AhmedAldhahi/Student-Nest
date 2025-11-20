@@ -1,80 +1,26 @@
-// src/infrastructure/database/repositories/landloard.mapper.ts
-
-import { Landloard as DomainLandlord } from "../../../Core/entites/landloard.entity";
-import { Landlord as TypeOrmLandloard } from "../orm/TypeOrm/entity/Landloard.entity";
-import { User as TypeOrmUser } from "../orm/TypeOrm/entity/User.entity";
+import { LandlordEntity } from "../../../Core/entites/landloardEntity.entity";
+import { GovernmentID } from "../../../Core/value-object/UserGovId.vo";
+import { LandlordModel } from "../orm/TypeOrm/entity/Landloard.entity";
+import { UserMapper } from "./user.mapper";
 
 export class LandlordMapper {
-  // The 'toDomain' method was correct and remains the same
-  public static toDomain(dbLandlord: TypeOrmLandloard): DomainLandlord {
-    const domainLandlord = new DomainLandlord();
+  public static toOrm(landlord: LandlordEntity): LandlordModel {
+    const model = new LandlordModel();
 
-    if (dbLandlord.user) {
-      domainLandlord.setUserId(dbLandlord.user.userId);
-      domainLandlord.setName(dbLandlord.user.Name);
-      domainLandlord.setEmail(dbLandlord.user.Email);
-      domainLandlord.setPass(dbLandlord.user.Password);
-      domainLandlord.setRole(dbLandlord.user.Role);
-      domainLandlord.setDateOfBirth(dbLandlord.user.DateOfBirth);
-      domainLandlord.setPhoneNumber(dbLandlord.user.PhoneNumber);
-      domainLandlord.setAccountStatus(dbLandlord.user.isActive);
+    model.userId = landlord.getUserId();
+    model.CliQAccount = landlord.getCliQAccount();
+    model.LandlordGovId = landlord.getGovId();
+    model.user = UserMapper.toOrm(landlord.getUser());
 
-      if (dbLandlord.user.otpCode) {
-        domainLandlord.setOtpCode(dbLandlord.user.otpCode);
-      }
-      if (dbLandlord.user.otpExpired) {
-        domainLandlord.setOtpExpired(dbLandlord.user.otpExpired);
-      }
-
-      if (dbLandlord.user.Photo) {
-        domainLandlord.setPhoto(dbLandlord.user.Photo);
-      }
-      if (dbLandlord.user.Address) {
-        domainLandlord.setAddress(dbLandlord.user.Address);
-      }
-    }
-
-    domainLandlord.setCliQAccount(dbLandlord.cliQAccount);
-    domainLandlord.setLandloardGovId(dbLandlord.landloardGovId);
-
-    return domainLandlord;
+    return model;
   }
 
-  /**
-   * Converts a single Domain Landlord back into a TypeORM Landlord
-   * and a nested TypeORM User for saving.
-   */
-  public static toPersistence(
-    domainLandlord: DomainLandlord
-  ): TypeOrmLandloard {
-    // 1. Create the TypeOrmUser and map its properties
-    const dbUser = new TypeOrmUser();
-    dbUser.userId = domainLandlord.getUserId();
-    dbUser.Name = domainLandlord.getName();
-    dbUser.Email = domainLandlord.getEmail();
-    dbUser.Password = domainLandlord.getPassword();
-    dbUser.Role = domainLandlord.getRole();
-    dbUser.DateOfBirth = domainLandlord.getDateOfBirth();
-    dbUser.PhoneNumber = domainLandlord.getPhoeNumber();
-    dbUser.isActive = domainLandlord.getAccountStatus();
-    dbUser.emailVerfied = domainLandlord.getVerfiedEmail();
-    dbUser.Photo = domainLandlord.getPhoto();
-    dbUser.Address = domainLandlord.getAddress();
-
-    dbUser.otpCode = domainLandlord.getOtpCode();
-    dbUser.otpExpired = domainLandlord.getOtpExpired();
-
-    // 2. Create the TypeOrmLandloard and map its properties
-    const dbLandlord = new TypeOrmLandloard();
-
-    // 3. Map Landlord-specific properties
-    dbLandlord.cliQAccount = domainLandlord.getcliQAccount();
-    dbLandlord.landloardGovId = domainLandlord.getLandloardGovId();
-
-    // 4. Nest the dbUser inside the dbLandlord
-    // This assignment provides the user object *and* the ID.
-    dbLandlord.user = dbUser;
-
-    return dbLandlord;
+  public static toEntity(model: LandlordModel): LandlordEntity {
+    return new LandlordEntity({
+      user: UserMapper.toEntity(model.user),
+      cliQAccount: model.CliQAccount,
+      landlordGovId: new GovernmentID(model.LandlordGovId),
+    });
   }
 }
+

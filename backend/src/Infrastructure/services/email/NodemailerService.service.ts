@@ -1,18 +1,17 @@
 import nodemailer, { Transporter } from "nodemailer";
-import { EmailServiceError } from "../../Error/EmailServiceError.error";
-import { IEmailService } from "../../../Core/services/IEmailService.service";
+import { IEmailService } from "../../../Application/interfaces/IEmail.interface";
 import { emailMessageStyleFormate } from "../../../Shared/constants/emailStyle.constant";
-import 'dotenv/config';
+import "dotenv/config";
 
 export class NodemailerService implements IEmailService {
   private transporter: Transporter;
-  private readonly emailServiceAddress = process.env.NODEMAILER_GMAIL_USER;//|| "abdalrahmanalkayyali48@gmail.com";
-  private readonly emailServicePass = process.env.NODEMAILER_GMAIL_PASSWORD; //|| "nptyhtdyzcdftskt";
+  private readonly emailServiceAddress = process.env.NODEMAILER_GMAIL_USER;
+  private readonly emailServicePass = process.env.NODEMAILER_GMAIL_PASSWORD;
 
   constructor() {
     if (!this.emailServiceAddress || !this.emailServicePass) {
       console.error("Email service is broken.");
-      throw new EmailServiceError("Email Service is not available", 503);
+      throw new Error("Email Service is not available");
     }
 
     this.transporter = nodemailer.createTransport({
@@ -25,14 +24,12 @@ export class NodemailerService implements IEmailService {
   }
 
   // Reusable private method to generate OTP email HTML
-  private generateOtpHtml(title: string, message: string, otp: string): string { 
-    return emailMessageStyleFormate(title,message,otp,new Date());
+  private generateOtpHtml(title: string, message: string, otp: string): string {
+    return emailMessageStyleFormate(title, message, otp, new Date());
   }
 
   // Registration OTP email
-  public async sendRegistrationEmail(to: string, otp: string): Promise<void> { 
-
-    
+  public async sendRegistrationEmail(to: string, otp: string): Promise<void> {
     try {
       await this.transporter.sendMail({
         from: `"Student Nest Application" <${this.emailServiceAddress}>`,
@@ -46,7 +43,7 @@ export class NodemailerService implements IEmailService {
       });
     } catch (error: any) {
       console.error("Email sending failed:", error.message);
-      throw new EmailServiceError("Failed to send verification email", 500);
+      throw new Error("Failed to send verification email");
     }
   }
 
@@ -65,9 +62,9 @@ export class NodemailerService implements IEmailService {
       });
     } catch (error: any) {
       console.error("Resend OTP email failed:", error.message);
-      throw new EmailServiceError("Failed to resend verification email", 500);
+      throw new Error("Failed to resend verification email");
     }
-  } 
+  }
 
   // Password reset OTP email
   public async sendPasswordResetEmail(to: string, otp: string): Promise<void> {
@@ -84,13 +81,7 @@ export class NodemailerService implements IEmailService {
       });
     } catch (error: any) {
       console.error("Password reset email failed:", error.message);
-      throw new EmailServiceError(
-        "Failed to send password reset OTP email",
-        500
-      );
+      throw new Error("Failed to send password reset OTP email");
     }
-  } 
-
-
-  
+  }
 }

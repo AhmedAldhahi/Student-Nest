@@ -1,58 +1,53 @@
-import { Repository } from "typeorm";
-// We no longer import AppDataSource here
+import { EntityManager } from "typeorm";
+import { ILandlordRepository } from "../../../Core/Repositories/LandlordRepositories.repositories";
+import { LandlordModel } from "../orm/TypeOrm/entity/Landloard.entity";
+import { UserRepository } from "./user.repositories";
+import { LandlordEntity } from "../../../Core/entites/landloardEntity.entity";
 import { LandlordMapper } from "./landloard.mapper";
-import { Landlord as TypeOrmLandloard } from "../orm/TypeOrm/entity/Landloard.entity";
-import { User as TypeOrmUser } from "../orm/TypeOrm/entity/User.entity";
-import { Landloard as DomainLandlord } from "../../../Core/entites/landloard.entity";
-import { ILandloardRepository } from "../../../Core/repositories/LandloardRepositories.repositoris";
+import { UserMapper } from "./user.mapper";
 
-export class LandloardRepository implements ILandloardRepository {
-  /**
-   * THIS IS THE FIX.
-   * This class also needs two repositories.
-   */
-  constructor(
-    private readonly landloardRepository: Repository<TypeOrmLandloard>,
-    private readonly userRepository: Repository<TypeOrmUser>
-  ) {}
+export class LandlordRepository implements ILandlordRepository {
+  //  REMOVED: private repo = AppDataSource.getRepository(LandlordModel);
+  
+  private manager: EntityManager;
+  private userRepo: UserRepository;
 
-  async findByEmail(email: string): Promise<DomainLandlord | null> {
-    const user = await this.userRepository.findOne({
-      where: { Email: email },
-    });
-
-    if (!user) {
-      return null;
-    }
-
-    const dbLandlord = await this.landloardRepository.findOne({
-      where: { user: { userId: user.userId } },
-      relations: ["user"],
-    });
-
-    if (!dbLandlord) {
-      return null;
-    }
-
-    return LandlordMapper.toDomain(dbLandlord);
+  constructor(manager: EntityManager) {
+    this.manager = manager;
+    this.userRepo = new UserRepository(manager);
   }
 
-  async findById(id: string): Promise<DomainLandlord | null> {
-    // Make sure your ILandloardRepository interface uses (id: string)
-    const dbLandlord = await this.landloardRepository.findOne({
-      where: { user: { userId: id } },
-      relations: ["user"],
-    });
+  async createNewLandlord(landlord: LandlordEntity): Promise<void> {
+    try {
+      const userEntity = await landlord.getUser();
+      
+      // 1. Save User (Uses Transaction Manager)
+      await this.userRepo.addNewUser(userEntity);
+      
+      const model = LandlordMapper.toOrm(landlord);
+      model.user = UserMapper.toOrm(userEntity);
 
-    if (!dbLandlord) {
-      return null;
+
+      await this.manager.save(LandlordModel, model);
+      
+    } catch (err: any) {
+      console.error("failed to create landlord !!", err);
+      throw err;
     }
-
-    return LandlordMapper.toDomain(dbLandlord);
   }
 
-  async save(landlord: DomainLandlord): Promise<void> {
-    const dbLandlord = LandlordMapper.toPersistence(landlord);
-    await this.landloardRepository.save(dbLandlord);
+  async updateLandlord(user: LandlordEntity): Promise<void> {
+    try {
+      const userEntity = user.getUser();
+      await this.userRepo.updateUser(userEntity);
+      const landlordModel = LandlordMapper.toOrm(user);
+      landlordModel.user = UserMapper.toOrm(userEntity);
+
+      // ✅ FIXED: Use manager for update too
+      await this.manager.update(LandlordModel, { userId: landlordModel.userId }, landlordModel);
+    } catch (err: any) {
+      console.error("failed to update landlord !!", err);
+      throw err;
+    }
   }
 }

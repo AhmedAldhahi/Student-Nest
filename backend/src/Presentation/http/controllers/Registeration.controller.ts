@@ -6,9 +6,9 @@ import { LoginUseCase } from "../../../Application/use-case/LoginUseCase.usecase
 
 export class AuthController {
   constructor(
-    private registerStudentUseCase: RegisterStudentUseCase,
+   // private registerStudentUseCase: RegisterStudentUseCase,
     private registerLandlordUseCase: RegisterLandloardUseCase,
-    private loginUserUseCase: LoginUseCase
+    //private loginUserUseCase: LoginUseCase
   ) {}
   public registerLandloard = async (req: Request, res: Response) => {
     try {
@@ -18,43 +18,43 @@ export class AuthController {
       return res.status(201).json(result);
     } catch (err: any) {
       const status = err.statusCode;
-      return res.status(status).json({ err: err.message || "server error" });
+      return res.status(400).json({ err: err.message || "server error" });
     }
   };
-  public registerStudent = async (
-    req: Request,
-    res: Response
-  ): Promise<Response> => {
-    try {
-      const dto = req.body;
+  // public registerStudent = async (
+  //   req: Request,
+  //   res: Response
+  // ): Promise<Response> => {
+  //   try {
+  //     const dto = req.body;
 
-      const result = await this.registerStudentUseCase.execute(dto);
+  //     const result = await this.registerStudentUseCase.execute(dto);
 
-      return res.status(201).json(result);
-    } catch (error: any) {
-      if (error.message === "Email already taken.") {
-        return res.status(409).json({ message: error.message });
-      }
+  //     return res.status(201).json(result);
+  //   } catch (error: any) {
+  //     if (error.message === "Email already taken.") {
+  //       return res.status(409).json({ message: error.message });
+  //     }
 
-      const status = error.statusCode || 400;
-      return res
-        .status(status)
-        .json({ error: error.message || "Server error" });
-    }
-  };
+  //     const status = error.statusCode || 400;
+  //     return res
+  //       .status(status)
+  //       .json({ error: error.message || "Server error" });
+  //   }
+  // };
 
-  public loginUser = async (req: Request, res: Response): Promise<Response> => {
-    try {
-      const dto = req.body;
-      const result = await this.loginUserUseCase.execute(dto);
+  // public loginUser = async (req: Request, res: Response): Promise<Response> => {
+  //   try {
+  //     const dto = req.body;
+  //     const result = await this.loginUserUseCase.execute(dto);
 
-      return res.status(201).json(result);
-    } catch (err: any) {
-      const status = err.statusCode || 400;
+  //     return res.status(201).json(result);
+  //   } catch (err: any) {
+  //     const status = err.statusCode || 400;
 
-      return res
-        .status(status)
-        .json({ err: err.message || "internal server error" });
-    }
-  };
+  //     return res
+  //       .status(status)
+  //       .json({ err: err.message || "internal server error" });
+  //   }
+  // };
 }

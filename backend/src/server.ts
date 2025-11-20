@@ -1,10 +1,10 @@
 import express from "express";
 import "dotenv/config";
 import { AppDataSource } from "./Infrastructure/database/orm/TypeOrm/data-source";
-import { setupSwagger } from "./documentation/swagger/swagger.config";
+import { setupSwagger } from "./Presentation/documentation/swagger/swagger.config";
 import { createAuthRouter } from "./Presentation/http/routes/Registeration.route";
-import { createVerficationRouter } from "./Presentation/http/routes/Verfication.route";
-import { PasswordRecoveryRouter } from "./Presentation/http/routes/PasswordRecvery.route";
+// import { createVerficationRouter } from "./Presentation/http/routes/Verfication.route";
+// import { PasswordRecoveryRouter } from "./Presentation/http/routes/PasswordRecvery.route";
 import { buildControllers } from "./Presentation/http/controllers/index.controller";
 
 export class Server {
@@ -17,20 +17,20 @@ export class Server {
 
     this.app.use(express.json());
 
-    // --- Inject only controllers ---
-    const { authController, verficationController, passwordRecoverController } =
-      buildControllers();
+    const { authController } = buildControllers();
 
     // --- Attach Routers ---
     this.app.use("/api/v1/auth", createAuthRouter(authController));
-    this.app.use(
-      "/api/v1/verification",
-      createVerficationRouter(verficationController)
-    );
-    this.app.use(
-      "/api/v1/recover-password",
-      PasswordRecoveryRouter(passwordRecoverController)
-    );
+
+    // Uncomment when verification and password recovery are implemented
+    // this.app.use(
+    //   "/api/v1/verification",
+    //   createVerficationRouter(verficationController)
+    // );
+    // this.app.use(
+    //   "/api/v1/recover-password",
+    //   PasswordRecoveryRouter(passwordRecoverController)
+    // );
 
     setupSwagger(this.app);
   }

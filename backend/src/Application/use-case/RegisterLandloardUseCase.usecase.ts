@@ -1,92 +1,94 @@
-import { IUnitOfWorkRepository } from "../../Core/repositories/UnitOfWorkRepository.repository";
-import { IPasswordService } from "../../Core/services/IPasswordService.service";
-import { LandloardBuilder } from "../builder/landloardBuilder.build";
-import { UserExictException } from "../Error/UserExictException.error";
+import { IPasswordService } from "../interfaces/IPassword.interface";
+import { IEmailService } from "../interfaces/IEmail.interface";
+
 import { RegisterLandloardRequest } from "../dtos/RegisterLandloardRequest.dtos";
 import { RegisterLandloardRespone } from "../dtos/RegisterLandloardRespone.dtos";
 import { v4 as uuidv4 } from "uuid";
+
 import { OTP } from "../../Core/value-object/OTP.ValueObject";
-import { IEmailService } from "../../Core/services/IEmailService.service";
+import { IUnitOfWork } from "../../Core/Repositories/UnitOfWorkRepositories.repositories";
+
+import { UserEntity } from "../../Core/entites/userEntity.entity";
+import { UserName } from "../../Core/value-object/UserName.vo";
+import { UserDateOfBirth } from "../../Core/value-object/UserDateOfBirth.vo";
+import { userPhoneNumber } from "../../Core/value-object/UserPhoneNumber.vo";
+import { UserEmail } from "../../Core/value-object/UserEmail.vo";
+import { UserRole } from "../../Core/enum/UserRole.enum";
+
+import { LandlordEntity } from "../../Core/entites/landloardEntity.entity";
+import { GovernmentID } from "../../Core/value-object/UserGovId.vo";
 
 export class RegisterLandloardUseCase {
   constructor(
-    private readonly unitOfWork: IUnitOfWorkRepository,
+    private readonly unitOfWork: IUnitOfWork,
     private readonly passwordService: IPasswordService,
-    private readonly landloardBuilder: LandloardBuilder,
     private readonly emailService: IEmailService
   ) {}
 
   public async execute(
     dto: RegisterLandloardRequest
   ): Promise<RegisterLandloardRespone> {
-    await this.unitOfWork.startTransaction();
     const otp = OTP.generate();
 
+    // Create user entity here (before transaction)
+    const userId = uuidv4();
+    const hashedPassword = await this.passwordService.hash(dto.password);
+
+    const user = new UserEntity({
+      userId: userId,
+      password: hashedPassword,
+      name: new UserName(dto.name),
+      dateOfBirth: new UserDateOfBirth(dto.dateOfBirth),
+      phoneNumber: new userPhoneNumber(dto.phoneNumber),
+      email: new UserEmail(dto.email),
+      role: UserRole.landloard,
+      address: dto.address,
+    });
+
+    // Set OTP to the entity
+    user.setOtpForEmail(otp);
+    console.log("OTP", otp);
+
+    const landlord = new LandlordEntity({
+      user: user,
+      cliQAccount: dto.cliQAccount,
+      landlordGovId: new GovernmentID(dto.LandloardGovId),
+    });
+
+    console.log(landlord.getCliQAccount(), landlord.getGovId());
+
+    // Start Transaction
+    await this.unitOfWork.startTransaction();
+
     try {
-      // find if the user is excit
-      const excitUser = await this.unitOfWork.LandloardReposotries.findByEmail(
-        dto.email
-      );
-      if (excitUser) {
-        throw new UserExictException();
-      }
+      const foundUser = await this.unitOfWork.userRepo.findByEmail(dto.email);
+      if (foundUser) throw new Error("user with this email already exist");
 
-      const hashPassword = await this.passwordService.hash(dto.password);
-      const generatedUserId = uuidv4();
+      await this.unitOfWork.userRepo.addNewUser(user);
+      await this.unitOfWork.landlordRepo.createNewLandlord(landlord);
 
-      const userBuilder = this.landloardBuilder
-        .buildUserId(generatedUserId)
-        .buildRole(dto.role)
-        .buildEmail(dto.email)
-        .buildName(dto.name)
-        .buildDateOfBirth(dto.dateOfBirth)
-        .buildPhoneNumber(dto.phoneNumber)
-        .buildHash(hashPassword)
-        .buildCliqAccount(dto.cliQAccount)
-        .buildLandloardGovId(dto.LandloardGovId);
+      await this.unitOfWork.commitTransaction(); // Commit only
+    } catch (err) {
+      await this.unitOfWork.rollbackTransaction();
+      console.log("Failed to register landlord!!", err);
+      throw err;
+    } finally {
+      await this.unitOfWork.releaseTransaction(); // Always release here
+    }
 
-      if (dto.address) {
-        userBuilder.buildAddress(dto.address);
-      }
-
-      if (!dto.LandloardGovId || !dto.cliQAccount) {
-        throw new Error(
-          "Landlord  role requires 'cliQ' and 'Landlord Gov Id'."
-        );
-      }
-
-      // concreate class ready now
-      const user = userBuilder.build();
-      user.setOtp(otp);
-
-      // if select address add it if not do not add it
-
-      await this.unitOfWork.LandloardReposotries.save(user);
+    // Send OTP email AFTER transaction
+    try {
       await this.emailService.sendRegistrationEmail(
         user.getEmail(),
         otp.getValue()
       );
-      await this.unitOfWork.commit();
-
-      return {
-        message: "user regster scussful! verfied you email otp ",
-      };
-    } catch (err) {
-      // <-- 'err' is of type 'unknown'
-
-      let errorMessage = "An unknown error occurred";
-
-      // 1. Check if 'err' is an Error object
-      if (err instanceof Error) {
-        // 2. Now it's safe to access err.message
-        errorMessage = err.message;
-      }
-
-      // 3. Log the safe error message
-      console.error("Failed to create user. Reason:", errorMessage);
-
-      await this.unitOfWork.rollBack();
-      throw err; // Re-throw the original error
+    } catch (emailErr) {
+      console.log("email service failed!!", emailErr);
+      // Email error should NOT rollback DB transaction
     }
+
+    return {
+      message: "User registered successfully! Verify your email with the OTP.",
+    };
   }
 }

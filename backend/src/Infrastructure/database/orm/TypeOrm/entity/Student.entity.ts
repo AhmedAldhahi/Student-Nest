@@ -1,8 +1,8 @@
 import { Entity, Column, OneToOne, JoinColumn, PrimaryColumn } from "typeorm";
-import { User } from "./User.entity";
+import { UserModel } from "./User.entity";
 
 @Entity("students")
-export class Student {
+export class StudentModel {
   @Column({ type: "int" })
   GraduationYear: number;
   @Column({ type: "varchar", length: 100 })
@@ -16,7 +16,7 @@ export class Student {
   @PrimaryColumn()
   userId: string; // same id as user
 
-  @OneToOne(() => User, { cascade: true, onDelete: "CASCADE" })
+  @OneToOne(() => UserModel, { cascade: true, onDelete: "CASCADE" })
   @JoinColumn({ name: "userId" })
-  user: User;
+  user: UserModel;
 }

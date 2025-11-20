@@ -1,12 +1,22 @@
-import { Entity, OneToOne, JoinColumn, PrimaryColumn } from "typeorm";
-import { User } from "./User.entity";
+import {
+  Entity,
+  OneToOne,
+  JoinColumn,
+  OneToMany,
+  PrimaryColumn,
+} from "typeorm";
+import { UserModel } from "./User.entity";
+import { AuditLogModel } from "./AuditLog.entity";
 
 @Entity("admins")
-export class Admin {
+export class AdminModel {
   @PrimaryColumn()
-  private adminId: number;
+  adminId: string;
 
-  @OneToOne(() => User, { cascade: true, onDelete: "CASCADE" })
+  @OneToOne(() => UserModel, { cascade: true, onDelete: "CASCADE" })
   @JoinColumn({ name: "userId" })
-  private user: User;
+  user: UserModel;
+
+  @OneToMany(() => AuditLogModel, (auditLog) => auditLog.admin)
+  auditLogs: AuditLogModel[];
 }
