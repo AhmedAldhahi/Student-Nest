@@ -9,8 +9,8 @@ type Props = NativeStackScreenProps<RootStackParamList, "LandlordDetailScreen">;
 
 const features = [
   { key: "AdminApartmentsScreen", label: "Apartments", icon: "home" },
-  { key: "LeaseScreen", label: "Leases", icon: "document-text" },
-  { key: "RequestsScreen", label: "Requests", icon: "mail" },
+  { key: "AdminLeaseScreen", label: "Leases", icon: "document-text" },
+  { key: "AdminRequestsScreen", label: "Requests", icon: "mail" },
   { key: "VerificationScreen", label: "Verification", icon: "shield-checkmark" },
 ];
 

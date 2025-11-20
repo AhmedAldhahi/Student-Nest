@@ -4,7 +4,7 @@ import { Text, Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../../../navigation/types";
+import { RootStackParamList } from "../../../../navigation/types";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 type NavigationProp = NativeStackNavigationProp<
@@ -15,8 +15,8 @@ type NavigationProp = NativeStackNavigationProp<
 const features = [
   { key: "ProfileScreen", label: "Profile", icon: "person-circle" },
   { key: "SettingsScreen", label: "Settings", icon: "settings" },
-  { key: "LeaseScreen", label: "Leases", icon: "document-text" },
-  { key: "RequestsScreen", label: "Requests", icon: "mail" },
+  { key: "AdminLeaseScreen", label: "Leases", icon: "document-text" },
+  { key: "AdminRequestsScreen", label: "Requests", icon: "mail" },
   { key: "PaymentsScreen", label: "Payments", icon: "card" },
   { key: "NotificationsScreen", label: "Notifications", icon: "notifications" },
   { key: "LandlordsScreen", label: "Landlords", icon: "business" },

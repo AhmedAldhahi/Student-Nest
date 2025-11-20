@@ -3,9 +3,9 @@ import { useAuth } from "../context/AuthContext";
 import ApartmentsScreen from "../features/apartments/screens/ApartmentsScreen";
 import MyApartmentsScreen from "../features/apartments/screens/MyApartmentsScreen";
 import { Ionicons } from "@expo/vector-icons";
-import AdminDashboardScreen from "../features/dashboard/screens/AdminDashboardScreen";
-import LandlordDashboardScreen from "../features/dashboard/screens/LandlordDashboardScreen";
-import StudentDashboardScreen from "../features/dashboard/screens/StudentDashboardScreen";
+import AdminDashboardScreen from "../features/dashboard/screens/admin/AdminDashboardScreen";
+import LandlordDashboardScreen from "../features/dashboard/screens/landlord/LandlordDashboardScreen";
+import StudentDashboardScreen from "../features/dashboard/screens/student/StudentDashboardScreen";
 
 const Tab = createBottomTabNavigator();
 

@@ -14,9 +14,19 @@ export type RootStackParamList = {
   LandlordsScreen: undefined;
   LandlordDetailScreen: { landlordId: number };
   AdminApartmentsScreen: { landlordId?: number }; 
+  AdminRequestsScreen: { landlordId?: number }; 
+  VerificationScreen: { landlordId?: number };
+  AdminLeaseScreen: {landlordId?: number};
 
   StudentDashboardScreen: undefined;
   LandlordDashboardScreen: undefined;
+
+  StudentRequestsScreen: {studentId: number};
+  StudentLeaseScreen: {studentId: number};
+  
+
+  LandlordRequestsScreen: { landlordId: number };
+  LandlordLeaseScreen: { landlordId: number };
 
   LeaseScreen: { landlordId?: number; studentId?: number } | undefined;
   ProfileScreen: undefined;
