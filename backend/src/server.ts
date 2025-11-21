@@ -1,5 +1,8 @@
 import express from "express";
 import "dotenv/config";
+import morgan from "morgan";
+import winston from "winston";
+import expressWinston from "express-winston";
 import { AppDataSource } from "./Infrastructure/database/orm/TypeOrm/data-source";
 import { setupSwagger } from "./Presentation/documentation/swagger/swagger.config";
 import { createAuthRouter } from "./Presentation/http/routes/Registeration.route";
@@ -14,6 +17,22 @@ export class Server {
     console.log(" Database connected.");
 
     this.app.use(express.json());
+    this.app.use(morgan("dev"));
+
+    this.app.use(
+      expressWinston.logger({
+        transports: [
+          new winston.transports.File({
+            filename: "logs/requests.log",
+            level: "info",
+          }),
+        ],
+        format: winston.format.combine(
+          winston.format.timestamp(),
+          winston.format.json() // JSON output here
+        ),
+      })
+    );
 
     const { authController } = buildControllers();
 
