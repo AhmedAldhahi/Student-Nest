@@ -1,7 +1,6 @@
-// import { StudentEntity } from "../entites/studentEntity.entity";
+import { StudentEntity } from "../entites/studentEntity.entity";
 
-// export interface ILandlordRepository { 
-//   createNewStudent(user: StudentEntity): Promise<void>;
-
-//   updateStudent(user: StudentEntity): Promise<void>;
-// }
+export interface IStudentRepository {
+  createNewStudent(user: StudentEntity): Promise<void>;
+  updateStudent(user: StudentEntity): Promise<void>;
+}

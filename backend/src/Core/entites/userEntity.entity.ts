@@ -4,7 +4,7 @@ import { UserDateOfBirth } from "../value-object/UserDateOfBirth.vo";
 import { UserEmail } from "../value-object/UserEmail.vo";
 import { UserName } from "../value-object/UserName.vo";
 import { userPhoneNumber } from "../value-object/UserPhoneNumber.vo";
-import { OTP } from "../value-object/OTP.ValueObject";
+import { OTP } from "../value-object/OTP.vo";
 
 // check data type
 export interface IUserData {

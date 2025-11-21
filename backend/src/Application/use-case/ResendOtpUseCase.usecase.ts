@@ -1,5 +1,5 @@
 import { IEmailService } from "../../Core/services/IEmailService.service";
-import { OTP } from "../../Core/value-object/OTP.ValueObject";
+import { OTP } from "../../Core/value-object/OTP.vo";
 import { ResendOtpRequest } from "../dtos/ResendOtpRequest.dto";
 import { ResendOtpRespone } from "../dtos/ResendOtpRespone.dto";
 import { IUnitOfWorkRepository } from "../../Core/repositories/UnitOfWorkRepository.repository";

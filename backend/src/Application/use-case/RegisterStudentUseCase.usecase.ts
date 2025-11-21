@@ -5,7 +5,7 @@ import { UserExictException } from "../Error/UserExictException.error";
 import { RegisterStudentRequest } from "../dtos/RegisterStudentRequest.dtos";
 import { RegisterStudentRespone } from "../dtos/RegisterStudentRespone.dtos";
 import { IEmailService } from "../../Core/services/IEmailService.service";
-import { OTP } from "../../Core/value-object/OTP.ValueObject";
+import { OTP } from "../../Core/value-object/OTP.vo";
 import { v4 as uuidv4 } from "uuid";
 
 export class RegisterStudentUseCase {

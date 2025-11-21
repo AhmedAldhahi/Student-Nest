@@ -9,7 +9,7 @@
     "start": "node dist/index.js",
     "postinstall": "npm run build",
     "docs": "typedoc",
-    "db:diagram": "typeorm-uml ormconfig.json"
+    "test": "jest"
   },
   "author": "abdalrahman alkayyali",
   "license": "ISC",
@@ -47,8 +47,10 @@
     "zod": "^4.1.11"
   },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "@types/morgan": "^1.9.10",
     "@types/multer": "^2.0.0",
+    "jest": "^30.2.0",
     "ts-node-dev": "^2.0.0",
     "typedoc": "^0.28.14"
   }

@@ -1,5 +1,5 @@
 import { UserEntity } from "../../../Core/entites/userEntity.entity";
-import { OTP } from "../../../Core/value-object/OTP.ValueObject";
+import { OTP } from "../../../Core/value-object/OTP.vo";
 import { UserDateOfBirth } from "../../../Core/value-object/UserDateOfBirth.vo";
 import { UserEmail } from "../../../Core/value-object/UserEmail.vo";
 import { UserName } from "../../../Core/value-object/UserName.vo";

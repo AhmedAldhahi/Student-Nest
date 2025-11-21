@@ -26,3 +26,172 @@
     },
     "timestamp": "2025-11-21T11:48:11.946Z"
 }
+
+{
+    "level": "info",
+    "message": "HTTP POST /api/v1/auth/register/landlord",
+    "meta": {
+        "req": {
+            "headers": {
+                "accept": "*/*",
+                "accept-encoding": "gzip, deflate, br",
+                "connection": "keep-alive",
+                "content-length": "263",
+                "content-type": "application/json",
+                "host": "localhost:4000",
+                "user-agent": "Apidog/1.0.0 (https://apidog.com)"
+            },
+            "httpVersion": "1.1",
+            "method": "POST",
+            "originalUrl": "/api/v1/auth/register/landlord",
+            "query": {},
+            "url": "/api/v1/auth/register/landlord"
+        },
+        "res": {
+            "statusCode": 400
+        },
+        "responseTime": 86
+    },
+    "timestamp": "2025-11-21T11:52:08.288Z"
+}
+
+{
+    "level": "info",
+    "message": "HTTP POST /api/v1/auth/register/landlord",
+    "meta": {
+        "req": {
+            "headers": {
+                "accept": "*/*",
+                "accept-encoding": "gzip, deflate, br",
+                "connection": "keep-alive",
+                "content-length": "263",
+                "content-type": "application/json",
+                "host": "localhost:4000",
+                "user-agent": "Apidog/1.0.0 (https://apidog.com)"
+            },
+            "httpVersion": "1.1",
+            "method": "POST",
+            "originalUrl": "/api/v1/auth/register/landlord",
+            "query": {},
+            "url": "/api/v1/auth/register/landlord"
+        },
+        "res": {
+            "statusCode": 400
+        },
+        "responseTime": 81
+    },
+    "timestamp": "2025-11-21T11:52:10.206Z"
+}
+
+{
+    "level": "info",
+    "message": "HTTP POST /api/v1/auth/register/landlord",
+    "meta": {
+        "req": {
+            "headers": {
+                "accept": "*/*",
+                "accept-encoding": "gzip, deflate, br",
+                "connection": "keep-alive",
+                "content-length": "263",
+                "content-type": "application/json",
+                "host": "localhost:4000",
+                "user-agent": "Apidog/1.0.0 (https://apidog.com)"
+            },
+            "httpVersion": "1.1",
+            "method": "POST",
+            "originalUrl": "/api/v1/auth/register/landlord",
+            "query": {},
+            "url": "/api/v1/auth/register/landlord"
+        },
+        "res": {
+            "statusCode": 400
+        },
+        "responseTime": 83
+    },
+    "timestamp": "2025-11-21T11:52:11.752Z"
+}
+
+{
+    "level": "info",
+    "message": "HTTP POST /api/v1/auth/register/landlord",
+    "meta": {
+        "req": {
+            "headers": {
+                "accept": "*/*",
+                "accept-encoding": "gzip, deflate, br",
+                "connection": "keep-alive",
+                "content-length": "263",
+                "content-type": "application/json",
+                "host": "localhost:4000",
+                "user-agent": "Apidog/1.0.0 (https://apidog.com)"
+            },
+            "httpVersion": "1.1",
+            "method": "POST",
+            "originalUrl": "/api/v1/auth/register/landlord",
+            "query": {},
+            "url": "/api/v1/auth/register/landlord"
+        },
+        "res": {
+            "statusCode": 400
+        },
+        "responseTime": 83
+    },
+    "timestamp": "2025-11-21T11:52:13.218Z"
+}
+
+{
+    "level": "info",
+    "message": "HTTP POST /api/v1/auth/register/landlord",
+    "meta": {
+        "req": {
+            "headers": {
+                "accept": "*/*",
+                "accept-encoding": "gzip, deflate, br",
+                "connection": "keep-alive",
+                "content-length": "263",
+                "content-type": "application/json",
+                "host": "localhost:4000",
+                "user-agent": "Apidog/1.0.0 (https://apidog.com)"
+            },
+            "httpVersion": "1.1",
+            "method": "POST",
+            "originalUrl": "/api/v1/auth/register/landlord",
+            "query": {},
+            "url": "/api/v1/auth/register/landlord"
+        },
+        "res": {
+            "statusCode": 429
+        },
+        "responseTime": 2
+    },
+    "timestamp": "2025-11-21T11:52:14.619Z"
+}
+
+{
+    "level": "info",
+    "message": "HTTP POST /api/v1/auth/register/landlord",
+    "meta": {
+        "req": {
+            "headers": {
+                "accept": "*/*",
+                "accept-encoding": "gzip, deflate, br",
+                "connection": "keep-alive",
+                "content-length": "263",
+                "content-type": "application/json",
+                "host": "localhost:4000",
+                "user-agent": "Apidog/1.0.0 (https://apidog.com)"
+            },
+            "httpVersion": "1.1",
+            "method": "POST",
+            "originalUrl": "/api/v1/auth/register/landlord",
+            "query": {},
+            "url": "/api/v1/auth/register/landlord"
+        },
+        "res": {
+            "statusCode": 429
+        },
+        "responseTime": 1
+    },
+    "timestamp": "2025-11-21T11:52:33.248Z"
+}
+{"level":"info","message":"HTTP POST /api/v1/auth/register/landlord","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","connection":"keep-alive","content-length":"263","content-type":"application/json","host":"localhost:4000","user-agent":"Apidog/1.0.0 (https://apidog.com)"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/v1/auth/register/landlord","query":{},"url":"/api/v1/auth/register/landlord"},"res":{"statusCode":400},"responseTime":131},"timestamp":"2025-11-21T13:00:34.164Z"}
