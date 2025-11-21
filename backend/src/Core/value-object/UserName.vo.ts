@@ -1,4 +1,22 @@
+/**
+ * Value Object representing a user's name.
+ *
+ * Encapsulates validation logic to ensure the name is well-formed.
+ * Rules:
+ * - Must be at least 3 characters long
+ * - Must start with a letter
+ * - Can contain letters, numbers, and underscores
+ * - No spaces allowed
+ *
+ * @class UserName
+ */
 export class UserName {
+  /**
+   * Creates a new UserName value object and validates it.
+   *
+   * @param {string} userName - The user's name string.
+   * @throws {Error} Throws if the name is empty, too short, or contains invalid characters.
+   */
   constructor(private userName: string) {
     if (!userName) {
       throw new Error("User name is required");
@@ -16,6 +34,11 @@ export class UserName {
     }
   }
 
+  /**
+   * Returns the validated user name.
+   *
+   * @returns {string} The user's name string.
+   */
   public getValue(): string {
     return this.userName;
   }

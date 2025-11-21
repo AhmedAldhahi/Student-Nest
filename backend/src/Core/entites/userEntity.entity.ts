@@ -1,3 +1,18 @@
+/**
+ * User data required to construct a UserEntity.
+ *
+ * @interface IUserData
+ * @property {string} userId - Unique identifier for the user.
+ * @property {string} password - User hashed password.
+ * @property {UserName} name - Value object representing the user's name.
+ * @property {UserDateOfBirth} dateOfBirth - Value object for the user's date of birth.
+ * @property {userPhoneNumber} phoneNumber - Value object for the user's phone number.
+ * @property {UserEmail} email - Value object for the user's email.
+ * @property {UserRole} role - System assigned user role.
+ * @property {string} [address] - Optional physical address.
+ * @property {string} [photo] - Optional user profile photo URL or path.
+ */
+
 import { UserAccountStatus } from "../enum/UserAccountStatus.enum";
 import { UserRole } from "../enum/UserRole.enum";
 import { UserDateOfBirth } from "../value-object/UserDateOfBirth.vo";
@@ -6,7 +21,18 @@ import { UserName } from "../value-object/UserName.vo";
 import { userPhoneNumber } from "../value-object/UserPhoneNumber.vo";
 import { OTP } from "../value-object/OTP.vo";
 
-// check data type
+/**
+ * Represents the domain User Aggregate Root.
+ *
+ * Handles:
+ * - user identification
+ * - email verification flow
+ * - reset-password OTP flow
+ * - domain value objects (email, name, phone, etc.)
+ * - role & account status management
+ *
+ * @class UserEntity
+ */
 export interface IUserData {
   userId: string;
   password: string;
@@ -37,11 +63,15 @@ export class UserEntity {
   private emailOTP?: OTP | undefined | null;
   private resetPasswordOTP?: OTP | undefined | null;
 
-  // optional
   private address?: string;
   private photo?: string;
 
-  // contractor
+  /**
+   * Creates a new UserEntity with the given domain value objects.
+   *
+   * @constructor
+   * @param {IUserData} data - Initial user data.
+   */
   constructor(data: IUserData) {
     this.userId = data.userId;
     this.password = data.password;
@@ -54,171 +84,216 @@ export class UserEntity {
     this.photo = data.photo ?? undefined;
   }
 
+  /** Sets a new userId. */
   public setUserId(userId: string): void {
     this.userId = userId;
   }
 
+  /** Returns the user's ID. */
   public getUserId(): string {
     return this.userId;
   }
 
+  /** Updates the user's email value object. */
   public updateEmail(userEmail: UserEmail) {
     this.email = userEmail;
   }
 
+  /** Returns the user's email address. */
   public getEmail(): string {
     return this.email.getValue();
   }
 
+  /** Marks the user's email as unverified. */
   public resetVerifiedEmail(): void {
     this.emailVerified = false;
   }
 
+  /** Marks the user's email as verified. */
   public verifiedEmail() {
     this.emailVerified = true;
   }
 
+  /** Returns whether the user's email is verified. */
   public getVerifiedEmail(): boolean {
     return this.emailVerified;
   }
 
+  /** Assigns an OTP for verifying the email. */
   public setOtpForEmail(otp: OTP): void {
     this.emailOTP = otp;
   }
 
+  /** Gets the email OTP value. */
   public getOtpForEmail(): string | undefined | null {
     return this.emailOTP?.getValue();
   }
 
+  /** Gets the email OTP expiration timestamp. */
   public getOtpExpiredForEmail(): Date | undefined | null {
     return this.emailOTP?.getExpiresAt();
   }
 
+  /**
+   * Verifies the user's email OTP.
+   * Throws error if already verified or OTP missing.
+   */
   public verifiedEmailOTP(clientOTP: string) {
     if (this.emailVerified)
       throw new Error("the user email is already verified ");
     if (!this.emailOTP) throw new Error("no otp been set !!");
+
     const result = this.emailOTP.verfiedOtp(clientOTP);
 
     this.emailVerified = result;
-
     this.clearEmailOTP();
   }
 
+  /** Clears email OTP after verification. */
   private clearEmailOTP() {
     this.emailOTP = null;
   }
 
+  /** Resets the reset-password verification state. */
   public resetVerifiedPassword(): void {
     this.resetPasswordVerified = false;
   }
 
+  /** Marks reset-password as verified. */
   public verifyResetPassword() {
     this.resetPasswordVerified = true;
   }
 
+  /** Returns reset-password verification status. */
   public getVerifiedResetPassword(): boolean {
     return this.resetPasswordVerified;
   }
 
+  /** Assigns an OTP for resetting password. */
   public setOTPForResetPassword(otp: OTP): void {
     this.resetPasswordOTP = otp;
   }
 
+  /** Returns the reset-password OTP value. */
   public getOTPForResetPassword(): string | undefined | null {
     return this.resetPasswordOTP?.getValue();
   }
 
+  /** Returns the reset-password OTP expiration date. */
   public getOTPExpiredDateForResetPassword() {
     return this.resetPasswordOTP?.getExpiresAt();
   }
 
+  /**
+   * Verifies reset-password OTP.
+   * Throws if OTP missing or already verified.
+   */
   public verifiedResetPasswordOTP(clientOTP: string) {
     if (!this.resetPasswordOTP) throw new Error("no otp been set !!");
     const result = this.resetPasswordOTP.verfiedOtp(clientOTP);
     if (this.resetPasswordVerified)
       throw new Error("the user email is already verified ");
-    this.resetPasswordVerified = result;
 
+    this.resetPasswordVerified = result;
     this.clearResetPasswordOTP();
   }
 
+  /** Clears reset password OTP after verification. */
   private clearResetPasswordOTP() {
     this.resetPasswordOTP = null;
   }
 
+  /** Updates the user's name. */
   public updateName(userName: UserName): void {
     this.name = userName;
   }
 
+  /** Returns the user's name. */
   public getName(): string {
     return this.name.getValue();
   }
 
+  /** Sets user password. */
   public setPassword(userPass: string): void {
     this.password = userPass;
   }
 
+  /** Returns user password (hashed). */
   public getPass(): string {
     return this.password;
   }
 
+  /** Updates user date of birth. */
   public updateDateOfBirth(userDOB: UserDateOfBirth): void {
     this.dateOfBirth = userDOB;
   }
 
+  /** Returns user date of birth. */
   public getDateOfBirth(): string {
     return this.dateOfBirth.getValue();
   }
 
+  /** Updates user phone number. */
   public updatePhoneNumber(userPhoneNumber: userPhoneNumber): void {
     this.phoneNumber = userPhoneNumber;
   }
 
+  /** Returns user phone number. */
   public getPhoneNumber(): string {
     return this.phoneNumber.getValue();
   }
 
+  /** Sets user profile photo. */
   public setPhoto(photo: string): void {
     this.photo = photo;
   }
 
+  /** Returns user profile photo URL or undefined. */
   public getPhoto(): string | undefined {
     return this.photo;
   }
 
+  /** Sets user address. */
   public setAddress(address: string): void {
     this.address = address;
   }
 
+  /** Returns user address or undefined. */
   public getAddress(): string | undefined {
     return this.address;
   }
 
+  /** Sets user role. */
   public setRole(userRole: UserRole): void {
     this.role = userRole;
   }
 
+  /** Returns user role. */
   public getRole(): UserRole {
     return this.role;
   }
 
+  /** Updates user account status. */
   public setAccountStatus(accountStatus: UserAccountStatus): void {
     this.accountStats = accountStatus;
   }
 
+  /** Returns account status. */
   public getAccountStatus(): UserAccountStatus {
     return this.accountStats;
   }
 
+  /** Marks the user account as banned. */
   public bandedAccount() {
     this.accountStats = UserAccountStatus.banded;
   }
 
+  /** Deactivates the user account. */
   public disActivatedAccount() {
     this.accountStats = UserAccountStatus.deactivate;
   }
 
+  /** Activates the user account. */
   public activatedAccount() {
     this.accountStats = UserAccountStatus.activate;
   }

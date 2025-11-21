@@ -1,4 +1,18 @@
+/**
+ * Value Object representing a user's phone number.
+ *
+ * Encapsulates phone number validation and retrieval logic.
+ * Supports both international format and Jordanian local format.
+ *
+ * @class userPhoneNumber
+ */
 export class userPhoneNumber {
+  /**
+   * Creates a new userPhoneNumber value object and validates it.
+   *
+   * @param {string} value - The phone number string.
+   * @throws {Error} Throws if the phone number is empty or invalid format.
+   */
   constructor(private value: string) {
     if (!value) throw new Error("Phone number is required");
 
@@ -13,6 +27,11 @@ export class userPhoneNumber {
     }
   }
 
+  /**
+   * Returns the phone number string.
+   *
+   * @returns {string} The validated phone number.
+   */
   public getValue(): string {
     return this.value;
   }

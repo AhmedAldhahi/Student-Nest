@@ -21,6 +21,6 @@ export interface IAuditLogRepositories {
   findByPerformedByEmail(email: string): Promise<AuditLogEntity[]>;
   findByPerformedByRole(role: UserRole): Promise<AuditLogEntity[]>;
 }
-
+``
 
 
