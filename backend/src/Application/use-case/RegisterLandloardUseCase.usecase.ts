@@ -6,7 +6,7 @@ import { RegisterLandloardRespone } from "../dtos/RegisterLandloardRespone.dtos"
 import { v4 as uuidv4 } from "uuid";
 
 import { OTP } from "../../Core/value-object/OTP.ValueObject";
-import { IUnitOfWork } from "../../Core/Repositories/UnitOfWorkRepositories.repositories";
+import { IUnitOfWork } from "../../Core/repositories/UnitOfWorkRepositories.repositories";
 
 import { UserEntity } from "../../Core/entites/userEntity.entity";
 import { UserName } from "../../Core/value-object/UserName.vo";

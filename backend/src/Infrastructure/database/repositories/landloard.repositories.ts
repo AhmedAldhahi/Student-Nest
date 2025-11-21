@@ -1,5 +1,5 @@
 import { EntityManager } from "typeorm";
-import { ILandlordRepository } from "../../../Core/Repositories/LandlordRepositories.repositories";
+import { ILandlordRepository } from "../../../Core/repositories/LandlordRepositories.repositories";
 import { LandlordModel } from "../orm/TypeOrm/entity/Landloard.entity";
 import { UserRepository } from "./user.repositories";
 import { LandlordEntity } from "../../../Core/entites/landloardEntity.entity";

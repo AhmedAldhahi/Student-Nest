@@ -1,5 +1,5 @@
 import { QueryRunner } from "typeorm";
-import { IUnitOfWork } from "../../../Core/Repositories/UnitOfWorkRepositories.repositories";
+import { IUnitOfWork } from "../../../Core/repositories/UnitOfWorkRepositories.repositories";
 import { UserRepository } from "./user.repositories";
 import { LandlordRepository } from "./landloard.repositories";
 import { AppDataSource } from "../orm/TypeOrm/data-source";
