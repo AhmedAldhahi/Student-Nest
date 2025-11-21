@@ -26,10 +26,13 @@
     "@types/uuid": "^8.3.4",
     "@types/yamljs": "^0.2.34",
     "bcrypt": "^6.0.0",
+    "config": "^4.1.1",
+    "debug": "^4.4.3",
     "dotenv": "^17.2.3",
     "express": "^4.21.2",
     "express-rate-limit": "^8.2.1",
     "express-winston": "^4.2.0",
+    "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.1",
     "multer": "^2.0.2",
@@ -47,6 +50,9 @@
     "zod": "^4.1.11"
   },
   "devDependencies": {
+    "@types/config": "^3.3.5",
+    "@types/debug": "^4.1.12",
+    "@types/helmet": "^4.0.0",
     "@types/jest": "^30.0.0",
     "@types/morgan": "^1.9.10",
     "@types/multer": "^2.0.0",

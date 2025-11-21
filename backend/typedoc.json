@@ -1,14 +1,19 @@
 {
-  "entryPoints": ["./src/core/entites/"],
-  "out": "docs",
+  "entryPoints": [
+    "./src/Core/entites",
+    "./src/Core/value-object",
+    "./src/Core/enum",
+    "./src/Core/repositories"
+  ],
+  "entryPointStrategy": "expand",
+  "out": "src/Presentation/documentation/Typedoc",
   "includeVersion": true,
   "tsconfig": "tsconfig.json",
   "excludePrivate": true,
   "excludeProtected": false,
-  "excludeExternals": false,
+  "excludeExternals": true,
   "hideGenerator": true,
   "readme": "none",
   "categorizeByGroup": true,
-  "excludeInternal": false,
-  "intentionallyNotExported": []
+  "excludeInternal": true
 }
