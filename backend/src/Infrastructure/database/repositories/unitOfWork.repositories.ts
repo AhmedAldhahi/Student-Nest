@@ -4,7 +4,7 @@ import { UserRepository } from "./user.repositories";
 import { LandlordRepository } from "./landloard.repositories";
 import { AppDataSource } from "../orm/TypeOrm/data-source";
 import { IStudentRepository } from "../../../Core/repositories/StudentRepositories.repositories";
-
+import { StudentRepository } from "./student.repositories";
 export class UnitOfWork implements IUnitOfWork {
   private queryRunner: QueryRunner | null = null;
 
@@ -22,6 +22,7 @@ export class UnitOfWork implements IUnitOfWork {
     // Inject the TRANSACTIONAL manager into repositories
     this.userRepo = new UserRepository(manager);
     this.landlordRepo = new LandlordRepository(manager);
+    this.studentRepo = new StudentRepository(manager);
   }
 
   async commitTransaction(): Promise<void> {

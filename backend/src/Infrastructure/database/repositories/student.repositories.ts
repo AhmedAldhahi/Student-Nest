@@ -30,7 +30,7 @@ export class StudentRepository implements IStudentRepository {
       console.error("failed to create Student !!", err);
       throw err;
     }
-  }
+  } 
   async updateStudent(user: StudentEntity): Promise<void> {
     try {
       const userEntity = user.getUser();

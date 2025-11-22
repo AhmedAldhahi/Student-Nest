@@ -1,4 +1,3 @@
-import { LoginUseCase } from "../../Application/use-case/LoginUseCase.usecase";
 import {
   makeLoginUseCase,
   makeRegisterLandlordUseCase,
