@@ -1,8 +1,8 @@
 import { IPasswordService } from "../interfaces/IPassword.interface";
 import { IEmailService } from "../interfaces/IEmail.interface";
 
-import { RegisterLandloardRequest } from "../dtos/RegisterLandloardRequest.dtos";
-import { RegisterLandloardRespone } from "../dtos/RegisterLandloardRespone.dtos";
+import { RegisterLandloardRespone } from "../dtos/registeration/RegisterLandloardRespone.dtos";
+import { RegisterLandloardRequest } from "../dtos/registeration/RegisterLandloardRequest.dtos";
 import { v4 as uuidv4 } from "uuid";
 
 import { OTP } from "../../Core/value-object/OTP.vo";
@@ -85,7 +85,8 @@ export class RegisterLandloardUseCase {
     }
 
     return {
-      message: "Landlord registered successfully! Verify your email with the OTP.",
+      message:
+        "Landlord registered successfully! Verify your email with the OTP.",
     };
   }
 }

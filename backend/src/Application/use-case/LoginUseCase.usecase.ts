@@ -1,8 +1,8 @@
 import { IUnitOfWork } from "../../Core/repositories/UnitOfWorkRepositories.repositories";
 import { IPasswordService } from "../interfaces/IPassword.interface";
 import { ITokenService } from "../interfaces/IToken.interface";
-import { LoginRequest } from "../dtos/LoginRequest.dtos";
-import { LoginResponse } from "../dtos/LoginRespone.dtos";
+import { LoginRequest } from "../dtos/registeration/LoginRequest.dtos";
+import { LoginResponse } from "../dtos/registeration/LoginRespone.dtos";
 
 export class LoginUseCase {
   constructor(

@@ -2,8 +2,8 @@ import { ITokenService } from "../interfaces/IToken.interface";
 
 import { IUnitOfWork } from "../../Core/repositories/UnitOfWorkRepositories.repositories";
 import { IPasswordService } from "../interfaces/IPassword.interface";
-import { ForgetPasswordRequest } from "../dtos/ForgetPasswordRequest.dtos";
-
+import { ForgetPasswordRequest } from "../dtos/verfication/ForgetPasswordRequest.dtos";
+import { ForgetPasswordResponse } from "../dtos/verfication/ForgetPasswordRespone.dtos";
 export class ForgetPasswordUseCase {
   constructor(
     private readonly unitOfWork: IUnitOfWork,
@@ -11,7 +11,9 @@ export class ForgetPasswordUseCase {
     private readonly passwordService: IPasswordService
   ) {}
 
-  public async execute(dto: ForgetPasswordRequest) {
+  public async execute(
+    dto: ForgetPasswordRequest
+  ): Promise<ForgetPasswordResponse> {
     await this.unitOfWork.startTransaction();
     try {
       const user = await this.unitOfWork.userRepo.findByEmail(dto.email);

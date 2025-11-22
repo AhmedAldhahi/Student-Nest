@@ -1,5 +1,5 @@
-import { RegisterStudentRequest } from "../dtos/RegisterStudentRequest.dtos";
-import { RegisterStudentRespone } from "../dtos/RegisterStudentRespone.dtos";
+import { RegisterStudentRequest } from "../dtos/registeration/RegisterStudentRequest.dtos";
+import { RegisterStudentRespone } from "../dtos/registeration/RegisterStudentRespone.dtos";
 import { OTP } from "../../Core/value-object/OTP.vo";
 import { v4 as uuidv4 } from "uuid";
 
@@ -52,7 +52,6 @@ export class RegisterStudentUseCase {
     let verificationFilesUrl: string = await this.fileService.upload(
       dto.verificationFile
     );
-
 
     const student = new StudentEntity({
       user: user,
