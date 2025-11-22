@@ -4,7 +4,7 @@
   "description": "Server side for the Student Nest application using Node.js, TypeScript, Express, and clean architecture.",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --pretty --transpile-only ./src/index.ts",
+    "dev": "DEBUG=app:* ts-node-dev --respawn --pretty --transpile-only ./src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
     "postinstall": "npm run build",
@@ -26,6 +26,7 @@
     "@types/uuid": "^8.3.4",
     "@types/yamljs": "^0.2.34",
     "bcrypt": "^6.0.0",
+    "cloudinary": "^2.8.0",
     "config": "^4.1.1",
     "debug": "^4.4.3",
     "dotenv": "^17.2.3",
@@ -40,6 +41,7 @@
     "nanoid": "^5.1.6",
     "nodemailer": "^7.0.10",
     "reflect-metadata": "^0.2.2",
+    "streamifier": "^0.1.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "ts-node": "^10.9.2",
@@ -56,6 +58,7 @@
     "@types/jest": "^30.0.0",
     "@types/morgan": "^1.9.10",
     "@types/multer": "^2.0.0",
+    "@types/streamifier": "^0.1.2",
     "jest": "^30.2.0",
     "ts-node-dev": "^2.0.0",
     "typedoc": "^0.28.14"

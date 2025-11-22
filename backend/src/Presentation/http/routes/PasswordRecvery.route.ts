@@ -1,21 +1,21 @@
-import { Router } from "express";
-import { PasswordRecoverController } from "../controllers/PasswordRecovery.controller";
-import { updateForgetPassword } from "../middlewares/rate-limited/updateForgetPassword.middleware";
-import { ForgetPasswordSchema } from "../validation/PasswordRecovery/passwordRecovert.zod";
-import { validation } from "../middlewares/validation.middleware";
+// import { Router } from "express";
+// import { PasswordRecoverController } from "../controllers/PasswordRecovery.controller";
+// import { updateForgetPassword } from "../middlewares/rate-limited/updateForgetPassword.middleware";
+// import { ForgetPasswordSchema } from "../validation/PasswordRecovery/passwordRecovert.zod";
+// import { validation } from "../middlewares/validation.middleware";
 
-export const PasswordRecoveryRouter = (
-  RecoveryPasswordController: PasswordRecoverController
-): Router => {
-  const router = Router();
+// export const PasswordRecoveryRouter = (
+//   RecoveryPasswordController: PasswordRecoverController
+// ): Router => {
+//   const router = Router();
 
-  /* todo: need to add the flag to check that otp been send and verified or not  */
-  router.patch(
-    "/forget-password",
-    updateForgetPassword,
-    validation(ForgetPasswordSchema),
-    RecoveryPasswordController.changeForgetPassword
-  );
+//   /* todo: need to add the flag to check that otp been send and verified or not  */
+//   router.patch(
+//     "/forget-password",
+//     updateForgetPassword,
+//     validation(ForgetPasswordSchema),
+//     RecoveryPasswordController.changeForgetPassword
+//   );
 
-  return router;
-};
+//   return router;
+// };

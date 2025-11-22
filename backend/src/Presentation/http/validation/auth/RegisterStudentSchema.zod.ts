@@ -1,6 +1,4 @@
 import { z } from "zod";
-import { graduationYearSchema } from "../../../../Shared/utils/zodValidationMethod.util";
-//import { DateOfBirth } from "../../../../Shared/utils/zodValidationMethod.util";
 
 import { hasSequentialNumbers } from "../../../../Shared/utils/zodValidationMethod.util";
 import { UserRole } from "../../../../Core/enum/UserRole.enum";
@@ -31,13 +29,14 @@ const basedUserSchema = z.object({
 
 export const RegisterStudetSchema = basedUserSchema
   .extend({
-    graduatYear: graduationYearSchema,
+    gradateYear: z.string().trim().length(4, "invalid graduate year formate"),
     studentCardId: z.string(),
-    unversityName: z.string(),
+    universityName: z.string(),
     studentGovId: z.string(),
     role: roleEnum.default("student"),
     major: z.string(),
     address: z.string().optional(),
+    verificationFiles: z.any(),
   })
   .strict();
 

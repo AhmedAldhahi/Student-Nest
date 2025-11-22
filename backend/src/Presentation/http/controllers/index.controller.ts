@@ -6,7 +6,11 @@ import { AuthController } from "./Registeration.controller";
 export const buildControllers = () => {
   const { useCases } = buildDependencies();
 
-  const authController = new AuthController(useCases.registerLandlordUseCase);
+  const authController = new AuthController(
+    useCases.registerLandlordUseCase,
+    useCases.registerStudentUseCase,
+    useCases.LoginUseCase
+  );
 
   // Uncomment and initialize when you implement these use cases
   // const verficationController = new VerficationController(
@@ -20,6 +24,7 @@ export const buildControllers = () => {
 
   return {
     authController,
+
     // verficationController,
     // passwordRecoverController
   };

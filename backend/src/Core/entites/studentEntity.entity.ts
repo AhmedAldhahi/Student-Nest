@@ -92,5 +92,9 @@ export class StudentEntity {
 
   public getUser(): UserEntity {
     return this.user;
+  } 
+
+  public getUserId(): string {
+    return this.user.getUserId();
   }
 }

@@ -8,12 +8,13 @@ export interface RegisterStudentRequest {
   role: UserRole.student;
   dateOfBirth: string;
   phoneNumber: string;
+  
   major: string;
   gradateYear: number;
   studentCardId: string;
   universityName: string;
   studentGovId: string;
-  verificationFiles: string;
+  verificationFile: Express.Multer.File;
   
   address?: string;
 }

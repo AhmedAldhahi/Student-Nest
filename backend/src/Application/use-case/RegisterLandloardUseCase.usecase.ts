@@ -85,7 +85,7 @@ export class RegisterLandloardUseCase {
     }
 
     return {
-      message: "User registered successfully! Verify your email with the OTP.",
+      message: "Landlord registered successfully! Verify your email with the OTP.",
     };
   }
 }

@@ -6,10 +6,11 @@ import { LoginUseCase } from "../../../Application/use-case/LoginUseCase.usecase
 
 export class AuthController {
   constructor(
-   // private registerStudentUseCase: RegisterStudentUseCase,
     private registerLandlordUseCase: RegisterLandloardUseCase,
-    //private loginUserUseCase: LoginUseCase
+    private registerStudentUseCase: RegisterStudentUseCase ,
+    private loginUserUseCase: LoginUseCase
   ) {}
+
   public registerLandloard = async (req: Request, res: Response) => {
     try {
       const dto = req.body;
@@ -21,40 +22,101 @@ export class AuthController {
       return res.status(400).json({ err: err.message || "server error" });
     }
   };
-  // public registerStudent = async (
-  //   req: Request,
-  //   res: Response
-  // ): Promise<Response> => {
-  //   try {
-  //     const dto = req.body;
 
-  //     const result = await this.registerStudentUseCase.execute(dto);
+  public registerStudent = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
+    try {
+      // 🔍 DEBUG LOGS (Remove these after it works)
+      console.log("---------------------------------------");
+      console.log("📝 Body Keys:", Object.keys(req.body));
+      console.log("📂 File:", req.file ? "Found" : "Undefined");
+      console.log("---------------------------------------");
 
-  //     return res.status(201).json(result);
-  //   } catch (error: any) {
-  //     if (error.message === "Email already taken.") {
-  //       return res.status(409).json({ message: error.message });
-  //     }
+      // 1. ROBUST FILE EXTRACTION
+      // Handles cases where file is in req.file (Singular) OR req.files (Plural/Global Middleware)
+      let fileToUpload = req.file;
 
-  //     const status = error.statusCode || 400;
-  //     return res
-  //       .status(status)
-  //       .json({ error: error.message || "Server error" });
-  //   }
+      if (!fileToUpload && req.files) {
+        const files: any = req.files;
+        // Check if array
+        if (Array.isArray(files) && files.length > 0) {
+          fileToUpload = files[0];
+        }
+        // Check if object with named keys
+        else if (typeof files === "object") {
+          const keys = Object.keys(files);
+          if (keys.length > 0 && Array.isArray(files[keys[0]])) {
+            fileToUpload = files[keys[0]][0];
+          }
+        }
+      }
+
+      // 2. VALIDATE FILE EXISTENCE
+      if (!fileToUpload) {
+        return res.status(400).json({ error: "Verification file is required" });
+      }
+
+      // 3. CONSTRUCT DTO
+      // We spread ...req.body to capture 'role', 'major', 'dateOfBirth', etc.
+      // We force 'verificationFile' to match the Interface and Use Case.
+      const dto = {
+        ...req.body,
+        verificationFile: fileToUpload,
+      };
+
+      // 4. EXECUTE USE CASE
+      const result = await this.registerStudentUseCase.execute(dto);
+
+      return res.status(201).json({ result });
+    } catch (error: any) {
+      console.error("Controller Error:", error);
+
+      if (error.message === "Email already taken.") {
+        return res.status(409).json({ message: error.message });
+      }
+
+      const status = error.statusCode || 400;
+      return res
+        .status(status)
+        .json({ error: error.message || "Server error" });
+    }
+  };
+
+  // public registerStudent = async (req: Request, res: Response): Promise<any> => {
+  //   // 🚨 DEBUG MODE: DO NOT VALIDATE. JUST SHOW ME THE DATA.
+
+  //   console.log("--------------- DEBUG START ---------------");
+  //   console.log("1. Headers Content-Type:", req.headers['content-type']);
+  //   console.log("2. req.file:", req.file);
+  //   console.log("3. req.files:", req.files);
+  //   console.log("4. req.body:", req.body);
+
+  //   console.log("--------------- DEBUG END -----------------");
+
+  //   // Return the raw data to Apidog so you can see what Multer found
+  //   return res.status(200).json({
+  //       status: "DEBUGGING",
+  //       message: "This is what the server received:",
+  //       file_singular: req.file,   // If upload.single() was used
+  //       files_plural: req.files,   // If upload.any() was used
+  //       text_body: req.body        // Your name, email, etc.
+  //   });
   // };
 
-  // public loginUser = async (req: Request, res: Response): Promise<Response> => {
-  //   try {
-  //     const dto = req.body;
-  //     const result = await this.loginUserUseCase.execute(dto);
+  public loginUser = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const dto = req.body;
+      const result = await this.loginUserUseCase.execute(dto);
 
-  //     return res.status(201).json(result);
-  //   } catch (err: any) {
-  //     const status = err.statusCode || 400;
+      return res.status(201).json(result);
+    } catch (err: any) {
+      const status = err.statusCode || 400;
 
-  //     return res
-  //       .status(status)
-  //       .json({ err: err.message || "internal server error" });
-  //   }
-  // };
+      return res
+        .status(status)
+        .json({ err: err.message || "internal server error" });
+    }
+  };
 }

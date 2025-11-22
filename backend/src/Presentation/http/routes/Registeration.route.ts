@@ -6,7 +6,9 @@ import { RegisterLandloardSchema } from "../validation/auth/RegisterStudentSchem
 import { registerApiRateLimited } from "../middlewares/rate-limited/registerRatLimited.middleware";
 import { loginRateLimited } from "../middlewares/rate-limited/loginRateLimit.middleware";
 import { loginSchema } from "../validation/auth/loginUserSchema.zod";
+import multer from "multer";
 
+const upload = multer({ storage: multer.memoryStorage() });
 /**
  * Creates the auth router.
  * @param authController An instance of AuthController
@@ -18,12 +20,14 @@ export const createAuthRouter = (authController: AuthController): Router => {
 
   // 2. Define the routes and connect them to controller methods
 
-  // router.post(
-  //   "/register/student",
-  //   validation(RegisterStudetSchema),
-  //   registerApiRateLimited,
-  //   authController.registerStudent
-  // );
+  router.post(
+    "/register/student",
+   // upload.any(),
+    upload.single("verificationFile"),
+   validation(RegisterStudetSchema),
+    registerApiRateLimited,
+    authController.registerStudent
+  );
 
   router.post(
     "/register/landlord",
@@ -32,14 +36,13 @@ export const createAuthRouter = (authController: AuthController): Router => {
     authController.registerLandloard
   );
 
-  // router.post(
-  //   "/login",
-  //   validation(loginSchema),
-  //   loginRateLimited,
-  //   authController.loginUser
-  // );
+  router.post(
+    "/login",
+    validation(loginSchema),
+    loginRateLimited,
+    authController.loginUser
+  );
 
- 
   // 3. Return the configured router
   return router;
 };

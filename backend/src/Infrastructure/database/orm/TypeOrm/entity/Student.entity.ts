@@ -13,6 +13,10 @@ export class StudentModel {
   StudentGovId: string;
   @Column({ type: "varchar", length: 100 })
   UniversityName: string;
+
+  @Column({ type: "varchar", length: 200 })
+  verificationFiles: string;
+  
   @PrimaryColumn()
   userId: string; // same id as user
 

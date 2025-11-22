@@ -3,12 +3,14 @@ import { IUnitOfWork } from "../../../Core/repositories/UnitOfWorkRepositories.r
 import { UserRepository } from "./user.repositories";
 import { LandlordRepository } from "./landloard.repositories";
 import { AppDataSource } from "../orm/TypeOrm/data-source";
+import { IStudentRepository } from "../../../Core/repositories/StudentRepositories.repositories";
 
 export class UnitOfWork implements IUnitOfWork {
   private queryRunner: QueryRunner | null = null;
 
   public userRepo!: UserRepository;
   public landlordRepo!: LandlordRepository;
+  public studentRepo!: IStudentRepository;
 
   async startTransaction(): Promise<void> {
     this.queryRunner = AppDataSource.createQueryRunner();

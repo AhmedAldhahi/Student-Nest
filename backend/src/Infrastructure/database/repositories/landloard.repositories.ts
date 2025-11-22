@@ -43,7 +43,6 @@ export class LandlordRepository implements ILandlordRepository {
       const landlordModel = LandlordMapper.toOrm(user);
       landlordModel.user = UserMapper.toOrm(userEntity);
 
-      // ✅ FIXED: Use manager for update too
       await this.manager.update(LandlordModel, { userId: landlordModel.userId }, landlordModel);
     } catch (err: any) {
       console.error("failed to update landlord !!", err);

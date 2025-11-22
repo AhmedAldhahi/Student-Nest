@@ -1,58 +1,54 @@
-import { Repository } from "typeorm";
-// We no longer import AppDataSource here
+import { EntityManager } from "typeorm";
+import { StudentEntity } from "../../../Core/entites/studentEntity.entity";
+import { IStudentRepository } from "../../../Core/repositories/StudentRepositories.repositories";
+import { UserRepository } from "./user.repositories";
+import { StudentModel } from "../orm/TypeOrm/entity/Student.entity";
 import { StudentMapper } from "./student.mapper";
-import { Student as TypeOrmStudent } from "../orm/TypeOrm/entity/Student.entity";
-import { User as TypeOrmUser } from "../orm/TypeOrm/entity/User.entity";
-import { Student as DomainStudent } from "../../../Core/entites/student.entity";
-import { IStudentRepository } from "../../../Core/repositories/StudentRepoitories.repoitories";
+import { UserMapper } from "./user.mapper";
 
 export class StudentRepository implements IStudentRepository {
-  /**
-   * THIS IS THE FIX.
-   * This class needs two repositories, so its constructor
-   * must accept both from the Unit of Work.
-   */
-  constructor(
-    private readonly studentRepository: Repository<TypeOrmStudent>,
-    private readonly userRepository: Repository<TypeOrmUser>
-  ) {}
+  private manager: EntityManager;
+  private userRepo: UserRepository;
 
-  async findByEmail(email: string): Promise<DomainStudent | null> {
-    const user = await this.userRepository.findOne({
-      where: { Email: email },
-    });
-
-    if (!user) {
-      return null;
-    }
-
-    const dbStudent = await this.studentRepository.findOne({
-      where: { user: { userId: user.userId } }, // Corrected find logic
-      relations: ["user"],
-    });
-
-    if (!dbStudent) {
-      return null;
-    }
-
-    return StudentMapper.toDomain(dbStudent);
+  constructor(manager: EntityManager) {
+    this.manager = manager;
+    this.userRepo = new UserRepository(manager);
   }
 
-  async findById(id: string): Promise<DomainStudent | null> {
-    const dbStudent = await this.studentRepository.findOne({
-      where: { user: { userId: id } }, // Corrected find logic
-      relations: ["user"],
-    });
+  async createNewStudent(user: StudentEntity): Promise<void> {
+    try {
+      const userEntity = await user.getUser();
 
-    if (!dbStudent) {
-      return null;
+      // 1. Save User (Uses Transaction Manager)
+      await this.userRepo.addNewUser(userEntity);
+
+      const model = StudentMapper.toModel(user);
+      model.user = UserMapper.toOrm(userEntity);
+
+      await this.manager.save(StudentModel, model);
+    } catch (err: any) {
+      console.error("failed to create Student !!", err);
+      throw err;
     }
-
-    return StudentMapper.toDomain(dbStudent);
   }
+  async updateStudent(user: StudentEntity): Promise<void> {
+    try {
+      const userEntity = user.getUser();
+      await this.userRepo.updateUser(userEntity);
+      const studentModel = StudentMapper.toModel(user);
+      studentModel.user = UserMapper.toOrm(userEntity);
 
-  async save(student: DomainStudent): Promise<void> {
-    const dbStudent = StudentMapper.toPersistence(student);
-    await this.studentRepository.save(dbStudent);
+      // ✅ FIXED: Use manager for update too
+      await this.manager.update(
+        StudentModel,
+        { userId: studentModel.userId },
+        studentModel
+      );
+    } catch (err: any) {
+      console.error("failed to update Student !!", err);
+      throw err;
+    }
   }
 }
+      
+  

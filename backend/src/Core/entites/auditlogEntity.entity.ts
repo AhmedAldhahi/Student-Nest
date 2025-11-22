@@ -1,7 +1,7 @@
 import { AuditLogActionType } from "../enum/AuditLogAction.enum";
 import { UserRole } from "../enum/UserRole.enum";
 
-interface AuditLogData { 
+interface AuditLogData {
   logId: string;
   actionType: AuditLogActionType;
   actionTimestamp: Date;
@@ -19,7 +19,7 @@ interface AuditLogData {
   performedByUserId: string;
   performedByUserName: string;
   performedByUserRole: UserRole;
-} 
+}
 
 export class AuditLogEntity {
   private logId: string;
