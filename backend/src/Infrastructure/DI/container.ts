@@ -2,14 +2,14 @@ import {
   makeLoginUseCase,
   makeRegisterLandlordUseCase,
   makeRegisterStudentUseCase,
-} from "./usecase.DI";
+} from "./auth.DI";
 
 import {
   makeVerifiedEmailOTP,
   makeResendEmailOTP,
   makeUpdateForgetPass,
+  makeResendForgetPassword,
 } from "./verfication.DI";
-
 
 export function buildDependencies() {
   return {
@@ -20,6 +20,7 @@ export function buildDependencies() {
       verifiedOTPUseCase: makeVerifiedEmailOTP(),
       resendOTPUseCase: makeResendEmailOTP(),
       forgetPasswordUseCase: makeUpdateForgetPass(),
+      resendOtpForgetPassword: makeResendForgetPassword(),
     },
   };
 }

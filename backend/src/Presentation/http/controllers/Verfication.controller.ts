@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { VerifiedOtpUseCase } from "../../../Application/use-case/VerfiedOtpUseCase.usecase";
 import { ResendOtpUseCase } from "../../../Application/use-case/ResendOtpUseCase.usecase";
-
+import { ResendOtpForgetPasswordUseCase } from "../../../Application/use-case/ResendOtpForgetPasswordUseCase.usecase";
 export class VerificationController {
   constructor(
     private readonly resendOtpUseCase: ResendOtpUseCase,
-    private readonly verifiedOtpUseCase: VerifiedOtpUseCase
+    private readonly verifiedOtpUseCase: VerifiedOtpUseCase,
   ) {}
 
   public createResendOtp = async (req: Request, res: Response) => {
@@ -24,6 +24,8 @@ export class VerificationController {
         .json({ error: error.message || "server Error" });
     }
   };
+
+
 
   public createVerifiedOtp = async (req: Request, res: Response) => {
     try {

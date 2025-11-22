@@ -21,7 +21,6 @@ export class ResendOtpUseCase {
     const otp = OTP.generate();
 
     const otpvalue = otp.getValue();
-    const otpExpired = otp.getExpiresAt();
 
     try {
       const user = await this.unitOfWork.userRepo.findByEmail(dto.email);
@@ -32,10 +31,9 @@ export class ResendOtpUseCase {
       user.setOtpForEmail(otp); 
       console.log(user.getOtpForEmail(), user.getOtpExpiredForEmail());
       
-      //user.otpe(otpExpired);
 
-      // Persist changes
       await this.unitOfWork.userRepo.addNewUser(user);
+      
       //console.log(user.getPassword());
 
       // Send OTP email after saving to DB

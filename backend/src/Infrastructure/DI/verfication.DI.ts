@@ -5,6 +5,7 @@ import { ResendOtpUseCase } from "../../Application/use-case/ResendOtpUseCase.us
 import { NodemailerService } from "../services/email/NodemailerService.service";
 import { ForgetPasswordUseCase } from "../../Application/use-case/ForgetPasswordUseCase.usecase";
 import { BcryptPasswordHasher } from "../services/BcryptPasswordHasher.service";
+import { ResendOtpForgetPasswordUseCase } from "../../Application/use-case/ResendOtpForgetPasswordUseCase.usecase";
 
 export function makeVerifiedEmailOTP(): VerifiedOtpUseCase {
   const unitOfrWork = new UnitOfWork();
@@ -26,4 +27,11 @@ export function makeUpdateForgetPass(): ForgetPasswordUseCase {
   const passwordService = new BcryptPasswordHasher();
 
   return new ForgetPasswordUseCase(unitOfrWork, token, passwordService);
+}
+
+export function makeResendForgetPassword(): ResendOtpForgetPasswordUseCase {
+  const unitOfrWork = new UnitOfWork();
+  const emailService = new NodemailerService();
+
+  return new ResendOtpForgetPasswordUseCase(emailService, unitOfrWork);
 }
