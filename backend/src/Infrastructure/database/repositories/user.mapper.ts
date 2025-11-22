@@ -6,6 +6,7 @@ import { UserName } from "../../../Core/value-object/UserName.vo";
 import { userPhoneNumber } from "../../../Core/value-object/UserPhoneNumber.vo";
 import { UserModel } from "../orm/TypeOrm/entity/User.entity";
 import { UserRole } from "../../../Core/enum/UserRole.enum";
+
 export class UserMapper {
   public static toOrm(user: UserEntity): UserModel {
     const userModel = new UserModel();
@@ -20,19 +21,18 @@ export class UserMapper {
     // OTP Email
     userModel.otpCode = user.getOtpForEmail() ?? null;
     userModel.otpExpired = user.getOtpExpiredForEmail() ?? null;
-
     userModel.emailVerfied = user.getVerifiedEmail();
 
     // OTP Reset Password
     userModel.OtpResetPasswordCode = user.getOTPForResetPassword() ?? null;
     userModel.OtpExpiredResetPassword =
       user.getOTPExpiredDateForResetPassword() ?? null;
-
     userModel.resetPasswordVerified = user.getVerifiedResetPassword();
 
     // Optional
     userModel.Address = user.getAddress();
     userModel.Photo = user.getPhoto();
+
     return userModel;
   }
 
@@ -49,19 +49,23 @@ export class UserMapper {
       photo: user.Photo,
     });
 
+    // Map Email OTP
     if (user.otpCode) {
       userEntity.setOtpForEmail(new OTP(user.otpCode));
     }
+
+    // Map Reset Password OTP
     if (user.OtpResetPasswordCode) {
       userEntity.setOTPForResetPassword(new OTP(user.OtpResetPasswordCode));
-    } 
+    }
 
+    // Map verified flags
     if (user.emailVerfied) {
-      userEntity.verifiedEmail(); 
-    } 
+      userEntity.verifiedEmail();
+    }
 
     if (user.resetPasswordVerified) {
-      userEntity.verifiedResetPasswordOTP;
+      userEntity.verifyResetPassword(); // ✅ correctly set verified flag
     }
 
     return userEntity;

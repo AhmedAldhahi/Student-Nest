@@ -19,6 +19,12 @@ export class ForgetPasswordUseCase {
         throw new Error("no user been found !!");
       }
 
+      if (!user.getVerifiedResetPassword()) {
+        throw new Error(
+          "the user have to verified otp before update password !!"
+        );
+      }
+
       const currentHashedPassword = user.getPass();
 
       const isUsedBefore = await this.passwordService.compare(
