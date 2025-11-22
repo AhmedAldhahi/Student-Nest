@@ -194,17 +194,27 @@ export class UserEntity {
    * Throws if OTP missing or already verified.
    */
   public verifiedResetPasswordOTP(clientOTP: string) {
-    if (!this.resetPasswordOTP) throw new Error("no otp been set !!");
-    const result = this.resetPasswordOTP.verfiedOtp(clientOTP);
+    if (this.resetPasswordVerified)
+      throw new Error("reset password been verified !!");
+
+    if (!this.resetPasswordOTP) throw new Error("no otp been reset !!");
+
+    if (new Date() > this.resetPasswordOTP.getExpiresAt())
+      throw new Error("otp expired !!");
+
+    const verified = this.resetPasswordOTP.verfiedOtp(clientOTP);
+
+    if (!verified) throw new Error("invalid otp !!");
+
     if (this.resetPasswordVerified)
       throw new Error("the user email is already verified ");
 
-    this.resetPasswordVerified = result;
+    this.resetPasswordVerified = true;
     this.clearResetPasswordOTP();
   }
 
   /** Clears reset password OTP after verification. */
-  private clearResetPasswordOTP() {
+  public clearResetPasswordOTP() {
     this.resetPasswordOTP = null;
   }
 

@@ -9,6 +9,7 @@ import {
   makeResendEmailOTP,
   makeUpdateForgetPass,
   makeResendForgetPassword,
+  makeVerfiedForgetPasswordOTP,
 } from "./verfication.DI";
 
 export function buildDependencies() {
@@ -21,6 +22,7 @@ export function buildDependencies() {
       resendOTPUseCase: makeResendEmailOTP(),
       forgetPasswordUseCase: makeUpdateForgetPass(),
       resendOtpForgetPassword: makeResendForgetPassword(),
+      verfiedForgetPasswordUseCase: makeVerfiedForgetPasswordOTP(),
     },
   };
 }

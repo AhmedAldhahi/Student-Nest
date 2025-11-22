@@ -21,7 +21,8 @@ export const buildControllers = () => {
 
   const passwordRecoverController = new PasswordRecoverController(
     useCases.forgetPasswordUseCase,
-    useCases.resendOtpForgetPassword
+    useCases.resendOtpForgetPassword,
+    useCases.verfiedForgetPasswordUseCase
   );
 
   return {

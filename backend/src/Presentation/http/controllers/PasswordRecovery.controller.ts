@@ -1,11 +1,13 @@
 import { ForgetPasswordUseCase } from "../../../Application/use-case/ForgetPasswordUseCase.usecase";
 import { Request, Response } from "express";
 import { ResendOtpForgetPasswordUseCase } from "../../../Application/use-case/ResendOtpForgetPasswordUseCase.usecase";
+import { VerifiedForgetPasswordOtpUseCase } from "../../../Application/use-case/VerfiedForgetPasswordOtpUseCase.usecase";
 
 export class PasswordRecoverController {
   constructor(
     private readonly forgetPassword: ForgetPasswordUseCase,
-    private readonly resendOtpForgetPassUseCase: ResendOtpForgetPasswordUseCase
+    private readonly resendOtpForgetPassUseCase: ResendOtpForgetPasswordUseCase,
+    private readonly verifiedOtpForgetPassUseCase: VerifiedForgetPasswordOtpUseCase
   ) {}
 
   public changeForgetPassword = async (
@@ -36,6 +38,19 @@ export class PasswordRecoverController {
       res.status(201).json(result);
     } catch (err: any) {
       res.status(400).json({ err: err.message || "server Error" });
+    }
+  };
+
+  public createVerifiedResendPasswordOTP = async (
+    req: Request,
+    res: Response
+  ) => {
+    try {
+      const dto = req.body;
+      const result = await this.verifiedOtpForgetPassUseCase.execute(dto);
+      res.status(201).json(result);
+    } catch (err: any) {
+      res.status(400).json({ err: err.message || "server Error " });
     }
   };
 }
