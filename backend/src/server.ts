@@ -155,8 +155,6 @@
 //       })
 //     );
 
-
-
 //     // Routes
 //     const { authController } = buildControllers();
 //     this.app.use("/api/v1/auth", createAuthRouter(authController));
@@ -189,7 +187,7 @@ import { AppDataSource } from "./Infrastructure/database/orm/TypeOrm/data-source
 import { setupSwagger } from "./Presentation/documentation/swagger/swagger.config";
 import { createAuthRouter } from "./Presentation/http/routes/Registeration.route";
 import { buildControllers } from "./Presentation/http/controllers/index.controller";
-
+import { createVerficationRouter } from "./Presentation/http/routes/Verfication.route";
 export class Server {
   public app = express();
   public port = parseInt(process.env.PORT || "4000", 10);
@@ -198,12 +196,12 @@ export class Server {
   private dbDebug = debug("app:db");
   private httpDebug = debug("app:http");
 
-  async configure() { 
+  async configure() {
     this.app.use((req, res, next) => {
       console.log("🔥 REQUEST HIT SERVER:", req.method, req.url);
       next();
-  });
-        
+    });
+
     // Database
     try {
       await AppDataSource.initialize();
@@ -231,7 +229,7 @@ export class Server {
 
     // ❌ DELETE THIS SECTION (This was causing the error)
     // const upload = multer({ storage: multer.memoryStorage() });
-    // this.app.use(upload.any()); 
+    // this.app.use(upload.any());
     // --------------------------------------------------------
 
     // JSON parse error handler
@@ -277,8 +275,9 @@ export class Server {
     // });
 
     // Routes
-    const { authController } = buildControllers();
+    const { authController, verificationController } = buildControllers();
     this.app.use("/api/v1/auth", createAuthRouter(authController));
+    this.app.use("/api/v1/", createVerficationRouter(verificationController));
 
     // Swagger
     setupSwagger(this.app);

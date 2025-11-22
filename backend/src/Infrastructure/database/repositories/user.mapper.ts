@@ -21,10 +21,14 @@ export class UserMapper {
     userModel.otpCode = user.getOtpForEmail() ?? null;
     userModel.otpExpired = user.getOtpExpiredForEmail() ?? null;
 
+    userModel.emailVerfied = user.getVerifiedEmail();
+
     // OTP Reset Password
     userModel.OtpResetPasswordCode = user.getOTPForResetPassword() ?? null;
     userModel.OtpExpiredResetPassword =
       user.getOTPExpiredDateForResetPassword() ?? null;
+
+    userModel.resetPasswordVerified = user.getVerifiedResetPassword();
 
     // Optional
     userModel.Address = user.getAddress();
@@ -50,6 +54,14 @@ export class UserMapper {
     }
     if (user.OtpResetPasswordCode) {
       userEntity.setOTPForResetPassword(new OTP(user.OtpResetPasswordCode));
+    } 
+
+    if (user.emailVerfied) {
+      userEntity.verifiedEmail(); 
+    } 
+
+    if (user.resetPasswordVerified) {
+      userEntity.verifiedResetPasswordOTP;
     }
 
     return userEntity;

@@ -1,6 +1,6 @@
 import { buildDependencies } from "../../../Infrastructure/DI/container";
 import { AuthController } from "./Registeration.controller";
-// import { VerficationController } from "./Verfication.controller";
+import { VerificationController } from "./Verfication.controller";
 // import { PasswordRecoverController } from "./PasswordRecovery.controller";
 
 export const buildControllers = () => {
@@ -13,10 +13,10 @@ export const buildControllers = () => {
   );
 
   // Uncomment and initialize when you implement these use cases
-  // const verficationController = new VerficationController(
-  //   useCases.resendOtpUseCase,
-  //   useCases.verifiedOtpUseCase
-  // );
+  const verificationController = new VerificationController(
+    // useCases.resendOtpUseCase,
+    useCases.verifiedOTP
+  );
 
   // const passwordRecoverController = new PasswordRecoverController(
   //   useCases.forgetPasswordUseCase
@@ -24,6 +24,7 @@ export const buildControllers = () => {
 
   return {
     authController,
+    verificationController,
 
     // verficationController,
     // passwordRecoverController

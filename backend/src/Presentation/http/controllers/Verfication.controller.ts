@@ -1,14 +1,14 @@
-// import { ResendOtpUseCase } from "../../../Application/use-case/ResendOtpUseCase.usecase";
-// import { Request, Response } from "express";
-// import { VerifiedOtpUseCase } from "../../../Application/use-case/VerfiedOtpUseCase.usecase";
+//import { ResendOtpUseCase } from "../../../Application/use-case/ResendOtpUseCase.usecase";
+import { Request, Response } from "express";
+import { VerifiedOtpUseCase } from "../../../Application/use-case/VerfiedOtpUseCase.usecase";
 
-// export class VerficationController {
-//   constructor(
-//     private readonly resendOtpUseCase: ResendOtpUseCase,
-//     private readonly verfiedOtpUseCase: VerifiedOtpUseCase
-//   ) {}
+export class VerificationController {
+  constructor(
+  //  private readonly resendOtpUseCase: ResendOtpUseCase,
+    private readonly verifiedOtpUseCase: VerifiedOtpUseCase
+  ) {}
 
-//   // ✅ Fix: Change to an arrow function to bind 'this'
+  // ✅ Fix: Change to an arrow function to bind 'this'
 //   public createResendOtp = async (req: Request, res: Response) => {
 //     try {
 //       const dto = req.body;
@@ -28,13 +28,13 @@
 //     }
 //   };
 
-//   public createVerfiedOtp = async (req: Request, res: Response) => {
-//     try {
-//       const dto = req.body;
-//       const result = await this.verfiedOtpUseCase.execute(dto);
-//       return res.status(200).json(result);
-//     } catch (err: any) { 
-//       return res.status(400).json({ message: err.message });
-//     }
-//   };
-// }
+  public createVerifiedOtp = async (req: Request, res: Response) => {
+    try {
+      const dto = req.body;
+      const result = await this.verifiedOtpUseCase.execute(dto);
+      return res.status(200).json(result);
+    } catch (err: any) { 
+      return res.status(400).json({ message: err.message });
+    }
+  };
+}

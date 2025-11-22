@@ -139,18 +139,23 @@ export class UserEntity {
    * Throws error if already verified or OTP missing.
    */
   public verifiedEmailOTP(clientOTP: string) {
-    if (this.emailVerified)
-      throw new Error("the user email is already verified ");
-    if (!this.emailOTP) throw new Error("no otp been set !!");
+    if (this.emailVerified) throw new Error("Email already verified.");
+    if (!this.emailOTP) throw new Error("No OTP set for email verification.");
 
-    const result = this.emailOTP.verfiedOtp(clientOTP);
+    // Check if OTP is expired
+    if (new Date() > this.emailOTP.getExpiresAt())
+      throw new Error("OTP expired.");
 
-    this.emailVerified = result;
+    const verified = this.emailOTP.verfiedOtp(clientOTP); // returns true if valid
+    if (!verified) throw new Error("Invalid OTP code.");
+
+    this.emailVerified = true;
+
     this.clearEmailOTP();
   }
 
   /** Clears email OTP after verification. */
-  private clearEmailOTP() {
+  public clearEmailOTP() {
     this.emailOTP = null;
   }
 

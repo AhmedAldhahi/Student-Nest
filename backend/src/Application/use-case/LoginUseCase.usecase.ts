@@ -31,6 +31,7 @@ export class LoginUseCase {
       if (!isValid) {
         throw new Error("the password or email not correct 1 ");
       }
+      const verifiedEmail = user.getVerifiedEmail();
 
       // be ready to
       await this.unitOfWork.userRepo.addNewUser(user);
@@ -46,6 +47,7 @@ export class LoginUseCase {
       return {
         message: "user login scussfuly",
         token: Token,
+        verifiedEmail: verifiedEmail,
       };
     } catch (err: any) {
       await this.unitOfWork.rollbackTransaction();
