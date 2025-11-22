@@ -13,12 +13,12 @@ export const createVerficationRouter = (
 ): Router => {
   const router = Router();
 
-  //   router.post(
-  //     "/resend-otp",
-  //     validation(resendOtpSchema),
-  //     otpResendRateLimited,
-  //     verficationController.createResendOtp
-  //   );
+  router.post(
+    "/resend-otp",
+    validation(resendOtpSchema),
+    otpResendRateLimited,
+    verificationController.createResendOtp
+  );
 
   router.post(
     "/verified-otp",
@@ -29,7 +29,7 @@ export const createVerficationRouter = (
   );
 
   //TODO: need to do
-//   router.get("/verification-status");
+  //   router.get("/verification-status");
 
   return router;
 };

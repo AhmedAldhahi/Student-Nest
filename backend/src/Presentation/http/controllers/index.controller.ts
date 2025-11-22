@@ -14,8 +14,8 @@ export const buildControllers = () => {
 
   // Uncomment and initialize when you implement these use cases
   const verificationController = new VerificationController(
-    // useCases.resendOtpUseCase,
-    useCases.verifiedOTP
+    useCases.resendOTPUseCase,
+    useCases.verifiedOTPUseCase
   );
 
   // const passwordRecoverController = new PasswordRecoverController(
