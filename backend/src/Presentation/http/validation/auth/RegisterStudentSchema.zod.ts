@@ -33,7 +33,7 @@ export const RegisterStudetSchema = basedUserSchema
     studentCardId: z.string(),
     universityName: z.string(),
     studentGovId: z.string(),
-    role: roleEnum.default("student"),
+    role: z.literal("student"),
     major: z.string(),
     address: z.string().optional(),
     verificationFiles: z.any(),
@@ -44,6 +44,6 @@ export const RegisterLandloardSchema = basedUserSchema
   .extend({
     cliQAccount: z.string(),
     LandloardGovId: z.string(),
-    role: roleEnum.default("landloard"),
+    role: z.literal("landloard"),
   })
   .strict();

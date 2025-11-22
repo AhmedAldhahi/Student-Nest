@@ -1,4 +1,5 @@
 import { buildDependencies } from "../../../Infrastructure/DI/container";
+import { PasswordRecoverController } from "./PasswordRecovery.controller";
 import { AuthController } from "./Registeration.controller";
 import { VerificationController } from "./Verfication.controller";
 // import { PasswordRecoverController } from "./PasswordRecovery.controller";
@@ -18,15 +19,13 @@ export const buildControllers = () => {
     useCases.verifiedOTPUseCase
   );
 
-  // const passwordRecoverController = new PasswordRecoverController(
-  //   useCases.forgetPasswordUseCase
-  // );
+  const passwordRecoverController = new PasswordRecoverController(
+    useCases.forgetPasswordUseCase
+  );
 
   return {
     authController,
     verificationController,
-
-    // verficationController,
-    // passwordRecoverController
+    passwordRecoverController,
   };
 };

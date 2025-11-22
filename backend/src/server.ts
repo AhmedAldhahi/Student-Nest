@@ -188,6 +188,8 @@ import { setupSwagger } from "./Presentation/documentation/swagger/swagger.confi
 import { createAuthRouter } from "./Presentation/http/routes/Registeration.route";
 import { buildControllers } from "./Presentation/http/controllers/index.controller";
 import { createVerficationRouter } from "./Presentation/http/routes/Verfication.route";
+import { PasswordRecoveryRouter } from "./Presentation/http/routes/PasswordRecvery.route";
+import { PasswordRecoverController } from "./Presentation/http/controllers/PasswordRecovery.controller";
 export class Server {
   public app = express();
   public port = parseInt(process.env.PORT || "4000", 10);
@@ -259,25 +261,19 @@ export class Server {
       })
     );
 
-    // ✅ DEBUG ROUTE (Test this in Apidog now)
-    // const debugUpload = multer({ storage: multer.memoryStorage() });
-    // this.app.post("/debug-upload", debugUpload.single("verificationFile"), (req, res) => {
-    //     console.log("-------------------------------- DEBUG START");
-    //     console.log("1. Content-Type:", req.headers['content-type']);
-    //     console.log("2. Body:", req.body);
-    //     console.log("3. File:", req.file); // THIS MUST BE AN OBJECT, NOT UNDEFINED
-    //     console.log("-------------------------------- DEBUG END");
-
-    //     if (req.file) {
-    //         return res.send({ status: "SUCCESS", file: req.file.originalname });
-    //     }
-    //     return res.status(400).send({ status: "FAILED", message: "Req.file is undefined" });
-    // });
-
     // Routes
-    const { authController, verificationController } = buildControllers();
+    const {
+      authController,
+      verificationController,
+      passwordRecoverController,
+    } = buildControllers();
     this.app.use("/api/v1/auth", createAuthRouter(authController));
     this.app.use("/api/v1/", createVerficationRouter(verificationController));
+
+    this.app.use(
+      "/api/v1/password-recovery",
+      PasswordRecoveryRouter(passwordRecoverController)
+    );
 
     // Swagger
     setupSwagger(this.app);

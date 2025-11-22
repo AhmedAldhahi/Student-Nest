@@ -3,6 +3,8 @@ import { JwtTokenService } from "../services/TokenService.service";
 import { UnitOfWork } from "../database/repositories/unitOfWork.repositories";
 import { ResendOtpUseCase } from "../../Application/use-case/ResendOtpUseCase.usecase";
 import { NodemailerService } from "../services/email/NodemailerService.service";
+import { ForgetPasswordUseCase } from "../../Application/use-case/ForgetPasswordUseCase.usecase";
+import { BcryptPasswordHasher } from "../services/BcryptPasswordHasher.service";
 
 export function makeVerifiedEmailOTP(): VerifiedOtpUseCase {
   const unitOfrWork = new UnitOfWork();
@@ -16,4 +18,12 @@ export function makeResendEmailOTP(): ResendOtpUseCase {
   const emailService = new NodemailerService();
 
   return new ResendOtpUseCase(emailService, unitOfrWork);
+}
+
+export function makeUpdateForgetPass(): ForgetPasswordUseCase {
+  const unitOfrWork = new UnitOfWork();
+  const token = new JwtTokenService();
+  const passwordService = new BcryptPasswordHasher();
+
+  return new ForgetPasswordUseCase(unitOfrWork, token, passwordService);
 }

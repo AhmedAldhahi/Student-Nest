@@ -4,7 +4,13 @@ import {
   makeRegisterStudentUseCase,
 } from "./usecase.DI";
 
-import { makeVerifiedEmailOTP, makeResendEmailOTP } from "./verfication.DI";
+import {
+  makeVerifiedEmailOTP,
+  makeResendEmailOTP,
+  makeUpdateForgetPass,
+} from "./verfication.DI";
+
+
 export function buildDependencies() {
   return {
     useCases: {
@@ -13,6 +19,7 @@ export function buildDependencies() {
       LoginUseCase: makeLoginUseCase(),
       verifiedOTPUseCase: makeVerifiedEmailOTP(),
       resendOTPUseCase: makeResendEmailOTP(),
+      forgetPasswordUseCase: makeUpdateForgetPass(),
     },
   };
 }
