@@ -6,12 +6,17 @@ dotenv.config();
 
 export const AppDataSource = new DataSource({
   type: "mysql",
-  host: "localhost", // Or "127.0.0.1"
-  port: 3306,        // <-- Port goes here
-  password: process.env.DATABASE_Pass_DEv,
-  username: process.env.DATABASE_USERNAME,
-  database: "TEST",
-//  url: process.env.DATABASE_URL,
+  // host: "localhost", // Or "127.0.0.1"
+  // port: 3306,        // <-- Port goes here
+  // password: process.env.DATABASE_Pass_DEv,
+  // username: process.env.DATABASE_USERNAME,
+  // database: "TEST",
+  url: process.env.DATABASE_URL,
+  extra: {
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  },
 
   synchronize: true,
   logging: false,
@@ -19,4 +24,3 @@ export const AppDataSource = new DataSource({
   migrations: [],
   subscribers: [],
 });
-
