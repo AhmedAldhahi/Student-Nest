@@ -1,14 +1,14 @@
 import { Router } from "express";
-import { PasswordRecoverController } from "../controllers/PasswordRecovery.controller";
-import { updateForgetPassword } from "../middlewares/rate-limited/updateForgetPassword.middleware";
-import { otpResendRateLimited } from "../middlewares/rate-limited/otpResendRateLimited.middleware";
-import { ForgetPasswordSchema } from "../validation/PasswordRecovery/passwordRecovert.zod";
+import { PasswordRecoverController } from "../../controllers/PasswordRecovery.controller";
+import { updateForgetPassword } from "../../middlewares/rate-limited/updateForgetPassword.middleware";
+import { otpResendRateLimited } from "../../middlewares/rate-limited/otpResendRateLimited.middleware";
+import { ForgetPasswordSchema } from "../../validation/PasswordRecovery/passwordRecovert.zod";
 import {
   resendOtpSchema,
   VerifiedOTpSchema,
-} from "../validation/verfication/VerficationSchema.zod";
-import { validation } from "../middlewares/validation.middleware";
-import { otpVerifyRateLimited } from "../middlewares/rate-limited/otpVerifyRateLimited.middleware";
+} from "../../validation/verfication/VerficationSchema.zod";
+import { validation } from "../../middlewares/validation.middleware";
+import { otpVerifyRateLimited } from "../../middlewares/rate-limited/otpVerifyRateLimited.middleware";
 
 export const PasswordRecoveryRouter = (
   RecoveryPasswordController: PasswordRecoverController

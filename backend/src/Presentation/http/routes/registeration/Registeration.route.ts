@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { AuthController } from "../controllers/Registeration.controller";
-import { validation } from "../middlewares/validation.middleware";
-import { RegisterStudetSchema } from "../validation/auth/RegisterStudentSchema.zod";
-import { RegisterLandloardSchema } from "../validation/auth/RegisterStudentSchema.zod";
-import { registerApiRateLimited } from "../middlewares/rate-limited/registerRatLimited.middleware";
-import { loginRateLimited } from "../middlewares/rate-limited/loginRateLimit.middleware";
-import { loginSchema } from "../validation/auth/loginUserSchema.zod";
+import { AuthController } from "../../controllers/Registeration.controller";
+import { validation } from "../../middlewares/validation.middleware";
+import { RegisterStudetSchema } from "../../validation/auth/RegisterStudentSchema.zod";
+import { RegisterLandloardSchema } from "../../validation/auth/RegisterStudentSchema.zod";
+import { registerApiRateLimited } from "../../middlewares/rate-limited/registerRatLimited.middleware";
+import { loginRateLimited } from "../../middlewares/rate-limited/loginRateLimit.middleware";
+import { loginSchema } from "../../validation/auth/loginUserSchema.zod";
 import multer from "multer";
 
 const upload = multer({ storage: multer.memoryStorage() });

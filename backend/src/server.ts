@@ -5,14 +5,13 @@ import morgan from "morgan";
 import winston from "winston";
 import expressWinston from "express-winston";
 import debug from "debug";
-import multer from "multer"; // Import once
+import cors from "cors";
 import { AppDataSource } from "./Infrastructure/database/orm/TypeOrm/data-source";
 import { setupSwagger } from "./Presentation/documentation/swagger/swagger.config";
-import { createAuthRouter } from "./Presentation/http/routes/Registeration.route";
+import { createAuthRouter } from "./Presentation/http/routes/registeration/Registeration.route";
 import { buildControllers } from "./Presentation/http/controllers/index.controller";
-import { createVerficationRouter } from "./Presentation/http/routes/Verfication.route";
-import { PasswordRecoveryRouter } from "./Presentation/http/routes/PasswordRecvery.route";
-import { PasswordRecoverController } from "./Presentation/http/controllers/PasswordRecovery.controller";
+import { createVerficationRouter } from "./Presentation/http/routes/registeration/Verfication.route";
+import { PasswordRecoveryRouter } from "./Presentation/http/routes/registeration/PasswordRecvery.route";
 export class Server {
   public app = express();
   public port = parseInt(process.env.PORT || "4000", 10);
@@ -52,11 +51,6 @@ export class Server {
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json());
 
-    // ❌ DELETE THIS SECTION (This was causing the error)
-    // const upload = multer({ storage: multer.memoryStorage() });
-    // this.app.use(upload.any());
-    // --------------------------------------------------------
-
     // JSON parse error handler
     this.app.use((err: any, req: any, res: any, next: any) => {
       if (err instanceof SyntaxError && "body" in err) {
@@ -81,6 +75,16 @@ export class Server {
           winston.format.timestamp(),
           winston.format.json()
         ),
+      })
+    );
+
+    this.app.options("*", cors());
+
+    this.app.use(
+      cors({
+        origin: ["http://localhost:5173", "http://localhost:8081"],
+        methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+        credentials: true,
       })
     );
 

@@ -7,7 +7,6 @@ import { LandlordMapper } from "./landloard.mapper";
 import { UserMapper } from "./user.mapper";
 
 export class LandlordRepository implements ILandlordRepository {
-  //  REMOVED: private repo = AppDataSource.getRepository(LandlordModel);
   
   private manager: EntityManager;
   private userRepo: UserRepository;
