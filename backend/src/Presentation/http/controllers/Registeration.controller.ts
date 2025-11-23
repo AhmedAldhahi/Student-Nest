@@ -17,9 +17,9 @@ export class AuthController {
       const result = await this.registerLandlordUseCase.execute(dto);
       // scussfuly
       return res.status(201).json(result);
-    } catch (err: any) {
-      const status = err.statusCode;
-      return res.status(400).json({ err: err.message || "server error" });
+    } catch (error: any) {
+      const status = error.statusCode;
+      return res.status(400).json({ error: error.message || "server error" });
     }
   };
 
@@ -28,14 +28,6 @@ export class AuthController {
     res: Response
   ): Promise<any> => {
     try {
-      // 🔍 DEBUG LOGS (Remove these after it works)
-      console.log("---------------------------------------");
-      console.log("📝 Body Keys:", Object.keys(req.body));
-      console.log("📂 File:", req.file ? "Found" : "Undefined");
-      console.log("---------------------------------------");
-
-      // 1. ROBUST FILE EXTRACTION
-      // Handles cases where file is in req.file (Singular) OR req.files (Plural/Global Middleware)
       let fileToUpload = req.file;
 
       if (!fileToUpload && req.files) {
@@ -58,9 +50,6 @@ export class AuthController {
         return res.status(400).json({ error: "Verification file is required" });
       }
 
-      // 3. CONSTRUCT DTO
-      // We spread ...req.body to capture 'role', 'major', 'dateOfBirth', etc.
-      // We force 'verificationFile' to match the Interface and Use Case.
       const dto = {
         ...req.body,
         verificationFile: fileToUpload,
@@ -90,12 +79,12 @@ export class AuthController {
       const result = await this.loginUserUseCase.execute(dto);
 
       return res.status(201).json(result);
-    } catch (err: any) {
-      const status = err.statusCode || 400;
+    } catch (error: any) {
+      const status = error.statusCode || 400;
 
       return res
         .status(status)
-        .json({ err: err.message || "internal server error" });
+        .json({ error: error.message || "internal server error" });
     }
   };
 }

@@ -19,12 +19,12 @@ export class PasswordRecoverController {
       const result = await this.forgetPassword.execute(dto);
 
       return res.status(200).json(result);
-    } catch (err: any) {
+    } catch (error: any) {
       console.log("failed to update forgetting password !!");
-      const status = err.statusCode || 400;
+      const status = error.statusCode || 400;
       return res
         .status(status)
-        .json({ message: err.message || "failed password change" });
+        .json({ message: error.message || "failed password change" });
     }
   };
 
@@ -36,8 +36,8 @@ export class PasswordRecoverController {
       const dto = req.body;
       const result = await this.resendOtpForgetPassUseCase.excute(dto);
       res.status(201).json(result);
-    } catch (err: any) {
-      res.status(400).json({ err: err.message || "server Error" });
+    } catch (error: any) {
+      res.status(400).json({ error: error.message || "server Error" });
     }
   };
 
@@ -49,8 +49,8 @@ export class PasswordRecoverController {
       const dto = req.body;
       const result = await this.verifiedOtpForgetPassUseCase.execute(dto);
       res.status(201).json(result);
-    } catch (err: any) {
-      res.status(400).json({ err: err.message || "server Error " });
+    } catch (error: any) {
+      res.status(400).json({ err: error.message || "server Error " });
     }
   };
 }

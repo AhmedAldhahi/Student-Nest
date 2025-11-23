@@ -32,8 +32,8 @@ export class VerificationController {
       const dto = req.body;
       const result = await this.verifiedOtpUseCase.execute(dto);
       return res.status(200).json(result);
-    } catch (err: any) {
-      return res.status(400).json({ message: err.message });
+    } catch (error: any) {
+      return res.status(400).json({ message: error.message });
     }
   };
 }
