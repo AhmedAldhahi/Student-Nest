@@ -2,7 +2,8 @@ import { VerifiedOtpUseCase } from "../../Application/use-case/VerfiedOtpUseCase
 import { JwtTokenService } from "../services/TokenService.service";
 import { UnitOfWork } from "../database/repositories/unitOfWork.repositories";
 import { ResendOtpUseCase } from "../../Application/use-case/ResendOtpUseCase.usecase";
-import { NodemailerService } from "../services/email/NodemailerService.service";
+//import { NodemailerService } from "../services/email/NodemailerService.service";
+import {MailerSendAdapter} from "../services/email/MailresenderService.service"
 import { ForgetPasswordUseCase } from "../../Application/use-case/ForgetPasswordUseCase.usecase";
 import { BcryptPasswordHasher } from "../services/BcryptPasswordHasher.service";
 import { ResendOtpForgetPasswordUseCase } from "../../Application/use-case/ResendOtpForgetPasswordUseCase.usecase";
@@ -17,7 +18,8 @@ export function makeVerifiedEmailOTP(): VerifiedOtpUseCase {
 
 export function makeResendEmailOTP(): ResendOtpUseCase {
   const unitOfrWork = new UnitOfWork();
-  const emailService = new NodemailerService();
+  //const emailService = new NodemailerService();
+  const emailService = new MailerSendAdapter();
 
   return new ResendOtpUseCase(emailService, unitOfrWork);
 }
@@ -32,7 +34,9 @@ export function makeUpdateForgetPass(): ForgetPasswordUseCase {
 
 export function makeResendForgetPassword(): ResendOtpForgetPasswordUseCase {
   const unitOfrWork = new UnitOfWork();
-  const emailService = new NodemailerService();
+  //const emailService = new NodemailerService();
+  const emailService = new MailerSendAdapter();
+
 
   return new ResendOtpForgetPasswordUseCase(emailService, unitOfrWork);
 }
