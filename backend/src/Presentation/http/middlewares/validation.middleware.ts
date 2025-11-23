@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from 'express';
-import { ZodType } from 'zod';
+import { Request, Response, NextFunction } from "express";
+import { ZodType } from "zod";
 
 /**
  * @middleware validation
@@ -35,16 +35,16 @@ export const validation = (Schema: ZodType<any>) => {
     const result = Schema.safeParse(req.body);
 
     if (!result.success) {
-      const customizeError = result.error.issues.map((err) => ({
-        path: err.path.join('.'),
-        message: err.message,
-      }));
+      const customizeError = result.error.issues[0];
 
       //result.error.issues[0].message;
       res.status(400).json({
         success: false,
-        message: 'Validation failed',
-        errors: customizeError,
+        message: "Validation failed",
+        errors: {
+          path: customizeError.path.join("."),
+          message: customizeError.message,
+        },
       });
       return;
     }
