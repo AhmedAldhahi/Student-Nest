@@ -1,7 +1,7 @@
 import { UnitOfWork } from "../database/repositories/unitOfWork.repositories";
 
 import { NodemailerService } from "../services/email/NodemailerService.service";
-import {MailerSendAdapter} from "../services/email/MailresenderService.service"
+//import {MailerSendAdapter} from "../services/email/MailresenderService.service"
 
 import { RegisterLandloardUseCase } from "../../Application/use-case/RegisterLandloardUseCase.usecase";
 import { RegisterStudentUseCase } from "../../Application/use-case/RegisterStudentUseCase.usecase";
@@ -13,8 +13,7 @@ import { JwtTokenService } from "../services/TokenService.service";
 export function makeRegisterLandlordUseCase(): RegisterLandloardUseCase {
   const unitOfWork = new UnitOfWork();
   const passwordService = new BcryptPasswordHasher();
-//  const emailService = new NodemailerService();
-  const emailService = new MailerSendAdapter();
+ const emailService = new NodemailerService();
 
 
 
