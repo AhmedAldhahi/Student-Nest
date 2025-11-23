@@ -5,24 +5,20 @@ import fs from "fs";
 import { Application } from "express";
 
 export const setupSwagger = (app: Application): void => {
-  // Base URL ديناميكي
   const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:4000/api/v1";
 
-  // Resolve path to docs folder
   const docsPath = path.resolve(__dirname, "./docs");
   if (!fs.existsSync(docsPath)) {
     console.error("Swagger docs folder not found:", docsPath);
     return;
   }
 
-  // Read all YAML files in the docs folder
   const yamlFiles = fs.readdirSync(docsPath).filter((file) => file.endsWith(".yaml"));
   if (yamlFiles.length === 0) {
     console.error("No YAML files found in docs folder!");
     return;
   }
 
-  // Initialize Swagger document
   const swaggerDocument: any = {
     openapi: "3.0.0",
     info: {
@@ -31,37 +27,35 @@ export const setupSwagger = (app: Application): void => {
       description: "API documentation for Student Nest backend.",
     },
     servers: [{ url: API_BASE_URL }],
+    tags: [],
     paths: {},
     components: { schemas: {}, parameters: {}, responses: {} },
   };
 
-  // Merge all YAML files into swaggerDocument
+  // Merge all YAML files
   yamlFiles.forEach((file) => {
     const filePath = path.join(docsPath, file);
-    let doc: any;
-    try {
-      doc = YAML.load(filePath);
-    } catch (err) {
-      console.error(`Failed to load YAML file: ${file}`, err);
-      return;
-    }
+    const doc = YAML.load(filePath);
 
-    if (doc.paths && typeof doc.paths === "object") {
+    if (doc.paths) {
       swaggerDocument.paths = { ...swaggerDocument.paths, ...doc.paths };
     }
-    if (doc.components?.schemas && typeof doc.components.schemas === "object") {
+    if (doc.tags) {
+      swaggerDocument.tags = [...swaggerDocument.tags, ...doc.tags];
+    }
+    if (doc.components?.schemas) {
       swaggerDocument.components.schemas = {
         ...swaggerDocument.components.schemas,
         ...doc.components.schemas,
       };
     }
-    if (doc.components?.parameters && typeof doc.components.parameters === "object") {
+    if (doc.components?.parameters) {
       swaggerDocument.components.parameters = {
         ...swaggerDocument.components.parameters,
         ...doc.components.parameters,
       };
     }
-    if (doc.components?.responses && typeof doc.components.responses === "object") {
+    if (doc.components?.responses) {
       swaggerDocument.components.responses = {
         ...swaggerDocument.components.responses,
         ...doc.components.responses,
@@ -69,7 +63,6 @@ export const setupSwagger = (app: Application): void => {
     }
   });
 
-  // Serve Swagger UI
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-  console.log(`Swagger UI available at ${API_BASE_URL.replace("/api/v1", "")}/api-docs`);
+  console.log(`Swagger UI available at http://localhost:4000/api-docs`);
 };

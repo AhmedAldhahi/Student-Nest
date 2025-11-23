@@ -7,7 +7,7 @@ import { LoginUseCase } from "../../../Application/use-case/LoginUseCase.usecase
 export class AuthController {
   constructor(
     private registerLandlordUseCase: RegisterLandloardUseCase,
-    private registerStudentUseCase: RegisterStudentUseCase ,
+    private registerStudentUseCase: RegisterStudentUseCase,
     private loginUserUseCase: LoginUseCase
   ) {}
 
@@ -83,27 +83,6 @@ export class AuthController {
         .json({ error: error.message || "Server error" });
     }
   };
-
-  // public registerStudent = async (req: Request, res: Response): Promise<any> => {
-  //   // 🚨 DEBUG MODE: DO NOT VALIDATE. JUST SHOW ME THE DATA.
-
-  //   console.log("--------------- DEBUG START ---------------");
-  //   console.log("1. Headers Content-Type:", req.headers['content-type']);
-  //   console.log("2. req.file:", req.file);
-  //   console.log("3. req.files:", req.files);
-  //   console.log("4. req.body:", req.body);
-
-  //   console.log("--------------- DEBUG END -----------------");
-
-  //   // Return the raw data to Apidog so you can see what Multer found
-  //   return res.status(200).json({
-  //       status: "DEBUGGING",
-  //       message: "This is what the server received:",
-  //       file_singular: req.file,   // If upload.single() was used
-  //       files_plural: req.files,   // If upload.any() was used
-  //       text_body: req.body        // Your name, email, etc.
-  //   });
-  // };
 
   public loginUser = async (req: Request, res: Response): Promise<Response> => {
     try {
