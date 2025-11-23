@@ -28,6 +28,7 @@
     "bcrypt": "^6.0.0",
     "cloudinary": "^2.8.0",
     "config": "^4.1.1",
+    "cors": "^2.8.5",
     "debug": "^4.4.3",
     "dotenv": "^17.2.3",
     "express": "^4.21.2",
@@ -53,6 +54,7 @@
   },
   "devDependencies": {
     "@types/config": "^3.3.5",
+    "@types/cors": "^2.8.19",
     "@types/debug": "^4.1.12",
     "@types/helmet": "^4.0.0",
     "@types/jest": "^30.0.0",

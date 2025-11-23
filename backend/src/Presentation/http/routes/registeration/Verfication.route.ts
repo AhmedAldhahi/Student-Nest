@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { VerificationController } from "../controllers/Verfication.controller";
-import { otpResendRateLimited } from "../middlewares/rate-limited/otpResendRateLimited.middleware";
-import { validation } from "../middlewares/validation.middleware";
+import { VerificationController } from "../../controllers/Verfication.controller";
+import { otpResendRateLimited } from "../../middlewares/rate-limited/otpResendRateLimited.middleware";
+import { validation } from "../../middlewares/validation.middleware";
 import {
   resendOtpSchema,
   VerifiedOTpSchema,
-} from "../validation/verfication/VerficationSchema.zod";
-import { otpVerifyRateLimited } from "../middlewares/rate-limited/otpVerifyRateLimited.middleware";
+} from "../../validation/verfication/VerficationSchema.zod";
+import { otpVerifyRateLimited } from "../../middlewares/rate-limited/otpVerifyRateLimited.middleware";
 
 export const createVerficationRouter = (
   verificationController: VerificationController

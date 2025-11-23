@@ -10,9 +10,9 @@ interface AuditLogData {
   targetUserName: string;
   targetUserRole: UserRole;
   record: string;
-  fieldName: object;
-  oldValue?: object | null;
-  newValue?: object | null;
+  fieldName: Record<string, any>;
+  oldValue?: Record<string, any> | null;
+  newValue?: Record<string, any> | null;
   ipAddress: string;
   deviceInfo: string;
   location: string;
@@ -30,9 +30,9 @@ export class AuditLogEntity {
   private targetUserName: string;
   private targetUserRole: UserRole;
   private record: string;
-  private fieldName: object;
-  private oldValue?: object | null;
-  private newValue?: object | null;
+  private fieldName: Record<string, any>;
+  private oldValue?: Record<string, any> | null;
+  private newValue?: Record<string, any> | null;
   private ipAddress: string;
   private deviceInfo: string;
   private location: string;
@@ -92,11 +92,11 @@ export class AuditLogEntity {
     return this.record;
   }
 
-  public getOldValue(): object | null {
+  public getOldValue(): Record<string, any> | null {
     return this.oldValue ?? null;
   }
 
-  public getNewValue(): Object | null {
+  public getNewValue(): Record<string, any> | null {
     return this.newValue ?? null;
   }
 
@@ -124,7 +124,7 @@ export class AuditLogEntity {
     return this.performedByUserRole;
   }
 
-  public getFieldName(): Object {
+  public getFieldName(): Record<string, any> {
     return this.fieldName;
   }
 }
