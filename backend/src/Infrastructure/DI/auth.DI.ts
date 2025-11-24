@@ -1,6 +1,6 @@
 import { UnitOfWork } from "../database/repositories/unitOfWork.repositories";
 
-import { SendGridService } from "../services/email/NodemailerService.service";
+import { SendGridService } from "../services/email/SendGridService.service";
 //import {MailerSendAdapter} from "../services/email/MailresenderService.service"
 
 import { RegisterLandloardUseCase } from "../../Application/use-case/RegisterLandloardUseCase.usecase";

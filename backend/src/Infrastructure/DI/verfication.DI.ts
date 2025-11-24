@@ -1,7 +1,7 @@
 import { VerifiedOtpUseCase } from "../../Application/use-case/VerfiedOtpUseCase.usecase";
 import { JwtTokenService } from "../services/TokenService.service";
 import { UnitOfWork } from "../database/repositories/unitOfWork.repositories";
-import { SendGridService } from "../services/email/NodemailerService.service";
+import { SendGridService } from "../services/email/SendGridService.service";
 import { ForgetPasswordUseCase } from "../../Application/use-case/ForgetPasswordUseCase.usecase";
 import { BcryptPasswordHasher } from "../services/BcryptPasswordHasher.service";
 import { ResendOtpForgetPasswordUseCase } from "../../Application/use-case/ResendOtpForgetPasswordUseCase.usecase";
