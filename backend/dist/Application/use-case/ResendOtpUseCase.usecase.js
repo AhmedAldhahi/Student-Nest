@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ResendOtpUseCase = void 0;
-const OTP_ValueObject_1 = require("../../Core/value-object/OTP.ValueObject");
-const NoUseExictException_error_1 = require("../Error/NoUseExictException.error");
+const OTP_vo_1 = require("../../Core/value-object/OTP.vo");
 class ResendOtpUseCase {
     constructor(emailService, unitOfWork) {
         this.emailService = emailService;
@@ -10,26 +9,24 @@ class ResendOtpUseCase {
     }
     async excute(dto) {
         await this.unitOfWork.startTransaction();
-        const otp = OTP_ValueObject_1.OTP.generate();
+        const otp = OTP_vo_1.OTP.generate();
         const otpvalue = otp.getValue();
-        const otpExpired = otp.getExpiresAt();
         try {
-            const user = await this.unitOfWork.userRepotories.findByEmail(dto.email);
+            const user = await this.unitOfWork.userRepo.findByEmail(dto.email);
             if (!user) {
-                throw new NoUseExictException_error_1.NoUserExistException();
+                throw new Error("no user been found !!");
             }
-            user.setOtp(otp);
-            user.setOtpExpired(otpExpired);
-            await this.unitOfWork.userRepotories.save(user);
-            console.log(user.getPassword());
+            user.setOtpForEmail(otp);
+            console.log(user.getOtpForEmail(), user.getOtpExpiredForEmail());
+            await this.unitOfWork.userRepo.addNewUser(user);
             await this.emailService.resendOtpEmail(dto.email, otpvalue);
-            await this.unitOfWork.commit();
+            await this.unitOfWork.commitTransaction();
             return {
                 message: "OTP has been resent successfully. Check your email.",
             };
         }
         catch (err) {
-            await this.unitOfWork.rollBack();
+            await this.unitOfWork.rollbackTransaction();
             console.error("Failed to resend OTP code:", err.message);
             throw err;
         }

@@ -1,50 +1,59 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserMapper = void 0;
-const user_entity_1 = require("../../../Core/entites/user.entity");
+const userEntity_entity_1 = require("../../../Core/entites/userEntity.entity");
+const OTP_vo_1 = require("../../../Core/value-object/OTP.vo");
+const UserDateOfBirth_vo_1 = require("../../../Core/value-object/UserDateOfBirth.vo");
+const UserEmail_vo_1 = require("../../../Core/value-object/UserEmail.vo");
+const UserName_vo_1 = require("../../../Core/value-object/UserName.vo");
+const UserPhoneNumber_vo_1 = require("../../../Core/value-object/UserPhoneNumber.vo");
 const User_entity_1 = require("../orm/TypeOrm/entity/User.entity");
 class UserMapper {
-    static toDomain(dbUser) {
-        const domainUser = new user_entity_1.User();
-        domainUser.setUserId(dbUser.userId);
-        domainUser.setName(dbUser.Name);
-        domainUser.setEmail(dbUser.Email);
-        domainUser.setPass(dbUser.Password);
-        domainUser.setRole(dbUser.Role);
-        domainUser.setDateOfBirth(dbUser.DateOfBirth);
-        domainUser.setPhoneNumber(dbUser.PhoneNumber);
-        domainUser.setEmailVerfiedStatus(dbUser.emailVerfied);
-        if (dbUser.otpCode) {
-            domainUser.setOtpCode(dbUser.otpCode);
-        }
-        if (dbUser.otpExpired) {
-            domainUser.setOtpExpired(dbUser.otpExpired);
-        }
-        if (dbUser.Photo) {
-            domainUser.setPhoto(dbUser.Photo);
-        }
-        if (dbUser.Address) {
-            domainUser.setAddress(dbUser.Address);
-        }
-        domainUser.setAccountStatus(dbUser.isActive);
-        return domainUser;
+    static toOrm(user) {
+        const userModel = new User_entity_1.UserModel();
+        userModel.userId = user.getUserId();
+        userModel.Name = user.getName();
+        userModel.DateOfBirth = user.getDateOfBirth();
+        userModel.Email = user.getEmail();
+        userModel.Role = user.getRole();
+        userModel.Password = user.getPass();
+        userModel.PhoneNumber = user.getPhoneNumber();
+        userModel.otpCode = user.getOtpForEmail() ?? null;
+        userModel.otpExpired = user.getOtpExpiredForEmail() ?? null;
+        userModel.emailVerfied = user.getVerifiedEmail();
+        userModel.OtpResetPasswordCode = user.getOTPForResetPassword() ?? null;
+        userModel.OtpExpiredResetPassword =
+            user.getOTPExpiredDateForResetPassword() ?? null;
+        userModel.resetPasswordVerified = user.getVerifiedResetPassword();
+        userModel.Address = user.getAddress();
+        userModel.Photo = user.getPhoto();
+        return userModel;
     }
-    static toPersistence(domainUser) {
-        const dbUser = new User_entity_1.User();
-        dbUser.userId = domainUser.getUserId();
-        dbUser.Name = domainUser.getName();
-        dbUser.Email = domainUser.getEmail();
-        dbUser.Password = domainUser.getPassword();
-        dbUser.Role = domainUser.getRole();
-        dbUser.DateOfBirth = domainUser.getDateOfBirth();
-        dbUser.PhoneNumber = domainUser.getPhoeNumber();
-        dbUser.emailVerfied = domainUser.getVerfiedEmail();
-        dbUser.isActive = domainUser.getAccountStatus();
-        dbUser.Photo = domainUser.getPhoto();
-        dbUser.Address = domainUser.getAddress();
-        dbUser.otpCode = domainUser.getOtpCodeRaw() ?? null;
-        dbUser.otpExpired = domainUser.getOtpExpiredRaw() ?? null;
-        return dbUser;
+    static toEntity(user) {
+        const userEntity = new userEntity_entity_1.UserEntity({
+            userId: user.userId,
+            name: new UserName_vo_1.UserName(user.Name),
+            dateOfBirth: new UserDateOfBirth_vo_1.UserDateOfBirth(user.DateOfBirth),
+            email: new UserEmail_vo_1.UserEmail(user.Email),
+            role: user.Role,
+            password: user.Password,
+            phoneNumber: new UserPhoneNumber_vo_1.userPhoneNumber(user.PhoneNumber),
+            address: user.Address,
+            photo: user.Photo,
+        });
+        if (user.otpCode) {
+            userEntity.setOtpForEmail(new OTP_vo_1.OTP(user.otpCode));
+        }
+        if (user.OtpResetPasswordCode) {
+            userEntity.setOTPForResetPassword(new OTP_vo_1.OTP(user.OtpResetPasswordCode));
+        }
+        if (user.emailVerfied) {
+            userEntity.verifiedEmail();
+        }
+        if (user.resetPasswordVerified) {
+            userEntity.verifyResetPassword();
+        }
+        return userEntity;
     }
 }
 exports.UserMapper = UserMapper;

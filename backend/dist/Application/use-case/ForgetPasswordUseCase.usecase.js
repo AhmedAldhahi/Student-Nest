@@ -1,8 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ForgetPasswordUseCase = void 0;
-const NoUseExictException_error_1 = require("../Error/NoUseExictException.error");
-const PasswordUsedBeforeException_error_1 = require("../Error/PasswordUsedBeforeException.error");
 class ForgetPasswordUseCase {
     constructor(unitOfWork, tokenService, passwordService) {
         this.unitOfWork = unitOfWork;
@@ -12,30 +10,33 @@ class ForgetPasswordUseCase {
     async execute(dto) {
         await this.unitOfWork.startTransaction();
         try {
-            const user = await this.unitOfWork.userRepotories.findByEmail(dto.email);
+            const user = await this.unitOfWork.userRepo.findByEmail(dto.email);
             if (!user) {
-                throw new NoUseExictException_error_1.NoUserExistException();
+                throw new Error("no user been found !!");
             }
-            const currentHashedPassword = user.getPassword();
+            if (!user.getVerifiedResetPassword()) {
+                throw new Error("the user have to verified otp before update password !!");
+            }
+            const currentHashedPassword = user.getPass();
             const isUsedBefore = await this.passwordService.compare(dto.password, currentHashedPassword);
             if (isUsedBefore) {
-                throw new PasswordUsedBeforeException_error_1.PasswordBeenUsedBeforeException();
+                throw new Error("this password been used before");
             }
             const newHashedPassword = await this.passwordService.hash(dto.password);
-            user.setPass(newHashedPassword);
-            await this.unitOfWork.userRepotories.save(user);
+            user.setPassword(newHashedPassword);
+            await this.unitOfWork.userRepo.addNewUser(user);
             const payload = {
                 userId: user.getUserId(),
             };
             const Token = await this.tokenService.generateAccessToken(payload);
-            await this.unitOfWork.commit();
+            await this.unitOfWork.commitTransaction();
             return {
                 message: "user password been update scussfuly ",
                 token: Token,
             };
         }
         catch (err) {
-            await this.unitOfWork.rollBack();
+            await this.unitOfWork.rollbackTransaction();
             if (err instanceof Error) {
                 console.error("failed to update  password !!", err);
             }

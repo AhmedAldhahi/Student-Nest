@@ -5,13 +5,10 @@ const express_rate_limit_1 = require("express-rate-limit");
 exports.otpVerifyRateLimited = (0, express_rate_limit_1.rateLimit)({
     windowMs: 5 * 60 * 1000,
     limit: 3,
-    keyGenerator: (req) => req.body.email || req.ip,
-    standardHeaders: 'draft-8',
-    legacyHeaders: false,
     handler: (req, res) => {
         res.status(429).json({
             success: false,
-            message: 'Too many OTP verification attempts. Please request a new OTP or wait a few minutes.',
+            message: "Too many login requests. Please wait a while before trying again.",
         });
     },
 });

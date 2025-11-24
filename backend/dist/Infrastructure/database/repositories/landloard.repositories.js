@@ -1,41 +1,40 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LandloardRepository = void 0;
+exports.LandlordRepository = void 0;
+const Landloard_entity_1 = require("../orm/TypeOrm/entity/Landloard.entity");
+const user_repositories_1 = require("./user.repositories");
 const landloard_mapper_1 = require("./landloard.mapper");
-class LandloardRepository {
-    constructor(landloardRepository, userRepository) {
-        this.landloardRepository = landloardRepository;
-        this.userRepository = userRepository;
+const user_mapper_1 = require("./user.mapper");
+class LandlordRepository {
+    constructor(manager) {
+        this.manager = manager;
+        this.userRepo = new user_repositories_1.UserRepository(manager);
     }
-    async findByEmail(email) {
-        const user = await this.userRepository.findOne({
-            where: { Email: email },
-        });
-        if (!user) {
-            return null;
+    async createNewLandlord(landlord) {
+        try {
+            const userEntity = await landlord.getUser();
+            await this.userRepo.addNewUser(userEntity);
+            const model = landloard_mapper_1.LandlordMapper.toOrm(landlord);
+            model.user = user_mapper_1.UserMapper.toOrm(userEntity);
+            await this.manager.save(Landloard_entity_1.LandlordModel, model);
         }
-        const dbLandlord = await this.landloardRepository.findOne({
-            where: { user: { userId: user.userId } },
-            relations: ["user"],
-        });
-        if (!dbLandlord) {
-            return null;
+        catch (err) {
+            console.error("failed to create landlord !!", err);
+            throw err;
         }
-        return landloard_mapper_1.LandlordMapper.toDomain(dbLandlord);
     }
-    async findById(id) {
-        const dbLandlord = await this.landloardRepository.findOne({
-            where: { user: { userId: id } },
-            relations: ["user"],
-        });
-        if (!dbLandlord) {
-            return null;
+    async updateLandlord(user) {
+        try {
+            const userEntity = user.getUser();
+            await this.userRepo.updateUser(userEntity);
+            const landlordModel = landloard_mapper_1.LandlordMapper.toOrm(user);
+            landlordModel.user = user_mapper_1.UserMapper.toOrm(userEntity);
+            await this.manager.update(Landloard_entity_1.LandlordModel, { userId: landlordModel.userId }, landlordModel);
         }
-        return landloard_mapper_1.LandlordMapper.toDomain(dbLandlord);
-    }
-    async save(landlord) {
-        const dbLandlord = landloard_mapper_1.LandlordMapper.toPersistence(landlord);
-        await this.landloardRepository.save(dbLandlord);
+        catch (err) {
+            console.error("failed to update landlord !!", err);
+            throw err;
+        }
     }
 }
-exports.LandloardRepository = LandloardRepository;
+exports.LandlordRepository = LandlordRepository;

@@ -41,6 +41,11 @@ dotenv.config();
 exports.AppDataSource = new typeorm_1.DataSource({
     type: "mysql",
     url: process.env.DATABASE_URL,
+    extra: {
+        ssl: {
+            rejectUnauthorized: false,
+        },
+    },
     synchronize: true,
     logging: false,
     entities: [__dirname + "/entity/**/*.entity{.ts,.js}"],

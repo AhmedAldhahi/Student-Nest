@@ -1,65 +1,38 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StudentMapper = void 0;
-const student_entity_1 = require("../../../Core/entites/student.entity");
+const studentEntity_entity_1 = require("../../../Core/entites/studentEntity.entity");
+const StudentCard_vo_1 = require("../../../Core/value-object/StudentCard.vo");
+const StudentGraduateYear_vo_1 = require("../../../Core/value-object/StudentGraduateYear.vo");
+const StudentUniversity_vo_1 = require("../../../Core/value-object/StudentUniversity.vo");
+const StudentVerficationDocument_vo_1 = require("../../../Core/value-object/StudentVerficationDocument.vo");
+const UserGovId_vo_1 = require("../../../Core/value-object/UserGovId.vo");
+const StudentMajor_vo_1 = require("../../../Core/value-object/StudentMajor.vo");
 const Student_entity_1 = require("../orm/TypeOrm/entity/Student.entity");
-const User_entity_1 = require("../orm/TypeOrm/entity/User.entity");
+const user_mapper_1 = require("./user.mapper");
 class StudentMapper {
-    static toDomain(dbStudent) {
-        const domainStudent = new student_entity_1.Student();
-        if (dbStudent.user) {
-            domainStudent.setUserId(dbStudent.user.userId);
-            domainStudent.setName(dbStudent.user.Name);
-            domainStudent.setEmail(dbStudent.user.Email);
-            domainStudent.setPass(dbStudent.user.Password);
-            domainStudent.setRole(dbStudent.user.Role);
-            domainStudent.setDateOfBirth(dbStudent.user.DateOfBirth);
-            domainStudent.setPhoneNumber(dbStudent.user.PhoneNumber);
-            domainStudent.setAccountStatus(dbStudent.user.isActive);
-            if (dbStudent.user.otpCode) {
-                domainStudent.setOtpCode(dbStudent.user.otpCode);
-            }
-            if (dbStudent.user.otpExpired) {
-                domainStudent.setOtpExpired(dbStudent.user.otpExpired);
-            }
-            if (dbStudent.user.Photo) {
-                domainStudent.setPhoto(dbStudent.user.Photo);
-            }
-            if (dbStudent.user.Address) {
-                domainStudent.setAddress(dbStudent.user.Address);
-            }
-        }
-        domainStudent.setMajor(dbStudent.Major);
-        domainStudent.setUnversityName(dbStudent.UniversityName);
-        domainStudent.setGraduateYear(dbStudent.GraduationYear);
-        domainStudent.setstudentCardId(dbStudent.StudentCardId);
-        domainStudent.setStudentGovId(dbStudent.StudentGovId);
-        return domainStudent;
+    static toEntity(stdModel) {
+        return new studentEntity_entity_1.StudentEntity({
+            user: user_mapper_1.UserMapper.toEntity(stdModel.user),
+            studentCardId: new StudentCard_vo_1.StudentCard(stdModel.StudentCardId),
+            userGovId: new UserGovId_vo_1.GovernmentID(stdModel.StudentGovId),
+            universityName: new StudentUniversity_vo_1.StudentUniversity(stdModel.UniversityName),
+            graduateYear: new StudentGraduateYear_vo_1.studentGraduateYear(stdModel.GraduationYear),
+            major: new StudentMajor_vo_1.StudentMajor(stdModel.Major),
+            validateStudentDocument: new StudentVerficationDocument_vo_1.StudentVerificationDocument(stdModel.verificationFiles),
+        });
     }
-    static toPersistence(domainStudent) {
-        const dbUser = new User_entity_1.User();
-        dbUser.userId = domainStudent.getUserId();
-        dbUser.Name = domainStudent.getName();
-        dbUser.Email = domainStudent.getEmail();
-        dbUser.Password = domainStudent.getPassword();
-        dbUser.Role = domainStudent.getRole();
-        dbUser.DateOfBirth = domainStudent.getDateOfBirth();
-        dbUser.PhoneNumber = domainStudent.getPhoeNumber();
-        dbUser.isActive = domainStudent.getAccountStatus();
-        dbUser.emailVerfied = domainStudent.getVerfiedEmail();
-        dbUser.Photo = domainStudent.getPhoto();
-        dbUser.Address = domainStudent.getAddress();
-        dbUser.otpCode = domainStudent.getOtpCode();
-        dbUser.otpExpired = domainStudent.getOtpExpired();
-        const dbStudent = new Student_entity_1.Student();
-        dbStudent.userId = domainStudent.getUserId();
-        dbStudent.Major = domainStudent.getMajor();
-        dbStudent.UniversityName = domainStudent.getUnverstiyName();
-        dbStudent.GraduationYear = domainStudent.getGraduateYear();
-        dbStudent.StudentCardId = domainStudent.getStudentCardId();
-        dbStudent.StudentGovId = domainStudent.getStudentGovId();
-        dbStudent.user = dbUser;
-        return dbStudent;
+    static toModel(stdEntity) {
+        const userModel = new Student_entity_1.StudentModel();
+        userModel.user = user_mapper_1.UserMapper.toOrm(stdEntity.getUser());
+        userModel.userId = stdEntity.getUserId();
+        userModel.StudentCardId = stdEntity.getStudentCardID();
+        userModel.StudentGovId = stdEntity.getGovernmentId();
+        userModel.UniversityName = stdEntity.getUniversityName();
+        userModel.GraduationYear = stdEntity.getGraduateYear();
+        userModel.Major = stdEntity.getMajor();
+        userModel.verificationFiles = stdEntity.getVerificationDocument();
+        return userModel;
     }
 }
 exports.StudentMapper = StudentMapper;

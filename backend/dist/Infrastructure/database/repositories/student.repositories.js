@@ -1,41 +1,40 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StudentRepository = void 0;
+const user_repositories_1 = require("./user.repositories");
+const Student_entity_1 = require("../orm/TypeOrm/entity/Student.entity");
 const student_mapper_1 = require("./student.mapper");
+const user_mapper_1 = require("./user.mapper");
 class StudentRepository {
-    constructor(studentRepository, userRepository) {
-        this.studentRepository = studentRepository;
-        this.userRepository = userRepository;
+    constructor(manager) {
+        this.manager = manager;
+        this.userRepo = new user_repositories_1.UserRepository(manager);
     }
-    async findByEmail(email) {
-        const user = await this.userRepository.findOne({
-            where: { Email: email },
-        });
-        if (!user) {
-            return null;
+    async createNewStudent(user) {
+        try {
+            const userEntity = await user.getUser();
+            await this.userRepo.addNewUser(userEntity);
+            const model = student_mapper_1.StudentMapper.toModel(user);
+            model.user = user_mapper_1.UserMapper.toOrm(userEntity);
+            await this.manager.save(Student_entity_1.StudentModel, model);
         }
-        const dbStudent = await this.studentRepository.findOne({
-            where: { user: { userId: user.userId } },
-            relations: ["user"],
-        });
-        if (!dbStudent) {
-            return null;
+        catch (err) {
+            console.error("failed to create Student !!", err);
+            throw err;
         }
-        return student_mapper_1.StudentMapper.toDomain(dbStudent);
     }
-    async findById(id) {
-        const dbStudent = await this.studentRepository.findOne({
-            where: { user: { userId: id } },
-            relations: ["user"],
-        });
-        if (!dbStudent) {
-            return null;
+    async updateStudent(user) {
+        try {
+            const userEntity = user.getUser();
+            await this.userRepo.updateUser(userEntity);
+            const studentModel = student_mapper_1.StudentMapper.toModel(user);
+            studentModel.user = user_mapper_1.UserMapper.toOrm(userEntity);
+            await this.manager.update(Student_entity_1.StudentModel, { userId: studentModel.userId }, studentModel);
         }
-        return student_mapper_1.StudentMapper.toDomain(dbStudent);
-    }
-    async save(student) {
-        const dbStudent = student_mapper_1.StudentMapper.toPersistence(student);
-        await this.studentRepository.save(dbStudent);
+        catch (err) {
+            console.error("failed to update Student !!", err);
+            throw err;
+        }
     }
 }
 exports.StudentRepository = StudentRepository;

@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VerifiedOtpUseCase = void 0;
-const UserExictException_error_1 = require("../Error/UserExictException.error");
 class VerifiedOtpUseCase {
     constructor(tokenService, unitOfrWork) {
         this.tokenService = tokenService;
@@ -10,51 +9,41 @@ class VerifiedOtpUseCase {
     async execute(dto) {
         await this.unitOfrWork.startTransaction();
         try {
-            const user = await this.unitOfrWork.userRepotories.findByEmail(dto.email);
-            if (!user) {
-                throw new UserExictException_error_1.UserExictException("no user been found !!");
+            const user = await this.unitOfrWork.userRepo.findByEmail(dto.email);
+            if (!user)
+                throw new Error("No user found for this email.");
+            if (user.getVerifiedEmail()) {
+                throw new Error("User already verified.");
             }
-            if (user.getVerfiedEmail())
-                throw new Error("user already verified !!");
-            const otp = user.getOtpCode();
-            const otpExpired = user.getOtpExpired();
+            console.log(user.getVerifiedEmail());
+            const otp = user.getOtpForEmail();
+            const otpExpired = user.getOtpExpiredForEmail();
             if (!otp || !otpExpired)
-                throw new Error("no otp been send for this email !");
+                throw new Error("OTP not sent for this email.");
             if (new Date() > otpExpired)
-                throw new Error("otp expired date recreate new one !!");
+                throw new Error("OTP expired. Request a new one.");
             if (otp !== dto.otpCode)
-                throw new Error("invalid otp code !!");
-            console.log(user.getOtpCode());
-            console.log(user.getOtpExpired());
-            console.log("Before:", user.getVerfiedEmail());
-            user.setVerfiedEmail();
-            user.clearOtp();
-            console.log("After:", user.getVerfiedEmail());
-            await this.unitOfrWork.userRepotories.save(user);
-            await this.unitOfrWork.commit();
-            const payload = {
-                userId: user.getUserId(),
-            };
-            const Token = this.tokenService.generateAccessToken(payload);
+                throw new Error("Invalid OTP code.");
+            user.verifiedEmail();
+            user.clearEmailOTP();
+            await this.unitOfrWork.userRepo.addNewUser(user);
+            await this.unitOfrWork.commitTransaction();
+            const payload = { userId: user.getUserId() };
+            const token = this.tokenService.generateAccessToken(payload);
             return {
-                message: "email verified scussfuly",
-                token: Token,
+                message: "Email verified successfully.",
+                token,
             };
         }
         catch (err) {
-            await this.unitOfrWork.rollBack();
-            console.error("Failed to verify OTP:", err);
-            if (err instanceof UserExictException_error_1.UserExictException) {
+            await this.unitOfrWork.rollbackTransaction();
+            console.error("OTP verification failed:", err);
+            if (err instanceof Error)
                 throw err;
-            }
-            if (err instanceof Error &&
-                (err.message.startsWith("no otp been send") ||
-                    err.message.startsWith("otp expired date") ||
-                    err.message.startsWith("invalid otp code") ||
-                    err.message.startsWith("user already verified !!"))) {
-                throw err;
-            }
-            throw new Error("Failed to verify OTP, please try again later.");
+            throw new Error("Failed to verify OTP. Please try again.");
+        }
+        finally {
+            await this.unitOfrWork.releaseTransaction();
         }
     }
 }

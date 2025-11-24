@@ -9,41 +9,45 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Student = void 0;
+exports.StudentModel = void 0;
 const typeorm_1 = require("typeorm");
 const User_entity_1 = require("./User.entity");
-let Student = class Student {
+let StudentModel = class StudentModel {
 };
-exports.Student = Student;
+exports.StudentModel = StudentModel;
 __decorate([
     (0, typeorm_1.Column)({ type: "int" }),
     __metadata("design:type", Number)
-], Student.prototype, "GraduationYear", void 0);
+], StudentModel.prototype, "GraduationYear", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: "varchar", length: 100 }),
     __metadata("design:type", String)
-], Student.prototype, "Major", void 0);
+], StudentModel.prototype, "Major", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: "varchar", length: 50, unique: true }),
     __metadata("design:type", String)
-], Student.prototype, "StudentCardId", void 0);
+], StudentModel.prototype, "StudentCardId", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: "varchar", length: 20 }),
     __metadata("design:type", String)
-], Student.prototype, "StudentGovId", void 0);
+], StudentModel.prototype, "StudentGovId", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: "varchar", length: 100 }),
     __metadata("design:type", String)
-], Student.prototype, "UniversityName", void 0);
+], StudentModel.prototype, "UniversityName", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "varchar", length: 200 }),
+    __metadata("design:type", String)
+], StudentModel.prototype, "verificationFiles", void 0);
 __decorate([
     (0, typeorm_1.PrimaryColumn)(),
     __metadata("design:type", String)
-], Student.prototype, "userId", void 0);
+], StudentModel.prototype, "userId", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => User_entity_1.User, { cascade: true, onDelete: "CASCADE" }),
+    (0, typeorm_1.OneToOne)(() => User_entity_1.UserModel, { cascade: true, onDelete: "CASCADE" }),
     (0, typeorm_1.JoinColumn)({ name: "userId" }),
-    __metadata("design:type", User_entity_1.User)
-], Student.prototype, "user", void 0);
-exports.Student = Student = __decorate([
+    __metadata("design:type", User_entity_1.UserModel)
+], StudentModel.prototype, "user", void 0);
+exports.StudentModel = StudentModel = __decorate([
     (0, typeorm_1.Entity)("students")
-], Student);
+], StudentModel);

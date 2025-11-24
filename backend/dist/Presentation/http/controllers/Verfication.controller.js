@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.VerficationController = void 0;
-class VerficationController {
-    constructor(resendOtpUseCase, verfiedOtpUseCase) {
+exports.VerificationController = void 0;
+class VerificationController {
+    constructor(resendOtpUseCase, verifiedOtpUseCase) {
         this.resendOtpUseCase = resendOtpUseCase;
-        this.verfiedOtpUseCase = verfiedOtpUseCase;
+        this.verifiedOtpUseCase = verifiedOtpUseCase;
         this.createResendOtp = async (req, res) => {
             try {
                 const dto = req.body;
@@ -21,16 +21,16 @@ class VerficationController {
                     .json({ error: error.message || "server Error" });
             }
         };
-        this.createVerfiedOtp = async (req, res) => {
+        this.createVerifiedOtp = async (req, res) => {
             try {
                 const dto = req.body;
-                const result = await this.verfiedOtpUseCase.execute(dto);
+                const result = await this.verifiedOtpUseCase.execute(dto);
                 return res.status(200).json(result);
             }
-            catch (err) {
-                return res.status(400).json({ message: err.message });
+            catch (error) {
+                return res.status(400).json({ message: error.message });
             }
         };
     }
 }
-exports.VerficationController = VerficationController;
+exports.VerificationController = VerificationController;

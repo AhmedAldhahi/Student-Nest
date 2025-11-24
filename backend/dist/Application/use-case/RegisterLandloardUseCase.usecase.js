@@ -1,60 +1,68 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RegisterLandloardUseCase = void 0;
-const UserExictException_error_1 = require("../Error/UserExictException.error");
 const uuid_1 = require("uuid");
-const OTP_ValueObject_1 = require("../../Core/value-object/OTP.ValueObject");
+const OTP_vo_1 = require("../../Core/value-object/OTP.vo");
+const userEntity_entity_1 = require("../../Core/entites/userEntity.entity");
+const UserName_vo_1 = require("../../Core/value-object/UserName.vo");
+const UserDateOfBirth_vo_1 = require("../../Core/value-object/UserDateOfBirth.vo");
+const UserPhoneNumber_vo_1 = require("../../Core/value-object/UserPhoneNumber.vo");
+const UserEmail_vo_1 = require("../../Core/value-object/UserEmail.vo");
+const UserRole_enum_1 = require("../../Core/enum/UserRole.enum");
+const landloardEntity_entity_1 = require("../../Core/entites/landloardEntity.entity");
+const UserGovId_vo_1 = require("../../Core/value-object/UserGovId.vo");
 class RegisterLandloardUseCase {
-    constructor(unitOfWork, passwordService, landloardBuilder, emailService) {
+    constructor(unitOfWork, passwordService, emailService) {
         this.unitOfWork = unitOfWork;
         this.passwordService = passwordService;
-        this.landloardBuilder = landloardBuilder;
         this.emailService = emailService;
     }
     async execute(dto) {
+        const otp = OTP_vo_1.OTP.generate();
+        const userId = (0, uuid_1.v4)();
+        const hashedPassword = await this.passwordService.hash(dto.password);
+        const user = new userEntity_entity_1.UserEntity({
+            userId: userId,
+            password: hashedPassword,
+            name: new UserName_vo_1.UserName(dto.name),
+            dateOfBirth: new UserDateOfBirth_vo_1.UserDateOfBirth(dto.dateOfBirth),
+            phoneNumber: new UserPhoneNumber_vo_1.userPhoneNumber(dto.phoneNumber),
+            email: new UserEmail_vo_1.UserEmail(dto.email),
+            role: UserRole_enum_1.UserRole.landloard,
+            address: dto.address,
+        });
+        user.setOtpForEmail(otp);
+        const landlord = new landloardEntity_entity_1.LandlordEntity({
+            user: user,
+            cliQAccount: dto.cliQAccount,
+            landlordGovId: new UserGovId_vo_1.GovernmentID(dto.LandloardGovId),
+        });
         await this.unitOfWork.startTransaction();
-        const otp = OTP_ValueObject_1.OTP.generate();
         try {
-            const excitUser = await this.unitOfWork.LandloardReposotries.findByEmail(dto.email);
-            if (excitUser) {
-                throw new UserExictException_error_1.UserExictException();
-            }
-            const hashPassword = await this.passwordService.hash(dto.password);
-            const generatedUserId = (0, uuid_1.v4)();
-            const userBuilder = this.landloardBuilder
-                .buildUserId(generatedUserId)
-                .buildRole(dto.role)
-                .buildEmail(dto.email)
-                .buildName(dto.name)
-                .buildDateOfBirth(dto.dateOfBirth)
-                .buildPhoneNumber(dto.phoneNumber)
-                .buildHash(hashPassword)
-                .buildCliqAccount(dto.cliQAccount)
-                .buildLandloardGovId(dto.LandloardGovId);
-            if (dto.address) {
-                userBuilder.buildAddress(dto.address);
-            }
-            if (!dto.LandloardGovId || !dto.cliQAccount) {
-                throw new Error("Landlord  role requires 'cliQ' and 'Landlord Gov Id'.");
-            }
-            const user = userBuilder.build();
-            user.setOtp(otp);
-            await this.unitOfWork.LandloardReposotries.save(user);
-            await this.emailService.sendRegistrationEmail(user.getEmail(), otp.getValue());
-            await this.unitOfWork.commit();
-            return {
-                message: "user regster scussful! verfied you email otp ",
-            };
+            const foundUser = await this.unitOfWork.userRepo.findByEmail(dto.email);
+            if (foundUser)
+                throw new Error("user with this email already exist");
+            await this.unitOfWork.userRepo.addNewUser(user);
+            await this.unitOfWork.landlordRepo.createNewLandlord(landlord);
+            await this.unitOfWork.commitTransaction();
         }
         catch (err) {
-            let errorMessage = "An unknown error occurred";
-            if (err instanceof Error) {
-                errorMessage = err.message;
-            }
-            console.error("Failed to create user. Reason:", errorMessage);
-            await this.unitOfWork.rollBack();
+            await this.unitOfWork.rollbackTransaction();
+            console.log("Failed to register landlord!!", err);
             throw err;
         }
+        finally {
+            await this.unitOfWork.releaseTransaction();
+        }
+        try {
+            await this.emailService.sendRegistrationEmail(user.getEmail(), otp.getValue());
+        }
+        catch (emailErr) {
+            console.log("email service failed!!", emailErr);
+        }
+        return {
+            message: "Landlord registered successfully! Verify your email with the OTP.",
+        };
     }
 }
 exports.RegisterLandloardUseCase = RegisterLandloardUseCase;

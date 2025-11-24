@@ -9,21 +9,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Admin = void 0;
+exports.AdminModel = void 0;
 const typeorm_1 = require("typeorm");
 const User_entity_1 = require("./User.entity");
-let Admin = class Admin {
+const AuditLog_entity_1 = require("./AuditLog.entity");
+let AdminModel = class AdminModel {
 };
-exports.Admin = Admin;
+exports.AdminModel = AdminModel;
 __decorate([
     (0, typeorm_1.PrimaryColumn)(),
-    __metadata("design:type", Number)
-], Admin.prototype, "adminId", void 0);
+    __metadata("design:type", String)
+], AdminModel.prototype, "adminId", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => User_entity_1.User, { cascade: true, onDelete: "CASCADE" }),
+    (0, typeorm_1.OneToOne)(() => User_entity_1.UserModel, { cascade: true, onDelete: "CASCADE" }),
     (0, typeorm_1.JoinColumn)({ name: "userId" }),
-    __metadata("design:type", User_entity_1.User)
-], Admin.prototype, "user", void 0);
-exports.Admin = Admin = __decorate([
+    __metadata("design:type", User_entity_1.UserModel)
+], AdminModel.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => AuditLog_entity_1.AuditLogModel, (auditLog) => auditLog.admin),
+    __metadata("design:type", Array)
+], AdminModel.prototype, "auditLogs", void 0);
+exports.AdminModel = AdminModel = __decorate([
     (0, typeorm_1.Entity)("admins")
-], Admin);
+], AdminModel);

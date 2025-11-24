@@ -9,29 +9,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Landlord = void 0;
+exports.LandlordModel = void 0;
 const typeorm_1 = require("typeorm");
 const User_entity_1 = require("./User.entity");
-let Landlord = class Landlord {
+let LandlordModel = class LandlordModel {
 };
-exports.Landlord = Landlord;
+exports.LandlordModel = LandlordModel;
 __decorate([
     (0, typeorm_1.PrimaryColumn)(),
     __metadata("design:type", String)
-], Landlord.prototype, "userId", void 0);
+], LandlordModel.prototype, "userId", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "varchar", length: 30 }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Landlord.prototype, "cliQAccount", void 0);
+], LandlordModel.prototype, "CliQAccount", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "varchar", length: 20 }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Landlord.prototype, "landloardGovId", void 0);
+], LandlordModel.prototype, "LandlordGovId", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => User_entity_1.User, { cascade: true, onDelete: "CASCADE" }),
+    (0, typeorm_1.OneToOne)(() => User_entity_1.UserModel, {
+        cascade: true,
+        onDelete: "CASCADE"
+    }),
     (0, typeorm_1.JoinColumn)({ name: "userId" }),
-    __metadata("design:type", User_entity_1.User)
-], Landlord.prototype, "user", void 0);
-exports.Landlord = Landlord = __decorate([
+    __metadata("design:type", User_entity_1.UserModel)
+], LandlordModel.prototype, "user", void 0);
+exports.LandlordModel = LandlordModel = __decorate([
     (0, typeorm_1.Entity)("landlords")
-], Landlord);
+], LandlordModel);

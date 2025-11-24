@@ -10,28 +10,30 @@ class LoginUseCase {
     async execute(dto) {
         try {
             await this.unitOfWork.startTransaction();
-            const user = await this.unitOfWork.userRepotories.findByEmail(dto.email);
+            const user = await this.unitOfWork.userRepo.findByEmail(dto.email);
             if (!user) {
                 throw new Error("the password or email not correct ");
             }
-            const isValid = await this.passwordService.compare(dto.password, user.getPassword());
-            console.log(dto.password, user.getPassword());
+            const isValid = await this.passwordService.compare(dto.password, user.getPass());
+            console.log(dto.password, user.getPass());
             if (!isValid) {
                 throw new Error("the password or email not correct 1 ");
             }
-            await this.unitOfWork.userRepotories.save(user);
+            const verifiedEmail = user.getVerifiedEmail();
+            await this.unitOfWork.userRepo.addNewUser(user);
             const payload = {
                 userId: user.getUserId(),
             };
             const Token = await this.tokenService.generateAccessToken(payload);
-            await this.unitOfWork.commit();
+            await this.unitOfWork.commitTransaction();
             return {
                 message: "user login scussfuly",
                 token: Token,
+                verifiedEmail: verifiedEmail,
             };
         }
         catch (err) {
-            await this.unitOfWork.rollBack();
+            await this.unitOfWork.rollbackTransaction();
             if (err instanceof Error) {
                 console.error("failed to login to the our system !!");
             }
