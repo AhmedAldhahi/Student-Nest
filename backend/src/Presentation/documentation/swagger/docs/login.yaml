@@ -1,84 +1,144 @@
-openapi: 3.0.0
+openapi: 3.0.1
 info:
-  title: Authentication API
+  title: Student Authentication API
+  description: This API allows users to log in using their email and password. It provides authentication and authorization to access protected resources.
   version: 1.0.0
-  description: API for user login
+  contact:
+    name: Backend Development Team
+    email: backend-team@example.com
+    url: https://example.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 
 servers:
-  - url: http://localhost:4000/api/v1
-    description: Local development server
-  - url: https://api.student-nest.com/api/v1
-    description: Production server
+  - url: https://student-nest-production.up.railway.app/api/v1
+    description: Production Server
 
 paths:
   /auth/login:
     post:
-      summary: User login
-      description: Authenticate a user using email and password and return an access token.
+      summary: User Login Endpoint
+      description: This endpoint allows users to authenticate by providing their email and password.
+      operationId: loginUser
       tags:
-        - Auth
+        - Authentication
       requestBody:
-        required: true
+        description: The user credentials required for authentication (email and password).
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginRequest'
-            example:
-              email: user@example.com
-              password: myStrongPassword123
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "abdalrahmanalkayy8ali1948g@gmail.com"
+                  description: User's email address. Must be a valid email format.
+                password:
+                  type: string
+                  minLength: 8
+                  example: "SecurePass46!"
+                  description: User's password. Must be at least 8 characters.
+              required:
+                - email
+                - password
+        required: true
       responses:
-        '201':
-          description: Login successful
+        '200':
+          description: Successful login, user authenticated.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LoginResponse'
-              example:
-                message: User login successful
-                token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User logged in successfully"
+                    description: Message confirming successful login.
+                  token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxYmU2ZWFkMy03NjE3LTQ0OWItOGE3Zi1jZjhiZmE1ZjM1NDEiLCJpYXQiOjE3NjQwMDcwMjMsImV4cCI6MTc2NDAwNzkyM30.VcOjwRaMq6fWm0zehJUwn50Jszibnu7s3NpB33DQ0es"
+                    description: The JWT token for authenticating subsequent requests.
+                  verifiedEmail:
+                    type: boolean
+                    example: true
+                    description: Flag indicating whether the user's email is verified.
         '400':
-          description: Bad request or invalid credentials
+          description: Bad Request – Invalid email or password.
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  err:
+                  error:
                     type: string
-                example:
-                  err: The password or email is not correct
-        '500':
-          description: Internal server error
+                    example: "The password or email is incorrect."
+                    description: Detailed error message indicating that either the email or password is invalid.
+        '429':
+          description: Rate Limit Exceeded – Too many login attempts.
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  err:
+                  success:
+                    type: boolean
+                    example: false
+                    description: Status indicating that the request was unsuccessful.
+                  message:
                     type: string
-                example:
-                  err: Internal server error
-
+                    example: "Too many login requests. Please wait a while before trying again."
+                    description: A message instructing the user to wait before attempting login again.
+  
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Provide a valid JWT token in the Authorization header for access to protected routes.
   schemas:
-    LoginRequest:
+    ErrorResponse:
       type: object
       properties:
-        email:
+        error:
           type: string
-          format: email
-        password:
-          type: string
-      required:
-        - email
-        - password
+          example: "The password or email is incorrect."
+          description: Error message indicating an invalid login attempt.
     LoginResponse:
       type: object
       properties:
         message:
           type: string
+          example: "User logged in successfully"
         token:
           type: string
-      required:
-        - message
-        - token
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxYmU2ZWFkMy03NjE3LTQ0OWItOGE3Zi1jZjhiZmE1ZjM1NDEiLCJpYXQiOjE3NjQwMDcwMjMsImV4cCI6MTc2NDAwNzkyM30.VcOjwRaMq6fWm0zehJUwn50Jszibnu7s3NpB33DQ0es"
+        verifiedEmail:
+          type: boolean
+          example: true
+    RateLimitResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: "Too many login requests. Please wait a while before trying again."
+        description: Contains details about rate-limiting behavior when too many requests are made in a short time.
+
+  responses:
+    Unauthorized:
+      description: Unauthorized – Token missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Bad Request – The request was malformed or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

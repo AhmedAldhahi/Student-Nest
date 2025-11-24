@@ -1,0 +1,103 @@
+openapi: 3.0.0
+info:
+  title: Student Nest API
+  description: API documentation for the Student Nest backend system. This includes authentication, registration, and password recovery endpoints.
+  version: 1.0.0
+  contact:
+    name: Backend Development Team
+    email: backend-team@example.com
+    url: https://example.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://student-nest-production.up.railway.app/api/v1
+    description: Production Server
+
+paths:
+  /password-recovery/resent-otp:
+    post:
+      summary: Resend OTP for Password Recovery
+      description: This endpoint allows the user to resend the OTP for password recovery to the provided email.
+      operationId: resendOtp
+      tags:
+        - Authentication
+      requestBody:
+        description: The email address required to resend the OTP for password recovery.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "abdalrahmanalkayyalifdf1948@gmail.com"
+                  description: The email address of the user who is requesting the OTP.
+              required:
+                - email
+      responses:
+        '200':
+          description: OTP resent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "OTP has been resent successfully. Check your email."
+                    description: A message indicating that the OTP was resent successfully.
+        '400':
+          description: User not found or invalid email
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  err:
+                    type: string
+                    example: "no user been found !!"
+                    description: Error message indicating that no user was found with the provided email.
+        '429':
+          description: Too many requests (rate limiting)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                    description: Indicates that the request failed due to rate limiting.
+                  message:
+                    type: string
+                    example: "Too many login requests. Please wait a while before trying again."
+                    description: Error message informing the user that too many requests have been made.
+        '400':
+          description: Invalid email format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid email format."
+                    description: Error message indicating that the provided email address is not valid.
+
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Invalid email format"
+    SuccessResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "OTP has been resent successfully. Check your email."

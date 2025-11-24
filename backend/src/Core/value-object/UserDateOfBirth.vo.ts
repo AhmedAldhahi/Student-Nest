@@ -20,7 +20,7 @@ export class UserDateOfBirth {
     if (Number.isNaN(Dob)) throw new Error("the date of birth must be number");
 
     if (defaultYear - Dob < 18) {
-      throw new Error("the student must be at least 18 !!");
+      throw new Error("the User must be at least 18 !!");
     }
   }
 

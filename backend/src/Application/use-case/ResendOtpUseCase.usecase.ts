@@ -26,6 +26,10 @@ export class ResendOtpUseCase {
       const user = await this.unitOfWork.userRepo.findByEmail(dto.email);
       if (!user) {
         throw new Error("no user been found !!");
+      } 
+
+      if (user.getVerifiedEmail()) {
+        throw new Error ("this email is been verified !!")
       }
 
       user.setOtpForEmail(otp); 

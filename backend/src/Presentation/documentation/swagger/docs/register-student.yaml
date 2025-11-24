@@ -1,128 +1,206 @@
 openapi: 3.0.0
 info:
   title: Student Nest API
+  description: API documentation for the Student Nest backend system. This includes authentication and registration endpoints.
   version: 1.0.0
-  description: API documentation for Student Nest backend.
+  contact:
+    name: Backend Development Team
+    email: backend-team@example.com
+    url: https://example.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 
 servers:
-  - url: http://localhost:4000/api/v1
-    description: Local development server
-  - url: https://api.student-nest.com/api/v1
-    description: Production server
+  - url: https://student-nest-production.up.railway.app/api/v1
+    description: Production Server
 
 paths:
   /auth/register/student:
     post:
-      summary: Register a new student
-      description: Endpoint to register a student user
+      summary: Student Registration Endpoint
+      description: This endpoint allows a student to register by providing necessary details.
+      operationId: registerStudent
       tags:
-        - Auth
+        - Authentication
       requestBody:
-        required: true
+        description: The student details required for registration.
         content:
-          multipart/form-data:
+          application/json:
             schema:
-              $ref: '#/components/schemas/RegisterStudentRequest'
-            encoding:
-              verificationFile:
-                contentType: application/octet-stream
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "student@example.com"
+                  description: Student's email address. Must be a valid email format.
+                name:
+                  type: string
+                  example: "John Doe"
+                  description: Full name of the student.
+                password:
+                  type: string
+                  minLength: 8
+                  example: "SecurePass123!"
+                  description: Password for the student's account. Must include uppercase, lowercase, numbers, and special characters.
+                role:
+                  type: string
+                  enum: ["student"]
+                  example: "student"
+                  description: The role of the user. Always "student" for this endpoint.
+                dateOfBirth:
+                  type: string
+                  format: date
+                  example: "2000-01-01"
+                  description: Date of birth of the student in YYYY-MM-DD format. The student must be at least 18 years old.
+                phoneNumber:
+                  type: string
+                  example: "+962712345678"
+                  description: Student's phone number in international format.
+                major:
+                  type: string
+                  example: "Computer Science"
+                  description: The student's major field of study.
+                gradateYear:
+                  type: integer
+                  example: "2024"
+                  description: The year the student expects to graduate.
+                studentCardId:
+                  type: string
+                  example: "U12345678"
+                  description: Unique student card identifier.
+                universityName:
+                  type: string
+                  example: "Middle East University"
+                  description: The name of the student's university.
+                studentGovId:
+                  type: string
+                  example: "STUDENTGOV12345"
+                  description: The student's government-issued ID.
+                verificationFile:
+                  type: string
+                  format: binary
+                  description: File for verifying the student's identity (e.g., student ID or related document).
+                address:
+                  type: string
+                  example: "Amman, Jordan"
+                  description: The student's address (optional).
+              required:
+                - email
+                - name
+                - password
+                - role
+                - dateOfBirth
+                - phoneNumber
+                - major
+                - gradateYear
+                - studentCardId
+                - universityName
+                - studentGovId
+                - verificationFile
       responses:
-        '201':
-          description: Student registered successfully
+        '200':
+          description: Successful registration
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RegisterStudentResponse'
-              example:
-                message: Student registered successfully! Verify your email with the OTP.
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: "Student registered successfully! Verify your email with the OTP."
+                        description: Success message indicating registration was successful.
         '400':
-          description: Bad request or validation error
+          description: Bad Request - Validation Errors
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                error: Verification file is required
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                    description: Indicates the failure of the registration attempt.
+                  message:
+                    type: string
+                    example: "Validation failed"
+                    description: Error message describing the validation failure.
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                          example: "email"
+                        message:
+                          type: string
+                          example: "Invalid email address"
+                          description: Specific error message for each invalid field.
+        '422':
+          description: Validation Error - Invalid phone number format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid phone number. Use international format (+[country code][number]) or Jordanian format (+9627XXXXXXXX, 009627XXXXXXXX, 07XXXXXXXX)."
+                    description: Error message indicating that the phone number format is invalid.
+        '429':
+          description: Too many registration attempts - rate limiting
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Too many registration attempts. Please try again later."
+                    description: A message informing the user to wait before trying again due to rate limits.
         '409':
-          description: Conflict (email already exists)
+          description: Duplicate entry for student ID
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                error: Email already registered
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                error: Server error, please try again later
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Duplicate entry 'U12345678' for key 'students.IDX_8b7f8d77d98b240b657944198d'"
+                    description: Error message indicating a conflict or duplication in the student ID.
 
 components:
   schemas:
-    RegisterStudentRequest:
-      type: object
-      required:
-        - email
-        - name
-        - password
-        - role
-        - dateOfBirth
-        - phoneNumber
-        - major
-        - gradateYear
-        - studentCardId
-        - universityName
-        - studentGovId
-        - verificationFile
-      properties:
-        email:
-          type: string
-          format: email
-        name:
-          type: string
-        password:
-          type: string
-        role:
-          type: string
-          enum: [student]
-        dateOfBirth:
-          type: string
-          format: date
-        phoneNumber:
-          type: string
-        major:
-          type: string
-        gradateYear:
-          type: string
-          description: Graduation year in YYYY format
-        studentCardId:
-          type: string
-        universityName:
-          type: string
-        studentGovId:
-          type: string
-        verificationFile:
-          type: string
-          format: binary
-        address:
-          type: string
-          nullable: true
-
-    RegisterStudentResponse:
-      type: object
-      required:
-        - message
-      properties:
-        message:
-          type: string
-
     ErrorResponse:
       type: object
-      required:
-        - error
       properties:
         error:
           type: string
+          example: "Verification file is required"
+    ValidationError:
+      type: object
+      properties:
+        path:
+          type: string
+          example: "email"
+        message:
+          type: string
+          example: "Invalid email address"
+    SuccessResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            message:
+              type: string
+              example: "Student registered successfully! Verify your email with the OTP."

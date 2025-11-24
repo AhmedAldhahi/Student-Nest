@@ -1,125 +1,235 @@
 openapi: 3.0.0
 info:
-  title: Student Nest API
+  title: Landlord Registration API
+  description: API documentation for registering a landlord in the system. Includes validation and registration of landlord details.
   version: 1.0.0
-  description: API documentation for Student Nest backend.
+  contact:
+    name: Backend Development Team
+    email: backend-team@example.com
+    url: https://example.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 
 servers:
-  - url: http://localhost:4000/api/v1
-    description: Local development server
-  - url: https://api.student-nest.com/api/v1
-    description: Production server
+  - url: https://student-nest-production.up.railway.app/api/v1
+    description: Production Server
 
 paths:
   /auth/register/landlord:
     post:
-      summary: Register a new landlord
-      description: Endpoint to register a landlord user
+      summary: Landlord Registration Endpoint
+      description: This endpoint allows a landlord to register by providing necessary details.
+      operationId: registerLandlord
       tags:
-        - Auth
+        - Authentication
       requestBody:
-        required: true
+        description: The landlord details required for registration.
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RegisterLandlordRequest'
-            example:
-              email: landlord@example.com
-              name: John Doe
-              password: StrongPassword123
-              role: landloard
-              dateOfBirth: "1985-05-20"
-              phoneNumber: "+962798765432"
-              cliQAccount: "CLIQ12345"
-              LandloardGovId: "GOV12345"
-              address: "Amman, Jordan"
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "example@domain.com"
+                  description: Landlord's email address. Must be a valid email format.
+                name:
+                  type: string
+                  example: "JohnDoe"
+                  description: Full name of the landlord.
+                phoneNumber:
+                  type: string
+                  example: "+1234567890"
+                  description: Landlord's phone number in international format.
+                dateOfBirth:
+                  type: string
+                  format: date
+                  example: "2000"
+                  description: Date of birth of the landlord in YYYY format. The landlord must be at least 18 years old.
+                role:
+                  type: string
+                  enum: ["landloard"]
+                  example: "landloard"
+                  description: Role of the user. Always "landloard" for this endpoint.
+                password:
+                  type: string
+                  minLength: 8
+                  example: "SecurePass135!"
+                  description: Password for the landlord's account. Must include uppercase, lowercase, numbers, and special characters.
+                cliQAccount:
+                  type: string
+                  example: "cliQAccount123"
+                  description: CLIQ account identifier for the landlord.
+                LandloardGovId:
+                  type: string
+                  example: "1234567890"
+                  description: Government-issued ID for the landlord. Must contain exactly 10 digits.
+              required:
+                - email
+                - name
+                - phoneNumber
+                - dateOfBirth
+                - role
+                - password
+                - cliQAccount
+                - LandloardGovId
       responses:
-        '201':
-          description: Landlord registered successfully
+        '200':
+          description: Successful landlord registration
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RegisterLandlordResponse'
-              example:
-                message: Landlord registered successfully
-                userId: 101
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Landlord registered successfully! Verify your email with the OTP."
+                    description: Success message indicating that the landlord registration was successful.
         '400':
-          description: Bad request or validation error
+          description: Bad Request - Validation Errors
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                error: Invalid email or missing required fields
-        '409':
-          description: Conflict (email already exists)
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                    description: Indicates the failure of the registration attempt.
+                  message:
+                    type: string
+                    example: "Validation failed"
+                    description: Error message describing the validation failure.
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                          example: "email"
+                          description: The path (field) that failed validation.
+                        message:
+                          type: string
+                          example: "Invalid email address"
+                          description: Specific error message for each invalid field.
+        '429':
+          description: Too many registration attempts - rate limiting
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                error: Email already registered
-        '500':
-          description: Internal server error
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Too many registration attempts. Please try again later."
+                    description: Message informing the user to wait before trying again due to rate limits.
+        '400':
+          description: Invalid email format
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                error: Server error, please try again later
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid email address"
+                    description: Error message indicating that the email address is invalid.
+        '400':
+          description: Password validation failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Password cannot contain sequential numbers like 123 or 987"
+                    description: Error message indicating that the password contains sequential numbers.
+        '400':
+          description: Invalid name format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Name must start with a letter and can only contain letters, numbers, or underscores, no spaces allowed"
+                    description: Error message indicating that the name contains invalid characters or spaces.
+        '400':
+          description: Age validation failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "The user must be at least 18 !!"
+                    description: Error message indicating that the user is under 18 years old.
+        '400':
+          description: Invalid role validation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid input: expected 'landloard'"
+                    description: Error message indicating that the role input is invalid.
+        '400':
+          description: Invalid government ID format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "User Government ID number must contain exactly 10 digits"
+                    description: Error message indicating that the government ID doesn't contain exactly 10 digits.
+        '400':
+          description: Name format validation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Name must start with a letter and can only contain letters, numbers, or underscores, no spaces allowed"
+                    description: Error message indicating the name format is incorrect.
 
 components:
   schemas:
-    RegisterLandlordRequest:
-      type: object
-      required:
-        - email
-        - name
-        - password
-        - role
-        - dateOfBirth
-        - phoneNumber
-        - cliQAccount
-        - LandloardGovId
-      properties:
-        email:
-          type: string
-          format: email
-        name:
-          type: string
-        password:
-          type: string
-        role:
-          type: string
-          enum: [admin, landloard]
-        dateOfBirth:
-          type: string
-          format: date
-        phoneNumber:
-          type: string
-        cliQAccount:
-          type: string
-        LandloardGovId:
-          type: string
-        address:
-          type: string
-          nullable: true   # optional now
-
-    RegisterLandlordResponse:
-      type: object
-      required:
-        - message
-        - userId
-      properties:
-        message:
-          type: string
-        userId:
-          type: number
-
     ErrorResponse:
       type: object
-      required:
-        - error
       properties:
         error:
           type: string
+          example: "Verification file is required"
+    ValidationError:
+      type: object
+      properties:
+        path:
+          type: string
+          example: "email"
+        message:
+          type: string
+          example: "Invalid email address"
+    SuccessResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            message:
+              type: string
+              example: "Landlord registered successfully! Verify your email with the OTP."
