@@ -20,6 +20,7 @@ export type RootStackParamList = {
 
   StudentDashboardScreen: undefined;
   LandlordDashboardScreen: undefined;
+  NotificationScreen: undefined;
 
   StudentRequestsScreen: {studentId: number};
   StudentLeaseScreen: {studentId: number};

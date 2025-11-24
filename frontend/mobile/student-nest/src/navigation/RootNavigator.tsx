@@ -38,6 +38,7 @@ import StudentLeaseScreen from "../features/dashboard/screens/student/StudentLea
 import StudentRequestsScreen from "../features/dashboard/screens/student/StudentRequestsScreen";
 import LandlordLeaseScreen from "../features/dashboard/screens/landlord/LandlordLeaseScreen";
 import VerificationScreen from "../features/dashboard/screens/universal/VerificationScreen";
+import NotificationScreen from "../features/dashboard/screens/universal/NotificationScreen";
 
 
 
@@ -68,6 +69,7 @@ export default function RootNavigator() {
           <Stack.Screen name="SettingsScreen" component={SettingsScreen} options={{ headerShown: true, title: "Settings" }}/>
           <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ headerShown: true, title: "Profile" }}/>
           <Stack.Screen name="VerificationScreen" component={VerificationScreen} options={{ headerShown: true, title: "Documents" }}/>
+          <Stack.Screen name="NotificationScreen" component={NotificationScreen} options={{ headerShown: true, title: "Notification center" }}/>
 
           {/* Admin */}
           <Stack.Screen name="AuditLogScreen" component={AuditLogScreen} options={{ headerShown: true, title: "Audit Log" }}/>

@@ -54,15 +54,15 @@ export default function StudentDashboardScreen() {
           onPress={() => navigation.navigate("PaymentsScreen")}
         >
           Payments
-        </Button>
+        </Button> */}
 
         <Button
           mode="contained"
           style={styles.btn}
-          onPress={() => navigation.navigate("NotificationsScreen")}
+          onPress={() => navigation.navigate("NotificationScreen")}
         >
           Notifications
-        </Button> */}
+        </Button>
 
         <Button
           mode="contained"

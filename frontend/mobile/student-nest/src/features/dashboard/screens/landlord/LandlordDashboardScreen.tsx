@@ -40,6 +40,14 @@ export default function LandlordDashboardScreen() {
         <Button
           mode="contained"
           style={styles.btn}
+          onPress={() => navigation.navigate("NotificationScreen")}
+        >
+          Profile
+        </Button>
+
+        <Button
+          mode="contained"
+          style={styles.btn}
           onPress={() =>
             navigation.navigate("LandlordLeaseScreen", {
               landlordId: parseInt(user.id),

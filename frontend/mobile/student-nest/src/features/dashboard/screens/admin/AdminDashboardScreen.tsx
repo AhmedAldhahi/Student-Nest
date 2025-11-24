@@ -18,7 +18,7 @@ const features = [
   { key: "AdminLeaseScreen", label: "Leases", icon: "document-text" },
   { key: "AdminRequestsScreen", label: "Requests", icon: "mail" },
   { key: "PaymentsScreen", label: "Payments", icon: "card" },
-  { key: "NotificationsScreen", label: "Notifications", icon: "notifications" },
+  { key: "NotificationScreen", label: "Notifications", icon: "notifications" },
   { key: "LandlordsScreen", label: "Landlords", icon: "business" },
   { key: "StudentsScreen", label: "Students", icon: "school" },
   { key: "ReceiptsScreen", label: "Receipts", icon: "receipt" },
