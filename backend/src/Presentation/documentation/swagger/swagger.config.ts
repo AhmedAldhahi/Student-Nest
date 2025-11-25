@@ -6,19 +6,21 @@ import { Application } from "express";
 
 export const setupSwagger = (app: Application): void => {
   // Set base URL for API
-  const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:4000/api/v1";
+  const API_BASE_URL =
+    process.env.API_BASE_URL || "http://localhost:4000/api/v1";
 
   // Resolve the path to the docs folder
   const docsPath = path.resolve(__dirname, "./docs");
 
   // Check if docs folder exists
   if (!fs.existsSync(docsPath)) {
-    console.error("Swagger docs folder not found:", docsPath);
     return;
   }
 
   // Read all YAML files in the docs folder
-  const yamlFiles = fs.readdirSync(docsPath).filter((file) => file.endsWith(".yaml"));
+  const yamlFiles = fs
+    .readdirSync(docsPath)
+    .filter((file) => file.endsWith(".yaml"));
   if (yamlFiles.length === 0) {
     console.error("No YAML files found in docs folder!");
     return;
@@ -43,13 +45,11 @@ export const setupSwagger = (app: Application): void => {
   // Merge all YAML files into the swagger document
   yamlFiles.forEach((file) => {
     const filePath = path.join(docsPath, file);
-    console.log(`Processing YAML file: ${filePath}`);
     try {
       const doc = YAML.load(filePath);
 
       if (doc.paths) {
         swaggerDocument.paths = { ...swaggerDocument.paths, ...doc.paths };
-        console.log(`Merged paths from ${file}`);
       }
 
       if (doc.tags) {
@@ -62,7 +62,6 @@ export const setupSwagger = (app: Application): void => {
           ...swaggerDocument.components.schemas,
           ...doc.components.schemas,
         };
-        console.log(`Merged schemas from ${file}`);
       }
 
       if (doc.components?.parameters) {
@@ -70,7 +69,6 @@ export const setupSwagger = (app: Application): void => {
           ...swaggerDocument.components.parameters,
           ...doc.components.parameters,
         };
-        console.log(`Merged parameters from ${file}`);
       }
 
       if (doc.components?.responses) {
@@ -78,14 +76,9 @@ export const setupSwagger = (app: Application): void => {
           ...swaggerDocument.components.responses,
           ...doc.components.responses,
         };
-        console.log(`Merged responses from ${file}`);
       }
-    } catch (err) {
-      console.error(`Failed to load or parse YAML file: ${filePath}`, err);
-    }
+    } catch (err) {}
   });
-
-  //console.log("Final Swagger Document:", JSON.stringify(swaggerDocument, null, 2));
 
   // Serve Swagger UI
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));

@@ -1,8 +1,8 @@
 import { EntityManager } from "typeorm";
-import { StudentEntity } from "../../../Core/entites/studentEntity.entity";
-import { IStudentRepository } from "../../../Core/repositories/StudentRepositories.repositories";
+import { StudentEntity } from "../../Core/entites/studentEntity.entity";
+import { IStudentRepository } from "../../Core/repositories/StudentRepositories.repositories";
 import { UserRepository } from "./user.repositories";
-import { StudentModel } from "../orm/TypeOrm/entity/Student.entity";
+import { StudentModel } from "../database/orm/TypeOrm/entity/Student.entity";
 import { StudentMapper } from "./student.mapper";
 import { UserMapper } from "./user.mapper";
 

@@ -1,9 +1,9 @@
 import { QueryRunner } from "typeorm";
-import { IUnitOfWork } from "../../../Core/repositories/UnitOfWorkRepositories.repositories";
+import { IUnitOfWork } from "../../Core/repositories/UnitOfWorkRepositories.repositories";
 import { UserRepository } from "./user.repositories";
 import { LandlordRepository } from "./landloard.repositories";
-import { AppDataSource } from "../orm/TypeOrm/data-source";
-import { IStudentRepository } from "../../../Core/repositories/StudentRepositories.repositories";
+import { AppDataSource } from "../database/orm/TypeOrm/data-source";
+import { IStudentRepository } from "../../Core/repositories/StudentRepositories.repositories";
 import { StudentRepository } from "./student.repositories";
 export class UnitOfWork implements IUnitOfWork {
   private queryRunner: QueryRunner | null = null;

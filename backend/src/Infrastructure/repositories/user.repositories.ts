@@ -1,8 +1,8 @@
-import { UserEntity } from "../../../Core/entites/userEntity.entity";
+import { UserEntity } from "../../Core/entites/userEntity.entity";
 import { UserMapper } from "./user.mapper";
-import { UserModel } from "../orm/TypeOrm/entity/User.entity";
+import { UserModel } from "../database/orm/TypeOrm/entity/User.entity";
 import { EntityManager } from "typeorm";
-import { IUserRepository } from "../../../Core/repositories/UserRepositories.repositories";
+import { IUserRepository } from "../../Core/repositories/UserRepositories.repositories";
 
 export class UserRepository implements IUserRepository {
   constructor(private readonly manager: EntityManager) {}

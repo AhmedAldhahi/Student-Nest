@@ -1,8 +1,8 @@
 import { EntityManager } from "typeorm";
-import { ILandlordRepository } from "../../../Core/repositories/LandlordRepositories.repositories";
-import { LandlordModel } from "../orm/TypeOrm/entity/Landloard.entity";
+import { ILandlordRepository } from "../../Core/repositories/LandlordRepositories.repositories";
+import { LandlordModel } from "../database/orm/TypeOrm/entity/Landloard.entity";
 import { UserRepository } from "./user.repositories";
-import { LandlordEntity } from "../../../Core/entites/landloardEntity.entity";
+import { LandlordEntity } from "../../Core/entites/landloardEntity.entity";
 import { LandlordMapper } from "./landloard.mapper";
 import { UserMapper } from "./user.mapper";
 

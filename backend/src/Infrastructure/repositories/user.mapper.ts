@@ -1,11 +1,11 @@
-import { UserEntity } from "../../../Core/entites/userEntity.entity";
-import { OTP } from "../../../Core/value-object/OTP.vo";
-import { UserDateOfBirth } from "../../../Core/value-object/UserDateOfBirth.vo";
-import { UserEmail } from "../../../Core/value-object/UserEmail.vo";
-import { UserName } from "../../../Core/value-object/UserName.vo";
-import { userPhoneNumber } from "../../../Core/value-object/UserPhoneNumber.vo";
-import { UserModel } from "../orm/TypeOrm/entity/User.entity";
-import { UserRole } from "../../../Core/enum/UserRole.enum";
+import { UserEntity } from "../../Core/entites/userEntity.entity";
+import { OTP } from "../../Core/value-object/OTP.vo";
+import { UserDateOfBirth } from "../../Core/value-object/UserDateOfBirth.vo";
+import { UserEmail } from "../../Core/value-object/UserEmail.vo";
+import { UserName } from "../../Core/value-object/UserName.vo";
+import { userPhoneNumber } from "../../Core/value-object/UserPhoneNumber.vo";
+import { UserModel } from "../database/orm/TypeOrm/entity/User.entity";
+import { UserRole } from "../../Core/enum/UserRole.enum";
 
 export class UserMapper {
   public static toOrm(user: UserEntity): UserModel {

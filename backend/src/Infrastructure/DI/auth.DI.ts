@@ -1,4 +1,4 @@
-import { UnitOfWork } from "../database/repositories/unitOfWork.repositories";
+import { UnitOfWork } from "../repositories/unitOfWork.repositories";
 
 import { SendGridService } from "../services/email/SendGridService.service";
 //import {MailerSendAdapter} from "../services/email/MailresenderService.service"

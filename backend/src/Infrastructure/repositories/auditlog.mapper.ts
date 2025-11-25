@@ -1,5 +1,5 @@
-import { AuditLogEntity } from "../../../Core/entites/auditlogEntity.entity";
-import { AuditLogModel } from "../orm/TypeOrm/entity/AuditLog.entity";
+import { AuditLogEntity } from "../../Core/entites/auditlogEntity.entity";
+import { AuditLogModel } from "../database/orm/TypeOrm/entity/AuditLog.entity";
 
 export class AuditLogMapper {
   public static toModel(auditEntity: AuditLogEntity): AuditLogModel {

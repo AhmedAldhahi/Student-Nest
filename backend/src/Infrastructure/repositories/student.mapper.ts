@@ -1,11 +1,11 @@
-import { StudentEntity } from "../../../Core/entites/studentEntity.entity";
-import { StudentCard } from "../../../Core/value-object/StudentCard.vo";
-import { studentGraduateYear } from "../../../Core/value-object/StudentGraduateYear.vo";
-import { StudentUniversity } from "../../../Core/value-object/StudentUniversity.vo";
-import { StudentVerificationDocument } from "../../../Core/value-object/StudentVerficationDocument.vo";
-import { GovernmentID } from "../../../Core/value-object/UserGovId.vo";
-import { StudentMajor } from "../../../Core/value-object/StudentMajor.vo"; // 1. Added Import
-import { StudentModel } from "../orm/TypeOrm/entity/Student.entity";
+import { StudentEntity } from "../../Core/entites/studentEntity.entity";
+import { StudentCard } from "../../Core/value-object/StudentCard.vo";
+import { studentGraduateYear } from "../../Core/value-object/StudentGraduateYear.vo";
+import { StudentUniversity } from "../../Core/value-object/StudentUniversity.vo";
+import { StudentVerificationDocument } from "../../Core/value-object/StudentVerficationDocument.vo";
+import { GovernmentID } from "../../Core/value-object/UserGovId.vo";
+import { StudentMajor } from "../../Core/value-object/StudentMajor.vo"; // 1. Added Import
+import { StudentModel } from "../database/orm/TypeOrm/entity/Student.entity";
 import { UserMapper } from "./user.mapper";
 
 export class StudentMapper {

@@ -1,8 +1,8 @@
 import { EntityManager } from "typeorm";
-import { AuditLogEntity } from "../../../Core/entites/auditlogEntity.entity";
-import { IAuditLogRepositories } from "../../../Core/repositories/AuditLogRepositories.repositories";
+import { AuditLogEntity } from "../../Core/entites/auditlogEntity.entity";
+import { IAuditLogRepositories } from "../../Core/repositories/AuditLogRepositories.repositories";
 import { AuditLogMapper } from "./auditlog.mapper";
-import { AuditLogModel } from "../orm/TypeOrm/entity/AuditLog.entity";
+import { AuditLogModel } from "../database/orm/TypeOrm/entity/AuditLog.entity";
 
 export class AuditLogRepositories implements IAuditLogRepositories {
   constructor(private readonly manager: EntityManager) {}

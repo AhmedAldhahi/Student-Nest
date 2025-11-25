@@ -1,6 +1,6 @@
-import { LandlordEntity } from "../../../Core/entites/landloardEntity.entity";
-import { GovernmentID } from "../../../Core/value-object/UserGovId.vo";
-import { LandlordModel } from "../orm/TypeOrm/entity/Landloard.entity";
+import { LandlordEntity } from "../../Core/entites/landloardEntity.entity";
+import { GovernmentID } from "../../Core/value-object/UserGovId.vo";
+import { LandlordModel } from "../database/orm/TypeOrm/entity/Landloard.entity";
 import { UserMapper } from "./user.mapper";
 
 export class LandlordMapper {
