@@ -45,5 +45,6 @@ export const RegisterLandloardSchema = basedUserSchema
     cliQAccount: z.string(),
     LandloardGovId: z.string(),
     role: z.literal("landloard"),
+    address: z.string().optional(),
   })
   .strict();

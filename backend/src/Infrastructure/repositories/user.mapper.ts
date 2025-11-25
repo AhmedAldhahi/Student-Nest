@@ -65,7 +65,7 @@ export class UserMapper {
     }
 
     if (user.resetPasswordVerified) {
-      userEntity.verifyResetPassword(); // ✅ correctly set verified flag
+      userEntity.verifyResetPassword(); 
     }
 
     return userEntity;
