@@ -66,7 +66,11 @@ class Server {
             format: winston_1.default.format.combine(winston_1.default.format.timestamp(), winston_1.default.format.json()),
         }));
         this.app.options("*", (0, cors_1.default)());
-        this.app.use((0, cors_1.default)());
+        this.app.use((0, cors_1.default)({
+            origin: ["http://localhost:5173", "http://localhost:8081"],
+            methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+            credentials: true,
+        }));
         const { authController, verificationController, passwordRecoverController, } = (0, index_controller_1.buildControllers)();
         this.app.use("/api/v1/auth", (0, Registeration_route_1.createAuthRouter)(authController));
         this.app.use("/api/v1/", (0, Verfication_route_1.createVerficationRouter)(verificationController));

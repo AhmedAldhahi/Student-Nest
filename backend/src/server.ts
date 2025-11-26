@@ -13,109 +13,108 @@ import { buildControllers } from "./Presentation/http/controllers/index.controll
 import { createVerficationRouter } from "./Presentation/http/routes/registeration/Verfication.route";
 import { PasswordRecoveryRouter } from "./Presentation/http/routes/registeration/PasswordRecvery.route";
 export class Server {
-  public app = express();
-  public port = parseInt(process.env.PORT || "4000", 10);
+	public app = express();
+	public port = parseInt(process.env.PORT || "4000", 10);
 
-  private startupDebug = debug("app:startup");
-  private dbDebug = debug("app:db");
-  private httpDebug = debug("app:http");
+	private startupDebug = debug("app:startup");
+	private dbDebug = debug("app:db");
+	private httpDebug = debug("app:http");
 
-  async configure() {
-    this.app.use((req, res, next) => {
-      console.log("🔥 REQUEST HIT SERVER:", req.method, req.url);
-      next();
-    });
+	async configure() {
+		this.app.use((req, res, next) => {
+			console.log("🔥 REQUEST HIT SERVER:", req.method, req.url);
+			next();
+		});
 
-    // Database
-    try {
-      await AppDataSource.initialize();
-      this.dbDebug("Database connected successfully.");
-    } catch (error) {
-      this.dbDebug("Database connection failed: %O", error);
-      throw error;
-    }
+		// Database
+		try {
+			await AppDataSource.initialize();
+			this.dbDebug("Database connected successfully.");
+		} catch (error) {
+			this.dbDebug("Database connection failed: %O", error);
+			throw error;
+		}
 
-    // Logging - Morgan FIRST
-    this.app.use(
-      morgan("dev", {
-        stream: {
-          write: (message) => this.httpDebug(message.trim()),
-        },
-      })
-    );
+		// Logging - Morgan FIRST
+		this.app.use(
+			morgan("dev", {
+				stream: {
+					write: (message) => this.httpDebug(message.trim()),
+				},
+			})
+		);
 
-    // Security
-    this.app.use(helmet());
+		// Security
+		this.app.use(helmet());
 
-    // Body parsers
-    this.app.use(express.urlencoded({ extended: true }));
-    this.app.use(express.json());
+		// Body parsers
+		this.app.use(express.urlencoded({ extended: true }));
+		this.app.use(express.json());
 
-    // JSON parse error handler
-    this.app.use((err: any, req: any, res: any, next: any) => {
-      if (err instanceof SyntaxError && "body" in err) {
-        return res.status(400).json({
-          error: "Invalid JSON payload",
-          message: err.message,
-        });
-      }
-      next();
-    });
+		// JSON parse error handler
+		this.app.use((err: any, req: any, res: any, next: any) => {
+			if (err instanceof SyntaxError && "body" in err) {
+				return res.status(400).json({
+					error: "Invalid JSON payload",
+					message: err.message,
+				});
+			}
+			next();
+		});
 
-    // Winston request logging
-    this.app.use(
-      expressWinston.logger({
-        transports: [
-          new winston.transports.File({
-            filename: "logs/requests.log",
-            level: "info",
-          }),
-        ],
-        format: winston.format.combine(
-          winston.format.timestamp(),
-          winston.format.json()
-        ),
-      })
-    );
+		// Winston request logging
+		this.app.use(
+			expressWinston.logger({
+				transports: [
+					new winston.transports.File({
+						filename: "logs/requests.log",
+						level: "info",
+					}),
+				],
+				format: winston.format.combine(
+					winston.format.timestamp(),
+					winston.format.json()
+				),
+			})
+		);
 
-    this.app.options("*", cors());
+		this.app.options("*", cors());
 
-   // this.app.use(
-     // cors({
-       // origin: ["http://localhost:5173", "http://localhost:8081"],
-       // methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-       // credentials: true,
-     // })
-   // );
+		this.app.use(
+			cors({
+				origin: ["http://localhost:5173", "http://localhost:8081"],
+				methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+				credentials: true,
+			})
+		);
 
-    this.app.use(cors());
 
-    // Routes
-    const {
-      authController,
-      verificationController,
-      passwordRecoverController,
-    } = buildControllers();
-    this.app.use("/api/v1/auth", createAuthRouter(authController));
-    this.app.use("/api/v1/", createVerficationRouter(verificationController));
+		// Routes
+		const {
+			authController,
+			verificationController,
+			passwordRecoverController,
+		} = buildControllers();
+		this.app.use("/api/v1/auth", createAuthRouter(authController));
+		this.app.use("/api/v1/", createVerficationRouter(verificationController));
 
-    this.app.use(
-      "/api/v1/password-recovery",
-      PasswordRecoveryRouter(passwordRecoverController)
-    );
+		this.app.use(
+			"/api/v1/password-recovery",
+			PasswordRecoveryRouter(passwordRecoverController)
+		);
 
-    // Swagger
-    setupSwagger(this.app);
+		// Swagger
+		setupSwagger(this.app);
 
-    this.startupDebug("Server configuration completed.");
-  }
+		this.startupDebug("Server configuration completed.");
+	}
 
-  async start() {
-    await this.configure();
+	async start() {
+		await this.configure();
 
-    this.app.listen(this.port, () => {
-      this.startupDebug(`Server running on http://localhost:${this.port}`);
-      this.startupDebug(`Swagger at http://localhost:${this.port}/api-docs`);
-    });
-  }
+		this.app.listen(this.port, () => {
+			this.startupDebug(`Server running on http://localhost:${this.port}`);
+				this.startupDebug(`Swagger at http://localhost:${this.port}/api-docs`);
+		});
+	}
 }
