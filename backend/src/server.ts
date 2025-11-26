@@ -80,13 +80,15 @@ export class Server {
 
     this.app.options("*", cors());
 
-    this.app.use(
-      cors({
-        origin: ["http://localhost:5173", "http://localhost:8081"],
-        methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-        credentials: true,
-      })
-    );
+   // this.app.use(
+     // cors({
+       // origin: ["http://localhost:5173", "http://localhost:8081"],
+       // methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+       // credentials: true,
+     // })
+   // );
+
+    this.app.use(cors());
 
     // Routes
     const {
