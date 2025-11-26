@@ -11,7 +11,7 @@ class UserDateOfBirth {
         if (Number.isNaN(Dob))
             throw new Error("the date of birth must be number");
         if (helperValue_constant_1.defaultYear - Dob < 18) {
-            throw new Error("the student must be at least 18 !!");
+            throw new Error("the User must be at least 18 !!");
         }
     }
     getValue() {

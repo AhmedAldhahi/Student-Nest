@@ -16,6 +16,9 @@ class ResendOtpUseCase {
             if (!user) {
                 throw new Error("no user been found !!");
             }
+            if (user.getVerifiedEmail()) {
+                throw new Error("this email is been verified !!");
+            }
             user.setOtpForEmail(otp);
             console.log(user.getOtpForEmail(), user.getOtpExpiredForEmail());
             await this.unitOfWork.userRepo.addNewUser(user);

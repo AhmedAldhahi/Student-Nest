@@ -37,5 +37,6 @@ exports.RegisterLandloardSchema = basedUserSchema
     cliQAccount: zod_1.z.string(),
     LandloardGovId: zod_1.z.string(),
     role: zod_1.z.literal("landloard"),
+    address: zod_1.z.string().optional(),
 })
     .strict();

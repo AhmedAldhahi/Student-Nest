@@ -1,26 +1,25 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
+// import * as dotenv from "dotenv";
 
-import * as dotenv from "dotenv";
-dotenv.config();
+// dotenv.config();
 
 export const AppDataSource = new DataSource({
   type: "mysql",
-  // host: "localhost", // Or "127.0.0.1"
-  // port: 3306,        // <-- Port goes here
-  // password: process.env.DATABASE_Pass_DEv,
-  // username: process.env.DATABASE_USERNAME,
-  // database: "TEST",
-  url: process.env.DATABASE_URL,
+  host: process.env.DATABASE_HOST, // Host should be set to the IP address from your .env file
+  port: process.env.DATABASE_PORT ? Number(process.env.DATABASE_PORT) : 3306, // Convert the port to a number
+  username: process.env.DATABASE_USERNAME,
+  password: process.env.DATABASE_PASSWORD,
+  database: process.env.DB_DBNAME,
   extra: {
     ssl: {
-      rejectUnauthorized: false,
+      rejectUnauthorized: false, // Depending on whether you need SSL for your connection
     },
   },
-
   synchronize: true,
   logging: false,
   entities: [__dirname + "/entity/**/*.entity{.ts,.js}"],
   migrations: [],
   subscribers: [],
 });
+

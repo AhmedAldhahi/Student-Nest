@@ -12,14 +12,16 @@ const setupSwagger = (app) => {
     const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:4000/api/v1";
     const docsPath = path_1.default.resolve(__dirname, "./docs");
     if (!fs_1.default.existsSync(docsPath)) {
-        console.error("Swagger docs folder not found:", docsPath);
         return;
     }
-    const yamlFiles = fs_1.default.readdirSync(docsPath).filter((file) => file.endsWith(".yaml"));
+    const yamlFiles = fs_1.default
+        .readdirSync(docsPath)
+        .filter((file) => file.endsWith(".yaml"));
     if (yamlFiles.length === 0) {
         console.error("No YAML files found in docs folder!");
         return;
     }
+    console.log(`Found ${yamlFiles.length} YAML file(s) to process.`);
     const swaggerDocument = {
         openapi: "3.0.0",
         info: {
@@ -34,33 +36,37 @@ const setupSwagger = (app) => {
     };
     yamlFiles.forEach((file) => {
         const filePath = path_1.default.join(docsPath, file);
-        const doc = yamljs_1.default.load(filePath);
-        if (doc.paths) {
-            swaggerDocument.paths = { ...swaggerDocument.paths, ...doc.paths };
+        try {
+            const doc = yamljs_1.default.load(filePath);
+            if (doc.paths) {
+                swaggerDocument.paths = { ...swaggerDocument.paths, ...doc.paths };
+            }
+            if (doc.tags) {
+                swaggerDocument.tags = [...swaggerDocument.tags, ...doc.tags];
+                console.log(`Merged tags from ${file}`);
+            }
+            if (doc.components?.schemas) {
+                swaggerDocument.components.schemas = {
+                    ...swaggerDocument.components.schemas,
+                    ...doc.components.schemas,
+                };
+            }
+            if (doc.components?.parameters) {
+                swaggerDocument.components.parameters = {
+                    ...swaggerDocument.components.parameters,
+                    ...doc.components.parameters,
+                };
+            }
+            if (doc.components?.responses) {
+                swaggerDocument.components.responses = {
+                    ...swaggerDocument.components.responses,
+                    ...doc.components.responses,
+                };
+            }
         }
-        if (doc.tags) {
-            swaggerDocument.tags = [...swaggerDocument.tags, ...doc.tags];
-        }
-        if (doc.components?.schemas) {
-            swaggerDocument.components.schemas = {
-                ...swaggerDocument.components.schemas,
-                ...doc.components.schemas,
-            };
-        }
-        if (doc.components?.parameters) {
-            swaggerDocument.components.parameters = {
-                ...swaggerDocument.components.parameters,
-                ...doc.components.parameters,
-            };
-        }
-        if (doc.components?.responses) {
-            swaggerDocument.components.responses = {
-                ...swaggerDocument.components.responses,
-                ...doc.components.responses,
-            };
-        }
+        catch (err) { }
     });
     app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerDocument));
-    console.log(`Swagger UI available at http://localhost:4000/api-docs`);
+    console.log(`Swagger UI is available at http://localhost:4000/api-docs`);
 };
 exports.setupSwagger = setupSwagger;

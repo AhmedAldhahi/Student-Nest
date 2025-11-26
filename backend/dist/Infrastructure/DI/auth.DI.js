@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.makeRegisterLandlordUseCase = makeRegisterLandlordUseCase;
 exports.makeRegisterStudentUseCase = makeRegisterStudentUseCase;
 exports.makeLoginUseCase = makeLoginUseCase;
-const unitOfWork_repositories_1 = require("../database/repositories/unitOfWork.repositories");
+const unitOfWork_repositories_1 = require("../repositories/unitOfWork.repositories");
 const SendGridService_service_1 = require("../services/email/SendGridService.service");
 const RegisterLandloardUseCase_usecase_1 = require("../../Application/use-case/RegisterLandloardUseCase.usecase");
 const RegisterStudentUseCase_usecase_1 = require("../../Application/use-case/RegisterStudentUseCase.usecase");
