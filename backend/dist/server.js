@@ -67,7 +67,7 @@ class Server {
         }));
         this.app.options("*", (0, cors_1.default)());
         this.app.use((0, cors_1.default)({
-            origin: ["http://72.60.35.224:5173", "http://72.60.35.224:8081", "http://72.60.35.224:4000"],
+            origin: ["https://72.60.35.224:5173", "https://72.60.35.224:8081", "https://72.60.35.224:4000"],
             methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
             credentials: true,
         }));

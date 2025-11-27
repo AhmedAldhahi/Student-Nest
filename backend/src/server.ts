@@ -82,7 +82,7 @@ export class Server {
 
 		this.app.use(
 			cors({
-				origin: ["http://72.60.35.224:5173", "http://72.60.35.224:8081", "http://72.60.35.224:4000"],
+				origin: ["https://72.60.35.224:5173", "https://72.60.35.224:8081", "https://72.60.35.224:4000"],
 				methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 				credentials: true,
 			})
