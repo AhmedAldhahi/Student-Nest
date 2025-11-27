@@ -1,7 +1,7 @@
 import { VerifiedOtpUseCase } from "../../Application/use-case/VerfiedOtpUseCase.usecase";
 import { JwtTokenService } from "../services/TokenService.service";
 import { UnitOfWork } from "../repositories/unitOfWork.repositories";
-import { SendGridService } from "../services/email/SendGridService.service";
+import { MailtrapService } from "../services/email/MailtrapService.service";
 import { ForgetPasswordUseCase } from "../../Application/use-case/ForgetPasswordUseCase.usecase";
 import { BcryptPasswordHasher } from "../services/BcryptPasswordHasher.service";
 import { ResendOtpForgetPasswordUseCase } from "../../Application/use-case/ResendOtpForgetPasswordUseCase.usecase";
@@ -17,7 +17,7 @@ export function makeVerifiedEmailOTP(): VerifiedOtpUseCase {
 
 export function makeResendEmailOTP(): ResendOtpUseCase {
   const unitOfrWork = new UnitOfWork();
-  const emailService = new SendGridService();
+  const emailService = new MailtrapService();
 
   return new ResendOtpUseCase(emailService, unitOfrWork);
 }
@@ -32,7 +32,7 @@ export function makeUpdateForgetPass(): ForgetPasswordUseCase {
 
 export function makeResendForgetPassword(): ResendOtpForgetPasswordUseCase {
   const unitOfrWork = new UnitOfWork();
-  const emailService = new SendGridService();
+  const emailService = new MailtrapService();
 
 
   return new ResendOtpForgetPasswordUseCase(emailService, unitOfrWork);

@@ -1,7 +1,6 @@
 import { UnitOfWork } from "../repositories/unitOfWork.repositories";
 
-import { SendGridService } from "../services/email/SendGridService.service";
-//import {MailerSendAdapter} from "../services/email/MailresenderService.service"
+import { MailtrapService } from "../services/email/MailtrapService.service";
 
 import { RegisterLandloardUseCase } from "../../Application/use-case/RegisterLandloardUseCase.usecase";
 import { RegisterStudentUseCase } from "../../Application/use-case/RegisterStudentUseCase.usecase";
@@ -13,7 +12,7 @@ import { JwtTokenService } from "../services/TokenService.service";
 export function makeRegisterLandlordUseCase(): RegisterLandloardUseCase {
   const unitOfWork = new UnitOfWork();
   const passwordService = new BcryptPasswordHasher();
- const emailService = new SendGridService();
+ const emailService = new MailtrapService();
 
 
 
@@ -27,7 +26,7 @@ export function makeRegisterLandlordUseCase(): RegisterLandloardUseCase {
 export function makeRegisterStudentUseCase(): RegisterStudentUseCase {
   const unitOfWork = new UnitOfWork();
   const passwordService = new BcryptPasswordHasher();
-  const emailService = new SendGridService();
+  const emailService = new MailtrapService();
   const cloudinaryService = new CloudinaryService();
 
   return new RegisterStudentUseCase(
