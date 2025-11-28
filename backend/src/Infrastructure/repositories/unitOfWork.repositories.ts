@@ -14,9 +14,7 @@ export class UnitOfWork implements IUnitOfWork {
   public studentRepo!: IStudentRepository;
 
   async startTransaction(): Promise<void> {
-    // this.queryRunner = AppDataSource.createQueryRunner();
-    // await this.queryRunner.connect();
-    // await this.queryRunner.startTransaction();
+
     this.queryRunner = AppDataSource.getInstance().createQueryRunner();
     await this.queryRunner.connect();
     await this.queryRunner.startTransaction();
