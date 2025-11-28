@@ -11,7 +11,7 @@ import { AuditLogModel } from "./AuditLog.entity";
 @Entity("admins")
 export class AdminModel {
   @PrimaryColumn()
-  adminId: string;
+  userId: string;
 
   @OneToOne(() => UserModel, { cascade: true, onDelete: "CASCADE" })
   @JoinColumn({ name: "userId" })

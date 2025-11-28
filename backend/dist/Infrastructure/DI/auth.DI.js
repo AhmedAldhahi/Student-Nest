@@ -4,7 +4,7 @@ exports.makeRegisterLandlordUseCase = makeRegisterLandlordUseCase;
 exports.makeRegisterStudentUseCase = makeRegisterStudentUseCase;
 exports.makeLoginUseCase = makeLoginUseCase;
 const unitOfWork_repositories_1 = require("../repositories/unitOfWork.repositories");
-const SendGridService_service_1 = require("../services/email/SendGridService.service");
+const MailtrapService_service_1 = require("../services/email/MailtrapService.service");
 const RegisterLandloardUseCase_usecase_1 = require("../../Application/use-case/RegisterLandloardUseCase.usecase");
 const RegisterStudentUseCase_usecase_1 = require("../../Application/use-case/RegisterStudentUseCase.usecase");
 const BcryptPasswordHasher_service_1 = require("../services/BcryptPasswordHasher.service");
@@ -14,13 +14,13 @@ const TokenService_service_1 = require("../services/TokenService.service");
 function makeRegisterLandlordUseCase() {
     const unitOfWork = new unitOfWork_repositories_1.UnitOfWork();
     const passwordService = new BcryptPasswordHasher_service_1.BcryptPasswordHasher();
-    const emailService = new SendGridService_service_1.SendGridService();
+    const emailService = new MailtrapService_service_1.MailtrapService();
     return new RegisterLandloardUseCase_usecase_1.RegisterLandloardUseCase(unitOfWork, passwordService, emailService);
 }
 function makeRegisterStudentUseCase() {
     const unitOfWork = new unitOfWork_repositories_1.UnitOfWork();
     const passwordService = new BcryptPasswordHasher_service_1.BcryptPasswordHasher();
-    const emailService = new SendGridService_service_1.SendGridService();
+    const emailService = new MailtrapService_service_1.MailtrapService();
     const cloudinaryService = new CloudinaryService_service_1.CloudinaryService();
     return new RegisterStudentUseCase_usecase_1.RegisterStudentUseCase(unitOfWork, passwordService, emailService, cloudinaryService);
 }

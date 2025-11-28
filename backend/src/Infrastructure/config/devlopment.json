@@ -1,14 +1,14 @@
 {
     "adminJamel": {
         "email": "jamel@admin.com",
-        "password": "jameel123"
+        "password": "jameel@893!"
     },
     "adminAhmeh": {
         "email": "ahmed@admin.com",
-        "password": "ahmed123"
+        "password": "ahmed@1392!"
     },
     "adminAbedalrahman": {
         "email": "abdalrahman@admin.com",
-        "password": "abdalrahman@admin.com"
+        "password": ""
     }
 }

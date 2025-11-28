@@ -19,7 +19,7 @@ exports.AdminModel = AdminModel;
 __decorate([
     (0, typeorm_1.PrimaryColumn)(),
     __metadata("design:type", String)
-], AdminModel.prototype, "adminId", void 0);
+], AdminModel.prototype, "userId", void 0);
 __decorate([
     (0, typeorm_1.OneToOne)(() => User_entity_1.UserModel, { cascade: true, onDelete: "CASCADE" }),
     (0, typeorm_1.JoinColumn)({ name: "userId" }),

@@ -10,7 +10,7 @@ class UnitOfWork {
         this.queryRunner = null;
     }
     async startTransaction() {
-        this.queryRunner = data_source_1.AppDataSource.createQueryRunner();
+        this.queryRunner = data_source_1.AppDataSource.getInstance().createQueryRunner();
         await this.queryRunner.connect();
         await this.queryRunner.startTransaction();
         const manager = this.queryRunner.manager;

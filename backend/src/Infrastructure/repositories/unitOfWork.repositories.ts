@@ -5,6 +5,7 @@ import { LandlordRepository } from "./landloard.repositories";
 import { AppDataSource } from "../database/orm/TypeOrm/data-source";
 import { IStudentRepository } from "../../Core/repositories/StudentRepositories.repositories";
 import { StudentRepository } from "./student.repositories";
+
 export class UnitOfWork implements IUnitOfWork {
   private queryRunner: QueryRunner | null = null;
 
@@ -13,7 +14,10 @@ export class UnitOfWork implements IUnitOfWork {
   public studentRepo!: IStudentRepository;
 
   async startTransaction(): Promise<void> {
-    this.queryRunner = AppDataSource.createQueryRunner();
+    // this.queryRunner = AppDataSource.createQueryRunner();
+    // await this.queryRunner.connect();
+    // await this.queryRunner.startTransaction();
+    this.queryRunner = AppDataSource.getInstance().createQueryRunner();
     await this.queryRunner.connect();
     await this.queryRunner.startTransaction();
 
@@ -34,7 +38,6 @@ export class UnitOfWork implements IUnitOfWork {
       await this.rollbackTransaction();
       throw err;
     } finally {
-      // ✅ FIX 1: You MUST release the connection after commit
       await this.releaseTransaction();
     }
   }

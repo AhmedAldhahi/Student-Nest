@@ -14,6 +14,8 @@ const typeorm_1 = require("typeorm");
 const UserRole_enum_1 = require("../../../../../Core/enum/UserRole.enum");
 const UserAccountStatus_enum_1 = require("../../../../../Core/enum/UserAccountStatus.enum");
 const Landloard_entity_1 = require("./Landloard.entity");
+const Student_entity_1 = require("./Student.entity");
+const Admin_entity_1 = require("./Admin.entity");
 let UserModel = class UserModel {
 };
 exports.UserModel = UserModel;
@@ -97,6 +99,14 @@ __decorate([
     (0, typeorm_1.OneToOne)(() => Landloard_entity_1.LandlordModel, (landlord) => landlord.user),
     __metadata("design:type", Landloard_entity_1.LandlordModel)
 ], UserModel.prototype, "landlord", void 0);
+__decorate([
+    (0, typeorm_1.OneToOne)(() => Student_entity_1.StudentModel, (student) => student.user),
+    __metadata("design:type", Student_entity_1.StudentModel)
+], UserModel.prototype, "student", void 0);
+__decorate([
+    (0, typeorm_1.OneToOne)(() => Admin_entity_1.AdminModel, (admin) => admin.user),
+    __metadata("design:type", Admin_entity_1.AdminModel)
+], UserModel.prototype, "admin", void 0);
 exports.UserModel = UserModel = __decorate([
     (0, typeorm_1.Entity)("user")
 ], UserModel);

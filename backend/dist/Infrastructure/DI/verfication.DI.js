@@ -8,7 +8,7 @@ exports.makeVerfiedForgetPasswordOTP = makeVerfiedForgetPasswordOTP;
 const VerfiedOtpUseCase_usecase_1 = require("../../Application/use-case/VerfiedOtpUseCase.usecase");
 const TokenService_service_1 = require("../services/TokenService.service");
 const unitOfWork_repositories_1 = require("../repositories/unitOfWork.repositories");
-const SendGridService_service_1 = require("../services/email/SendGridService.service");
+const MailtrapService_service_1 = require("../services/email/MailtrapService.service");
 const ForgetPasswordUseCase_usecase_1 = require("../../Application/use-case/ForgetPasswordUseCase.usecase");
 const BcryptPasswordHasher_service_1 = require("../services/BcryptPasswordHasher.service");
 const ResendOtpForgetPasswordUseCase_usecase_1 = require("../../Application/use-case/ResendOtpForgetPasswordUseCase.usecase");
@@ -21,7 +21,7 @@ function makeVerifiedEmailOTP() {
 }
 function makeResendEmailOTP() {
     const unitOfrWork = new unitOfWork_repositories_1.UnitOfWork();
-    const emailService = new SendGridService_service_1.SendGridService();
+    const emailService = new MailtrapService_service_1.MailtrapService();
     return new ResendOtpUseCase_usecase_1.ResendOtpUseCase(emailService, unitOfrWork);
 }
 function makeUpdateForgetPass() {
@@ -32,7 +32,7 @@ function makeUpdateForgetPass() {
 }
 function makeResendForgetPassword() {
     const unitOfrWork = new unitOfWork_repositories_1.UnitOfWork();
-    const emailService = new SendGridService_service_1.SendGridService();
+    const emailService = new MailtrapService_service_1.MailtrapService();
     return new ResendOtpForgetPasswordUseCase_usecase_1.ResendOtpForgetPasswordUseCase(emailService, unitOfrWork);
 }
 function makeVerfiedForgetPasswordOTP() {
