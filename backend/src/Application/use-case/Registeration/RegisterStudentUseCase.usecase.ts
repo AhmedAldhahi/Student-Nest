@@ -1,26 +1,26 @@
-import { RegisterStudentRequest } from "../dtos/registeration/RegisterStudentRequest.dtos";
-import { RegisterStudentRespone } from "../dtos/registeration/RegisterStudentRespone.dtos";
-import { OTP } from "../../Core/value-object/OTP.vo";
+import { RegisterStudentRequest } from "../../dtos/registeration/RegisterStudentRequest.dtos";
+import { RegisterStudentRespone } from "../../dtos/registeration/RegisterStudentRespone.dtos";
+import { OTP } from "../../../Core/value-object/OTP.vo";
 import { v4 as uuidv4 } from "uuid";
 
-import { IUnitOfWork } from "../../Core/repositories/UnitOfWorkRepositories.repositories";
-import { IPasswordService } from "../interfaces/IPassword.interface";
-import { IEmailService } from "../interfaces/IEmail.interface";
-import { IFileStorageService } from "../interfaces/IFileStorage.interface";
+import { IUnitOfWork } from "../../../Core/repositories/UnitOfWorkRepositories.repositories";
+import { IPasswordService } from "../../interfaces/IPassword.interface";
+import { IEmailService } from "../../interfaces/IEmail.interface";
+import { IFileStorageService } from "../../interfaces/IFileStorage.interface";
 
-import { UserEntity } from "../../Core/entites/userEntity.entity";
-import { UserName } from "../../Core/value-object/UserName.vo";
-import { UserDateOfBirth } from "../../Core/value-object/UserDateOfBirth.vo";
-import { userPhoneNumber } from "../../Core/value-object/UserPhoneNumber.vo";
-import { UserEmail } from "../../Core/value-object/UserEmail.vo";
-import { UserRole } from "../../Core/enum/UserRole.enum";
-import { StudentEntity } from "../../Core/entites/studentEntity.entity";
-import { StudentMajor } from "../../Core/value-object/StudentMajor.vo";
-import { studentGraduateYear } from "../../Core/value-object/StudentGraduateYear.vo";
-import { StudentCard } from "../../Core/value-object/StudentCard.vo";
-import { StudentUniversity } from "../../Core/value-object/StudentUniversity.vo";
-import { GovernmentID } from "../../Core/value-object/UserGovId.vo";
-import { StudentVerificationDocument } from "../../Core/value-object/StudentVerficationDocument.vo";
+import { UserEntity } from "../../../Core/entites/userEntity.entity";
+import { UserName } from "../../../Core/value-object/UserName.vo";
+import { UserDateOfBirth } from "../../../Core/value-object/UserDateOfBirth.vo";
+import { userPhoneNumber } from "../../../Core/value-object/UserPhoneNumber.vo";
+import { UserEmail } from "../../../Core/value-object/UserEmail.vo";
+import { UserRole } from "../../../Core/enum/UserRole.enum";
+import { StudentEntity } from "../../../Core/entites/studentEntity.entity";
+import { StudentMajor } from "../../../Core/value-object/StudentMajor.vo";
+import { studentGraduateYear } from "../../../Core/value-object/StudentGraduateYear.vo";
+import { StudentCard } from "../../../Core/value-object/StudentCard.vo";
+import { StudentUniversity } from "../../../Core/value-object/StudentUniversity.vo";
+import { GovernmentID } from "../../../Core/value-object/UserGovId.vo";
+import { StudentVerificationDocument } from "../../../Core/value-object/StudentVerficationDocument.vo";
 
 export class RegisterStudentUseCase {
   constructor(

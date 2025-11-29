@@ -2,12 +2,12 @@ import { UnitOfWork } from "../repositories/unitOfWork.repositories";
 
 import { MailtrapService } from "../services/email/MailtrapService.service";
 
-import { RegisterLandloardUseCase } from "../../Application/use-case/RegisterLandloardUseCase.usecase";
-import { RegisterStudentUseCase } from "../../Application/use-case/RegisterStudentUseCase.usecase";
-import { BcryptPasswordHasher } from "../services/BcryptPasswordHasher.service";
+import { RegisterLandloardUseCase } from "../../Application/use-case/Registeration/RegisterLandloardUseCase.usecase";
+import { RegisterStudentUseCase } from "../../Application/use-case/Registeration/RegisterStudentUseCase.usecase";
+import { BcryptPasswordHasher } from "../services/security/BcryptPasswordHasher.service";
 import { CloudinaryService } from "../services/media/CloudinaryService.service";
-import { LoginUseCase } from "../../Application/use-case/LoginUseCase.usecase";
-import { JwtTokenService } from "../services/TokenService.service";
+import { LoginUseCase } from "../../Application/use-case/Registeration/LoginUseCase.usecase";
+import { JwtTokenService } from "../services/security/TokenService.service";
 
 export function makeRegisterLandlordUseCase(): RegisterLandloardUseCase {
   const unitOfWork = new UnitOfWork();

@@ -1,7 +1,7 @@
-import { VerifiedOTpRequest } from "../dtos/VerfiedOtpRequest.dto";
-import { IUnitOfWork } from "../../Core/repositories/UnitOfWorkRepositories.repositories";
-import { ITokenPayload, ITokenService } from "../interfaces/IToken.interface";
-import { VerifiedOTpResponse } from "../dtos/VerifiedOtpRespone.dto";
+import { VerifiedOTpRequest } from "../../../dtos/VerfiedOtpRequest.dto";
+import { IUnitOfWork } from "../../../../Core/repositories/UnitOfWorkRepositories.repositories";
+import { ITokenPayload, ITokenService } from "../../../interfaces/IToken.interface";
+import { VerifiedOTpResponse } from "../../../dtos/VerifiedOtpRespone.dto";
 
 export class VerifiedOtpUseCase {
   constructor(

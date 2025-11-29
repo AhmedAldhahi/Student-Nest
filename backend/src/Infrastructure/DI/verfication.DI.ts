@@ -1,12 +1,12 @@
-import { VerifiedOtpUseCase } from "../../Application/use-case/VerfiedOtpUseCase.usecase";
-import { JwtTokenService } from "../services/TokenService.service";
+import { VerifiedOtpUseCase } from "../../Application/use-case/Verfication/OTP/VerfiedOtpUseCase.usecase";
+import { JwtTokenService } from "../services/security/TokenService.service";
 import { UnitOfWork } from "../repositories/unitOfWork.repositories";
 import { MailtrapService } from "../services/email/MailtrapService.service";
-import { ForgetPasswordUseCase } from "../../Application/use-case/ForgetPasswordUseCase.usecase";
-import { BcryptPasswordHasher } from "../services/BcryptPasswordHasher.service";
-import { ResendOtpForgetPasswordUseCase } from "../../Application/use-case/ResendOtpForgetPasswordUseCase.usecase";
-import { VerifiedForgetPasswordOtpUseCase } from "../../Application/use-case/VerfiedForgetPasswordOtpUseCase.usecase";
-import { ResendOtpUseCase } from "../../Application/use-case/ResendOtpUseCase.usecase";
+import { ForgetPasswordUseCase } from "../../Application/use-case/Verfication/ForgetPassword/ForgetPasswordUseCase.usecase";
+import { BcryptPasswordHasher } from "../services/security/BcryptPasswordHasher.service";
+import { VerifiedForgetPasswordOtpUseCase } from "../../Application/use-case/Verfication/ForgetPassword/VerfiedForgetPasswordOtpUseCase.usecase";
+import { ResendOtpUseCase } from "../../Application/use-case/Verfication/OTP/ResendOtpUseCase.usecase";
+import { ResendOtpForgetPasswordUseCase } from "../../Application/use-case/Verfication/ForgetPassword/ResendOtpForgetPasswordUseCase.usecase";
 
 export function makeVerifiedEmailOTP(): VerifiedOtpUseCase {
   const unitOfrWork = new UnitOfWork();

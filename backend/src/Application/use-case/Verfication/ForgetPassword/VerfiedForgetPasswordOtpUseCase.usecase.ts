@@ -1,5 +1,5 @@
-import { VerifiedOTpRequest } from "../dtos/VerfiedOtpRequest.dto";
-import { IUnitOfWork } from "../../Core/repositories/UnitOfWorkRepositories.repositories";
+import { VerifiedOTpRequest } from "../../../dtos/VerfiedOtpRequest.dto";
+import { IUnitOfWork } from "../../../../Core/repositories/UnitOfWorkRepositories.repositories";
 
 export class VerifiedForgetPasswordOtpUseCase {
   constructor(

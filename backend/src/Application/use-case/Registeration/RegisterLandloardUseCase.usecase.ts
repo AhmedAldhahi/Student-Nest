@@ -1,22 +1,22 @@
-import { IPasswordService } from "../interfaces/IPassword.interface";
-import { IEmailService } from "../interfaces/IEmail.interface";
+import { IPasswordService } from "../../interfaces/IPassword.interface";
+import { IEmailService } from "../../interfaces/IEmail.interface";
 
-import { RegisterLandloardRespone } from "../dtos/registeration/RegisterLandloardRespone.dtos";
-import { RegisterLandloardRequest } from "../dtos/registeration/RegisterLandloardRequest.dtos";
+import { RegisterLandloardRespone } from "../../dtos/registeration/RegisterLandloardRespone.dtos";
+import { RegisterLandloardRequest } from "../../dtos/registeration/RegisterLandloardRequest.dtos";
 import { v4 as uuidv4 } from "uuid";
 
-import { OTP } from "../../Core/value-object/OTP.vo";
-import { IUnitOfWork } from "../../Core/repositories/UnitOfWorkRepositories.repositories";
+import { OTP } from "../../../Core/value-object/OTP.vo";
+import { IUnitOfWork } from "../../../Core/repositories/UnitOfWorkRepositories.repositories";
 
-import { UserEntity } from "../../Core/entites/userEntity.entity";
-import { UserName } from "../../Core/value-object/UserName.vo";
-import { UserDateOfBirth } from "../../Core/value-object/UserDateOfBirth.vo";
-import { userPhoneNumber } from "../../Core/value-object/UserPhoneNumber.vo";
-import { UserEmail } from "../../Core/value-object/UserEmail.vo";
-import { UserRole } from "../../Core/enum/UserRole.enum";
+import { UserEntity } from "../../../Core/entites/userEntity.entity";
+import { UserName } from "../../../Core/value-object/UserName.vo";
+import { UserDateOfBirth } from "../../../Core/value-object/UserDateOfBirth.vo";
+import { userPhoneNumber } from "../../../Core/value-object/UserPhoneNumber.vo";
+import { UserEmail } from "../../../Core/value-object/UserEmail.vo";
+import { UserRole } from "../../../Core/enum/UserRole.enum";
 
-import { LandlordEntity } from "../../Core/entites/landloardEntity.entity";
-import { GovernmentID } from "../../Core/value-object/UserGovId.vo";
+import { LandlordEntity } from "../../../Core/entites/landloardEntity.entity";
+import { GovernmentID } from "../../../Core/value-object/UserGovId.vo";
 
 export class RegisterLandloardUseCase {
   constructor(
