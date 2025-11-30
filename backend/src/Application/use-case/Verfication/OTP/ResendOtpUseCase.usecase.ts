@@ -1,8 +1,8 @@
-import { IEmailService } from "../interfaces/IEmail.interface";
-import { OTP } from "../../Core/value-object/OTP.vo";
-import { ResendOtpRequest } from "../dtos/ResendOtpRequest.dto";
-import { ResendOtpRespone } from "../dtos/ResendOtpRespone.dto";
-import { IUnitOfWork } from "../../Core/repositories/UnitOfWorkRepositories.repositories";
+import { IEmailService } from "../../../interfaces/IEmail.interface";
+import { OTP } from "../../../../Core/value-object/OTP.vo";
+import { ResendOtpRequest } from "../../../dtos/ResendOtpRequest.dto";
+import { ResendOtpRespone } from "../../../dtos/ResendOtpRespone.dto";
+import { IUnitOfWork } from "../../../../Core/repositories/UnitOfWorkRepositories.repositories";
 
 export class ResendOtpUseCase {
   constructor(

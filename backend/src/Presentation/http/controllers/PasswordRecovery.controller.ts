@@ -1,7 +1,7 @@
-import { ForgetPasswordUseCase } from "../../../Application/use-case/ForgetPasswordUseCase.usecase";
+import { ForgetPasswordUseCase } from "../../../Application/use-case/Verfication/ForgetPassword/ForgetPasswordUseCase.usecase";
 import { Request, Response } from "express";
 import { ResendOtpForgetPasswordUseCase } from "../../../Application/use-case/ResendOtpForgetPasswordUseCase.usecase";
-import { VerifiedForgetPasswordOtpUseCase } from "../../../Application/use-case/VerfiedForgetPasswordOtpUseCase.usecase";
+import { VerifiedForgetPasswordOtpUseCase } from "../../../Application/use-case/Verfication/ForgetPassword/VerfiedForgetPasswordOtpUseCase.usecase";
 
 export class PasswordRecoverController {
   constructor(

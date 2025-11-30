@@ -1,8 +1,8 @@
-import { IEmailService } from "../interfaces/IEmail.interface";
-import { OTP } from "../../Core/value-object/OTP.vo";
-import { ResendOtpRequest } from "../dtos/ResendOtpRequest.dto";
-import { ResendOtpRespone } from "../dtos/ResendOtpRespone.dto";
-import { IUnitOfWork } from "../../Core/repositories/UnitOfWorkRepositories.repositories";
+import { IUnitOfWork } from "../../../../Core/repositories/UnitOfWorkRepositories.repositories";
+import { OTP } from "../../../../Core/value-object/OTP.vo";
+import { ResendOtpRequest } from "../../../dtos/ResendOtpRequest.dto";
+import { ResendOtpRespone } from "../../../dtos/ResendOtpRespone.dto";
+import { IEmailService } from "../../../interfaces/IEmail.interface";
 
 export class ResendOtpForgetPasswordUseCase {
   constructor(
@@ -11,7 +11,8 @@ export class ResendOtpForgetPasswordUseCase {
   ) {}
 
   public async excute(dto: ResendOtpRequest): Promise<ResendOtpRespone> {
-    await this.unitOfWork.startTransaction();
+    await this.unitOfWork.startTransaction();  
+    
     const otp = OTP.generate();
 
     const otpvalue = otp.getValue();
@@ -20,7 +21,8 @@ export class ResendOtpForgetPasswordUseCase {
       const user = await this.unitOfWork.userRepo.findByEmail(dto.email);
       if (!user) {
         throw new Error("no user been found !!");
-      }
+      } 
+      user.resetVerifiedPassword(); 
 
       user.setOTPForResetPassword(otp);
       console.log(
@@ -28,12 +30,9 @@ export class ResendOtpForgetPasswordUseCase {
         user.getOTPExpiredDateForResetPassword()
       );
 
-      //user.otpe(otpExpired);
-
-      // Persist changes
+  
       
       await this.unitOfWork.userRepo.addNewUser(user);
-      //console.log(user.getPassword());
 
       // Send OTP email after saving to DB
       await this.emailService.sendPasswordResetEmail(dto.email, otpvalue);

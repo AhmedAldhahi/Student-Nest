@@ -1,9 +1,9 @@
-import { ITokenService } from "../interfaces/IToken.interface";
+import { ITokenService } from "../../../interfaces/IToken.interface";
 
-import { IUnitOfWork } from "../../Core/repositories/UnitOfWorkRepositories.repositories";
-import { IPasswordService } from "../interfaces/IPassword.interface";
-import { ForgetPasswordRequest } from "../dtos/verfication/ForgetPasswordRequest.dtos";
-import { ForgetPasswordResponse } from "../dtos/verfication/ForgetPasswordRespone.dtos";
+import { IUnitOfWork } from "../../../../Core/repositories/UnitOfWorkRepositories.repositories";
+import { IPasswordService } from "../../../interfaces/IPassword.interface";
+import { ForgetPasswordRequest } from "../../../dtos/verfication/ForgetPasswordRequest.dtos";
+import { ForgetPasswordResponse } from "../../../dtos/verfication/ForgetPasswordRespone.dtos";
 export class ForgetPasswordUseCase {
   constructor(
     private readonly unitOfWork: IUnitOfWork,
