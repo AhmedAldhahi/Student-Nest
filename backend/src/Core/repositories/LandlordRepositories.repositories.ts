@@ -7,8 +7,7 @@ import { LandlordEntity } from "../entites/landloardEntity.entity";
  *
  * @interface ILandlordRepository
  */
-export interface ILandlordRepository { 
-
+export interface ILandlordRepository {
   /**
    * Persists a newly created LandlordEntity.
    *
@@ -24,4 +23,6 @@ export interface ILandlordRepository {
    * @returns {Promise<void>}
    */
   updateLandlord(user: LandlordEntity): Promise<void>;
+
+  findLandlordById(userId: string): Promise<LandlordEntity | null>;
 }

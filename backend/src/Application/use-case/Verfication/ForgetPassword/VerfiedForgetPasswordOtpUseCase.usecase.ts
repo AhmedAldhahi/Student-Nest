@@ -1,4 +1,4 @@
-import { VerifiedOTpRequest } from "../../../dtos/VerfiedOtpRequest.dto";
+import { VerifiedOTpRequest } from "../../../dtos/Email-verfied/VerfiedOtpRequest.dto";
 import { IUnitOfWork } from "../../../../Core/repositories/UnitOfWorkRepositories.repositories";
 
 export class VerifiedForgetPasswordOtpUseCase {

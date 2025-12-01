@@ -15,6 +15,14 @@ export class StudentRepository implements IStudentRepository {
     this.userRepo = new UserRepository(manager);
   }
 
+  async findStudentById(userId: string): Promise<StudentEntity | null> {
+    const user = await this.manager.findOne(StudentModel, {
+      where: { userId: userId },
+      relations: ["user"],
+    });
+    return user ? StudentMapper.toEntity(user) : null;
+  }
+
   async createNewStudent(user: StudentEntity): Promise<void> {
     try {
       const userEntity = await user.getUser();
@@ -26,11 +34,11 @@ export class StudentRepository implements IStudentRepository {
       model.user = UserMapper.toOrm(userEntity);
 
       await this.manager.save(StudentModel, model);
-    } catch (err: any) {
-      console.error("failed to create Student !!", err);
-      throw err;
+    } catch (error: any) {
+      console.error("failed to create Student !!", error);
+      throw error;
     }
-  } 
+  }
   async updateStudent(user: StudentEntity): Promise<void> {
     try {
       const userEntity = user.getUser();
@@ -38,17 +46,14 @@ export class StudentRepository implements IStudentRepository {
       const studentModel = StudentMapper.toModel(user);
       studentModel.user = UserMapper.toOrm(userEntity);
 
-      // ✅ FIXED: Use manager for update too
       await this.manager.update(
         StudentModel,
         { userId: studentModel.userId },
         studentModel
       );
-    } catch (err: any) {
-      console.error("failed to update Student !!", err);
-      throw err;
+    } catch (error: any) {
+      console.error("failed to update Student !!", error);
+      throw error;
     }
   }
 }
-      
-  

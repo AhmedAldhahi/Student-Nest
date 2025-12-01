@@ -7,7 +7,6 @@ import { LandlordMapper } from "./landloard.mapper";
 import { UserMapper } from "./user.mapper";
 
 export class LandlordRepository implements ILandlordRepository {
-  
   private manager: EntityManager;
   private userRepo: UserRepository;
 
@@ -16,19 +15,27 @@ export class LandlordRepository implements ILandlordRepository {
     this.userRepo = new UserRepository(manager);
   }
 
+  async findLandlordById(userId: string): Promise<LandlordEntity | null> {
+    const user = await this.manager.findOne(LandlordModel, {
+      where: { userId: userId },
+      relations: ["user"],
+    });
+    return user ? LandlordMapper.toEntity(user) : null;
+  }
+
+
+
   async createNewLandlord(landlord: LandlordEntity): Promise<void> {
     try {
       const userEntity = await landlord.getUser();
-      
+
       // 1. Save User (Uses Transaction Manager)
       await this.userRepo.addNewUser(userEntity);
-      
+
       const model = LandlordMapper.toOrm(landlord);
       model.user = UserMapper.toOrm(userEntity);
 
-
       await this.manager.save(LandlordModel, model);
-      
     } catch (err: any) {
       console.error("failed to create landlord !!", err);
       throw err;
@@ -42,7 +49,11 @@ export class LandlordRepository implements ILandlordRepository {
       const landlordModel = LandlordMapper.toOrm(user);
       landlordModel.user = UserMapper.toOrm(userEntity);
 
-      await this.manager.update(LandlordModel, { userId: landlordModel.userId }, landlordModel);
+      await this.manager.update(
+        LandlordModel,
+        { userId: landlordModel.userId },
+        landlordModel
+      );
     } catch (err: any) {
       console.error("failed to update landlord !!", err);
       throw err;
