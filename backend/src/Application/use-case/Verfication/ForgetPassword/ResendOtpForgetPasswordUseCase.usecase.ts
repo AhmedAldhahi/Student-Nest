@@ -1,7 +1,7 @@
 import { IUnitOfWork } from "../../../../Core/repositories/UnitOfWorkRepositories.repositories";
 import { OTP } from "../../../../Core/value-object/OTP.vo";
-import { ResendOtpRequest } from "../../../dtos/ResendOtpRequest.dto";
-import { ResendOtpRespone } from "../../../dtos/ResendOtpRespone.dto";
+import { ResendOtpRequest } from "../../../dtos/password-recover/ResendOtpRequest.dto";
+import { ResendOtpRespone } from "../../../dtos/password-recover/ResendOtpRespone.dto";
 import { IEmailService } from "../../../interfaces/IEmail.interface";
 
 export class ResendOtpForgetPasswordUseCase {

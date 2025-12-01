@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { JwtTokenService } from "../../../../Infrastructure/services/TokenService.service";
+import { JwtTokenService } from "../../../../Infrastructure/services/security/TokenService.service";
 
 export const isAuth = async (
   req: Request,
@@ -18,18 +18,22 @@ export const isAuth = async (
   const header = req.headers.authorization;
 
   if (!header || !header.startsWith("Bearer"))
-    throw new Error("missed, authorized header ");
+    return res.status(400).json({ error: "missed, authorized header " });
 
   const token = header.split(" ")[1];
 
-  if (!token) throw new Error("No token found !!");
+  if (!token) return res.status(400).json({ error: "No token found !!" });
 
   const SECRET_KEY = process.env.JWT_ACCESS_SECRET;
 
-  if (!SECRET_KEY) throw new Error("no secret key found !!");
+  if (!SECRET_KEY)
+    return res.status(400).json({ error: "no secret key found !!" });
 
   const tokenService = new JwtTokenService();
 
-  const payload = await tokenService.verifyAccessToken(token);
-  
+  const payload = tokenService.verifyAccessToken(token);
+  console.log("paylod : ", payload);
+
+  req.user = payload;
+  return next();
 };

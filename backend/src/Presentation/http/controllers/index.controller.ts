@@ -1,5 +1,6 @@
 import { buildDependencies } from "../../../Infrastructure/DI/container";
 import { PasswordRecoverController } from "./PasswordRecovery.controller";
+import { ProfileController } from "./Profile.controller";
 import { AuthController } from "./Registeration.controller";
 import { VerificationController } from "./Verfication.controller";
 // import { PasswordRecoverController } from "./PasswordRecovery.controller";
@@ -25,9 +26,12 @@ export const buildControllers = () => {
     useCases.verfiedForgetPasswordUseCase
   );
 
+  const profileController = new ProfileController(useCases.userProfileData);
+
   return {
     authController,
     verificationController,
     passwordRecoverController,
+    profileController,
   };
 };
