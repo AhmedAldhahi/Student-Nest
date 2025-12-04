@@ -87,8 +87,9 @@ export class Server {
           "https://72.60.35.224:5173",
           "https://72.60.35.224:8081",
           "https://72.60.35.224:4000",
+          "http://localhost:5173",
         ],
-        methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+        methods: ["GET", "POST", "PUT", "DELETE ", "PATCH"],
         credentials: true,
       })
     );

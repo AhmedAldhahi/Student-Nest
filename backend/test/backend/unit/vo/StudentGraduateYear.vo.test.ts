@@ -1,4 +1,4 @@
-import { currentYear } from "../../Shared/constants/validationZod.constant";
+import { currentYear } from "../../../../src/Shared/constants/validationZod.constant";
 
 export class studentGraduateYear {
     constructor(private value: number) { 

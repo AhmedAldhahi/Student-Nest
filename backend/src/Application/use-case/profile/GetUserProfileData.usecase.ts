@@ -1,4 +1,5 @@
 import { IUnitOfWork } from "../../../Core/repositories/UnitOfWorkRepositories.repositories";
+import { IFileStorageService } from "../../interfaces/IFileStorage.interface";
 import { IPasswordService } from "../../interfaces/IPassword.interface";
 import { AdminProfileStrategy } from "../../strategy/profiles/AdminProfile.strategy";
 import { IProfileStrategy } from "../../strategy/profiles/IprofileStrategy.strategy";
@@ -8,6 +9,7 @@ import { StudentProfileStrategy } from "../../strategy/profiles/StudentProfile.s
 export class UserProfileDataUseCase {
   private profileStrategy: IProfileStrategy;
   private passwordService: IPasswordService;
+  private readonly fileService: IFileStorageService;
 
   constructor(private unitOfWork: IUnitOfWork) {}
 
@@ -25,18 +27,23 @@ export class UserProfileDataUseCase {
       case "admin":
         this.profileStrategy = new AdminProfileStrategy(
           this.unitOfWork.userRepo,
-          this.passwordService
+          this.passwordService,
+          this.fileService
         );
         break;
       case "landloard":
         this.profileStrategy = new LandlordProfileStrategy(
-          this.unitOfWork.landlordRepo
+          this.unitOfWork.landlordRepo,
+          this.passwordService,
+          this.fileService
         );
         break;
 
       case "student":
         this.profileStrategy = new StudentProfileStrategy(
-          this.unitOfWork.studentRepo
+          this.unitOfWork.studentRepo,
+          this.passwordService,
+          this.fileService
         );
         break;
       default:

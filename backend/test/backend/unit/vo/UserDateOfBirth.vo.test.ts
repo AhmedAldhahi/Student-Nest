@@ -1,4 +1,4 @@
-import { defaultYear } from "../../Shared/constants/helperValue.constant";
+import { defaultYear } from "../../../../src/Shared/constants/helperValue.constant";
 
 export class UserDateOfBirth {
   constructor(private value: string) {
