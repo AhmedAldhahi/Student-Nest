@@ -1,4 +1,5 @@
 import { IUnitOfWork } from "../../../Core/repositories/UnitOfWorkRepositories.repositories";
+import { IPasswordService } from "../../interfaces/IPassword.interface";
 import { AdminProfileStrategy } from "../../strategy/profiles/AdminProfile.strategy";
 import { IProfileStrategy } from "../../strategy/profiles/IprofileStrategy.strategy";
 import { LandlordProfileStrategy } from "../../strategy/profiles/LandlordProfile.strategy";
@@ -6,6 +7,7 @@ import { StudentProfileStrategy } from "../../strategy/profiles/StudentProfile.s
 
 export class UserProfileDataUseCase {
   private profileStrategy: IProfileStrategy;
+  private passwordService: IPasswordService;
 
   constructor(private unitOfWork: IUnitOfWork) {}
 
@@ -13,18 +15,17 @@ export class UserProfileDataUseCase {
     // Start the transaction
     await this.unitOfWork.startTransaction();
 
-    // Fetch the user first
     const user = await this.unitOfWork.userRepo.findById(userId);
     if (!user) {
       await this.unitOfWork.rollbackTransaction(); // Rollback in case of error
       throw new Error("No user found !!");
     }
-    console.log("Fetched user:", user);
 
     switch (user.getRole()) {
       case "admin":
         this.profileStrategy = new AdminProfileStrategy(
-          this.unitOfWork.userRepo
+          this.unitOfWork.userRepo,
+          this.passwordService
         );
         break;
       case "landloard":

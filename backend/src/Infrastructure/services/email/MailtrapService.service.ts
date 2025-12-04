@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import { IEmailService } from "../../../Application/interfaces/IEmail.interface";
 import "dotenv/config";
+import { emailMessageStyleFormate } from "../../../Shared/constants/emailStyle.constant";
 
 export class MailtrapService implements IEmailService {
   private readonly smtpUser = process.env.MAILTRAP_SMTP_USER || "api"; // SMTP user from Mailtrap
@@ -56,17 +57,9 @@ export class MailtrapService implements IEmailService {
   }
 
   // Method to generate OTP HTML content for the email
+
   private generateOtpHtml(title: string, message: string, otp: string): string {
-    return `
-      <html>
-        <head><title>${title}</title></head>
-        <body>
-          <h1>${title}</h1>
-          <p>${message}</p>
-          <p><strong>OTP:</strong> ${otp}</p>
-        </body>
-      </html>
-    `;
+    return emailMessageStyleFormate(title, message, otp, new Date());
   }
 
   // Implementation of sendRegistrationEmail from IEmailService

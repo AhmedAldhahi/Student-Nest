@@ -1,8 +1,19 @@
 import { IUserRepository } from "../../../Core/repositories/UserRepositories.repositories";
+import { StudentVerificationDocument } from "../../../Core/value-object/StudentVerficationDocument.vo";
+import { UserDateOfBirth } from "../../../Core/value-object/UserDateOfBirth.vo";
+import { UserName } from "../../../Core/value-object/UserName.vo";
+import { userPhoneNumber } from "../../../Core/value-object/UserPhoneNumber.vo";
+import { userUpdateProfileRequest } from "../../dtos/profile/adminRequest.updateProfile.profile.dtos";
+import { IFileStorageService } from "../../interfaces/IFileStorage.interface";
+import { IPasswordService } from "../../interfaces/IPassword.interface";
 import { IProfileStrategy } from "./IprofileStrategy.strategy";
 
 export class AdminProfileStrategy implements IProfileStrategy {
-  constructor(private userRep: IUserRepository) {}
+  constructor(
+    private readonly userRep: IUserRepository,
+    private readonly passworderService: IPasswordService,
+    private readonly fileService: IFileStorageService
+  ) {}
   public async UserProfile(userId: string): Promise<any> {
     const user = await this.userRep.findById(userId);
     if (!user) throw new Error("no user");
@@ -18,5 +29,57 @@ export class AdminProfileStrategy implements IProfileStrategy {
       address: user.getAddress(),
       photo: user.getPhoto(),
     };
+  }
+
+  public async UpdateUserProfile(
+    userId: string,
+    dto: userUpdateProfileRequest
+  ): Promise<any> {
+    try {
+      const user = await this.userRep.findById(userId);
+      if (!user) throw new Error("no user found !!");
+
+      // Update fields
+      if (dto.address) user.setAddress(dto.address);
+
+      if (dto.dateOfBirth)
+        user.updateDateOfBirth(new UserDateOfBirth(dto.dateOfBirth));
+
+      if (dto.name) user.updateName(new UserName(dto.name));
+
+      if (dto.phoneNumber)
+        user.updatePhoneNumber(new userPhoneNumber(dto.phoneNumber));
+
+      if (dto.photo) {
+        let photoDoc: string = await this.fileService.upload(dto.photo);
+        user.setPhoto(photoDoc);
+      }
+
+      if (dto.newPassword && dto.oldPassword) {
+        const validatePass = await this.passworderService.compare(
+          dto.oldPassword,
+          user.getPass()
+        );
+
+        if (!validatePass) throw new Error("old pass is not correct");
+        const newPass = await this.passworderService.hash(dto.newPassword);
+
+        if (await this.passworderService.compare(newPass, user.getPass()))
+          throw new Error("you use this password before");
+
+        user.setPassword(newPass);
+      }
+
+      // Save the updated user
+      await this.userRep.updateUser(user);
+
+      // Return success message
+      return {
+        message: "Admin profile updated successfully",
+      };
+    } catch (error: any) {
+      console.error("Error updating profile:", error.message);
+      throw error; // Optionally re-throw the error if you need it to propagate
+    }
   }
 }

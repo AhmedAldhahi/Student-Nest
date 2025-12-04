@@ -32,7 +32,6 @@ export const isAuth = async (
   const tokenService = new JwtTokenService();
 
   const payload = tokenService.verifyAccessToken(token);
-  console.log("paylod : ", payload);
 
   req.user = payload;
   return next();

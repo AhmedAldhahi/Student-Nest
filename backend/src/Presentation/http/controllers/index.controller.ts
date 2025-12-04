@@ -3,6 +3,7 @@ import { PasswordRecoverController } from "./PasswordRecovery.controller";
 import { ProfileController } from "./Profile.controller";
 import { AuthController } from "./Registeration.controller";
 import { VerificationController } from "./Verfication.controller";
+
 // import { PasswordRecoverController } from "./PasswordRecovery.controller";
 
 export const buildControllers = () => {
@@ -26,7 +27,10 @@ export const buildControllers = () => {
     useCases.verfiedForgetPasswordUseCase
   );
 
-  const profileController = new ProfileController(useCases.userProfileData);
+  const profileController = new ProfileController(
+    useCases.userProfileData,
+    useCases.updateProfileUseCase
+  );
 
   return {
     authController,

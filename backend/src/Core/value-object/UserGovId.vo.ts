@@ -28,13 +28,32 @@ export class GovernmentID {
    * @param {string} id - The government ID to validate.
    * @throws {Error} If the ID is invalid.
    */
-  private validate(id: string): void { 
-    if (id.length !== 10) {
-      throw new Error("user Government id number must contain 10 number ");
+  private validate(id: string): void {
+    id = id.trim();
+
+    // Check for negative numbers first
+    if (id.startsWith("-")) {
+      throw new Error("Negative numbers are not allowed.");
     }
 
+    // Check for empty ID
+    if (id.length === 0) {
+      throw new Error("User Government ID cannot be empty.");
+    }
+
+    // Check for exact length of 10 digits
+    if (id.length !== 10) {
+      throw new Error("User Government ID number must be exactly 10 digits.");
+    }
+
+    // Check for leading zero
+    if (id.startsWith("0")) {
+      throw new Error("User Government ID cannot start with a leading zero.");
+    }
+
+    // Check for numeric characters only
     if (!/^\d+$/.test(id)) {
-      throw new Error(" user Government id number must contain just number ");
+      throw new Error("User Government ID number must contain only numeric digits.");
     }
   }
 
