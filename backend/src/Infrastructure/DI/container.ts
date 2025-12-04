@@ -3,7 +3,7 @@ import {
   makeRegisterLandlordUseCase,
   makeRegisterStudentUseCase,
 } from "./auth.DI";
-import { getUserProfileData } from "./profile.DI";
+import { getUserProfileData, updateUserProfile } from "./profile.DI";
 
 import {
   makeVerifiedEmailOTP,
@@ -25,6 +25,7 @@ export function buildDependencies() {
       resendOtpForgetPassword: makeResendForgetPassword(),
       verfiedForgetPasswordUseCase: makeVerfiedForgetPasswordOTP(),
       userProfileData: getUserProfileData(),
+      updateProfileUseCase: updateUserProfile(),
     },
   };
 }
