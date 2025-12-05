@@ -11,17 +11,36 @@ export class AuthController {
     private loginUserUseCase: LoginUseCase
   ) {}
 
+
   public registerLandloard = async (req: Request, res: Response) => {
     try {
-      const fileBeenUpload = req.file;
+      let fileBeenUpload = req.file;
+
+      if (!fileBeenUpload && req.files) {
+        const files: any = req.files;
+        // Check if array
+        if (Array.isArray(files) && files.length > 0) {
+          fileBeenUpload = files[0];
+        }
+        // Check if object with named keys
+        else if (typeof files === "object") {
+          const keys = Object.keys(files);
+          if (keys.length > 0 && Array.isArray(files[keys[0]])) {
+            fileBeenUpload = files[keys[0]][0];
+          }
+        }
+      }
 
       //debug
-      console.log("file uploaded: ", fileBeenUpload);
+      console.log(
+        "file uploaded check: ",
+        fileBeenUpload ? "Found" : "Not Found"
+      );
 
       if (!fileBeenUpload) {
         return res
           .status(400)
-          .json({ error: "verification document file  require !!" });
+          .json({ error: "verification document file require !!" });
       }
 
       const dto = {
@@ -30,12 +49,14 @@ export class AuthController {
       };
 
       const result = await this.registerLandlordUseCase.execute(dto);
-      // scussfuly
+
       return res.status(201).json(result);
     } catch (error: any) {
+      console.error("Landlord Register Error:", error); 
       return res.status(400).json({ error: error.message || "server error" });
     }
   };
+
 
   public registerStudent = async (
     req: Request,
