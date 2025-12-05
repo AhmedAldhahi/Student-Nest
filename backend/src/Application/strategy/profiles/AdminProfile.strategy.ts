@@ -1,5 +1,4 @@
 import { IUserRepository } from "../../../Core/repositories/UserRepositories.repositories";
-import { StudentVerificationDocument } from "../../../Core/value-object/VerficationDocument.vo";
 import { UserDateOfBirth } from "../../../Core/value-object/UserDateOfBirth.vo";
 import { UserName } from "../../../Core/value-object/UserName.vo";
 import { userPhoneNumber } from "../../../Core/value-object/UserPhoneNumber.vo";

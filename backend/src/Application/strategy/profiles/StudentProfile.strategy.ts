@@ -3,10 +3,10 @@ import { StudentCard } from "../../../Core/value-object/StudentCard.vo";
 import { studentGraduateYear } from "../../../Core/value-object/StudentGraduateYear.vo";
 import { StudentMajor } from "../../../Core/value-object/StudentMajor.vo";
 import { StudentUniversity } from "../../../Core/value-object/StudentUniversity.vo";
-import { StudentVerificationDocument } from "../../../Core/value-object/VerficationDocument.vo";
 import { UserDateOfBirth } from "../../../Core/value-object/UserDateOfBirth.vo";
 import { UserName } from "../../../Core/value-object/UserName.vo";
 import { userPhoneNumber } from "../../../Core/value-object/UserPhoneNumber.vo";
+import { VerificationDocument } from "../../../Core/value-object/VerficationDocument.vo";
 import { StudentUpdateProfileRequest } from "../../dtos/profile/StudentRequest.updateProfile.profile.dtos";
 import { IFileStorageService } from "../../interfaces/IFileStorage.interface";
 import { IPasswordService } from "../../interfaces/IPassword.interface";
@@ -102,7 +102,7 @@ export class StudentProfileStrategy implements IProfileStrategy {
         );
 
         user.updateVerificationDocument(
-          new StudentVerificationDocument(verifiedFile)
+          new VerificationDocument(verifiedFile)
         );
       }
 
