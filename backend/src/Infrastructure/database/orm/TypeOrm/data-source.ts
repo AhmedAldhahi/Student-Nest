@@ -20,7 +20,7 @@ export class AppDataSource {
           rejectUnauthorized: false,
         },
       },
-      synchronize: false,
+      synchronize: true,
       logging: false,
       entities: [__dirname + "/entity/**/*.entity{.ts,.js}"],
       migrations: [],

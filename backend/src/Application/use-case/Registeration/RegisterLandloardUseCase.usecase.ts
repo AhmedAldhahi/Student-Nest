@@ -17,12 +17,15 @@ import { UserRole } from "../../../Core/enum/UserRole.enum";
 
 import { LandlordEntity } from "../../../Core/entites/landloardEntity.entity";
 import { GovernmentID } from "../../../Core/value-object/UserGovId.vo";
+import { VerificationDocument } from "../../../Core/value-object/VerficationDocument.vo";
+import { IFileStorageService } from "../../interfaces/IFileStorage.interface";
 
 export class RegisterLandloardUseCase {
   constructor(
     private readonly unitOfWork: IUnitOfWork,
     private readonly passwordService: IPasswordService,
-    private readonly emailService: IEmailService
+    private readonly emailService: IEmailService,
+    private readonly fileService: IFileStorageService
   ) {}
 
   public async execute(
@@ -48,10 +51,13 @@ export class RegisterLandloardUseCase {
     // Set OTP to the entity
     user.setOtpForEmail(otp);
 
+    let fileUrl: string = await this.fileService.upload(dto.document);
+
     const landlord = new LandlordEntity({
       user: user,
       cliQAccount: dto.cliQAccount,
       landlordGovId: new GovernmentID(dto.LandloardGovId),
+      document: new VerificationDocument(fileUrl),
     });
 
     // Start Transaction

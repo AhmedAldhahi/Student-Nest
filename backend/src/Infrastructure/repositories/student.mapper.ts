@@ -2,7 +2,7 @@ import { StudentEntity } from "../../Core/entites/studentEntity.entity";
 import { StudentCard } from "../../Core/value-object/StudentCard.vo";
 import { studentGraduateYear } from "../../Core/value-object/StudentGraduateYear.vo";
 import { StudentUniversity } from "../../Core/value-object/StudentUniversity.vo";
-import { StudentVerificationDocument } from "../../Core/value-object/StudentVerficationDocument.vo";
+import { VerificationDocument } from "../../Core/value-object/VerficationDocument.vo";
 import { GovernmentID } from "../../Core/value-object/UserGovId.vo";
 import { StudentMajor } from "../../Core/value-object/StudentMajor.vo"; // 1. Added Import
 import { StudentModel } from "../database/orm/TypeOrm/entity/Student.entity";
@@ -18,7 +18,7 @@ export class StudentMapper {
       graduateYear: new studentGraduateYear(stdModel.GraduationYear),
       major: new StudentMajor(stdModel.Major),
 
-      validateStudentDocument: new StudentVerificationDocument(
+      validateStudentDocument: new VerificationDocument(
         stdModel.verificationFiles
       ),
     });

@@ -20,7 +20,7 @@ import { studentGraduateYear } from "../../../Core/value-object/StudentGraduateY
 import { StudentCard } from "../../../Core/value-object/StudentCard.vo";
 import { StudentUniversity } from "../../../Core/value-object/StudentUniversity.vo";
 import { GovernmentID } from "../../../Core/value-object/UserGovId.vo";
-import { StudentVerificationDocument } from "../../../Core/value-object/StudentVerficationDocument.vo";
+import { VerificationDocument } from "../../../Core/value-object/VerficationDocument.vo";
 
 export class RegisterStudentUseCase {
   constructor(
@@ -60,7 +60,7 @@ export class RegisterStudentUseCase {
       studentCardId: new StudentCard(dto.studentCardId),
       universityName: new StudentUniversity(dto.universityName),
       userGovId: new GovernmentID(dto.studentGovId),
-      validateStudentDocument: new StudentVerificationDocument(
+      validateStudentDocument: new VerificationDocument(
         verificationFilesUrl
       ),
     });

@@ -2,7 +2,7 @@ import { StudentCard } from "../value-object/StudentCard.vo";
 import { studentGraduateYear } from "../value-object/StudentGraduateYear.vo";
 import { StudentMajor } from "../value-object/StudentMajor.vo";
 import { StudentUniversity } from "../value-object/StudentUniversity.vo";
-import { StudentVerificationDocument } from "../value-object/StudentVerficationDocument.vo";
+import { VerificationDocument } from "../value-object/VerficationDocument.vo";
 import { GovernmentID } from "../value-object/UserGovId.vo";
 import { UserEntity } from "./userEntity.entity";
 
@@ -13,7 +13,7 @@ export interface IStudentData {
   major: StudentMajor;
   universityName: StudentUniversity;
   studentCardId: StudentCard;
-  validateStudentDocument: StudentVerificationDocument;
+  validateStudentDocument: VerificationDocument;
 }
 
 export class StudentEntity {
@@ -23,7 +23,7 @@ export class StudentEntity {
   private universityName: StudentUniversity;
   private major: StudentMajor;
   private graduateYear: studentGraduateYear;
-  private studentValidateDocument: StudentVerificationDocument;
+  private studentValidateDocument: VerificationDocument;
 
   constructor(data: IStudentData) {
     this.user = data.user;
@@ -78,7 +78,7 @@ export class StudentEntity {
     return this.graduateYear.getValue();
   }
 
-  public updateVerificationDocument(document: StudentVerificationDocument) {
+  public updateVerificationDocument(document: VerificationDocument) {
     this.studentValidateDocument = document;
   }
 

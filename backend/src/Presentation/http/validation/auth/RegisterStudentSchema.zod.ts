@@ -46,5 +46,6 @@ export const RegisterLandloardSchema = basedUserSchema
     LandloardGovId: z.string(),
     role: z.literal("landloard"),
     address: z.string().optional(),
+    document: z.any(),
   })
   .strict();

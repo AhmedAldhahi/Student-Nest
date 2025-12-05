@@ -12,10 +12,17 @@ export class LandlordModel {
   @Column()
   LandlordGovId: string;
 
-  @OneToOne(() => UserModel, { 
-      cascade: true, 
-      onDelete: "CASCADE" 
+  @Column({ default: false })
+  Verified: boolean;
+
+  @Column()
+  document: string;
+
+  @OneToOne(() => UserModel, {
+    cascade: true,
+    onDelete: "CASCADE",
   })
+
   @JoinColumn({ name: "userId" })
   user: UserModel;
 }

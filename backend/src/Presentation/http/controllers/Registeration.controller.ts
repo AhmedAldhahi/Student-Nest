@@ -13,12 +13,26 @@ export class AuthController {
 
   public registerLandloard = async (req: Request, res: Response) => {
     try {
-      const dto = req.body;
+      const fileBeenUpload = req.file;
+
+      //debug
+      console.log("file uploaded: ", fileBeenUpload);
+
+      if (!fileBeenUpload) {
+        return res
+          .status(400)
+          .json({ error: "verification document file  require !!" });
+      }
+
+      const dto = {
+        ...req.body,
+        document: fileBeenUpload,
+      };
+
       const result = await this.registerLandlordUseCase.execute(dto);
       // scussfuly
       return res.status(201).json(result);
     } catch (error: any) {
-      const status = error.statusCode;
       return res.status(400).json({ error: error.message || "server error" });
     }
   };

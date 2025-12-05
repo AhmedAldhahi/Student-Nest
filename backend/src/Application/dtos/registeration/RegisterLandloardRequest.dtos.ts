@@ -11,6 +11,7 @@ export interface RegisterLandloardRequest {
 
   cliQAccount: string;
   LandloardGovId: string;
+  document: Express.Multer.File;
 
   address?: string;
 }

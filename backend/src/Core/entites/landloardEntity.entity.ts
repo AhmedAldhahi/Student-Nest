@@ -9,6 +9,7 @@
 
 import { UserEntity } from "./userEntity.entity";
 import { GovernmentID } from "../value-object/UserGovId.vo";
+import { VerificationDocument } from "../value-object/VerficationDocument.vo";
 
 /**
  * Represents the Landlord aggregate within the domain layer.
@@ -23,12 +24,15 @@ export interface ILandlordData {
   user: UserEntity;
   cliQAccount: string;
   landlordGovId: GovernmentID;
+  document: VerificationDocument;
 }
 
 export class LandlordEntity {
   private user: UserEntity;
   private landlordGovId: GovernmentID;
   private cliQAccount: string;
+  private verifiedLandlord: boolean = false;
+  private document: VerificationDocument;
 
   /**
    * Creates a LandlordEntity containing user and landlord-specific identity data.
@@ -40,6 +44,7 @@ export class LandlordEntity {
     this.user = data.user;
     this.cliQAccount = data.cliQAccount;
     this.landlordGovId = data.landlordGovId;
+    this.document = data.document;
   }
 
   /**
@@ -58,6 +63,22 @@ export class LandlordEntity {
    */
   public getGovId(): string {
     return this.landlordGovId.getValue();
+  }
+
+  public updateVerificationFile(file: VerificationDocument): void {
+    this.document = file;
+  }
+
+  public getVerificationFile(): string {
+    return this.document.getValue();
+  }
+
+  public markLandlordAsVerified() {
+    this.verifiedLandlord = true;
+  }
+
+  public resetLandlordVerified() {
+    this.verifiedLandlord = false;
   }
 
   /**

@@ -12,14 +12,14 @@ import { JwtTokenService } from "../services/security/TokenService.service";
 export function makeRegisterLandlordUseCase(): RegisterLandloardUseCase {
   const unitOfWork = new UnitOfWork();
   const passwordService = new BcryptPasswordHasher();
- const emailService = new MailtrapService();
-
-
+  const emailService = new MailtrapService();
+  const fileService = new CloudinaryService();
 
   return new RegisterLandloardUseCase(
     unitOfWork,
     passwordService,
-    emailService
+    emailService,
+    fileService
   );
 }
 
@@ -44,5 +44,3 @@ export function makeLoginUseCase(): LoginUseCase {
 
   return new LoginUseCase(unitOfWork, token, passwordService);
 }
-
-

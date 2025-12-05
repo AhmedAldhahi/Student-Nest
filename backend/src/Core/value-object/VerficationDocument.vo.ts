@@ -5,7 +5,7 @@
  *
  * @class StudentVerificationDocument
  */
-export class StudentVerificationDocument {
+export class VerificationDocument {
   /** The student's verification document value. */
   constructor(private value: string) {
     if (!value) throw new Error("validate document is required !!");
