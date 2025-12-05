@@ -102,8 +102,8 @@ export class Server {
       profileController,
     } = buildControllers();
     this.app.use("/api/v1/auth", createAuthRouter(authController));
-    this.app.use("/api/v1/", createVerficationRouter(verificationController));
     this.app.use("/api/v1/me/", profileRouter(profileController));
+    this.app.use("/api/v1/", createVerficationRouter(verificationController));
 
     this.app.use(
       "/api/v1/password-recovery",

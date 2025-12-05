@@ -12,6 +12,8 @@ export class ProfileController {
       const userId = req.user?.userId;
       if (!userId) throw new Error("no user id been found !!");
 
+      console.log(userId);
+
       const result = await this.userProfileDataUseCase.execute(userId);
       return res.status(200).json(result);
     } catch (error: any) {
