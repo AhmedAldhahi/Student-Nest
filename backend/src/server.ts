@@ -7,7 +7,6 @@ import expressWinston from "express-winston";
 import debug from "debug";
 import cors from "cors";
 import { AppDataSource } from "./Infrastructure/database/orm/TypeOrm/data-source";
-import { setupSwagger } from "./Presentation/documentation/swagger/swagger.config";
 import { createAuthRouter } from "./Presentation/http/routes/registeration/Registeration.route";
 import { buildControllers } from "./Presentation/http/controllers/index.controller";
 import { createVerficationRouter } from "./Presentation/http/routes/registeration/Verfication.route";
@@ -27,7 +26,7 @@ export class Server {
       next();
     });
 
-    // Database
+    // Database Connection
     try {
       await AppDataSource.initialize();
       this.dbDebug("Database connected successfully.");
@@ -49,19 +48,7 @@ export class Server {
     this.app.use(helmet());
 
     // Body parsers
-    this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json());
-
-    // JSON parse error handler
-    this.app.use((err: any, req: any, res: any, next: any) => {
-      if (err instanceof SyntaxError && "body" in err) {
-        return res.status(400).json({
-          error: "Invalid JSON payload",
-          message: err.message,
-        });
-      }
-      next();
-    });
 
     // Winston request logging
     this.app.use(
@@ -101,6 +88,7 @@ export class Server {
       passwordRecoverController,
       profileController,
     } = buildControllers();
+
     this.app.use("/api/v1/auth", createAuthRouter(authController));
     this.app.use("/api/v1/me/", profileRouter(profileController));
     this.app.use("/api/v1/", createVerficationRouter(verificationController));
@@ -110,8 +98,6 @@ export class Server {
       PasswordRecoveryRouter(passwordRecoverController)
     );
 
-    // Swagger
-    setupSwagger(this.app);
 
     this.startupDebug("Server configuration completed.");
   }
