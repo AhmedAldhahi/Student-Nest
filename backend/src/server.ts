@@ -12,7 +12,8 @@ import { buildControllers } from "./Presentation/http/controllers/index.controll
 import { createVerficationRouter } from "./Presentation/http/routes/registeration/Verfication.route";
 import { PasswordRecoveryRouter } from "./Presentation/http/routes/registeration/PasswordRecvery.route";
 import { profileRouter } from "./Presentation/http/routes/profile.routes";
-import { landlordManagementRouter } from "./Presentation/http/routes/admin/landlordMangement.routes";
+import { UserManagementController } from "./Presentation/http/controllers/admin/userMangement.controller";
+import { userManagementRouter } from "./Presentation/http/routes/admin/userMangement.routes";
 export class Server {
   public app = express();
   public port = parseInt(process.env.PORT || "4000", 10);
@@ -97,7 +98,7 @@ export class Server {
     
     this.app.use(
       "/api/v1/admin",
-      landlordManagementRouter(adminLandloardManagementController)
+      userManagementRouter(adminLandloardManagementController)
     );
     
 
@@ -118,3 +119,5 @@ export class Server {
     });
   }
 }
+
+

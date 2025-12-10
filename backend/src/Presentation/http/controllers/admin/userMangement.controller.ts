@@ -2,12 +2,15 @@ import { NextFunction, Request, Response } from "express";
 import { GetAllLandlordUseCase } from "../../../../Application/use-case/admin/LandlordMangamement/GetAllLandlords.usecase";
 import { EditLandlordVerificationStatusUseCase } from "../../../../Application/use-case/admin/LandlordMangamement/EditLandlordVerificationStatus.usecase";
 import { DeleteLandlordByIdUseCase } from "../../../../Application/use-case/admin/LandlordMangamement/DeleteLandlordById.usecase";
+import { FindUserByEmailUseCase } from "../../../../Application/use-case/admin/LandlordMangamement/FindUserByEmail.usecase";
+import { error } from "console";
 
-export class LandloardManagementController {
+export class UserManagementController {
   constructor(
     private readonly GetAllLandlords: GetAllLandlordUseCase,
     private readonly updateLanadlordsVerfidStatus: EditLandlordVerificationStatusUseCase,
-    private readonly deleteLandlord: DeleteLandlordByIdUseCase
+    private readonly deleteLandlord: DeleteLandlordByIdUseCase,
+    private readonly findUserByEmail: FindUserByEmailUseCase
   ) {}
 
   public getAllLandlords = async (
@@ -64,6 +67,23 @@ export class LandloardManagementController {
         return res.status(400).json({ error: "no user id found !!" });
 
       const result = await this.deleteLandlord.execute(landlordId);
+      return res.status(200).json(result);
+    } catch (error: any) {
+      return res
+        .status(400)
+        .json({ error: error.message || "internal server error" });
+    }
+  };
+
+  public findUsersByEmail = async (req: Request, res: Response) => {
+    try {
+      const userId = req.user?.userId;
+      const { email } = req.params;
+
+      if (!userId)
+        return res.status(400).json({ error: "no user id found !!" });
+
+      const result = await this.findUserByEmail.execute(email);
       return res.status(200).json(result);
     } catch (error: any) {
       return res

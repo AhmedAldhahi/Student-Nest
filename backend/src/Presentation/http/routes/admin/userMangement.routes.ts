@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { LandloardManagementController } from "../../controllers/admin/landlordMangement.controller";
 import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 import { isAdmin } from "../../middlewares/auth/isAdmin.middleware";
 import { validation } from "../../middlewares/validation.middleware";
 import { verifiedLandlordSchema } from "../../validation/admin/landlordMagement.validation.zod";
+import { UserManagementController } from "../../controllers/admin/userMangement.controller";
 
-export const landlordManagementRouter = (
-  landlordManagementRouter: LandloardManagementController
+export const userManagementRouter = (
+  userManagementRouter: UserManagementController
 ): Router => {
   const router = Router();
 
@@ -14,7 +14,7 @@ export const landlordManagementRouter = (
     "/landlords",
     isAuth,
     isAdmin,
-    landlordManagementRouter.getAllLandlords
+    userManagementRouter.getAllLandlords
   );
 
   router.patch(
@@ -22,14 +22,21 @@ export const landlordManagementRouter = (
     validation(verifiedLandlordSchema),
     isAuth,
     isAdmin,
-    landlordManagementRouter.updateLandlordVerifiedStatus
+    userManagementRouter.updateLandlordVerifiedStatus
   );
 
   router.delete(
     "/landlord/:landlordId",
     isAuth,
     isAdmin,
-    landlordManagementRouter.deleteLandlordById
+    userManagementRouter.deleteLandlordById
+  );
+
+  router.get(
+    "/users/search/:email",
+    isAuth,
+    isAdmin,
+    userManagementRouter.findUsersByEmail
   );
 
   return router;

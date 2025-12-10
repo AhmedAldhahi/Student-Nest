@@ -1,5 +1,5 @@
 import { buildDependencies } from "../../../Infrastructure/DI/container";
-import { LandloardManagementController } from "./admin/landlordMangement.controller";
+import { UserManagementController } from "./admin/userMangement.controller";
 import { PasswordRecoverController } from "./PasswordRecovery.controller";
 import { ProfileController } from "./Profile.controller";
 import { AuthController } from "./Registeration.controller";
@@ -33,10 +33,11 @@ export const buildControllers = () => {
     useCases.updateProfileUseCase
   );
 
-  const adminLandloardManagementController = new LandloardManagementController(
+  const adminLandloardManagementController = new UserManagementController(
     useCases.getAllLandlordUseCase,
     useCases.updateLandlordStatusUseCase,
-    useCases.DeleteLandlordByIdUseCase
+    useCases.DeleteLandlordByIdUseCase,
+    useCases.findUserByEmailUseCase
   );
 
   return {
