@@ -1,10 +1,12 @@
-import { EntityManager } from "typeorm";
+import { DataSource, EntityManager } from "typeorm";
 import { ILandlordRepository } from "../../Core/repositories/LandlordRepositories.repositories";
 import { LandlordModel } from "../database/orm/TypeOrm/entity/Landloard.entity";
 import { UserRepository } from "./user.repositories";
 import { LandlordEntity } from "../../Core/entites/landloardEntity.entity";
 import { LandlordMapper } from "./landloard.mapper";
 import { UserMapper } from "./user.mapper";
+import { UserEntity } from "../../Core/entites/userEntity.entity";
+import { UserModel } from "../database/orm/TypeOrm/entity/User.entity";
 
 export class LandlordRepository implements ILandlordRepository {
   private manager: EntityManager;
@@ -22,8 +24,6 @@ export class LandlordRepository implements ILandlordRepository {
     });
     return user ? LandlordMapper.toEntity(user) : null;
   }
-
-
 
   async createNewLandlord(landlord: LandlordEntity): Promise<void> {
     try {
@@ -56,6 +56,48 @@ export class LandlordRepository implements ILandlordRepository {
       );
     } catch (err: any) {
       console.error("failed to update landlord !!", err);
+      throw err;
+    }
+  }
+
+  async findAllLandlord(): Promise<LandlordEntity[] | null> {
+    try {
+      const landlordModels = await this.manager
+        .getRepository(LandlordModel)
+        .find({
+          // Use the object syntax for granular control
+          select: {
+            // 1. Whitelist Landlord fields
+            CliQAccount: true,
+            LandlordGovId: true,
+            Verified: true,
+            document: true,
+
+            // 2. Whitelist User fields (OMIT sensitive fields here)
+            user: {
+              userId: true,
+              Email: true,
+              Name: true,
+              PhoneNumber: true,
+              DateOfBirth: true,
+              Address: true,
+              Role: true,
+              isActive: true,
+              emailVerfied: true,
+              createAt: true,
+              updateAt: true,
+            },
+          },
+          relations: {
+            user: true,
+          },
+        });
+
+      if (!landlordModels || landlordModels.length === 0) return null;
+
+      return landlordModels.map((orm) => LandlordMapper.toEntity(orm));
+    } catch (err: any) {
+      console.error("fail to get all landlord", err);
       throw err;
     }
   }

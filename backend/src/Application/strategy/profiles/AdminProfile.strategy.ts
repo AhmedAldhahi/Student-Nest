@@ -3,6 +3,7 @@ import { UserDateOfBirth } from "../../../Core/value-object/UserDateOfBirth.vo";
 import { UserName } from "../../../Core/value-object/UserName.vo";
 import { userPhoneNumber } from "../../../Core/value-object/UserPhoneNumber.vo";
 import { userUpdateProfileRequest } from "../../dtos/profile/adminRequest.updateProfile.profile.dtos";
+import { ICashMemoryService } from "../../interfaces/ICash.interface";
 import { IFileStorageService } from "../../interfaces/IFileStorage.interface";
 import { IPasswordService } from "../../interfaces/IPassword.interface";
 import { IProfileStrategy } from "./IprofileStrategy.strategy";
@@ -11,13 +12,22 @@ export class AdminProfileStrategy implements IProfileStrategy {
   constructor(
     private readonly userRep: IUserRepository,
     private readonly passworderService: IPasswordService,
-    private readonly fileService: IFileStorageService
+    private readonly fileService: IFileStorageService,
+    private readonly cashService: ICashMemoryService
   ) {}
   public async UserProfile(userId: string): Promise<any> {
+    const cashKey = `profile : ${userId}`;
+
+    const cashData = await this.cashService.get<any>(cashKey);
+
+    if (cashData) {
+      return cashData;
+    }
+
     const user = await this.userRep.findById(userId);
     if (!user) throw new Error("no user");
 
-    return {
+    const profileData = {
       email: user.getEmail(),
       name: user.getName(),
       role: user.getRole(),
@@ -28,6 +38,22 @@ export class AdminProfileStrategy implements IProfileStrategy {
       address: user.getAddress(),
       photo: user.getPhoto(),
     };
+
+    await this.cashService.set(cashKey, profileData, 36000);
+
+    // return {
+    //   email: user.getEmail(),
+    //   name: user.getName(),
+    //   role: user.getRole(),
+    //   dateOfBirth: user.getDateOfBirth(),
+    //   phoneNumber: user.getPhoneNumber(),
+
+    //   // optional
+    //   address: user.getAddress(),
+    //   photo: user.getPhoto(),
+    // };
+
+    return profileData;
   }
 
   public async UpdateUserProfile(
@@ -37,6 +63,9 @@ export class AdminProfileStrategy implements IProfileStrategy {
     try {
       const user = await this.userRep.findById(userId);
       if (!user) throw new Error("no user found !!");
+
+      const cashKey = `profile : ${userId}`;
+      await this.cashService.delete(cashKey);
 
       // Update fields
       if (dto.address) user.setAddress(dto.address);

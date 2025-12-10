@@ -12,6 +12,7 @@ import { buildControllers } from "./Presentation/http/controllers/index.controll
 import { createVerficationRouter } from "./Presentation/http/routes/registeration/Verfication.route";
 import { PasswordRecoveryRouter } from "./Presentation/http/routes/registeration/PasswordRecvery.route";
 import { profileRouter } from "./Presentation/http/routes/profile.routes";
+import { landlordManagementRouter } from "./Presentation/http/routes/admin/landlordMangement.routes";
 export class Server {
   public app = express();
   public port = parseInt(process.env.PORT || "4000", 10);
@@ -87,17 +88,23 @@ export class Server {
       verificationController,
       passwordRecoverController,
       profileController,
+      adminLandloardManagementController,
     } = buildControllers();
 
     this.app.use("/api/v1/auth", createAuthRouter(authController));
     this.app.use("/api/v1/me/", profileRouter(profileController));
     this.app.use("/api/v1/", createVerficationRouter(verificationController));
+    
+    this.app.use(
+      "/api/v1/admin",
+      landlordManagementRouter(adminLandloardManagementController)
+    );
+    
 
     this.app.use(
       "/api/v1/password-recovery",
       PasswordRecoveryRouter(passwordRecoverController)
     );
-
 
     this.startupDebug("Server configuration completed.");
   }

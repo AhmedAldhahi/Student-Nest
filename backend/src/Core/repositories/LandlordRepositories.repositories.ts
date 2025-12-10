@@ -25,4 +25,6 @@ export interface ILandlordRepository {
   updateLandlord(user: LandlordEntity): Promise<void>;
 
   findLandlordById(userId: string): Promise<LandlordEntity | null>;
+
+  findAllLandlord(): Promise<LandlordEntity[] | null>;
 }

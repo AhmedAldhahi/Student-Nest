@@ -8,6 +8,7 @@ import { UserName } from "../../../Core/value-object/UserName.vo";
 import { userPhoneNumber } from "../../../Core/value-object/UserPhoneNumber.vo";
 import { VerificationDocument } from "../../../Core/value-object/VerficationDocument.vo";
 import { StudentUpdateProfileRequest } from "../../dtos/profile/StudentRequest.updateProfile.profile.dtos";
+import { ICashMemoryService } from "../../interfaces/ICash.interface";
 import { IFileStorageService } from "../../interfaces/IFileStorage.interface";
 import { IPasswordService } from "../../interfaces/IPassword.interface";
 import { IProfileStrategy } from "./IprofileStrategy.strategy";
@@ -16,14 +17,23 @@ export class StudentProfileStrategy implements IProfileStrategy {
   constructor(
     private studentRep: IStudentRepository,
     private readonly passwordService: IPasswordService,
-    private readonly fileService: IFileStorageService
+    private readonly fileService: IFileStorageService,
+    private readonly cashService: ICashMemoryService
   ) {}
 
   public async UserProfile(userId: string): Promise<any> {
+    const cashKey = `profile : ${userId}`;
+
+    const cashData = await this.cashService.get<any>(cashKey);
+
+    if (cashData) {
+      return cashData;
+    }
+
     const user = await this.studentRep.findStudentById(userId);
     if (!user) throw new Error("no user found !!");
 
-    return {
+    const profileData = {
       email: user.getUser().getEmail(),
       name: user.getUser().getName(),
       role: user.getUser().getRole(),
@@ -39,6 +49,27 @@ export class StudentProfileStrategy implements IProfileStrategy {
       studentGovId: user.getGovernmentId(),
       verificationFile: user.getVerificationDocument(),
     };
+
+    await this.cashService.set(cashKey, profileData, 36000);
+
+    // return {
+    //   email: user.getUser().getEmail(),
+    //   name: user.getUser().getName(),
+    //   role: user.getUser().getRole(),
+    //   dateOfBirth: user.getUser().getDateOfBirth(),
+    //   phoneNumber: user.getUser().getPhoneNumber(),
+
+    //   address: user.getUser().getAddress(),
+    //   photo: user.getUser().getPhoto(),
+    //   major: user.getMajor(),
+    //   gradateYear: user.getGraduateYear(),
+    //   studentCardId: user.getStudentCardID(),
+    //   universityName: user.getUniversityName(),
+    //   studentGovId: user.getGovernmentId(),
+    //   verificationFile: user.getVerificationDocument(),
+    // };
+
+    return profileData;
   }
 
   public async UpdateUserProfile(
@@ -49,6 +80,9 @@ export class StudentProfileStrategy implements IProfileStrategy {
       const user = await this.studentRep.findStudentById(userId);
 
       if (!user) throw new Error("no user found !!");
+
+      const cashKey = `profile : ${userId}`;
+      await this.cashService.delete(cashKey);
 
       if (dto.address) user.getUser().setAddress(dto.address);
 
@@ -101,9 +135,7 @@ export class StudentProfileStrategy implements IProfileStrategy {
           dto.verificationFile
         );
 
-        user.updateVerificationDocument(
-          new VerificationDocument(verifiedFile)
-        );
+        user.updateVerificationDocument(new VerificationDocument(verifiedFile));
       }
 
       await this.studentRep.updateStudent(user);
@@ -111,7 +143,6 @@ export class StudentProfileStrategy implements IProfileStrategy {
       return {
         message: "student updated profile succfully ",
       };
-      
     } catch (error: any) {
       console.error("fail to update student profile", error);
       throw error;

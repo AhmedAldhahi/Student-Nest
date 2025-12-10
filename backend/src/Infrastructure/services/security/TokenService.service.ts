@@ -29,7 +29,7 @@ export class JwtTokenService implements ITokenService {
       expiresIn: "7d", // Refresh tokens are long-lived
     });
   }
-
+    
   verifyAccessToken(token: string): ITokenPayload | null {
     try {
       // 3. Verify the token against the correct secret

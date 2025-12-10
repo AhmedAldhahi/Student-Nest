@@ -11,7 +11,6 @@ export class AuthController {
     private loginUserUseCase: LoginUseCase
   ) {}
 
-
   public registerLandloard = async (req: Request, res: Response) => {
     try {
       let fileBeenUpload = req.file;
@@ -52,11 +51,10 @@ export class AuthController {
 
       return res.status(201).json(result);
     } catch (error: any) {
-      console.error("Landlord Register Error:", error); 
+      console.error("Landlord Register Error:", error);
       return res.status(400).json({ error: error.message || "server error" });
     }
   };
-
 
   public registerStudent = async (
     req: Request,

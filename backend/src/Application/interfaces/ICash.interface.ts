@@ -1,10 +1,9 @@
 export interface ICashMemoryService {
-  set<T>(key: string, value: T, expiration?: number): Promise<Boolean>;
+  set<T>(key: string, value: T, expiration?: number): Promise<void>;
   get<T>(key: string): Promise<T | null>;
-  exist(key:string) : Promise<boolean>;
-  delete(key:string) : Promise<boolean>;
-  clear() : Promise<Boolean>
-}
+  delete(key:string) : Promise<void>;
+  clear() : Promise<void>
+} 
 
 
 

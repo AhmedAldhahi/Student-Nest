@@ -1,5 +1,6 @@
 import { IUnitOfWork } from "../../../Core/repositories/UnitOfWorkRepositories.repositories";
 import { userUpdateProfileRequest } from "../../dtos/profile/adminRequest.updateProfile.profile.dtos";
+import { ICashMemoryService } from "../../interfaces/ICash.interface";
 import { IFileStorageService } from "../../interfaces/IFileStorage.interface";
 import { IPasswordService } from "../../interfaces/IPassword.interface";
 import { AdminProfileStrategy } from "../../strategy/profiles/AdminProfile.strategy";
@@ -13,7 +14,8 @@ export class updateUserProfileDataUseCase {
   constructor(
     private unitOfWork: IUnitOfWork,
     private passwordService: IPasswordService,
-    private readonly fileService: IFileStorageService
+    private readonly fileService: IFileStorageService,
+    private readonly cashService: ICashMemoryService
   ) {}
 
   public async execute(userId: string, dto: userUpdateProfileRequest) {
@@ -28,7 +30,8 @@ export class updateUserProfileDataUseCase {
           this.profileStrategy = new AdminProfileStrategy(
             this.unitOfWork.userRepo,
             this.passwordService,
-            this.fileService
+            this.fileService,
+            this.cashService
           );
 
           break;
@@ -37,7 +40,8 @@ export class updateUserProfileDataUseCase {
           this.profileStrategy = new LandlordProfileStrategy(
             this.unitOfWork.landlordRepo,
             this.passwordService,
-            this.fileService
+            this.fileService,
+            this.cashService
           );
           break;
 
@@ -45,7 +49,8 @@ export class updateUserProfileDataUseCase {
           this.profileStrategy = new StudentProfileStrategy(
             this.unitOfWork.studentRepo,
             this.passwordService,
-            this.fileService
+            this.fileService,
+            this.cashService
           );
           break;
 

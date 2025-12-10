@@ -13,6 +13,8 @@ import {
   makeVerfiedForgetPasswordOTP,
 } from "./verfication.DI";
 
+import { GetAllLandlords } from "./admin/LandlordMangement";
+
 export function buildDependencies() {
   return {
     useCases: {
@@ -26,6 +28,7 @@ export function buildDependencies() {
       verfiedForgetPasswordUseCase: makeVerfiedForgetPasswordOTP(),
       userProfileData: getUserProfileData(),
       updateProfileUseCase: updateUserProfile(),
+      getAllLandlordUseCase: GetAllLandlords(),
     },
   };
 }

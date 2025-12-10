@@ -24,6 +24,7 @@ export interface IUserRepository {
    * @param {string} email - User email address.
    * @returns {Promise<UserEntity | null>} The found UserEntity or null if not found.
    */
+  
   findByEmail(email: string): Promise<UserEntity | null>;
 
   /**
