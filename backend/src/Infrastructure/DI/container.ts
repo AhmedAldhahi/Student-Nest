@@ -14,6 +14,7 @@ import {
 } from "./verfication.DI";
 
 import {
+  deleteLandlordById,
   GetAllLandlords,
   updateLandlordStatus,
 } from "./admin/LandlordMangement";
@@ -33,6 +34,7 @@ export function buildDependencies() {
       updateProfileUseCase: updateUserProfile(),
       getAllLandlordUseCase: GetAllLandlords(),
       updateLandlordStatusUseCase: updateLandlordStatus(),
+      DeleteLandlordByIdUseCase: deleteLandlordById(),
     },
   };
 }

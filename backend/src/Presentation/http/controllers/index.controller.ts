@@ -35,7 +35,8 @@ export const buildControllers = () => {
 
   const adminLandloardManagementController = new LandloardManagementController(
     useCases.getAllLandlordUseCase,
-    useCases.updateLandlordStatusUseCase
+    useCases.updateLandlordStatusUseCase,
+    useCases.DeleteLandlordByIdUseCase
   );
 
   return {
