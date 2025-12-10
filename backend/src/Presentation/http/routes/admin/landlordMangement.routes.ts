@@ -25,5 +25,12 @@ export const landlordManagementRouter = (
     landlordManagementRouter.updateLandlordVerifiedStatus
   );
 
+  router.delete(
+    "/landlord/:landlordId",
+    isAuth,
+    isAdmin,
+    landlordManagementRouter.deleteLandlordById
+  );
+
   return router;
 };
