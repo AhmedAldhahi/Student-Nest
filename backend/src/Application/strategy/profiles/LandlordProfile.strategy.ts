@@ -55,6 +55,8 @@ export class LandlordProfileStrategy implements IProfileStrategy {
       photo: user.getUser().getPhoto(),
       LandlordGovId: user.getGovId(),
       cliQAccount: user.getCliQAccount(),
+      adminVerified: user.getLandlordVerified(),
+      document: user.getVerificationFile(),
     };
 
     await this.cashService.set(cashKey, profileData, 36000);

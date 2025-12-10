@@ -17,7 +17,8 @@ import {
   deleteLandlordById,
   GetAllLandlords,
   updateLandlordStatus,
-} from "./admin/LandlordMangement";
+  findUserByEmail,
+} from "./admin/UserMangement";
 
 export function buildDependencies() {
   return {
@@ -35,6 +36,7 @@ export function buildDependencies() {
       getAllLandlordUseCase: GetAllLandlords(),
       updateLandlordStatusUseCase: updateLandlordStatus(),
       DeleteLandlordByIdUseCase: deleteLandlordById(),
+      findUserByEmailUseCase: findUserByEmail(),
     },
   };
 }
