@@ -13,6 +13,7 @@ export class LandlordMapper {
     model.document = landlord.getVerificationFile();
     model.LandlordGovId = landlord.getGovId();
     model.user = UserMapper.toOrm(landlord.getUser());
+    model.Verified = landlord.getLandlordVerified();
 
     return model;
   }
@@ -23,6 +24,7 @@ export class LandlordMapper {
       cliQAccount: model.CliQAccount,
       landlordGovId: new GovernmentID(model.LandlordGovId),
       document: new VerificationDocument(model.document),
+      verified: model.Verified,
     });
   }
 }

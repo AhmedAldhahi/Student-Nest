@@ -25,13 +25,14 @@ export interface ILandlordData {
   cliQAccount: string;
   landlordGovId: GovernmentID;
   document: VerificationDocument;
+  verified?: boolean;
 }
 
 export class LandlordEntity {
   private user: UserEntity;
   private landlordGovId: GovernmentID;
   private cliQAccount: string;
-  private verifiedLandlord: boolean = false;
+  private verifiedLandlord: boolean;
   private document: VerificationDocument;
 
   /**
@@ -45,6 +46,7 @@ export class LandlordEntity {
     this.cliQAccount = data.cliQAccount;
     this.landlordGovId = data.landlordGovId;
     this.document = data.document;
+    this.verifiedLandlord = data.verified ?? false;
   }
 
   /**
@@ -73,12 +75,16 @@ export class LandlordEntity {
     return this.document.getValue();
   }
 
-  public markLandlordAsVerified() {
+  public markLandlordAsVerified(): void {
     this.verifiedLandlord = true;
   }
 
-  public resetLandlordVerified() {
+  public resetLandlordVerified(): void {
     this.verifiedLandlord = false;
+  }
+
+  public getLandlordVerified(): boolean {
+    return this.verifiedLandlord;
   }
 
   /**

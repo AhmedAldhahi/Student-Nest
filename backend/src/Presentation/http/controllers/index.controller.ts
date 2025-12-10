@@ -34,7 +34,8 @@ export const buildControllers = () => {
   );
 
   const adminLandloardManagementController = new LandloardManagementController(
-    useCases.getAllLandlordUseCase
+    useCases.getAllLandlordUseCase,
+    useCases.updateLandlordStatusUseCase
   );
 
   return {
@@ -42,6 +43,6 @@ export const buildControllers = () => {
     verificationController,
     passwordRecoverController,
     profileController,
-    adminLandloardManagementController
+    adminLandloardManagementController,
   };
 };
