@@ -1,10 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { GetAllLandlordUseCase } from "../../../../Application/use-case/admin/LandlordMangamement/GetAllLandlords.usecase";
-import { EditLandlordVerificationStatusUseCase } from "../../../../Application/use-case/admin/LandlordMangamement/EditLandlordVerificationStatus.usecase";
-import { DeleteLandlordByIdUseCase } from "../../../../Application/use-case/admin/LandlordMangamement/DeleteLandlordById.usecase";
-import { FindUserByEmailUseCase } from "../../../../Application/use-case/admin/LandlordMangamement/FindUserByEmail.usecase";
-import { error } from "console";
-import { GetAllStudentUseCase } from "../../../../Application/use-case/admin/LandlordMangamement/GetAllStudents.usecase";
+import { DeleteLandlordByIdUseCase } from "../../../../Application/use-case/admin/UserMangament/DeleteUserById.usecase";
+import { EditLandlordVerificationStatusUseCase } from "../../../../Application/use-case/admin/UserMangament/EditLandlordVerificationStatus.usecase";
+import { FindUserByEmailUseCase } from "../../../../Application/use-case/admin/UserMangament/FindUserByEmail.usecase";
+import { GetAllLandlordUseCase } from "../../../../Application/use-case/admin/UserMangament/GetAllLandlords.usecase";
+import { GetAllStudentUseCase } from "../../../../Application/use-case/admin/UserMangament/GetAllStudents.usecase";
 
 export class UserManagementController {
   constructor(
@@ -63,12 +62,12 @@ export class UserManagementController {
   public deleteLandlordById = async (req: Request, res: Response) => {
     try {
       const userid = req.user?.userId;
-      const { landlordId } = req.params;
+      const { userId } = req.params;
 
       if (!userid)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.deleteLandlord.execute(landlordId);
+      const result = await this.deleteLandlord.execute(userId);
       return res.status(200).json(result);
     } catch (error: any) {
       return res

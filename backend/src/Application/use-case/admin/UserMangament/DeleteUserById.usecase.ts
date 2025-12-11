@@ -15,7 +15,7 @@ export class DeleteLandlordByIdUseCase {
       await this.unitOfWork.commitTransaction();
 
       return {
-        message: "landlord been deleted ",
+        message: "user been deleted ",
       };
     } catch (error: any) {
       await this.unitOfWork.rollbackTransaction();

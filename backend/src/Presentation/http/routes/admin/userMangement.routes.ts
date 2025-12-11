@@ -28,7 +28,7 @@ export const userManagementRouter = (
   );
 
   router.delete(
-    "/landlord/:landlordId",
+    "/users/:userId",
     isAuth,
     isAdmin,
     userManagementRouter.deleteLandlordById

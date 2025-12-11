@@ -1,8 +1,8 @@
-import { DeleteLandlordByIdUseCase } from "../../../Application/use-case/admin/LandlordMangamement/DeleteLandlordById.usecase";
-import { EditLandlordVerificationStatusUseCase } from "../../../Application/use-case/admin/LandlordMangamement/EditLandlordVerificationStatus.usecase";
-import { FindUserByEmailUseCase } from "../../../Application/use-case/admin/LandlordMangamement/FindUserByEmail.usecase";
-import { GetAllLandlordUseCase } from "../../../Application/use-case/admin/LandlordMangamement/GetAllLandlords.usecase";
-import { GetAllStudentUseCase } from "../../../Application/use-case/admin/LandlordMangamement/GetAllStudents.usecase";
+import { DeleteLandlordByIdUseCase } from "../../../Application/use-case/admin/UserMangament/DeleteUserById.usecase";
+import { EditLandlordVerificationStatusUseCase } from "../../../Application/use-case/admin/UserMangament/EditLandlordVerificationStatus.usecase";
+import { FindUserByEmailUseCase } from "../../../Application/use-case/admin/UserMangament/FindUserByEmail.usecase";
+import { GetAllLandlordUseCase } from "../../../Application/use-case/admin/UserMangament/GetAllLandlords.usecase";
+import { GetAllStudentUseCase } from "../../../Application/use-case/admin/UserMangament/GetAllStudents.usecase";
 import { RedisCashService } from "../../cashing/RadisCashe";
 import { UnitOfWork } from "../../repositories/unitOfWork.repositories";
 import { CloudinaryService } from "../../services/media/CloudinaryService.service";
