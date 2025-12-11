@@ -1,5 +1,6 @@
 import { IUnitOfWork } from "../../../../Core/repositories/UnitOfWorkRepositories.repositories";
 
+//TODO: need to refactor for DRY principle 
 export class GetAllLandlordUseCase {
   constructor(private readonly unitOfWork: IUnitOfWork) {}
 

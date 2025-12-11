@@ -17,11 +17,13 @@ export const userManagementRouter = (
     userManagementRouter.getAllLandlords
   );
 
+  router.get("/students", isAuth, isAdmin, userManagementRouter.getAllStudents);
+
   router.patch(
     "/landlords/verification/:landlordId",
     validation(verifiedLandlordSchema),
     isAuth,
-    isAdmin,
+    isAdmin,  
     userManagementRouter.updateLandlordVerifiedStatus
   );
 

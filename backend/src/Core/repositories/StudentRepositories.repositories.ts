@@ -4,4 +4,6 @@ export interface IStudentRepository {
   createNewStudent(user: StudentEntity): Promise<void>;
   updateStudent(user: StudentEntity): Promise<void>;
   findStudentById(userId: string): Promise<StudentEntity | null>;
+
+  findAllStudent(): Promise<StudentEntity[] | null>;
 }

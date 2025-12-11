@@ -1,4 +1,4 @@
-import { EntityManager } from "typeorm";
+import { EntityManager, TreeLevelColumn } from "typeorm";
 import { StudentEntity } from "../../Core/entites/studentEntity.entity";
 import { IStudentRepository } from "../../Core/repositories/StudentRepositories.repositories";
 import { UserRepository } from "./user.repositories";
@@ -53,6 +53,46 @@ export class StudentRepository implements IStudentRepository {
       );
     } catch (error: any) {
       console.error("failed to update Student !!", error);
+      throw error;
+    }
+  }
+
+  async findAllStudent(): Promise<StudentEntity[] | null> {
+    try {
+      const studentModels = await this.manager
+        .getRepository(StudentModel)
+        .find({
+          select: {
+            GraduationYear: true,
+            Major: true,
+            StudentCardId: true,
+            StudentGovId: true,
+            UniversityName: true,
+
+            user: {
+              userId: true,
+              Email: true,
+              Name: true,
+              PhoneNumber: true,
+              DateOfBirth: true,
+              Address: true,
+              Role: true,
+              isActive: true,
+              emailVerfied: true,
+              createAt: true,
+              updateAt: true,
+            },
+          },
+          relations: {
+            user: true,
+          },
+        });
+
+      if (!studentModels || studentModels.length === 0) return null;
+
+      return studentModels.map((orm) => StudentMapper.toEntity(orm));
+    } catch (error: any) {
+      console.error("fail to get all students", error);
       throw error;
     }
   }

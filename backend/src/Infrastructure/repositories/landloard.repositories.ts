@@ -67,13 +67,11 @@ export class LandlordRepository implements ILandlordRepository {
         .find({
           // Use the object syntax for granular control
           select: {
-            // 1. Whitelist Landlord fields
             CliQAccount: true,
             LandlordGovId: true,
             Verified: true,
             document: true,
 
-            // 2. Whitelist User fields (OMIT sensitive fields here)
             user: {
               userId: true,
               Email: true,

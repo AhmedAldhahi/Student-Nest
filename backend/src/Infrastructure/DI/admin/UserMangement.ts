@@ -2,6 +2,7 @@ import { DeleteLandlordByIdUseCase } from "../../../Application/use-case/admin/L
 import { EditLandlordVerificationStatusUseCase } from "../../../Application/use-case/admin/LandlordMangamement/EditLandlordVerificationStatus.usecase";
 import { FindUserByEmailUseCase } from "../../../Application/use-case/admin/LandlordMangamement/FindUserByEmail.usecase";
 import { GetAllLandlordUseCase } from "../../../Application/use-case/admin/LandlordMangamement/GetAllLandlords.usecase";
+import { GetAllStudentUseCase } from "../../../Application/use-case/admin/LandlordMangamement/GetAllStudents.usecase";
 import { RedisCashService } from "../../cashing/RadisCashe";
 import { UnitOfWork } from "../../repositories/unitOfWork.repositories";
 import { CloudinaryService } from "../../services/media/CloudinaryService.service";
@@ -34,4 +35,9 @@ export function findUserByEmail(): FindUserByEmailUseCase {
     cloudUnary,
     redisService
   );
+}
+
+export function GetAllStudents(): GetAllStudentUseCase {
+  const uow = new UnitOfWork();
+  return new GetAllStudentUseCase(uow);
 }

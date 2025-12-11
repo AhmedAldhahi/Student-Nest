@@ -23,6 +23,7 @@ export class StudentModel {
   @OneToOne(() => UserModel, { cascade: true, onDelete: "CASCADE" })
   @JoinColumn({ name: "userId" })
   user: UserModel;
-  
 }
+
+//TODO: add wallet address
 

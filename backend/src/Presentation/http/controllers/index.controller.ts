@@ -37,7 +37,8 @@ export const buildControllers = () => {
     useCases.getAllLandlordUseCase,
     useCases.updateLandlordStatusUseCase,
     useCases.DeleteLandlordByIdUseCase,
-    useCases.findUserByEmailUseCase
+    useCases.findUserByEmailUseCase,
+    useCases.GetAllStudentUseCase
   );
 
   return {

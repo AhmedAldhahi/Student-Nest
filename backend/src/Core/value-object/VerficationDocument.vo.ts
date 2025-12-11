@@ -8,7 +8,12 @@
 export class VerificationDocument {
   /** The student's verification document value. */
   constructor(private value: string) {
-    if (!value) throw new Error("validate document is required !!");
+    if (this.value === undefined) {
+      return;
+    }
+    if (!this.value || this.value.trim().length === 0) {
+      throw new Error("validate document is required !!");
+    } 
   }
 
   /**
