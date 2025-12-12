@@ -5,7 +5,9 @@ import { UserEmail } from "../../Core/value-object/UserEmail.vo";
 import { UserName } from "../../Core/value-object/UserName.vo";
 import { userPhoneNumber } from "../../Core/value-object/UserPhoneNumber.vo";
 import { UserModel } from "../database/orm/TypeOrm/entity/User.entity";
-import { UserRole } from "../../Core/enum/UserRole.enum";
+import { UserResponseDTO } from "../../Core/repositories/UserRepositories.repositories";
+
+
 
 export class UserMapper {
   public static toOrm(user: UserEntity): UserModel {
@@ -47,6 +49,7 @@ export class UserMapper {
       phoneNumber: new userPhoneNumber(user.PhoneNumber),
       address: user.Address,
       photo: user.Photo,
+      createdAt: user.createAt,
     });
 
     // Map Email OTP
@@ -65,9 +68,23 @@ export class UserMapper {
     }
 
     if (user.resetPasswordVerified) {
-      userEntity.verifyResetPassword(); 
+      userEntity.verifyResetPassword();
     }
 
     return userEntity;
+  }
+
+  public static toUserResponse(user: UserModel): UserResponseDTO {
+    return {
+      userId: user.userId,
+      name: new UserName(user.Name).getValue(),
+      dateOfBirth: new UserDateOfBirth(user.DateOfBirth).getValue(),
+      email: new UserEmail(user.Email).getValue(),
+      role: user.Role,
+      phoneNumber: new userPhoneNumber(user.PhoneNumber).getValue(),
+      address: user.Address,
+      photo: user.Photo,
+      createdAt: user.createAt,
+    };
   }
 }

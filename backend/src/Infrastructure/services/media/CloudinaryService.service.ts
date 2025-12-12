@@ -10,6 +10,10 @@ export class CloudinaryService implements IFileStorageService {
     });
   }
 
+  async deleteImageFromCloudinary(publicId: string): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
+
   async upload(file: Express.Multer.File): Promise<string> {
     try {
       // 1. Validation

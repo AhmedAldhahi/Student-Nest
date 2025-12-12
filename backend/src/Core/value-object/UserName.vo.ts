@@ -14,14 +14,14 @@ export class UserName {
   /**
    * Creates a new UserName value object and validates it.
    *
-   * @param {string} userName - The user's name string.
+   * @param {string} value - The user's name string.
    * @throws {Error} Throws if the name is empty, too short, or contains invalid characters.
    */
-  constructor(private userName: string) {
-    if (!userName) {
+  constructor(private value: string) {
+    if (!value) {
       throw new Error("User name is required");
     }
-    const trimmed = userName.trim();
+    const trimmed = value.trim();
 
     if (trimmed.length < 3) {
       throw new Error("User name is too short or null");
@@ -44,6 +44,6 @@ export class UserName {
    * @returns {string} The user's name string.
    */
   public getValue(): string {
-    return this.userName;
+    return this.value;
   }
 }

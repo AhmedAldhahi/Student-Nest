@@ -1,6 +1,9 @@
 import { EntityManager, TreeLevelColumn } from "typeorm";
 import { StudentEntity } from "../../Core/entites/studentEntity.entity";
-import { IStudentRepository } from "../../Core/repositories/StudentRepositories.repositories";
+import {
+  IStudentRepository,
+  StudentResponseDto,
+} from "../../Core/repositories/StudentRepositories.repositories";
 import { UserRepository } from "./user.repositories";
 import { StudentModel } from "../database/orm/TypeOrm/entity/Student.entity";
 import { StudentMapper } from "./student.mapper";
@@ -57,7 +60,7 @@ export class StudentRepository implements IStudentRepository {
     }
   }
 
-  async findAllStudent(): Promise<StudentEntity[] | null> {
+  async findAllStudent(): Promise<StudentResponseDto[] | null> {
     try {
       const studentModels = await this.manager
         .getRepository(StudentModel)
@@ -68,6 +71,7 @@ export class StudentRepository implements IStudentRepository {
             StudentCardId: true,
             StudentGovId: true,
             UniversityName: true,
+            verificationFiles: true,
 
             user: {
               userId: true,
@@ -77,6 +81,7 @@ export class StudentRepository implements IStudentRepository {
               DateOfBirth: true,
               Address: true,
               Role: true,
+              Photo: true,
               isActive: true,
               emailVerfied: true,
               createAt: true,
@@ -90,7 +95,22 @@ export class StudentRepository implements IStudentRepository {
 
       if (!studentModels || studentModels.length === 0) return null;
 
-      return studentModels.map((orm) => StudentMapper.toEntity(orm));
+      return studentModels.map((orm) => {
+        const studentEntity = StudentMapper.toEntity(orm);
+        const userResponse = UserMapper.toUserResponse(orm.user);
+
+        return {
+          user: userResponse,
+          studentCardID: studentEntity.getStudentCardID().valueOf(),
+          GraduationYear: studentEntity.getGraduateYear().valueOf(),
+          Major: studentEntity.getMajor().valueOf(),
+          universityName: studentEntity.getUniversityName().valueOf(),
+          userGovId: studentEntity.getGovernmentId().valueOf(),
+          studentValidateDocument: studentEntity
+            .getVerificationDocument()
+            .valueOf(),
+        };
+      });
     } catch (error: any) {
       console.error("fail to get all students", error);
       throw error;

@@ -43,6 +43,7 @@ export interface IUserData {
   role: UserRole;
   address?: string;
   photo?: string;
+  createdAt: Date;
 }
 
 export class UserEntity {
@@ -65,6 +66,7 @@ export class UserEntity {
 
   private address?: string;
   private photo?: string;
+  private createdAt: Date;
 
   /**
    * Creates a new UserEntity with the given domain value objects.
@@ -80,6 +82,7 @@ export class UserEntity {
     this.phoneNumber = data.phoneNumber;
     this.email = data.email;
     this.role = data.role;
+    this.createdAt = data.createdAt;
     this.address = data.address ?? undefined;
     this.photo = data.photo ?? undefined;
   }
@@ -311,5 +314,9 @@ export class UserEntity {
   /** Activates the user account. */
   public activatedAccount() {
     this.accountStats = UserAccountStatus.activate;
+  }
+
+  public getCreatedAt(): Date {
+    return this.createdAt;
   }
 }

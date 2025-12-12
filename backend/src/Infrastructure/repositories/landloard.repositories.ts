@@ -1,5 +1,8 @@
 import { DataSource, EntityManager } from "typeorm";
-import { ILandlordRepository } from "../../Core/repositories/LandlordRepositories.repositories";
+import {
+  ILandlordRepository,
+  LandlordResponseDTO,
+} from "../../Core/repositories/LandlordRepositories.repositories";
 import { LandlordModel } from "../database/orm/TypeOrm/entity/Landloard.entity";
 import { UserRepository } from "./user.repositories";
 import { LandlordEntity } from "../../Core/entites/landloardEntity.entity";
@@ -7,6 +10,7 @@ import { LandlordMapper } from "./landloard.mapper";
 import { UserMapper } from "./user.mapper";
 import { UserEntity } from "../../Core/entites/userEntity.entity";
 import { UserModel } from "../database/orm/TypeOrm/entity/User.entity";
+import { toUpperCase } from "zod";
 
 export class LandlordRepository implements ILandlordRepository {
   private manager: EntityManager;
@@ -17,7 +21,9 @@ export class LandlordRepository implements ILandlordRepository {
     this.userRepo = new UserRepository(manager);
   }
 
-  async findLandlordById(userId: string): Promise<LandlordEntity | null> {
+  public async findLandlordById(
+    userId: string
+  ): Promise<LandlordEntity | null> {
     const user = await this.manager.findOne(LandlordModel, {
       where: { userId: userId },
       relations: ["user"],
@@ -25,7 +31,7 @@ export class LandlordRepository implements ILandlordRepository {
     return user ? LandlordMapper.toEntity(user) : null;
   }
 
-  async createNewLandlord(landlord: LandlordEntity): Promise<void> {
+  public async createNewLandlord(landlord: LandlordEntity): Promise<void> {
     try {
       const userEntity = await landlord.getUser();
 
@@ -60,18 +66,16 @@ export class LandlordRepository implements ILandlordRepository {
     }
   }
 
-  async findAllLandlord(): Promise<LandlordEntity[] | null> {
+  public async findAllLandlord(): Promise<LandlordResponseDTO[] | null> {
     try {
       const landlordModels = await this.manager
         .getRepository(LandlordModel)
         .find({
-          // Use the object syntax for granular control
           select: {
             CliQAccount: true,
             LandlordGovId: true,
             Verified: true,
             document: true,
-
             user: {
               userId: true,
               Email: true,
@@ -80,10 +84,10 @@ export class LandlordRepository implements ILandlordRepository {
               DateOfBirth: true,
               Address: true,
               Role: true,
+              Photo: true,
               isActive: true,
               emailVerfied: true,
               createAt: true,
-              updateAt: true,
             },
           },
           relations: {
@@ -93,7 +97,19 @@ export class LandlordRepository implements ILandlordRepository {
 
       if (!landlordModels || landlordModels.length === 0) return null;
 
-      return landlordModels.map((orm) => LandlordMapper.toEntity(orm));
+      return landlordModels.map((orm) => {
+        const landlordEntity = LandlordMapper.toEntity(orm);
+
+        const userResponse = UserMapper.toUserResponse(orm.user);
+
+        return {
+          user: userResponse,
+          cliQAccount: landlordEntity.getCliQAccount(),
+          landlordGovId: landlordEntity.getGovId(),
+          document: landlordEntity.getVerificationFile(),
+          verifiedLandlord: landlordEntity.getLandlordVerified(),
+        };
+      });
     } catch (err: any) {
       console.error("fail to get all landlord", err);
       throw err;
