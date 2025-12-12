@@ -45,6 +45,7 @@ export class RegisterStudentUseCase {
       email: new UserEmail(dto.email),
       role: UserRole.student,
       address: dto.address,
+      createdAt: new Date(),
     });
 
     user.setOtpForEmail(otp);
@@ -60,9 +61,7 @@ export class RegisterStudentUseCase {
       studentCardId: new StudentCard(dto.studentCardId),
       universityName: new StudentUniversity(dto.universityName),
       userGovId: new GovernmentID(dto.studentGovId),
-      validateStudentDocument: new VerificationDocument(
-        verificationFilesUrl
-      ),
+      validateStudentDocument: new VerificationDocument(verificationFilesUrl),
     });
 
     await this.unitOfWork.startTransaction();

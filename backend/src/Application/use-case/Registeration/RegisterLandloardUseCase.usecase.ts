@@ -46,6 +46,7 @@ export class RegisterLandloardUseCase {
       email: new UserEmail(dto.email),
       role: UserRole.landloard,
       address: dto.address,
+      createdAt: new Date(),
     });
 
     // Set OTP to the entity
