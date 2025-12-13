@@ -14,6 +14,7 @@ export interface UserResponseDTO {
   address?: string;
   photo?: string;
   createdAt: Date;
+  emailVerfied: boolean;
 }
 
 export interface IUserRepository {

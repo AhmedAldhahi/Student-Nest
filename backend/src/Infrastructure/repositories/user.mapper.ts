@@ -85,6 +85,7 @@ export class UserMapper {
       address: user.Address,
       photo: user.Photo,
       createdAt: user.createAt,
+      emailVerfied: user.emailVerfied,
     };
   }
 }
