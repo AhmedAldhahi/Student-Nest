@@ -79,6 +79,14 @@ export class AdminProfileStrategy implements IProfileStrategy {
         user.updatePhoneNumber(new userPhoneNumber(dto.phoneNumber));
 
       if (dto.photo) {
+        const photo = user.getPhoto();
+        if (photo) {
+          let photoDoc: string = await this.fileService.update(
+            dto.photo,
+            photo
+          );
+          user.setPhoto(photoDoc);
+        }
         let photoDoc: string = await this.fileService.upload(dto.photo);
         user.setPhoto(photoDoc);
       }

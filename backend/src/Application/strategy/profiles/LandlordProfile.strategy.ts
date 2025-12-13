@@ -62,7 +62,7 @@ export class LandlordProfileStrategy implements IProfileStrategy {
     await this.cashService.set(cashKey, profileData, 36000);
 
     return profileData;
-  }
+  } 
 
   public async UpdateUserProfile(
     userId: string,

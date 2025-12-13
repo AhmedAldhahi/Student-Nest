@@ -1,21 +1,7 @@
-import { v2 as cloudinary } from "cloudinary";
+export function GetPublic_IdFromUrl(url: string) {
+  const regex = /\/v\d+\/(.+?)(\?|$)/;
+  const match = url.match(regex);
+  if (!(match && match[1])) throw new Error("no public id found !!");
 
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.CLOUD_API_KEY,
-  api_secret: process.env.CLOUD_API_SECRET,
-});
-
-// Delete image from Cloudinary
-const deleteImageFromCloudinary = async (publicId: any) => {
-  try {
-    const result = await cloudinary.uploader.destroy(publicId);
-    return result;
-  } catch (error) {
-    console.error("Cloudinary delete error:", error);
-    throw error;
-  }
-};
-
-export default deleteImageFromCloudinary;
-
+  return match[1].split(".")[0];
+}

@@ -1,7 +1,11 @@
 import { IUnitOfWork } from "../../../../Core/repositories/UnitOfWorkRepositories.repositories";
+import { IFileStorageService } from "../../../interfaces/IFileStorage.interface";
 
 export class DeleteLandlordByIdUseCase {
-  constructor(private unitOfWork: IUnitOfWork) {}
+  constructor(
+    private unitOfWork: IUnitOfWork,
+    private fileService: IFileStorageService
+  ) {}
 
   public async execute(userId: string) {
     try {
@@ -10,6 +14,11 @@ export class DeleteLandlordByIdUseCase {
       if (!user) throw new Error("no user found !!");
 
       // remove user
+      const photo = user.getPhoto(); 
+      if (photo) { 
+        await this.fileService.deleteImageFromCloudinary(photo);
+      }
+
       await this.unitOfWork.userRepo.deleteUser(userId);
 
       await this.unitOfWork.commitTransaction();

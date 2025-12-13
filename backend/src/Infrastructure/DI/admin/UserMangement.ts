@@ -20,7 +20,8 @@ export function updateLandlordStatus(): EditLandlordVerificationStatusUseCase {
 
 export function deleteLandlordById(): DeleteLandlordByIdUseCase {
   const uow = new UnitOfWork();
-  return new DeleteLandlordByIdUseCase(uow);
+  const cloudService = new CloudinaryService();
+  return new DeleteLandlordByIdUseCase(uow,cloudService);
 }
 
 export function findUserByEmail(): FindUserByEmailUseCase {

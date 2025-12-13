@@ -1,5 +1,6 @@
 import { IFileStorageService } from "../../../Application/interfaces/IFileStorage.interface";
 import { v2 as cloudinary } from "cloudinary";
+import { GetPublic_IdFromUrl } from "../../../Shared/utils/cloudinary.util";
 
 export class CloudinaryService implements IFileStorageService {
   constructor() {
@@ -10,15 +11,42 @@ export class CloudinaryService implements IFileStorageService {
     });
   }
 
-  async deleteImageFromCloudinary(publicId: string): Promise<any> {
-    throw new Error("Method not implemented.");
+  public async update(file: Express.Multer.File, url: string): Promise<string> {
+    try {
+      if (!url) {
+        throw new Error("no file exit");
+      } else {
+        try {
+          await this.deleteImageFromCloudinary(url);
+        } catch (error: any) {
+          console.error("fail to delete image !!");
+        }
+      }
+      return await this.upload(file);
+    } catch (error: any) {
+      console.error("fail to update image ", error);
+      throw error;
+    }
   }
 
-  async upload(file: Express.Multer.File): Promise<string> {
+  public async deleteImageFromCloudinary(url: string): Promise<void> {
+    try {
+      if (!url) throw new Error("no photo been uploaded !!");
+      const public_Id = GetPublic_IdFromUrl(url);
+      await cloudinary.uploader.destroy(public_Id);
+    } catch (error: any) {
+      console.error("fail to delete image !!", error);
+      throw error;
+    }
+  }
+
+  public async upload(file: Express.Multer.File): Promise<string> {
     try {
       // 1. Validation
       if (!file || !file.buffer) {
-        throw new Error("File buffer is missing. Ensure multer is using memoryStorage.");
+        throw new Error(
+          "File buffer is missing. Ensure multer is using memoryStorage."
+        );
       }
 
       // 2. Convert Buffer to Base64 Data URI
@@ -43,7 +71,6 @@ export class CloudinaryService implements IFileStorageService {
       });
 
       return optimizedUrl;
-
     } catch (error: any) {
       console.error("Cloudinary Upload Failed:", error);
       throw new Error(error.message || "Image upload failed");

@@ -39,10 +39,6 @@ export class UserModel {
   @Column({ type: "varchar", length: 255, nullable: true })
   Photo?: string;
 
-  @Column({type: "varchar", length: 255, nullable: true})
-  publicPhotoId? : string;
-  
-
   @Column({ type: "enum", enum: UserRole })
   Role: UserRole;
 

@@ -24,6 +24,7 @@ export class StudentEntity {
   private major: StudentMajor;
   private graduateYear: studentGraduateYear;
   private studentValidateDocument: VerificationDocument;
+  private walletAddress: string;
 
   constructor(data: IStudentData) {
     this.user = data.user;
@@ -41,6 +42,15 @@ export class StudentEntity {
         "you have to change your university before change card id "
       );
     this.studentCardID = userCardId;
+  }
+
+  //TODO: need validation
+  public setWalletAddress(value: string): void {
+    this.walletAddress = value;
+  }
+
+  public getWalletAddress(): string {
+    return this.walletAddress;
   }
 
   public getStudentCardID(): string {
@@ -92,7 +102,7 @@ export class StudentEntity {
 
   public getUser(): UserEntity {
     return this.user;
-  } 
+  }
 
   public getUserId(): string {
     return this.user.getUserId();

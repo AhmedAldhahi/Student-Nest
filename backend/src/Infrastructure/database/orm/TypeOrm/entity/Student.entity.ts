@@ -20,6 +20,9 @@ export class StudentModel {
   @PrimaryColumn()
   userId: string; // same id as user
 
+  @Column({type: "varchar", nullable: true})
+  walletAddress: string;
+
   @OneToOne(() => UserModel, { cascade: true, onDelete: "CASCADE" })
   @JoinColumn({ name: "userId" })
   user: UserModel;
