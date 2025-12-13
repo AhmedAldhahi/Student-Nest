@@ -95,8 +95,8 @@ export class LandlordRepository implements ILandlordRepository {
           },
         });
 
-      if (!landlordModels || landlordModels.length === 0) 
-        throw new Error ("no data found !!");
+      if (!landlordModels || landlordModels.length === 0)
+        return [];  
 
       return landlordModels.map((orm) => {
         const landlordEntity = LandlordMapper.toEntity(orm);
