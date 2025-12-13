@@ -95,6 +95,14 @@ export class StudentProfileStrategy implements IProfileStrategy {
         user.getUser().updatePhoneNumber(new userPhoneNumber(dto.phoneNumber));
 
       if (dto.photo) {
+        const photo = user.getUser().getPhoto();
+        if (photo) {
+          let photoDoc: string = await this.fileService.update(
+            dto.photo,
+            photo
+          );
+          user.getUser().setPhoto(photoDoc);
+        }
         let photoDoc: string = await this.fileService.upload(dto.photo);
         user.getUser().setPhoto(photoDoc);
       }
