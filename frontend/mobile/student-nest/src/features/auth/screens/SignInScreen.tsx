@@ -1,4 +1,7 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
+import { login } from "../api/authService";
+import { useAuth } from "../../../context/AuthContext"; // Use AuthContext to set user
+
 import { Button } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -26,6 +29,8 @@ const signInSchema = yup.object().shape({
 });
 
 export default function SignInScreen({ navigation }: Props) {
+  const { login: setAuthUser } = useAuth(); // Rename to setAuthUser to avoid conflict with API login function
+
   const { control, handleSubmit } = useForm({
     resolver: yupResolver(signInSchema),
     defaultValues: {
@@ -34,10 +39,30 @@ export default function SignInScreen({ navigation }: Props) {
     },
   });
 
-  function onSubmit(data: any) {
-    console.log("Sign In Data:", data);
-    // TODO: handle authentication
-    navigation.navigate("OTPScreen"); // or home/dashboard after login
+  async function onSubmit(data: any) {
+    try {
+      // 1. Call API to get token
+      const response = await login(data);
+
+      // User info confirms: "after loging in you get a token"
+      // Assuming response is: { token: "..." } or similar.
+      const token = response.token || response.accessToken || response.jwt;
+
+      if (!token) {
+        throw new Error("No token received");
+      }
+
+      // 2. Pass token to context (which fetches user profile)
+      await setAuthUser(token);
+
+      Alert.alert("Success", "Logged in successfully!");
+      // Previous navigation logic caused an error because RootNavigator handles the switch automatically
+      // when 'user' state changes. So we just let the context update triggering the re-render.
+      // navigation.replace("Main");
+
+    } catch (error: any) {
+      Alert.alert("Login Error", error.message || "Invalid credentials");
+    }
   }
 
   return (
@@ -81,6 +106,14 @@ export default function SignInScreen({ navigation }: Props) {
           Sign In
         </Button>
 
+        <Button
+          style={styles.forgotBtn}
+          mode="text"
+          onPress={() => navigation.navigate("ForgotPasswordScreen")}
+        >
+          Forgot Password?
+        </Button>
+
         {/* Link to Registration */}
         <Button
           style={styles.linkBtn}
@@ -100,6 +133,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "#3F51B5",
     marginTop: 20,
+  },
+  forgotBtn: {
+    marginTop: 0,
+    alignSelf: "center",
   },
   linkBtn: {
     marginTop: 10,

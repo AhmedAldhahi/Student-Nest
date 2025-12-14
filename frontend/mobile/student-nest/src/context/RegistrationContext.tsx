@@ -16,6 +16,7 @@ type StudentData = {
   studentCardId: string;
   walletAddress: string;
   studentGovId: string;
+  verificationFile: any;
 };
 
 type landlordData = {

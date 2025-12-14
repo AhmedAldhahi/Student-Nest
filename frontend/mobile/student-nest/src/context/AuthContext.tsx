@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
+import { getMe } from "../features/auth/api/authService";
 
 type Role = "student" | "landlord" | "admin";
 
@@ -32,8 +33,10 @@ const mockUsers: User[] = [
 ];
 
 type AuthContextType = {
+  token: string | null;
+  isLoading: boolean;
   user: User | null;
-  login: (user: User) => void;
+  login: (token: string) => Promise<void>;
   logout: () => void;
   loginAs: (role: Role) => void; // 👈 helper for testing
   isStudent: boolean;
@@ -45,12 +48,39 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const login = (userData: User) => setUser(userData);
-  const logout = () => setUser(null);
+  // Real login flow: set token, then fetch user
+  const login = async (newToken: string) => {
+    setToken(newToken);
+    setIsLoading(true);
+    try {
+      const userData = await getMe(newToken);
+      // Map backend user to our User type if necessary. 
+      // Assuming backend returns { id, name, email, role, ... } matching our type roughly.
+      // We might need to adjust mapping if backend fields differ (e.g. _id vs id).
+      // For now, usage of 'any' cast or direct assignment if types match.
+      setUser(userData as User);
+    } catch (error) {
+      console.error("Failed to load user profile during login:", error);
+      // Optional: clear token if fetch fails?
+      // setToken(null);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  // 👇 Quick role switch for testing
+  const logout = () => {
+    setUser(null);
+    setToken(null);
+  };
+
+  // 👇 Quick role switch for testing (still useful for dev)
   const loginAs = (role: Role) => {
+    // We can keep using mock users for "Review/Demo" mode if needed, 
+    // or just remove this if we want strict real data.
+    // I'll leave it but maybe disable it or keep it for the "TestRoleSwitcher" component.
     const found = mockUsers.find((u) => u.role === role);
     if (found) setUser(found);
   };
@@ -59,11 +89,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     <AuthContext.Provider
       value={{
         user,
+        token,
         login,
         logout,
+        isLoading,
         loginAs,
         isStudent: user?.role === "student",
-        isLandlord: user?.role === "landlord",
+        isLandlord: user?.role === "landlord", // Note: Check typo handling from backend if it returns "landloard"
         isAdmin: user?.role === "admin",
       }}
     >

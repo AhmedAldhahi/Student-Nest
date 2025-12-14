@@ -24,8 +24,8 @@ type Props = NativeStackScreenProps<
 export default function GenericRegisterScreen({ navigation }: Props) {
   const { setGenericData } = useRegistration();
 
-  const [birthDate, setBirthDate] = useState("");
-  const [showDatePicker, setShowDatePicker] = useState(false);
+  // const [birthDate, setBirthDate] = useState(""); // Removed
+  // const [showDatePicker, setShowDatePicker] = useState(false); // Removed
   const [role, setRole] = useState<"student" | "landlord">("student");
 
   const {
@@ -88,40 +88,12 @@ export default function GenericRegisterScreen({ navigation }: Props) {
         />
 
         {/* Birth Date Picker */}
-        <Controller
+        <ValidatedInput
           control={control}
           name="birthDate"
-          render={({ field: { onChange, value } }) => (
-            <>
-              <TouchableOpacity
-                onPress={() => setShowDatePicker(true)}
-                style={{ marginHorizontal: 5, marginBottom: 10 }}
-              >
-                <TextInput
-                  label="Birth Date"
-                  mode="outlined"
-                  value={value ? new Date(value).toLocaleDateString() : ""}
-                  editable={false}
-                  pointerEvents="none"
-                />
-              </TouchableOpacity>
-
-              {showDatePicker && (
-                <DateTimePicker
-                  value={value ? new Date(value) : new Date()}
-                  mode="date"
-                  display={Platform.OS === "ios" ? "spinner" : "default"}
-                  maximumDate={new Date()}
-                  onChange={(event, selectedDate) => {
-                    setShowDatePicker(false);
-                    if (selectedDate) {
-                      onChange(selectedDate.toISOString());
-                    }
-                  }}
-                />
-              )}
-            </>
-          )}
+          label="Birth Year (YYYY)"
+          keyboardType="phone-pad"
+          textContentType="none"
         />
         {errors.birthDate && (
           <Text style={style.inputError}>{errors.birthDate.message}</Text>

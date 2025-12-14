@@ -1,4 +1,5 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
+import { registerLandlord } from "../../api/authService";
 import { Button } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../../components/Header";
@@ -18,7 +19,7 @@ type Props = NativeStackScreenProps<
 >;
 
 export default function LandlordRegisterScreen({ navigation }: Props) {
-  const { setLandlordData } = useRegistration();
+  const { setLandlordData, genericData } = useRegistration();
 
   const {
     control,
@@ -32,10 +33,17 @@ export default function LandlordRegisterScreen({ navigation }: Props) {
     },
   });
 
-  function onSubmit(data: any) {
-    console.log("Landlord Data:", data); // ✅ Debug
-    setLandlordData(data);
-    navigation.navigate("OTPScreen");
+  async function onSubmit(data: any) {
+    console.log("Landlord Data:", data);
+
+    try {
+      const fullData = { ...genericData, ...data };
+      await registerLandlord(fullData);
+      setLandlordData(data);
+      navigation.navigate("OTPScreen");
+    } catch (error: any) {
+      Alert.alert("Registration Error", error.message || "Something went wrong.");
+    }
   }
 
   return (
@@ -90,7 +98,7 @@ const style = StyleSheet.create({
   btn: {
     width: "50%",
     alignSelf: "center",
-    backgroundColor:"#3F51B5"
+    backgroundColor: "#3F51B5"
   },
   margin: {
     marginTop: 10,

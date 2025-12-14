@@ -6,6 +6,9 @@ export type RootStackParamList = {
   StudentRegisterScreen: undefined;
   LandlordRegisterScreen: undefined;
   OTPScreen: undefined;
+  ForgotPasswordScreen: undefined;
+  VerifyRecoveryOtpScreen: { email: string };
+  ResetPasswordScreen: { email: string };
   Main: undefined; // 👈 This wraps BottomTabs
 
   AdminDashboardScreen: undefined;
@@ -13,18 +16,18 @@ export type RootStackParamList = {
   StudentsScreen: undefined;
   LandlordsScreen: undefined;
   LandlordDetailScreen: { landlordId: number };
-  AdminApartmentsScreen: { landlordId?: number }; 
-  AdminRequestsScreen: { landlordId?: number }; 
+  AdminApartmentsScreen: { landlordId?: number };
+  AdminRequestsScreen: { landlordId?: number };
   VerificationScreen: { landlordId?: number };
-  AdminLeaseScreen: {landlordId?: number};
+  AdminLeaseScreen: { landlordId?: number };
 
   StudentDashboardScreen: undefined;
   LandlordDashboardScreen: undefined;
   NotificationScreen: undefined;
 
-  StudentRequestsScreen: {studentId: number};
-  StudentLeaseScreen: {studentId: number};
-  
+  StudentRequestsScreen: { studentId: number };
+  StudentLeaseScreen: { studentId: number };
+
 
   LandlordRequestsScreen: { landlordId: number };
   LandlordLeaseScreen: { landlordId: number };
