@@ -28,30 +28,21 @@ export class AdminProfileStrategy implements IProfileStrategy {
     if (!user) throw new Error("no user");
 
     const profileData = {
-      email: user.getEmail(),
-      name: user.getName(),
-      role: user.getRole(),
-      dateOfBirth: user.getDateOfBirth(),
-      phoneNumber: user.getPhoneNumber(),
+      user: {
+        userId: user.getUserId(),
+        email: user.getEmail(),
+        name: user.getName(),
+        role: user.getRole(),
+        dateOfBirth: user.getDateOfBirth(),
+        phoneNumber: user.getPhoneNumber(),
 
-      // optional
-      address: user.getAddress(),
-      photo: user.getPhoto(),
+        address: user.getAddress(),
+        photo: user.getPhoto() || null,
+        createAt: user.getCreatedAt(),
+      },
     };
 
     await this.cashService.set(cashKey, profileData, 36000);
-
-    // return {
-    //   email: user.getEmail(),
-    //   name: user.getName(),
-    //   role: user.getRole(),
-    //   dateOfBirth: user.getDateOfBirth(),
-    //   phoneNumber: user.getPhoneNumber(),
-
-    //   // optional
-    //   address: user.getAddress(),
-    //   photo: user.getPhoto(),
-    // };
 
     return profileData;
   }

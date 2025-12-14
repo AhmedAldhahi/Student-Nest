@@ -1,8 +1,12 @@
 import { IUnitOfWork } from "../../../../Core/repositories/UnitOfWorkRepositories.repositories";
 import { EditLandlordVerificationStatusRequest } from "../../../dtos/admin/EditLandlordVerificationStatusRequest.dto";
+import { ICashMemoryService } from "../../../interfaces/ICash.interface";
 
 export class EditLandlordVerificationStatusUseCase {
-  constructor(private unitOfWork: IUnitOfWork) {}
+  constructor(
+    private unitOfWork: IUnitOfWork,
+    private cashService: ICashMemoryService
+  ) {}
 
   public async execute(
     userId: string,
@@ -15,6 +19,9 @@ export class EditLandlordVerificationStatusUseCase {
 
       if (!user.getVerificationFile())
         throw new Error("user must have upload verification files");
+
+      const cashKey = `profile : ${userId}`;
+      await this.cashService.delete(cashKey);
 
       if (dto.Verified === false) user.resetLandlordVerified();
       else user.markLandlordAsVerified();

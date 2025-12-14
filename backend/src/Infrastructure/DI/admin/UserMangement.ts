@@ -15,13 +15,14 @@ export function GetAllLandlords(): GetAllLandlordUseCase {
 
 export function updateLandlordStatus(): EditLandlordVerificationStatusUseCase {
   const uow = new UnitOfWork();
-  return new EditLandlordVerificationStatusUseCase(uow);
+  const redis = new RedisCashService();
+  return new EditLandlordVerificationStatusUseCase(uow, redis);
 }
 
 export function deleteLandlordById(): DeleteLandlordByIdUseCase {
   const uow = new UnitOfWork();
   const cloudService = new CloudinaryService();
-  return new DeleteLandlordByIdUseCase(uow,cloudService);
+  return new DeleteLandlordByIdUseCase(uow, cloudService);
 }
 
 export function findUserByEmail(): FindUserByEmailUseCase {

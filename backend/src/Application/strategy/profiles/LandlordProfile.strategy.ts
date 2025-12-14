@@ -1,8 +1,8 @@
+import { email } from "zod";
 import { ILandlordRepository } from "../../../Core/repositories/LandlordRepositories.repositories";
 import { UserDateOfBirth } from "../../../Core/value-object/UserDateOfBirth.vo";
 import { UserName } from "../../../Core/value-object/UserName.vo";
 import { userPhoneNumber } from "../../../Core/value-object/UserPhoneNumber.vo";
-import { userUpdateProfileRequest } from "../../dtos/profile/adminRequest.updateProfile.profile.dtos";
 import { LandlordUpdateProfileRequest } from "../../dtos/profile/LandlordRequest.updateProfile.profile.dtos";
 import { ICashMemoryService } from "../../interfaces/ICash.interface";
 import { IFileStorageService } from "../../interfaces/IFileStorage.interface";
@@ -30,33 +30,25 @@ export class LandlordProfileStrategy implements IProfileStrategy {
 
     if (!user) throw new Error("no user found !!");
 
-    // return {
-    //   email: user.getUser().getEmail(),
-    //   name: user.getUser().getName(),
-    //   role: user.getUser().getRole(),
-    //   dateOfBirth: user.getUser().getDateOfBirth(),
-    //   phoneNumber: user.getUser().getPhoneNumber(),
-
-    //   // optional
-    //   address: user.getUser().getAddress(),
-    //   photo: user.getUser().getPhoto(),
-    //   LandlordGovId: user.getGovId(),
-    //   cliQAccount: user.getCliQAccount(),
-    // };
-
     const profileData = {
-      email: user.getUser().getEmail(),
-      name: user.getUser().getName(),
-      role: user.getUser().getRole(),
-      dateOfBirth: user.getUser().getDateOfBirth(),
-      phoneNumber: user.getUser().getPhoneNumber(),
+      user: { 
+        userId : user.getUser().getUserId(),
+        email: user.getUser().getEmail(),
+        name: user.getUser().getName(),
+        role: user.getUser().getRole(),
+        dateOfBirth: user.getUser().getDateOfBirth(),
+        phoneNumber: user.getUser().getPhoneNumber(),
 
-      address: user.getUser().getAddress(),
-      photo: user.getUser().getPhoto(),
+        address: user.getUser().getAddress(),
+        photo: user.getUser().getPhoto() || null,
+        createAt: user.getUser().getCreatedAt(),
+      },
+
       LandlordGovId: user.getGovId(),
       cliQAccount: user.getCliQAccount(),
       adminVerified: user.getLandlordVerified(),
       document: user.getVerificationFile(),
+      verifiedLandlord: user.getLandlordVerified(),
     };
 
     await this.cashService.set(cashKey, profileData, 36000);
@@ -85,6 +77,7 @@ export class LandlordProfileStrategy implements IProfileStrategy {
       if (dto.phoneNumber)
         user.getUser().updatePhoneNumber(new userPhoneNumber(dto.phoneNumber));
 
+      // FIXED LOGIC: Added 'else' to prevent double upload
       if (dto.photo) {
         const photo = user.getUser().getPhoto();
         if (photo) {
@@ -93,9 +86,10 @@ export class LandlordProfileStrategy implements IProfileStrategy {
             photo
           );
           user.getUser().setPhoto(photoDoc);
+        } else {
+          let photoDoc: string = await this.fileService.upload(dto.photo);
+          user.getUser().setPhoto(photoDoc);
         }
-        let photoDoc: string = await this.fileService.upload(dto.photo);
-        user.getUser().setPhoto(photoDoc);
       }
 
       if (dto.newPassword && dto.oldPassword) {

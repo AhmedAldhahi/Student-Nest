@@ -34,14 +34,19 @@ export class StudentProfileStrategy implements IProfileStrategy {
     if (!user) throw new Error("no user found !!");
 
     const profileData = {
-      email: user.getUser().getEmail(),
-      name: user.getUser().getName(),
-      role: user.getUser().getRole(),
-      dateOfBirth: user.getUser().getDateOfBirth(),
-      phoneNumber: user.getUser().getPhoneNumber(),
+      user: {
+        userId: user.getUser().getUserId(),
+        email: user.getUser().getEmail(),
+        name: user.getUser().getName(),
+        role: user.getUser().getRole(),
+        dateOfBirth: user.getUser().getDateOfBirth(),
+        phoneNumber: user.getUser().getPhoneNumber(),
 
-      address: user.getUser().getAddress(),
-      photo: user.getUser().getPhoto(),
+        address: user.getUser().getAddress(),
+        photo: user.getUser().getPhoto() || null,
+        createAt: user.getUser().getCreatedAt(),
+      },
+
       major: user.getMajor(),
       gradateYear: user.getGraduateYear(),
       studentCardId: user.getStudentCardID(),
@@ -51,23 +56,6 @@ export class StudentProfileStrategy implements IProfileStrategy {
     };
 
     await this.cashService.set(cashKey, profileData, 36000);
-
-    // return {
-    //   email: user.getUser().getEmail(),
-    //   name: user.getUser().getName(),
-    //   role: user.getUser().getRole(),
-    //   dateOfBirth: user.getUser().getDateOfBirth(),
-    //   phoneNumber: user.getUser().getPhoneNumber(),
-
-    //   address: user.getUser().getAddress(),
-    //   photo: user.getUser().getPhoto(),
-    //   major: user.getMajor(),
-    //   gradateYear: user.getGraduateYear(),
-    //   studentCardId: user.getStudentCardID(),
-    //   universityName: user.getUniversityName(),
-    //   studentGovId: user.getGovernmentId(),
-    //   verificationFile: user.getVerificationDocument(),
-    // };
 
     return profileData;
   }
@@ -94,6 +82,7 @@ export class StudentProfileStrategy implements IProfileStrategy {
       if (dto.phoneNumber)
         user.getUser().updatePhoneNumber(new userPhoneNumber(dto.phoneNumber));
 
+      // FIXED LOGIC: Added 'else' to prevent double upload
       if (dto.photo) {
         const photo = user.getUser().getPhoto();
         if (photo) {
@@ -102,9 +91,10 @@ export class StudentProfileStrategy implements IProfileStrategy {
             photo
           );
           user.getUser().setPhoto(photoDoc);
+        } else {
+          let photoDoc: string = await this.fileService.upload(dto.photo);
+          user.getUser().setPhoto(photoDoc);
         }
-        let photoDoc: string = await this.fileService.upload(dto.photo);
-        user.getUser().setPhoto(photoDoc);
       }
 
       if (dto.newPassword && dto.oldPassword) {
