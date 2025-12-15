@@ -1,4 +1,4 @@
-import { UserEntity } from "../../Domain/Entites/userEntity.entity";
+import { UserEntity } from "../../Domain/Entities/userEntity.entity";
 import { UserMapper } from "./user.mapper";
 import { UserModel } from "../Database/orm/TypeOrm/entity/User.entity";
 import { EntityManager } from "typeorm";
@@ -11,6 +11,8 @@ export class UserRepository implements IUserRepository {
     const user = await this.manager.findOne(UserModel, { where: { userId: id } });
     return user ? UserMapper.toEntity(user) : null;
   }
+
+  
 
   async findByEmail(email: string): Promise<UserEntity | null> {
     const user = await this.manager.findOne(UserModel, { where: { Email: email } });

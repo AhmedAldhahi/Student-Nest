@@ -1,6 +1,6 @@
 import {
-  makeLoginUseCase,
-  makeRegisterLandlordUseCase,
+  //makeLoginUseCase,
+ // makeRegisterLandlordUseCase,
   makeRegisterStudentUseCase,
 } from "./auth.DI";
 import { getUserProfileData, updateUserProfile } from "./profile.DI";
@@ -23,9 +23,9 @@ import {
 export function buildDependencies() {
   return {
     useCases: {
-      registerLandlordUseCase: makeRegisterLandlordUseCase(),
+    //  registerLandlordUseCase: makeRegisterLandlordUseCase(),
       registerStudentUseCase: makeRegisterStudentUseCase(),
-      LoginUseCase: makeLoginUseCase(),
+      //LoginUseCase: makeLoginUseCase(),
       verifiedOTPUseCase: makeVerifiedEmailOTP(),
       resendOTPUseCase: makeResendEmailOTP(),
       forgetPasswordUseCase: makeUpdateForgetPass(),

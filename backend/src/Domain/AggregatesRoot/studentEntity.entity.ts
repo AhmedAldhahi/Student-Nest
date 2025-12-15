@@ -1,5 +1,5 @@
 
-import { UserEntity } from "../Entites/userEntity.entity";
+import { UserEntity } from "../Entities/userEntity.entity";
 import { StudentCard } from "../Value-Object/StudentCard.vo";
 import { studentGraduateYear } from "../Value-Object/StudentGraduateYear.vo";
 import { StudentMajor } from "../Value-Object/StudentMajor.vo";

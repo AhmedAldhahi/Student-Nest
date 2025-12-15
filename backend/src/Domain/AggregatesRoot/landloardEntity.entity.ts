@@ -7,7 +7,7 @@
  * @property {GovernmentID} landlordGovId - Value object representing the landlord's government ID.
  */
 
-import { UserEntity } from "../Entites/userEntity.entity";
+import { UserEntity } from "../Entities/userEntity.entity";
 import { GovernmentID } from "../Value-Object/UserGovId.vo";
 import { VerificationDocument } from "../Value-Object/VerficationDocument.vo";
 

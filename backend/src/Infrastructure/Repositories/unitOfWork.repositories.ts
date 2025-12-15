@@ -5,16 +5,25 @@ import { AppDataSource } from "../Database/orm/TypeOrm/data-source";
 import { LandlordRepository } from "./landloard.repositories";
 import { StudentRepository } from "./student.repositories";
 import { UserRepository } from "./user.repositories";
+import { IWriteUserRepositories } from "../../Domain/Repositories/Write/WriteUserRepositories.repositories";
+import { WriteUserRepositories } from "./Write/WriteUserRepositories";
+import { IWriteStudentRepositories } from "../../Domain/Repositories/Write/WriteStudentRepositories.repositories";
+import { WriteStudentRepositories } from "./Write/WriteStudentRepositories";
 
 export class UnitOfWork implements IUnitOfWork {
+  //TESt
+
   private queryRunner: QueryRunner | null = null;
 
   public userRepo!: UserRepository;
   public landlordRepo!: LandlordRepository;
   public studentRepo!: IStudentRepository;
 
-  async startTransaction(): Promise<void> {
+  // CQRS
+  public writeUserRepo!: IWriteUserRepositories;
+  public writeStudentRepo!: IWriteStudentRepositories;
 
+  async startTransaction(): Promise<void> {
     this.queryRunner = AppDataSource.getInstance().createQueryRunner();
     await this.queryRunner.connect();
     await this.queryRunner.startTransaction();
@@ -25,6 +34,10 @@ export class UnitOfWork implements IUnitOfWork {
     this.userRepo = new UserRepository(manager);
     this.landlordRepo = new LandlordRepository(manager);
     this.studentRepo = new StudentRepository(manager);
+
+    // CQRS
+    this.writeUserRepo = new WriteUserRepositories(manager);
+    this.writeStudentRepo = new WriteStudentRepositories(manager);
   }
 
   async commitTransaction(): Promise<void> {

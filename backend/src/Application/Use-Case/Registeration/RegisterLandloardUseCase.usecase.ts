@@ -1,7 +1,7 @@
 
 import { v4 as uuidv4 } from "uuid";
 import { LandlordAggregateRoot } from "../../../Domain/AggregatesRoot/landloardEntity.entity";
-import { UserEntity } from "../../../Domain/Entites/userEntity.entity";
+import { UserEntity } from "../../../Domain/Entities/userEntity.entity";
 import { UserRole } from "../../../Domain/Enum/UserRole.enum";
 import { IUnitOfWork } from "../../../Domain/Repositories/UnitOfWorkRepositories.repositories";
 import { OTP } from "../../../Domain/Value-Object/OTP.vo";

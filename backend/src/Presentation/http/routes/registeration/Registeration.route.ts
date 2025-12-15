@@ -29,20 +29,20 @@ export const createAuthRouter = (authController: AuthController): Router => {
     authController.registerStudent
   );
 
-  router.post(
-    "/register/landlord",
-    upload.single("document"),
-    validation(RegisterLandloardSchema),
-    registerApiRateLimited,
-    authController.registerLandloard
-  );
+  // router.post(
+  //   "/register/landlord",
+  //   upload.single("document"),
+  //   validation(RegisterLandloardSchema),
+  //   registerApiRateLimited,
+  //   authController.registerLandloard
+  // );
 
-  router.post(
-    "/login",
-    validation(loginSchema),
-    loginRateLimited,
-    authController.loginUser
-  );
+  // router.post(
+  //   "/login",
+  //   validation(loginSchema),
+  //   loginRateLimited,
+  //   authController.loginUser
+  // );
 
   // 3. Return the configured router
   return router;

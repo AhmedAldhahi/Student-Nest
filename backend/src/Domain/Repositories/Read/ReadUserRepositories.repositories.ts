@@ -1,4 +1,4 @@
-import { UserEntity } from "../../Entites/userEntity.entity";
+import { UserEntity } from "../../Entities/userEntity.entity";
 
 export interface IReadUserRepositories {
     findById(id: string): Promise<UserEntity | null>;

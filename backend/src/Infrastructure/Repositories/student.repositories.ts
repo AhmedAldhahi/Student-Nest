@@ -41,7 +41,8 @@ export class StudentRepository implements IStudentRepository {
       console.error("failed to create Student !!", error);
       throw error;
     }
-  }
+  } 
+  
   async updateStudent(user: StudentAggregateRoot): Promise<void> {
     try {
       const userEntity = user.getUser();

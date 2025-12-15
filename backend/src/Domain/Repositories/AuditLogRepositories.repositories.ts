@@ -1,4 +1,4 @@
-import { AuditLogEntity } from "../Entites/auditlogEntity.entity";
+import { AuditLogEntity } from "../Entities/auditlogEntity.entity";
 
 export interface IAuditLogRepositories {
   createLog(log: AuditLogEntity): Promise<void>;
