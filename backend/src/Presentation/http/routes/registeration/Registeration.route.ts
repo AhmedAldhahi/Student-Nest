@@ -36,12 +36,12 @@ export const createAuthRouter = (authController: AuthController): Router => {
     authController.registerLandloard
   );
 
-  // router.post(
-  //   "/login",
-  //   validation(loginSchema),
-  //   loginRateLimited,
-  //   authController.loginUser
-  // );
+  router.post(
+    "/login",
+    validation(loginSchema),
+    loginRateLimited,
+    authController.loginUser
+  );
 
   // 3. Return the configured router
   return router;

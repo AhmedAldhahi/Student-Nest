@@ -7,9 +7,9 @@ import { LoginUseCase } from "../../../Application/Use-Case/Registeration/LoginU
 export class AuthController {
   constructor(
     private registerLandlordUseCase: RegisterLandloardUseCase,
-    private registerStudentUseCase: RegisterStudentUseCase
-  ) //private loginUserUseCase: LoginUseCase
-  {}
+    private registerStudentUseCase: RegisterStudentUseCase,
+    private loginUserUseCase: LoginUseCase
+  ) {}
 
   public registerLandloard = async (req: Request, res: Response) => {
     try {
@@ -106,18 +106,18 @@ export class AuthController {
     }
   };
 
-  // public loginUser = async (req: Request, res: Response): Promise<Response> => {
-  //   try {
-  //     const dto = req.body;
-  //     const result = await this.loginUserUseCase.execute(dto);
+  public loginUser = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const dto = req.body;
+      const result = await this.loginUserUseCase.execute(dto);
 
-  //     return res.status(201).json(result);
-  //   } catch (error: any) {
-  //     const status = error.statusCode || 400;
+      return res.status(201).json(result);
+    } catch (error: any) {
+      const status = error.statusCode || 400;
 
-  //     return res
-  //       .status(status)
-  //       .json({ error: error.message || "internal server error" });
-  //   }
-  // };
+      return res
+        .status(status)
+        .json({ error: error.message || "internal server error" });
+    }
+  };
 }

@@ -12,8 +12,8 @@ export const buildControllers = () => {
 
   const authController = new AuthController(
     useCases.registerLandlordUseCase,
-    useCases.registerStudentUseCase
-    //useCases.LoginUseCase
+    useCases.registerStudentUseCase,
+    useCases.LoginUseCase
   );
 
   // Uncomment and initialize when you implement these use cases

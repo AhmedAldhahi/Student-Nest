@@ -1,5 +1,6 @@
 import { CreateLandlordCommandHandler } from "../../Application/Command/Handlers/CreateLandlordCommandHandler";
 import { CreateStudentCommandHandler } from "../../Application/Command/Handlers/CreateStudentCommandHandler";
+import { LoginQueriesHandler } from "../../Application/Querie/Handlers/LoginQueriesHandlers";
 
 import { LoginUseCase } from "../../Application/Use-Case/Registeration/LoginUseCase.usecase";
 import { RegisterLandloardUseCase } from "../../Application/Use-Case/Registeration/RegisterLandloardUseCase.usecase";
@@ -48,10 +49,15 @@ export function makeRegisterStudentUseCase(): RegisterStudentUseCase {
   return new RegisterStudentUseCase(emailService, createStudentCommandHandler);
 }
 
-// export function makeLoginUseCase(): LoginUseCase {
-//   const unitOfWork = new UnitOfWork();
-//   const token = new JwtTokenService();
-//   const passwordService = new BcryptPasswordHasher();
+export function makeLoginUseCase(): LoginUseCase {
+  const token = new JwtTokenService();
+  const passwordService = new BcryptPasswordHasher();
+  const readUserRepo = new ReadUserRepositories();
 
-//   return new LoginUseCase(unitOfWork, token, passwordService);
-// }
+  const loginUserQueriesHandlers = new LoginQueriesHandler(
+    passwordService,
+    readUserRepo
+  );
+
+  return new LoginUseCase(token, loginUserQueriesHandlers);
+}
