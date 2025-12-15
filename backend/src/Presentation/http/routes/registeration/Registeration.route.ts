@@ -22,20 +22,19 @@ export const createAuthRouter = (authController: AuthController): Router => {
 
   router.post(
     "/register/student",
-   // upload.any(),
     upload.single("verificationFile"),
    validation(RegisterStudetSchema),
     registerApiRateLimited,
     authController.registerStudent
   );
 
-  // router.post(
-  //   "/register/landlord",
-  //   upload.single("document"),
-  //   validation(RegisterLandloardSchema),
-  //   registerApiRateLimited,
-  //   authController.registerLandloard
-  // );
+  router.post(
+    "/register/landlord",
+    upload.single("document"),
+    validation(RegisterLandloardSchema),
+    registerApiRateLimited,
+    authController.registerLandloard
+  );
 
   // router.post(
   //   "/login",

@@ -1,5 +1,5 @@
+import { CreateLandlordCommandHandler } from "../../Application/Command/Handlers/CreateLandlordCommandHandler";
 import { CreateStudentCommandHandler } from "../../Application/Command/Handlers/CreateStudentCommandHandler";
-
 
 import { LoginUseCase } from "../../Application/Use-Case/Registeration/LoginUseCase.usecase";
 import { RegisterLandloardUseCase } from "../../Application/Use-Case/Registeration/RegisterLandloardUseCase.usecase";
@@ -11,19 +11,25 @@ import { CloudinaryService } from "../Services/media/CloudinaryService.service";
 import { BcryptPasswordHasher } from "../Services/security/BcryptPasswordHasher.service";
 import { JwtTokenService } from "../Services/security/TokenService.service";
 
-// export function makeRegisterLandlordUseCase(): RegisterLandloardUseCase {
-//   const unitOfWork = new UnitOfWork();
-//   const passwordService = new BcryptPasswordHasher();
-//   const emailService = new MailtrapService();
-//   const fileService = new CloudinaryService();
+export function makeRegisterLandlordUseCase(): RegisterLandloardUseCase {
+  const unitOfWork = new UnitOfWork();
+  const passwordService = new BcryptPasswordHasher();
+  const emailService = new MailtrapService();
+  const cloudinaryService = new CloudinaryService();
+  const readUserRepo = new ReadUserRepositories();
 
-//   return new RegisterLandloardUseCase(
-//     unitOfWork,
-//     passwordService,
-//     emailService,
-//     fileService
-//   );
-// }
+  const createLandlordCommandHandler = new CreateLandlordCommandHandler(
+    unitOfWork,
+    passwordService,
+    cloudinaryService,
+    readUserRepo
+  );
+
+  return new RegisterLandloardUseCase(
+    emailService,
+    createLandlordCommandHandler
+  );
+}
 
 export function makeRegisterStudentUseCase(): RegisterStudentUseCase {
   const unitOfWork = new UnitOfWork();

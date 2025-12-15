@@ -1,6 +1,6 @@
 import {
+  makeRegisterLandlordUseCase,
   //makeLoginUseCase,
- // makeRegisterLandlordUseCase,
   makeRegisterStudentUseCase,
 } from "./auth.DI";
 import { getUserProfileData, updateUserProfile } from "./profile.DI";
@@ -17,13 +17,14 @@ import {
   deleteLandlordById,
   GetAllLandlords,
   updateLandlordStatus,
-  findUserByEmail,GetAllStudents
+  findUserByEmail,
+  GetAllStudents,
 } from "./admin/UserMangement";
 
 export function buildDependencies() {
   return {
     useCases: {
-    //  registerLandlordUseCase: makeRegisterLandlordUseCase(),
+      registerLandlordUseCase: makeRegisterLandlordUseCase(),
       registerStudentUseCase: makeRegisterStudentUseCase(),
       //LoginUseCase: makeLoginUseCase(),
       verifiedOTPUseCase: makeVerifiedEmailOTP(),
@@ -41,5 +42,3 @@ export function buildDependencies() {
     },
   };
 }
-
-

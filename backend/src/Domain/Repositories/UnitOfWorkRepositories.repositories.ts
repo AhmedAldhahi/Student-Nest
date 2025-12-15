@@ -3,6 +3,7 @@ import { ILandlordRepository } from "./LandlordRepositories.repositories";
 import { IStudentRepository } from "./StudentRepositories.repositories";
 import { IWriteUserRepositories } from "./Write/WriteUserRepositories.repositories";
 import { IWriteStudentRepositories } from "./Write/WriteStudentRepositories.repositories";
+import { IWriteLandlordRepositories } from "./Write/WriteLandlordRepositories.repositories";
 
 export interface IUnitOfWork {
   userRepo: IUserRepository;
@@ -14,6 +15,7 @@ export interface IUnitOfWork {
   // cqrs
   writeUserRepo: IWriteUserRepositories;
   writeStudentRepo: IWriteStudentRepositories;
+  writeLandlordRepo: IWriteLandlordRepositories;
   
 
 

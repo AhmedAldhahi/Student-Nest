@@ -31,7 +31,7 @@ export class RegisterStudentUseCase {
       };
     } catch (error: any) {
       console.error("Error during registration process: ", error);
-      throw new Error("Failed to register students ");
+      throw error;
     }
   }
 }

@@ -16,7 +16,7 @@ export class WriteStudentRepositories implements IWriteStudentRepositories {
   }
 
   public async addNewStudent(user: StudentAggregateRoot): Promise<void> {
-    const model = await StudentMapper.toModel(user);
+    const model =  StudentMapper.toModel(user);
     await this.manager.save(StudentModel, model);
   }
 

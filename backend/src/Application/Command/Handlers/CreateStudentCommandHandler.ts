@@ -70,7 +70,9 @@ export class CreateStudentCommandHandler
       // find if the user is excite
       const exciteUser = await this.readUserRepo.findByEmail(command.email);
 
-      if (exciteUser) throw new Error("user with this email already exist");
+      if (exciteUser) {
+        throw new Error("Email already taken.");
+      }
 
       await this.unitOfWork.writeUserRepo.addNewUser(user);
       await this.unitOfWork.writeStudentRepo.addNewStudent(student);
@@ -78,12 +80,13 @@ export class CreateStudentCommandHandler
       await this.unitOfWork.commitTransaction();
 
       return user;
-    } catch (err) {
+      
+    } catch (error: any) {
       await this.unitOfWork.rollbackTransaction();
-      console.log("Failed to register landlord!!", err);
-      throw err;
+      console.log("Failed to register student!!", error);
+      throw error;
     } finally {
-      await this.unitOfWork.releaseTransaction(); // Always release here
+      await this.unitOfWork.releaseTransaction();
     }
   }
 }

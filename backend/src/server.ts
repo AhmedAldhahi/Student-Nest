@@ -14,6 +14,8 @@ import { PasswordRecoveryRouter } from "./Presentation/http/routes/registeration
 import { profileRouter } from "./Presentation/http/routes/profile.routes";
 import { UserManagementController } from "./Presentation/http/controllers/admin/userMangement.controller";
 import { userManagementRouter } from "./Presentation/http/routes/admin/userMangement.routes";
+
+
 export class Server {
   public app = express();
   public port = parseInt(process.env.PORT || "4000", 10);

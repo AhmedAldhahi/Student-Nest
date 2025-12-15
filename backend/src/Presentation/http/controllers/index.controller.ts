@@ -11,8 +11,8 @@ export const buildControllers = () => {
   const { useCases } = buildDependencies();
 
   const authController = new AuthController(
-   // useCases.registerLandlordUseCase,
-    useCases.registerStudentUseCase,
+    useCases.registerLandlordUseCase,
+    useCases.registerStudentUseCase
     //useCases.LoginUseCase
   );
 
