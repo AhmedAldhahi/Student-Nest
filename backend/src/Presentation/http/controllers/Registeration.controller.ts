@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 // Use the path to your Use Case
-import { RegisterStudentUseCase } from "../../../Application/use-case/Registeration/RegisterStudentUseCase.usecase";
-import { RegisterLandloardUseCase } from "../../../Application/use-case/Registeration/RegisterLandloardUseCase.usecase";
-import { LoginUseCase } from "../../../Application/use-case/Registeration/LoginUseCase.usecase";
+import { RegisterStudentUseCase } from "../../../Application/Use-Case/Registeration/RegisterStudentUseCase.usecase";
+import { RegisterLandloardUseCase } from "../../../Application/Use-Case/Registeration/RegisterLandloardUseCase.usecase";
+import { LoginUseCase } from "../../../Application/Use-Case/Registeration/LoginUseCase.usecase";
 
 export class AuthController {
   constructor(

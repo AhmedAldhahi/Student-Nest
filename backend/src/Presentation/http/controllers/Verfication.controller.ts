@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { VerifiedOtpUseCase } from "../../../Application/use-case/Verfication/OTP/VerfiedOtpUseCase.usecase";
-import { ResendOtpUseCase } from "../../../Application/use-case/Verfication/OTP/ResendOtpUseCase.usecase";
+import { VerifiedOtpUseCase } from "../../../Application/Use-Case/Verfication/OTP/VerfiedOtpUseCase.usecase";
+import { ResendOtpUseCase } from "../../../Application/Use-Case/Verfication/OTP/ResendOtpUseCase.usecase";
 export class VerificationController {
   constructor(
     private readonly resendOtpUseCase: ResendOtpUseCase,

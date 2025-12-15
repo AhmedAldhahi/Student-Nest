@@ -1,4 +1,4 @@
-import { UserEmail } from "../../../../src/Core/value-object/UserEmail.vo";
+import { UserEmail } from "../../../../src/Domain/Value-Object/UserEmail.vo";
 
 describe("validate UserEmail value object", () => {
   describe("validate the UserEmail", () => {

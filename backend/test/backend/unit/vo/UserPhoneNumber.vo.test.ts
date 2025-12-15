@@ -1,4 +1,4 @@
-import { userPhoneNumber } from "../../../../src/Core/value-object/UserPhoneNumber.vo";
+import { userPhoneNumber } from "../../../../src/Domain/Value-Object/UserPhoneNumber.vo";
 
 describe("userPhoneNumber value object", () => {
   describe("validate create object", () => {

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { JwtTokenService } from "../../../../Infrastructure/services/security/TokenService.service";
+import { JwtTokenService } from "../../../../Infrastructure/Services/security/TokenService.service";
 
 export const isAuth = async (
   req: Request,

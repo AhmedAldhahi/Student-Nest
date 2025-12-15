@@ -1,4 +1,4 @@
-import { UserRole } from "../../../../src/Core/enum/UserRole.enum";
+import { UserRole } from "../../../../src/Domain/Enum/UserRole.enum";
 
 describe("UserRole Enum", () => {
   test("should have 'admin' role", () => {

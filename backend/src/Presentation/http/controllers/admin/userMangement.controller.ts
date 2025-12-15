@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { DeleteLandlordByIdUseCase } from "../../../../Application/use-case/admin/UserMangament/DeleteUserById.usecase";
-import { EditLandlordVerificationStatusUseCase } from "../../../../Application/use-case/admin/UserMangament/EditLandlordVerificationStatus.usecase";
-import { FindUserByEmailUseCase } from "../../../../Application/use-case/admin/UserMangament/FindUserByEmail.usecase";
-import { GetAllLandlordUseCase } from "../../../../Application/use-case/admin/UserMangament/GetAllLandlords.usecase";
-import { GetAllStudentUseCase } from "../../../../Application/use-case/admin/UserMangament/GetAllStudents.usecase";
+import { DeleteLandlordByIdUseCase } from "../../../../Application/Use-Case/admin/UserMangament/DeleteUserById.usecase";
+import { EditLandlordVerificationStatusUseCase } from "../../../../Application/Use-Case/admin/UserMangament/EditLandlordVerificationStatus.usecase";
+import { FindUserByEmailUseCase } from "../../../../Application/Use-Case/admin/UserMangament/FindUserByEmail.usecase";
+import { GetAllLandlordUseCase } from "../../../../Application/Use-Case/admin/UserMangament/GetAllLandlords.usecase";
+import { GetAllStudentUseCase } from "../../../../Application/Use-Case/admin/UserMangament/GetAllStudents.usecase";
 
 export class UserManagementController {
   constructor(

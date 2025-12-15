@@ -1,4 +1,4 @@
-import { OTP } from "../../../../src/Core/value-object/OTP.vo";
+import { OTP } from "../../../../src/Domain/Value-Object/OTP.vo";
 
 describe('OTP Value Object', () => {
   // Freezes time to ensure deterministic tests

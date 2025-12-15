@@ -1,12 +1,12 @@
-import { DeleteLandlordByIdUseCase } from "../../../Application/use-case/admin/UserMangament/DeleteUserById.usecase";
-import { EditLandlordVerificationStatusUseCase } from "../../../Application/use-case/admin/UserMangament/EditLandlordVerificationStatus.usecase";
-import { FindUserByEmailUseCase } from "../../../Application/use-case/admin/UserMangament/FindUserByEmail.usecase";
-import { GetAllLandlordUseCase } from "../../../Application/use-case/admin/UserMangament/GetAllLandlords.usecase";
-import { GetAllStudentUseCase } from "../../../Application/use-case/admin/UserMangament/GetAllStudents.usecase";
-import { RedisCashService } from "../../cashing/RadisCashe";
-import { UnitOfWork } from "../../repositories/unitOfWork.repositories";
-import { CloudinaryService } from "../../services/media/CloudinaryService.service";
-import { BcryptPasswordHasher } from "../../services/security/BcryptPasswordHasher.service";
+import { DeleteLandlordByIdUseCase } from "../../../Application/Use-Case/admin/UserMangament/DeleteUserById.usecase";
+import { EditLandlordVerificationStatusUseCase } from "../../../Application/Use-Case/admin/UserMangament/EditLandlordVerificationStatus.usecase";
+import { FindUserByEmailUseCase } from "../../../Application/Use-Case/admin/UserMangament/FindUserByEmail.usecase";
+import { GetAllLandlordUseCase } from "../../../Application/Use-Case/admin/UserMangament/GetAllLandlords.usecase";
+import { GetAllStudentUseCase } from "../../../Application/Use-Case/admin/UserMangament/GetAllStudents.usecase";
+import { RedisCashService } from "../../Cashing/RadisCashe";
+import { UnitOfWork } from "../../Repositories/unitOfWork.repositories";
+import { CloudinaryService } from "../../Services/media/CloudinaryService.service";
+import { BcryptPasswordHasher } from "../../Services/security/BcryptPasswordHasher.service";
 
 export function GetAllLandlords(): GetAllLandlordUseCase {
   const uow = new UnitOfWork();

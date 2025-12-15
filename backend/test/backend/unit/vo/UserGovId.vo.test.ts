@@ -1,4 +1,4 @@
-import { GovernmentID } from "../../../../src/Core/value-object/UserGovId.vo";
+import { GovernmentID } from "../../../../src/Domain/Value-Object/UserGovId.vo";
 
 describe("validate Government id value object", () => {
   describe("validate the Government id", () => {

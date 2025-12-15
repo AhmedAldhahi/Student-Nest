@@ -1,4 +1,4 @@
-import { UserAccountStatus } from "../../../../src/Core/enum/UserAccountStatus.enum";
+import { UserAccountStatus } from "../../../../src/Domain/Enum/UserAccountStatus.enum";
 
 describe("UserAccountStatus Enum", () => {
   test("should have 'activate' status", () => {

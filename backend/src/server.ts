@@ -6,7 +6,7 @@ import winston from "winston";
 import expressWinston from "express-winston";
 import debug from "debug";
 import cors from "cors";
-import { AppDataSource } from "./Infrastructure/database/orm/TypeOrm/data-source";
+import { AppDataSource } from "./Infrastructure/Database/orm/TypeOrm/data-source";
 import { createAuthRouter } from "./Presentation/http/routes/registeration/Registeration.route";
 import { buildControllers } from "./Presentation/http/controllers/index.controller";
 import { createVerficationRouter } from "./Presentation/http/routes/registeration/Verfication.route";
@@ -95,12 +95,12 @@ export class Server {
     this.app.use("/api/v1/auth", createAuthRouter(authController));
     this.app.use("/api/v1/me/", profileRouter(profileController));
     this.app.use("/api/v1/", createVerficationRouter(verificationController));
-    
+
     this.app.use(
       "/api/v1/admin",
       userManagementRouter(adminLandloardManagementController)
     );
-    
+
 
     this.app.use(
       "/api/v1/password-recovery",

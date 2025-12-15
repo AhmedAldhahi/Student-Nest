@@ -1,4 +1,4 @@
-import { AuditLogActionType } from "../../../../src/Core/enum/AuditLogAction.enum";
+import { AuditLogActionType } from "../../../../src/Domain/Enum/AuditLogAction.enum";
 
 describe("AuditLogActionType Enum", () => {
   test("should have 'CREATE' action", () => {

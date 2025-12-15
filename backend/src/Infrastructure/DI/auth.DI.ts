@@ -1,13 +1,11 @@
-import { UnitOfWork } from "../repositories/unitOfWork.repositories";
-
-import { MailtrapService } from "../services/email/MailtrapService.service";
-
-import { RegisterLandloardUseCase } from "../../Application/use-case/Registeration/RegisterLandloardUseCase.usecase";
-import { RegisterStudentUseCase } from "../../Application/use-case/Registeration/RegisterStudentUseCase.usecase";
-import { BcryptPasswordHasher } from "../services/security/BcryptPasswordHasher.service";
-import { CloudinaryService } from "../services/media/CloudinaryService.service";
-import { LoginUseCase } from "../../Application/use-case/Registeration/LoginUseCase.usecase";
-import { JwtTokenService } from "../services/security/TokenService.service";
+import { LoginUseCase } from "../../Application/Use-Case/Registeration/LoginUseCase.usecase";
+import { RegisterLandloardUseCase } from "../../Application/Use-Case/Registeration/RegisterLandloardUseCase.usecase";
+import { RegisterStudentUseCase } from "../../Application/Use-Case/Registeration/RegisterStudentUseCase.usecase";
+import { UnitOfWork } from "../Repositories/unitOfWork.repositories";
+import { MailtrapService } from "../Services/email/MailtrapService.service";
+import { CloudinaryService } from "../Services/media/CloudinaryService.service";
+import { BcryptPasswordHasher } from "../Services/security/BcryptPasswordHasher.service";
+import { JwtTokenService } from "../Services/security/TokenService.service";
 
 export function makeRegisterLandlordUseCase(): RegisterLandloardUseCase {
   const unitOfWork = new UnitOfWork();

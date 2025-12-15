@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { UserProfileDataUseCase } from "../../../Application/use-case/profile/GetUserProfileData.usecase";
-import { updateUserProfileDataUseCase } from "../../../Application/use-case/profile/updateUserProfileData.usecase";
+import { UserProfileDataUseCase } from "../../../Application/Use-Case/profile/GetUserProfileData.usecase";
+import { updateUserProfileDataUseCase } from "../../../Application/Use-Case/profile/updateUserProfileData.usecase";
 export class ProfileController {
   constructor(
     private userProfileDataUseCase: UserProfileDataUseCase,
