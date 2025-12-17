@@ -5,7 +5,6 @@ import { ProfileController } from "./Profile.controller";
 import { AuthController } from "./Registeration.controller";
 import { VerificationController } from "./Verfication.controller";
 
-// import { PasswordRecoverController } from "./PasswordRecovery.controller";
 
 export const buildControllers = () => {
   const { useCases } = buildDependencies();
@@ -44,7 +43,7 @@ export const buildControllers = () => {
   return {
     authController,
     verificationController,
-    passwordRecoverController,
+   passwordRecoverController,
     profileController,
     adminLandloardManagementController,
   };

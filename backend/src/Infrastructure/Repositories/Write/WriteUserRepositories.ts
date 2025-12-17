@@ -11,8 +11,9 @@ export class WriteUserRepositories implements IWriteUserRepositories {
     await this.manager.save(UserModel, model);
   }
 
-  public async updateUser(user: UserEntity): Promise<void> {
-    await this.manager.save(user);
+  public async updateUser(user: UserEntity): Promise<void> { 
+    const model = UserMapper.toOrm(user);
+    await this.manager.save(UserModel,model);
   }
 
   public async deleteUser(id: string): Promise<void> {

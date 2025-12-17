@@ -31,7 +31,7 @@ export function buildDependencies() {
       resendOTPUseCase: makeResendEmailOTP(),
       forgetPasswordUseCase: makeUpdateForgetPass(),
       resendOtpForgetPassword: makeResendForgetPassword(),
-      verfiedForgetPasswordUseCase: makeVerfiedForgetPasswordOTP(),
+       verfiedForgetPasswordUseCase: makeVerfiedForgetPasswordOTP(),
       userProfileData: getUserProfileData(),
       updateProfileUseCase: updateUserProfile(),
       getAllLandlordUseCase: GetAllLandlords(),

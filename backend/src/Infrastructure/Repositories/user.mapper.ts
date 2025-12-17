@@ -7,7 +7,6 @@ import { UserName } from "../../Domain/Value-Object/UserName.vo";
 import { userPhoneNumber } from "../../Domain/Value-Object/UserPhoneNumber.vo";
 import { UserModel } from "../Database/orm/TypeOrm/entity/User.entity";
 
-
 export class UserMapper {
   public static toOrm(user: UserEntity): UserModel {
     const userModel = new UserModel();
@@ -52,13 +51,15 @@ export class UserMapper {
     });
 
     // Map Email OTP
-    if (user.otpCode) {
-      userEntity.setOtpForEmail(new OTP(user.otpCode));
+    if (user.otpCode && user.otpExpired) {
+      userEntity.setOtpForEmail(new OTP(user.otpCode, user.otpExpired));
     }
 
     // Map Reset Password OTP
-    if (user.OtpResetPasswordCode) {
-      userEntity.setOTPForResetPassword(new OTP(user.OtpResetPasswordCode));
+    if (user.OtpResetPasswordCode && user.OtpExpiredResetPassword) {
+      userEntity.setOTPForResetPassword(
+        new OTP(user.OtpResetPasswordCode, user.OtpExpiredResetPassword)
+      );
     }
 
     // Map verified flags
