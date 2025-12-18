@@ -4,27 +4,27 @@ import { EditLandlordVerificationStatusUseCase } from "../../../../Application/U
 import { FindUserByEmailUseCase } from "../../../../Application/Use-Case/admin/UserMangament/FindUserByEmail.usecase";
 import { GetAllLandlordUseCase } from "../../../../Application/Use-Case/admin/UserMangament/GetAllLandlords.usecase";
 import { GetAllStudentUseCase } from "../../../../Application/Use-Case/admin/UserMangament/GetAllStudents.usecase";
+import { GetAllUserUseCase } from "../../../../Application/Use-Case/admin/UserMangament/GetAllUser.usecase";
+import { UserRole } from "../../../../Domain/Enum/UserRole.enum";
 
 export class UserManagementController {
   constructor(
-    private readonly GetAllLandlords: GetAllLandlordUseCase,
+    //  private readonly GetAllLandlords: GetAllLandlordUseCase,
+    private readonly GetAllUsers: GetAllUserUseCase,
     private readonly updateLanadlordsVerfidStatus: EditLandlordVerificationStatusUseCase,
     private readonly deleteLandlord: DeleteLandlordByIdUseCase,
-    private readonly findUserByEmail: FindUserByEmailUseCase,
-    private readonly GetAllStudents: GetAllStudentUseCase
+    private readonly findUserByEmail: FindUserByEmailUseCase // private readonly GetAllStudents: GetAllStudentUseCase
   ) {}
 
-  public getAllLandlords = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
+  public getAllUsers = async (req: Request, res: Response) => {
     try {
       const userId = req.user?.userId;
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.GetAllLandlords.execute();
+      const { userRole } = req.params;
+
+      const result = await this.GetAllUsers.execute(userRole as UserRole);
       return res.status(200).json(result);
     } catch (error: any) {
       return res
@@ -93,18 +93,18 @@ export class UserManagementController {
     }
   };
 
-  public getAllStudents = async (req: Request, res: Response) => {
-    try {
-      const userId = req.user?.userId;
-      if (!userId)
-        return res.status(400).json({ error: "no user id found !!" });
+  // public getAllStudents = async (req: Request, res: Response) => {
+  //   try {
+  //     const userId = req.user?.userId;
+  //     if (!userId)
+  //       return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.GetAllStudents.execute();
-      return res.status(200).json(result);
-    } catch (error: any) {
-      return res
-        .status(400)
-        .json({ error: error.message || "internal server error" });
-    }
-  };
+  //     const result = await this.GetAllStudents.execute();
+  //     return res.status(200).json(result);
+  //   } catch (error: any) {
+  //     return res
+  //       .status(400)
+  //       .json({ error: error.message || "internal server error" });
+  //   }
+  // };
 }

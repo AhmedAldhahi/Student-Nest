@@ -15,10 +15,11 @@ import {
 
 import {
   deleteLandlordById,
-  GetAllLandlords,
+  // GetAllLandlords,
   updateLandlordStatus,
   findUserByEmail,
-  GetAllStudents,
+  GetAllUsers,
+  // GetAllStudents,
 } from "./admin/UserMangement";
 
 export function buildDependencies() {
@@ -31,14 +32,15 @@ export function buildDependencies() {
       resendOTPUseCase: makeResendEmailOTP(),
       forgetPasswordUseCase: makeUpdateForgetPass(),
       resendOtpForgetPassword: makeResendForgetPassword(),
-       verfiedForgetPasswordUseCase: makeVerfiedForgetPasswordOTP(),
+      verfiedForgetPasswordUseCase: makeVerfiedForgetPasswordOTP(),
       userProfileData: getUserProfileData(),
       updateProfileUseCase: updateUserProfile(),
-      getAllLandlordUseCase: GetAllLandlords(),
+      // getAllLandlordUseCase: GetAllLandlords(),
       updateLandlordStatusUseCase: updateLandlordStatus(),
       DeleteLandlordByIdUseCase: deleteLandlordById(),
       findUserByEmailUseCase: findUserByEmail(),
-      GetAllStudentUseCase: GetAllStudents(),
+      // GetAllStudentUseCase: GetAllStudents(),
+      GetAllUsersUseCase: GetAllUsers(),
     },
   };
 }

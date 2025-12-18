@@ -1,15 +1,12 @@
-import { IUnitOfWork } from "../../../../Domain/Repositories/UnitOfWorkRepositories.repositories";
+import { GetAllLandlordQueriesHandler } from "../../../Querie/Handlers/GetAllLandlordQueriesHandler";
 
-//TODO: need to refactor for DRY principle 
+//TODO: need to refactor for DRY principle
 export class GetAllLandlordUseCase {
-  constructor(private readonly unitOfWork: IUnitOfWork) {}
+  constructor(private readonly queryHandler: GetAllLandlordQueriesHandler) {}
 
   public async execute() {
     try {
-      await this.unitOfWork.startTransaction();
-      const landlords = await this.unitOfWork.landlordRepo.findAllLandlord();
-      await this.unitOfWork.commitTransaction();
-      return landlords;
+      return await this.queryHandler.handle();
     } catch (error: any) {
       throw error;
     }

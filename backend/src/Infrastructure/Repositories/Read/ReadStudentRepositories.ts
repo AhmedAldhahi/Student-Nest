@@ -1,10 +1,69 @@
+import { StudentResponseDto } from "../../../Application/Dtos/profile/StudentResponseDto";
 import { StudentAggregateRoot } from "../../../Domain/AggregatesRoot/studentEntity.entity";
 import { IReadStudentRepositories } from "../../../Domain/Repositories/Read/ReadStudentRepositories.repositories";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { StudentModel } from "../../Database/orm/TypeOrm/entity/Student.entity";
 import { StudentMapper } from "../student.mapper";
+import { UserMapper } from "../user.mapper";
 
 export class ReadStudentRepositories implements IReadStudentRepositories {
+  public async findAllStudent(): Promise<StudentResponseDto[] | null> {
+    try {
+      const studentModels = await AppDataSource.getInstance()
+        .getRepository(StudentModel)
+        .find({
+          select: {
+            GraduationYear: true,
+            Major: true,
+            StudentCardId: true,
+            StudentGovId: true,
+            UniversityName: true,
+            verificationFiles: true,
+
+            user: {
+              userId: true,
+              Email: true,
+              Name: true,
+              PhoneNumber: true,
+              DateOfBirth: true,
+              Address: true,
+              Role: true,
+              Photo: true,
+              isActive: true,
+              emailVerfied: true,
+              createAt: true,
+              updateAt: true,
+            },
+          },
+          relations: {
+            user: true,
+          },
+        });
+
+      if (!studentModels || studentModels.length === 0) return null;
+
+      return studentModels.map((orm) => {
+        const studentEntity = StudentMapper.toEntity(orm);
+        const userResponse = UserMapper.toUserResponse(orm.user);
+
+        return {
+          user: userResponse,
+          studentCardID: studentEntity.getStudentCardID().valueOf(),
+          GraduationYear: studentEntity.getGraduateYear().valueOf(),
+          Major: studentEntity.getMajor().valueOf(),
+          universityName: studentEntity.getUniversityName().valueOf(),
+          userGovId: studentEntity.getGovernmentId().valueOf(),
+          studentValidateDocument: studentEntity
+            .getVerificationDocument()
+            .valueOf(),
+        };
+      });
+    } catch (error: any) {
+      console.error("fail to get all students", error);
+      throw error;
+    }
+  }
+
   public async findStudentById(
     userId: string
   ): Promise<StudentAggregateRoot | null> {

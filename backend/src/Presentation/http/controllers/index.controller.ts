@@ -33,11 +33,11 @@ export const buildControllers = () => {
   );
 
   const adminLandloardManagementController = new UserManagementController(
-    useCases.getAllLandlordUseCase,
+    // useCases.getAllLandlordUseCase,
+    useCases.GetAllUsersUseCase,
     useCases.updateLandlordStatusUseCase,
     useCases.DeleteLandlordByIdUseCase,
     useCases.findUserByEmailUseCase,
-    useCases.GetAllStudentUseCase
   );
 
   return {

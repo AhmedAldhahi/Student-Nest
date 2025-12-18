@@ -3,18 +3,19 @@ import { IReadLandlordRepositories } from "../../../Domain/Repositories/Read/Rea
 import { LandlordModel } from "../../Database/orm/TypeOrm/entity/Landloard.entity";
 import { LandlordMapper } from "../landloard.mapper";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
+import { LandlordResponseDTO } from "../../../Application/Dtos/profile/LandlordResponeDTO";
+import { UserMapper } from "../user.mapper";
 
-export class ReadLandlordRepositories implements IReadLandlordRepositories { 
-    
+export class ReadLandlordRepositories implements IReadLandlordRepositories {
   public async findLandlordById(
     userId: string
   ): Promise<LandlordAggregateRoot | null> {
     try {
       const landlord = await AppDataSource.getInstance()
-        .getRepository(LandlordModel) 
+        .getRepository(LandlordModel)
         .findOne({
-          where: { userId }, 
-          relations: ["user"], 
+          where: { userId },
+          relations: ["user"],
         });
 
       return landlord ? LandlordMapper.toEntity(landlord) : null;
@@ -22,5 +23,55 @@ export class ReadLandlordRepositories implements IReadLandlordRepositories {
       console.error("Error finding landlord by ID:", error);
       throw new Error("Error retrieving landlord data");
     }
-  } 
+  }
+
+  public async findAllLandlord(): Promise<LandlordResponseDTO[] | null> {
+    try {
+      const landlordModels = await AppDataSource.getInstance()
+        .getRepository(LandlordModel)
+        .find({
+          select: {
+            CliQAccount: true,
+            LandlordGovId: true,
+            Verified: true,
+            document: true,
+            user: {
+              userId: true,
+              Email: true,
+              Name: true,
+              PhoneNumber: true,
+              DateOfBirth: true,
+              Address: true,
+              Role: true,
+              Photo: true,
+              isActive: true,
+              emailVerfied: true,
+              createAt: true,
+            },
+          },
+          relations: {
+            user: true,
+          },
+        });
+
+      if (!landlordModels || landlordModels.length === 0) return [];
+
+      return landlordModels.map((orm) => {
+        const landlordEntity = LandlordMapper.toEntity(orm);
+
+        const userResponse = UserMapper.toUserResponse(orm.user);
+
+        return {
+          user: userResponse,
+          cliQAccount: landlordEntity.getCliQAccount(),
+          landlordGovId: landlordEntity.getGovId(),
+          document: landlordEntity.getVerificationFile(),
+          verifiedLandlord: landlordEntity.getLandlordVerified(),
+        };
+      });
+    } catch (err: any) {
+      console.error("fail to get all landlord", err);
+      throw err;
+    }
+  }
 }
