@@ -1,7 +1,7 @@
 import { EntityManager } from "typeorm";
 import { AuditLogEntity } from "../../Domain/Entities/auditlogEntity.entity";
 import { IAuditLogRepositories } from "../../Domain/Repositories/AuditLogRepositories.repositories";
-import { AuditLogMapper } from "./auditlog.mapper";
+import { AuditLogMapper } from "./mapper/auditlog.mapper";
 import { AuditLogModel } from "../Database/orm/TypeOrm/entity/AuditLog.entity";
 
 export class AuditLogRepositories implements IAuditLogRepositories {

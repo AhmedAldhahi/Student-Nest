@@ -1,33 +1,18 @@
-import { IUnitOfWork } from "../../../../Domain/Repositories/UnitOfWorkRepositories.repositories";
-import { IFileStorageService } from "../../../Interfaces/IFileStorage.interface";
+import { DeleteUserCommand } from "../../../Command/Commands/DeleteUserCommand";
+import { DeleteUserCommandHandler } from "../../../Command/Handlers/DeleteUserCommandHandler";
 
 export class DeleteLandlordByIdUseCase {
-  constructor(
-    private unitOfWork: IUnitOfWork,
-    private fileService: IFileStorageService
-  ) {}
+  constructor(private commandHandler: DeleteUserCommandHandler) {}
 
   public async execute(userId: string) {
     try {
-      await this.unitOfWork.startTransaction();
-      const user = await this.unitOfWork.userRepo.findById(userId);
-      if (!user) throw new Error("no user found !!");
-
-      // remove user
-      const photo = user.getPhoto(); 
-      if (photo) { 
-        await this.fileService.deleteImageFromCloudinary(photo);
-      }
-
-      await this.unitOfWork.userRepo.deleteUser(userId);
-
-      await this.unitOfWork.commitTransaction();
+      const command = new DeleteUserCommand(userId);
+      await this.commandHandler.handle(command);
 
       return {
         message: "user been deleted ",
       };
     } catch (error: any) {
-      await this.unitOfWork.rollbackTransaction();
       console.error("fail to delete user !!");
       throw error;
     }

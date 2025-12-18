@@ -1,9 +1,7 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { DeleteLandlordByIdUseCase } from "../../../../Application/Use-Case/admin/UserMangament/DeleteUserById.usecase";
 import { EditLandlordVerificationStatusUseCase } from "../../../../Application/Use-Case/admin/UserMangament/EditLandlordVerificationStatus.usecase";
 import { FindUserByEmailUseCase } from "../../../../Application/Use-Case/admin/UserMangament/FindUserByEmail.usecase";
-import { GetAllLandlordUseCase } from "../../../../Application/Use-Case/admin/UserMangament/GetAllLandlords.usecase";
-import { GetAllStudentUseCase } from "../../../../Application/Use-Case/admin/UserMangament/GetAllStudents.usecase";
 import { GetAllUserUseCase } from "../../../../Application/Use-Case/admin/UserMangament/GetAllUser.usecase";
 import { UserRole } from "../../../../Domain/Enum/UserRole.enum";
 
