@@ -15,10 +15,11 @@ export class WriteLandlordRepositories implements IWriteLandlordRepositories {
   }
 
   public async addNewLandlord(landlord: LandlordAggregateRoot): Promise<void> {
-    const model =  LandlordMapper.toOrm(landlord);
-    await this.manager.save(LandlordModel,model);
+    const model = LandlordMapper.toOrm(landlord);
+    await this.manager.save(LandlordModel, model);
   }
   public async updateLandlord(landlord: LandlordAggregateRoot): Promise<void> {
-    await this.manager.save(landlord);
+    const model = LandlordMapper.toOrm(landlord);
+    await this.manager.save(LandlordModel, model);
   }
 }

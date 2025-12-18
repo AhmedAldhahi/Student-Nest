@@ -14,13 +14,16 @@ import { ReadStudentRepositories } from "../Repositories/Read/ReadStudentReposit
 import { AdminProfileStrategy } from "../../Application/Strategy/profiles/AdminProfile.strategy";
 import { LandlordProfileStrategy } from "../../Application/Strategy/profiles/LandlordProfile.strategy";
 import { StudentProfileStrategy } from "../../Application/Strategy/profiles/StudentProfile.strategy";
+import { UpdateAdminCommandHandler } from "../../Application/Command/Handlers/UpdateAdminCommandHandler";
+import { UpdateLandlordCommandHandler } from "../../Application/Command/Handlers/UpdateLandlordCommandHandler";
+import { UpdateStudentCommandHandler } from "../../Application/Command/Handlers/UpdateStudentCommandHandler";
 
-export function getUserProfileData(): UserProfileDataUseCase { 
-  
-  // shared 
+export function getUserProfileData(): UserProfileDataUseCase {
+  // shared
   const passwordService = new BcryptPasswordHasher();
   const fileService = new CloudinaryService();
   const cashService = new RedisCashService();
+  const uow = new UnitOfWork();
 
   // Queries Repo
   const ReadUserRepo = new ReadUserRepositories();
@@ -34,12 +37,45 @@ export function getUserProfileData(): UserProfileDataUseCase {
   );
   const studentQueries = new GetStudentQueriesHandlers(ReadStudentRepo);
 
-  // strategy 
-  const userStrategy = new AdminProfileStrategy(UserQueries, cashService);
-  const landlordStrategy = new LandlordProfileStrategy(landlordQueries,cashService);
-  const studentStrategy = new StudentProfileStrategy(studentQueries,cashService);
+  // command handler
 
-  // profile context 
+  const UserCommand = new UpdateAdminCommandHandler(
+    uow,
+    ReadUserRepo,
+    fileService,
+    passwordService
+  );
+  const LandlordCommand = new UpdateLandlordCommandHandler(
+    uow,
+    ReadLandlordRepo,
+    fileService,
+    passwordService
+  );
+  const StudentCommand = new UpdateStudentCommandHandler(
+    uow,
+    ReadStudentRepo,
+    fileService,
+    passwordService
+  );
+
+  // strategy
+  const userStrategy = new AdminProfileStrategy(
+    UserQueries,
+    UserCommand,
+    cashService
+  );
+  const landlordStrategy = new LandlordProfileStrategy(
+    landlordQueries,
+    LandlordCommand,
+    cashService
+  );
+  const studentStrategy = new StudentProfileStrategy(
+    studentQueries,
+    StudentCommand,
+    cashService
+  );
+
+  // profile context
   const profileContext = new ProfileContext(
     userStrategy,
     landlordStrategy,
@@ -54,14 +90,67 @@ export function getUserProfileData(): UserProfileDataUseCase {
 }
 
 export function updateUserProfile(): updateUserProfileDataUseCase {
-  const userRepo = new UnitOfWork();
-  const passService = new BcryptPasswordHasher();
+  const passwordService = new BcryptPasswordHasher();
   const fileService = new CloudinaryService();
   const cashService = new RedisCashService();
-  return new updateUserProfileDataUseCase(
-    userRepo,
-    passService,
+  const uow = new UnitOfWork();
+
+  // Queries Repo
+  const ReadUserRepo = new ReadUserRepositories();
+  const ReadLandlordRepo = new ReadLandlordRepositories();
+  const ReadStudentRepo = new ReadStudentRepositories();
+
+  // queries handler
+  const UserQueries = new GetUserProfileQueriesHandlers(ReadUserRepo);
+  const landlordQueries = new GetLandlordProfileQueriesHandlers(
+    ReadLandlordRepo
+  );
+  const studentQueries = new GetStudentQueriesHandlers(ReadStudentRepo);
+
+  // command handler
+
+  const UserCommand = new UpdateAdminCommandHandler(
+    uow,
+    ReadUserRepo,
     fileService,
+    passwordService
+  );
+  const LandlordCommand = new UpdateLandlordCommandHandler(
+    uow,
+    ReadLandlordRepo,
+    fileService,
+    passwordService
+  );
+  const StudentCommand = new UpdateStudentCommandHandler(
+    uow,
+    ReadStudentRepo,
+    fileService,
+    passwordService
+  );
+
+  // strategy
+  const userStrategy = new AdminProfileStrategy(
+    UserQueries,
+    UserCommand,
     cashService
   );
+  const landlordStrategy = new LandlordProfileStrategy(
+    landlordQueries,
+    LandlordCommand,
+    cashService
+  );
+  const studentStrategy = new StudentProfileStrategy(
+    studentQueries,
+    StudentCommand,
+    cashService
+  );
+
+  // profile context
+  const profileContext = new ProfileContext(
+    userStrategy,
+    landlordStrategy,
+    studentStrategy
+  );
+
+  return new updateUserProfileDataUseCase(ReadUserRepo,profileContext);
 }

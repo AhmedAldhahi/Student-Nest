@@ -2,7 +2,6 @@ import { EntityManager } from "typeorm";
 import { StudentAggregateRoot } from "../../../Domain/AggregatesRoot/studentEntity.entity";
 import { IWriteStudentRepositories } from "../../../Domain/Repositories/Write/WriteStudentRepositories.repositories";
 import { WriteUserRepositories } from "./WriteUserRepositories";
-import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { StudentMapper } from "../student.mapper";
 import { StudentModel } from "../../Database/orm/TypeOrm/entity/Student.entity";
 
@@ -16,11 +15,12 @@ export class WriteStudentRepositories implements IWriteStudentRepositories {
   }
 
   public async addNewStudent(user: StudentAggregateRoot): Promise<void> {
-    const model =  StudentMapper.toModel(user);
+    const model = StudentMapper.toModel(user);
     await this.manager.save(StudentModel, model);
   }
 
   public async updateStudent(user: StudentAggregateRoot): Promise<void> {
-    await this.manager.save(user);
+    const model = StudentMapper.toModel(user);
+    await this.manager.save(StudentModel, model);
   }
 }

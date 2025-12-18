@@ -1,15 +1,7 @@
-import { UserResponseDTO } from "./UserRepositories.repositories";
+import { StudentResponseDto } from "../../Application/Dtos/profile/StudentResponseDto";
 import { StudentAggregateRoot } from "../AggregatesRoot/studentEntity.entity";
 
-export interface StudentResponseDto {
-  user: UserResponseDTO;
-  GraduationYear: number;
-  Major: string;
-  studentCardID: string;
-  userGovId: string;
-  universityName: string;
-  studentValidateDocument: string;
-}
+
 export interface IStudentRepository {
   createNewStudent(user: StudentAggregateRoot): Promise<void>;
   updateStudent(user: StudentAggregateRoot): Promise<void>;

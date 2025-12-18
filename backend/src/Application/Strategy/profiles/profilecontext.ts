@@ -32,6 +32,32 @@ export class ProfileContext {
     // 2. Execute it
     return await strategy.UserProfile(userId);
   }
+
+  public async executeUpdateStrategy(
+    role: UserRole,
+    userId: string,
+    dto: any
+  ): Promise<any> {
+    let strategy: IProfileStrategy;
+
+    // 1. Decide which strategy to use
+    switch (role) {
+      case UserRole.admin:
+        strategy = this.adminStrategy;
+        break;
+      case UserRole.landloard:
+        strategy = this.landlordStrategy;
+        break;
+      case UserRole.student:
+        strategy = this.studentStrategy;
+        break;
+      default:
+        throw new Error("Invalid User Role");
+    }
+
+    // 2. Execute it
+    return await strategy.UpdateUserProfile(userId, dto);
+  }
 }
 
 //  strategy admin, landlord, student
