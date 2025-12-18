@@ -1,4 +1,5 @@
 import { DeleteUserCommandHandler } from "../../../Application/Command/Handlers/DeleteUserCommandHandler";
+import { updateVerificationStatusCommandHandler } from "../../../Application/Command/Handlers/updateLandlordVerficationStatusCommandHandler";
 import { GetAllLandlordQueriesHandler } from "../../../Application/Querie/Handlers/GetAllLandlordQueriesHandler";
 import { GetAllStudentQueriesHandler } from "../../../Application/Querie/Handlers/GetAllStudentQueriesHandler";
 import { UserSimpleFactory } from "../../../Application/SimpleFactory/GetUsersSimpleFactory";
@@ -14,15 +15,18 @@ import { UnitOfWork } from "../../Repositories/unitOfWork.repositories";
 import { CloudinaryService } from "../../Services/media/CloudinaryService.service";
 import { BcryptPasswordHasher } from "../../Services/security/BcryptPasswordHasher.service";
 
-// export function GetAllLandlords(): GetAllLandlordUseCase {
-//   const uow = new UnitOfWork();
-//   return new GetAllLandlordUseCase(uow);
-// }
 
 export function updateLandlordStatus(): EditLandlordVerificationStatusUseCase {
   const uow = new UnitOfWork();
   const redis = new RedisCashService();
-  return new EditLandlordVerificationStatusUseCase(uow, redis);
+  const readLandlordRepo = new ReadLandlordRepositories();
+
+  const commandHandler = new updateVerificationStatusCommandHandler(
+    readLandlordRepo,
+    uow
+  );
+
+  return new EditLandlordVerificationStatusUseCase(commandHandler, redis);
 }
 
 export function deleteLandlordById(): DeleteLandlordByIdUseCase {
@@ -39,6 +43,7 @@ export function deleteLandlordById(): DeleteLandlordByIdUseCase {
   return new DeleteLandlordByIdUseCase(commandHandler);
 }
 
+
 export function findUserByEmail(): FindUserByEmailUseCase {
   const uow = new UnitOfWork();
   const passwordService = new BcryptPasswordHasher();
@@ -52,8 +57,6 @@ export function findUserByEmail(): FindUserByEmailUseCase {
     redisService
   );
 }
-
-
 
 export function GetAllUsers(): GetAllUserUseCase {
   // read repo

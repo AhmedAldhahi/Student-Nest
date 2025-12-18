@@ -1,10 +1,11 @@
-import { IUnitOfWork } from "../../../../Domain/Repositories/UnitOfWorkRepositories.repositories";
+import { EditLandlordVerificationStatus } from "../../../Command/Commands/UpdateVerficationLandlordStatusCommand";
+import { updateVerificationStatusCommandHandler } from "../../../Command/Handlers/updateLandlordVerficationStatusCommandHandler";
 import { EditLandlordVerificationStatusRequest } from "../../../Dtos/admin/EditLandlordVerificationStatusRequest.dto";
 import { ICashMemoryService } from "../../../Interfaces/ICash.interface";
 
 export class EditLandlordVerificationStatusUseCase {
   constructor(
-    private unitOfWork: IUnitOfWork,
+    private commandHandler: updateVerificationStatusCommandHandler,
     private cashService: ICashMemoryService
   ) {}
 
@@ -13,28 +14,16 @@ export class EditLandlordVerificationStatusUseCase {
     dto: EditLandlordVerificationStatusRequest
   ) {
     try {
-      await this.unitOfWork.startTransaction();
-      const user = await this.unitOfWork.landlordRepo.findLandlordById(userId);
-      if (!user) throw new Error("no user found !!");
-
-      if (!user.getVerificationFile())
-        throw new Error("user must have upload verification files");
-
       const cashKey = `profile : ${userId}`;
       await this.cashService.delete(cashKey);
 
-      if (dto.Verified === false) user.resetLandlordVerified();
-      else user.markLandlordAsVerified();
-
-      await this.unitOfWork.landlordRepo.updateLandlord(user);
-
-      await this.unitOfWork.commitTransaction();
+      const command = new EditLandlordVerificationStatus(userId, dto.Verified);
+      await this.commandHandler.handle(command);
 
       return {
         message: "landlord status updated scussfuly ",
       };
     } catch (error: any) {
-      await this.unitOfWork.rollbackTransaction();
       console.error("error while updating landlord status");
       throw error;
     }
