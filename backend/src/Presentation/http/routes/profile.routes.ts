@@ -19,17 +19,17 @@ export const profileRouter = (profileController: ProfileController): Router => {
     profileController.getProfileDetails
   );
 
-  router.patch(
-    "/profile",
-    upload.fields([
-      { name: "photo", maxCount: 1 },
-      { name: "verificationFile", maxCount: 1 },
-    ]),
-    updateProfile,
-    isAuth,
-    RBAC,
-    profileController.updateUserProfile
-  );
+  // router.patch(
+  //   "/profile",
+  //   upload.fields([
+  //     { name: "photo", maxCount: 1 },
+  //     { name: "verificationFile", maxCount: 1 },
+  //   ]),
+  //   updateProfile,
+  //   isAuth,
+  //   RBAC,
+  //   profileController.updateUserProfile
+  // );
 
   return router;
 };

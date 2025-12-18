@@ -1,13 +1,11 @@
 import { EntityManager } from "typeorm";
 import { StudentAggregateRoot } from "../../Domain/AggregatesRoot/studentEntity.entity";
-import {
-  IStudentRepository,
-  StudentResponseDto,
-} from "../../Domain/Repositories/StudentRepositories.repositories";
+import { IStudentRepository } from "../../Domain/Repositories/StudentRepositories.repositories";
 import { UserRepository } from "./user.repositories";
 import { StudentModel } from "../Database/orm/TypeOrm/entity/Student.entity";
 import { StudentMapper } from "./student.mapper";
 import { UserMapper } from "./user.mapper";
+import { StudentResponseDto } from "../../Application/Dtos/profile/StudentResponseDto";
 
 export class StudentRepository implements IStudentRepository {
   private manager: EntityManager;
@@ -41,8 +39,8 @@ export class StudentRepository implements IStudentRepository {
       console.error("failed to create Student !!", error);
       throw error;
     }
-  } 
-  
+  }
+
   async updateStudent(user: StudentAggregateRoot): Promise<void> {
     try {
       const userEntity = user.getUser();

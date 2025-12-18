@@ -11,13 +11,15 @@ import { StudentUpdateProfileRequest } from "../../Dtos/profile/StudentRequest.u
 import { ICashMemoryService } from "../../Interfaces/ICash.interface";
 import { IFileStorageService } from "../../Interfaces/IFileStorage.interface";
 import { IPasswordService } from "../../Interfaces/IPassword.interface";
+import { GetStudentQueriesHandlers } from "../../Querie/Handlers/GetStudentProfileQueriesHandler";
+import { GetUserProfileQueries } from "../../Querie/Queries/GetUserProfileQueries";
 import { IProfileStrategy } from "./IprofileStrategy.strategy";
 
 export class StudentProfileStrategy implements IProfileStrategy {
   constructor(
-    private studentRep: IStudentRepository,
-    private readonly passwordService: IPasswordService,
-    private readonly fileService: IFileStorageService,
+    private readonly QueryHandler: GetStudentQueriesHandlers,
+    // private readonly passwordService: IPasswordService,
+    // private readonly fileService: IFileStorageService,
     private readonly cashService: ICashMemoryService
   ) {}
 
@@ -30,120 +32,100 @@ export class StudentProfileStrategy implements IProfileStrategy {
       return cashData;
     }
 
-    const user = await this.studentRep.findStudentById(userId);
-    if (!user) throw new Error("no user found !!");
+    const Queries = new GetUserProfileQueries(userId);
+    const student = await this.QueryHandler.handle(Queries);
 
-    const profileData = {
-      user: {
-        userId: user.getUser().getUserId(),
-        email: user.getUser().getEmail(),
-        name: user.getUser().getName(),
-        role: user.getUser().getRole(),
-        dateOfBirth: user.getUser().getDateOfBirth(),
-        phoneNumber: user.getUser().getPhoneNumber(),
+    if (!student) throw new Error("no user found !!");
 
-        address: user.getUser().getAddress(),
-        photo: user.getUser().getPhoto() || null,
-        createdAt: user.getUser().getCreatedAt(),
-      },
+    await this.cashService.set(cashKey, student, 36000);
 
-      major: user.getMajor(),
-      gradateYear: user.getGraduateYear(),
-      studentCardId: user.getStudentCardID(),
-      universityName: user.getUniversityName(),
-      studentGovId: user.getGovernmentId(),
-      verificationFile: user.getVerificationDocument(),
-    };
-
-    await this.cashService.set(cashKey, profileData, 36000);
-
-    return profileData;
+    return student;
   }
 
-  public async UpdateUserProfile(
-    userId: string,
-    dto: StudentUpdateProfileRequest
-  ): Promise<any> {
-    try {
-      const user = await this.studentRep.findStudentById(userId);
+  // public async UpdateUserProfile(
+  //   userId: string,
+  //   dto: StudentUpdateProfileRequest
+  // ): Promise<any> {
+  //   try {
+  //     const user = await this.studentRep.findStudentById(userId);
 
-      if (!user) throw new Error("no user found !!");
+  //     if (!user) throw new Error("no user found !!");
 
-      const cashKey = `profile : ${userId}`;
-      await this.cashService.delete(cashKey);
+  //     const cashKey = `profile : ${userId}`;
+  //     await this.cashService.delete(cashKey);
 
-      if (dto.address) user.getUser().setAddress(dto.address);
+  //     if (dto.address) user.getUser().setAddress(dto.address);
 
-      if (dto.dateOfBirth)
-        user.getUser().updateDateOfBirth(new UserDateOfBirth(dto.dateOfBirth));
+  //     if (dto.dateOfBirth)
+  //       user.getUser().updateDateOfBirth(new UserDateOfBirth(dto.dateOfBirth));
 
-      if (dto.name) user.getUser().updateName(new UserName(dto.name));
+  //     if (dto.name) user.getUser().updateName(new UserName(dto.name));
 
-      if (dto.phoneNumber)
-        user.getUser().updatePhoneNumber(new userPhoneNumber(dto.phoneNumber));
+  //     if (dto.phoneNumber)
+  //       user.getUser().updatePhoneNumber(new userPhoneNumber(dto.phoneNumber));
 
-      // FIXED LOGIC: Added 'else' to prevent double upload
-      if (dto.photo) {
-        const photo = user.getUser().getPhoto();
-        if (photo) {
-          let photoDoc: string = await this.fileService.update(
-            dto.photo,
-            photo
-          );
-          user.getUser().setPhoto(photoDoc);
-        } else {
-          let photoDoc: string = await this.fileService.upload(dto.photo);
-          user.getUser().setPhoto(photoDoc);
-        }
-      }
+  //     // FIXED LOGIC: Added 'else' to prevent double upload
+  //     if (dto.photo) {
+  //       const photo = user.getUser().getPhoto();
+  //       if (photo) {
+  //         let photoDoc: string = await this.fileService.update(
+  //           dto.photo,
+  //           photo
+  //         );
+  //         user.getUser().setPhoto(photoDoc);
+  //       } else {
+  //         let photoDoc: string = await this.fileService.upload(dto.photo);
+  //         user.getUser().setPhoto(photoDoc);
+  //       }
+  //     }
 
-      if (dto.newPassword && dto.oldPassword) {
-        const validatePass = await this.passwordService.compare(
-          dto.oldPassword,
-          user.getUser().getPass()
-        );
+  //     if (dto.newPassword && dto.oldPassword) {
+  //       const validatePass = await this.passwordService.compare(
+  //         dto.oldPassword,
+  //         user.getUser().getPass()
+  //       );
 
-        if (!validatePass) throw new Error("old pass is not correct");
-        const newPass = await this.passwordService.hash(dto.newPassword);
+  //       if (!validatePass) throw new Error("old pass is not correct");
+  //       const newPass = await this.passwordService.hash(dto.newPassword);
 
-        if (
-          await this.passwordService.compare(newPass, user.getUser().getPass())
-        )
-          throw new Error("you use this password before");
-      }
+  //       if (
+  //         await this.passwordService.compare(newPass, user.getUser().getPass())
+  //       )
+  //         throw new Error("you use this password before");
+  //     }
 
-      if (dto.major) {
-        user.updateMajor(new StudentMajor(dto.major));
-      }
+  //     if (dto.major) {
+  //       user.updateMajor(new StudentMajor(dto.major));
+  //     }
 
-      if (dto.gradateYear) {
-        user.updateGraduateYear(new studentGraduateYear(dto.gradateYear));
-      }
+  //     if (dto.gradateYear) {
+  //       user.updateGraduateYear(new studentGraduateYear(dto.gradateYear));
+  //     }
 
-      if (dto.studentCardId) {
-        user.updateStudentCardID(new StudentCard(dto.studentCardId));
-      }
+  //     if (dto.studentCardId) {
+  //       user.updateStudentCardID(new StudentCard(dto.studentCardId));
+  //     }
 
-      if (dto.universityName) {
-        user.updateUniversityName(new StudentUniversity(dto.universityName));
-      }
+  //     if (dto.universityName) {
+  //       user.updateUniversityName(new StudentUniversity(dto.universityName));
+  //     }
 
-      if (dto.verificationFile) {
-        let verifiedFile: string = await this.fileService.upload(
-          dto.verificationFile
-        );
+  //     if (dto.verificationFile) {
+  //       let verifiedFile: string = await this.fileService.upload(
+  //         dto.verificationFile
+  //       );
 
-        user.updateVerificationDocument(new VerificationDocument(verifiedFile));
-      }
+  //       user.updateVerificationDocument(new VerificationDocument(verifiedFile));
+  //     }
 
-      await this.studentRep.updateStudent(user);
+  //     await this.studentRep.updateStudent(user);
 
-      return {
-        message: "student updated profile succfully ",
-      };
-    } catch (error: any) {
-      console.error("fail to update student profile", error);
-      throw error;
-    }
-  }
+  //     return {
+  //       message: "student updated profile succfully ",
+  //     };
+  //   } catch (error: any) {
+  //     console.error("fail to update student profile", error);
+  //     throw error;
+  //   }
+  // }
 }

@@ -1,13 +1,11 @@
 import { EntityManager } from "typeorm";
-import {
-  ILandlordRepository,
-  LandlordResponseDTO,
-} from "../../Domain/Repositories/LandlordRepositories.repositories";
+import { ILandlordRepository } from "../../Domain/Repositories/LandlordRepositories.repositories";
 import { LandlordModel } from "../Database/orm/TypeOrm/entity/Landloard.entity";
 import { UserRepository } from "./user.repositories";
 import { LandlordMapper } from "./landloard.mapper";
 import { UserMapper } from "./user.mapper";
 import { LandlordAggregateRoot } from "../../Domain/AggregatesRoot/landloardEntity.entity";
+import { LandlordResponseDTO } from "../../Application/Dtos/profile/LandlordResponeDTO";
 
 export class LandlordRepository implements ILandlordRepository {
   private manager: EntityManager;
@@ -28,7 +26,9 @@ export class LandlordRepository implements ILandlordRepository {
     return user ? LandlordMapper.toEntity(user) : null;
   }
 
-  public async createNewLandlord(landlord: LandlordAggregateRoot): Promise<void> {
+  public async createNewLandlord(
+    landlord: LandlordAggregateRoot
+  ): Promise<void> {
     try {
       const userEntity = await landlord.getUser();
 
@@ -92,8 +92,7 @@ export class LandlordRepository implements ILandlordRepository {
           },
         });
 
-      if (!landlordModels || landlordModels.length === 0)
-        return [];
+      if (!landlordModels || landlordModels.length === 0) return [];
 
       return landlordModels.map((orm) => {
         const landlordEntity = LandlordMapper.toEntity(orm);

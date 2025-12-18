@@ -2,6 +2,6 @@ import { userUpdateProfileRequest } from "../../Dtos/profile/adminRequest.update
 
 export interface IProfileStrategy {
     UserProfile (userId: string): Promise<any>;
-    UpdateUserProfile (userId: string,dto: userUpdateProfileRequest) : Promise<any>
+   // UpdateUserProfile (userId: string,dto: userUpdateProfileRequest) : Promise<any>
 }
 

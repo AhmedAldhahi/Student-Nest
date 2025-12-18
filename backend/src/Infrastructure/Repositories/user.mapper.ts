@@ -1,5 +1,5 @@
+import { UserResponseDTO } from "../../Application/Dtos/profile/ UserResponseDTO";
 import { UserEntity } from "../../Domain/Entities/userEntity.entity";
-import { UserResponseDTO } from "../../Domain/Repositories/UserRepositories.repositories";
 import { OTP } from "../../Domain/Value-Object/OTP.vo";
 import { UserDateOfBirth } from "../../Domain/Value-Object/UserDateOfBirth.vo";
 import { UserEmail } from "../../Domain/Value-Object/UserEmail.vo";
