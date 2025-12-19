@@ -5,6 +5,7 @@ import { LandlordMapper } from "../landloard.mapper";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { LandlordResponseDTO } from "../../../Application/Dtos/profile/LandlordResponeDTO";
 import { UserMapper } from "../user.mapper";
+import { Like } from "typeorm";
 
 export class ReadLandlordRepositories implements IReadLandlordRepositories {
   public async findLandlordById(
@@ -72,6 +73,64 @@ export class ReadLandlordRepositories implements IReadLandlordRepositories {
     } catch (err: any) {
       console.error("fail to get all landlord", err);
       throw err;
+    }
+  }
+
+  public async searchByEmail(
+    prefix: string
+  ): Promise<LandlordResponseDTO[] | null> {
+    try {
+      // Query landlords and include the related `user` entity to search by `Email`
+      const landlordsModel = await AppDataSource.getInstance()
+        .getRepository(LandlordModel)
+        .find({
+          where: {
+            user: {
+              Email: Like(`${prefix}%`), // Now we're querying the related `user` entity's `Email` field
+            },
+          },
+          select: {
+            CliQAccount: true,
+            LandlordGovId: true,
+            Verified: true,
+            document: true,
+            user: {
+              userId: true,
+              Email: true,
+              Name: true,
+              PhoneNumber: true,
+              DateOfBirth: true,
+              Address: true,
+              Role: true,
+              Photo: true,
+              isActive: true,
+              emailVerfied: true,
+              createAt: true,
+            },
+          },
+          relations: {
+            user: true, 
+          },
+        });
+
+      if (!landlordsModel || landlordsModel.length === 0) return [];
+
+      return landlordsModel.map((orm) => {
+        const landlordEntity = LandlordMapper.toEntity(orm);
+
+        const userResponse = UserMapper.toUserResponse(orm.user);
+
+        return {
+          user: userResponse,
+          cliQAccount: landlordEntity.getCliQAccount(),
+          landlordGovId: landlordEntity.getGovId(),
+          document: landlordEntity.getVerificationFile(),
+          verifiedLandlord: landlordEntity.getLandlordVerified(),
+        };
+      });
+    } catch (err: any) {
+      console.error("Failed to search landlords by email", err);
+      throw new Error("Error while searching landlords by email");
     }
   }
 }

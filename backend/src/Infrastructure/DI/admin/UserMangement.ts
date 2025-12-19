@@ -1,7 +1,10 @@
 import { DeleteUserCommandHandler } from "../../../Application/Command/Handlers/DeleteUserCommandHandler";
 import { updateVerificationStatusCommandHandler } from "../../../Application/Command/Handlers/updateLandlordVerficationStatusCommandHandler";
+import { GetAllLandlordByEmailQueriesHandler } from "../../../Application/Querie/Handlers/GetAllLandlordByEmailQueriesHandler";
 import { GetAllLandlordQueriesHandler } from "../../../Application/Querie/Handlers/GetAllLandlordQueriesHandler";
+import { GetAllStudentsByEmailQueriesHandler } from "../../../Application/Querie/Handlers/GetAllStudentByEmailQueriesHandler ";
 import { GetAllStudentQueriesHandler } from "../../../Application/Querie/Handlers/GetAllStudentQueriesHandler";
+import { GetUserEmailSimpleFactory } from "../../../Application/SimpleFactory/GetUserEmailSimpleFactory";
 import { UserSimpleFactory } from "../../../Application/SimpleFactory/GetUsersSimpleFactory";
 import { DeleteLandlordByIdUseCase } from "../../../Application/Use-Case/admin/UserMangament/DeleteUserById.usecase";
 import { EditLandlordVerificationStatusUseCase } from "../../../Application/Use-Case/admin/UserMangament/EditLandlordVerificationStatus.usecase";
@@ -14,7 +17,6 @@ import { ReadUserRepositories } from "../../Repositories/Read/ReadUserRepositori
 import { UnitOfWork } from "../../Repositories/unitOfWork.repositories";
 import { CloudinaryService } from "../../Services/media/CloudinaryService.service";
 import { BcryptPasswordHasher } from "../../Services/security/BcryptPasswordHasher.service";
-
 
 export function updateLandlordStatus(): EditLandlordVerificationStatusUseCase {
   const uow = new UnitOfWork();
@@ -43,19 +45,25 @@ export function deleteLandlordById(): DeleteLandlordByIdUseCase {
   return new DeleteLandlordByIdUseCase(commandHandler);
 }
 
-
 export function findUserByEmail(): FindUserByEmailUseCase {
-  const uow = new UnitOfWork();
-  const passwordService = new BcryptPasswordHasher();
-  const cloudUnary = new CloudinaryService();
-  const redisService = new RedisCashService();
+  // Read repo
+  const ReadLandlordsRepo = new ReadLandlordRepositories();
+  const ReadStudentsRepo = new ReadStudentRepositories();
+  const ReadUserRepo = new ReadUserRepositories();
 
-  return new FindUserByEmailUseCase(
-    uow,
-    passwordService,
-    cloudUnary,
-    redisService
+  const GetLandlordsEmailQueriesHandler =
+    new GetAllLandlordByEmailQueriesHandler(ReadLandlordsRepo);
+
+  const GetStudentEmailQueriesHandler = new GetAllStudentsByEmailQueriesHandler(
+    ReadStudentsRepo
   );
+
+  const getEmailsUsersSimpleFactors = new GetUserEmailSimpleFactory(
+    GetLandlordsEmailQueriesHandler,
+    GetStudentEmailQueriesHandler
+  );
+
+  return new FindUserByEmailUseCase(getEmailsUsersSimpleFactors, ReadUserRepo);
 }
 
 export function GetAllUsers(): GetAllUserUseCase {

@@ -1,3 +1,4 @@
+import { Like } from "typeorm";
 import { StudentResponseDto } from "../../../Application/Dtos/profile/StudentResponseDto";
 import { StudentAggregateRoot } from "../../../Domain/AggregatesRoot/studentEntity.entity";
 import { IReadStudentRepositories } from "../../../Domain/Repositories/Read/ReadStudentRepositories.repositories";
@@ -79,6 +80,71 @@ export class ReadStudentRepositories implements IReadStudentRepositories {
     } catch (error) {
       console.error("Error finding landlord by ID:", error);
       throw new Error("Error retrieving landlord data");
+    }
+  }
+
+  public async searchByEmail(
+    prefix: string
+  ): Promise<StudentResponseDto[] | null> {
+    try {
+      const studentModels = await AppDataSource.getInstance()
+        .getRepository(StudentModel)
+        .find({
+          where: {
+            user: {
+              Email: Like(`${prefix}%`),
+            },
+          },
+          select: {
+            GraduationYear: true,
+            Major: true,
+            StudentCardId: true,
+            StudentGovId: true,
+            UniversityName: true,
+            verificationFiles: true,
+
+            user: {
+              userId: true,
+              Email: true,
+              Name: true,
+              PhoneNumber: true,
+              DateOfBirth: true,
+              Address: true,
+              Role: true,
+              Photo: true,
+              isActive: true,
+              emailVerfied: true,
+              createAt: true,
+              updateAt: true,
+            },
+          },
+          relations: {
+            user: true,
+          },
+        });
+
+      if (!studentModels || studentModels.length === 0) return [];
+
+      return studentModels.map((orm) => {
+        const studentEntity = StudentMapper.toEntity(orm);
+
+        const userResponse = UserMapper.toUserResponse(orm.user);
+
+        return {
+          user: userResponse,
+          studentCardID: studentEntity.getStudentCardID().valueOf(),
+          GraduationYear: studentEntity.getGraduateYear().valueOf(),
+          Major: studentEntity.getMajor().valueOf(),
+          universityName: studentEntity.getUniversityName().valueOf(),
+          userGovId: studentEntity.getGovernmentId().valueOf(),
+          studentValidateDocument: studentEntity
+            .getVerificationDocument()
+            .valueOf(),
+        };
+      });
+    } catch (error: any) {
+      console.error("Failed to search students by email", error);
+      throw new Error("Error while searching students by email");
     }
   }
 }

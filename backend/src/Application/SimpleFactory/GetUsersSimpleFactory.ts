@@ -1,5 +1,4 @@
 import { UserRole } from "../../Domain/Enum/UserRole.enum";
-import { IReadUserRepositories } from "../../Domain/Repositories/Read/ReadUserRepositories.repositories";
 import { GetAllLandlordQueriesHandler } from "../Querie/Handlers/GetAllLandlordQueriesHandler";
 import { GetAllStudentQueriesHandler } from "../Querie/Handlers/GetAllStudentQueriesHandler";
 

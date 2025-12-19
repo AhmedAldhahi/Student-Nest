@@ -78,11 +78,15 @@ export class UserManagementController {
     try {
       const userId = req.user?.userId;
       const { email } = req.params;
+      const { userRole } = req.params;
 
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.findUserByEmail.execute(email);
+      const result = await this.findUserByEmail.execute(
+        email,
+        userRole as UserRole
+      );
       return res.status(200).json(result);
     } catch (error: any) {
       return res
@@ -90,6 +94,4 @@ export class UserManagementController {
         .json({ error: error.message || "internal server error" });
     }
   };
-
-
 }

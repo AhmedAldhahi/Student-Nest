@@ -10,15 +10,6 @@ export const userManagementRouter = (
 ): Router => {
   const router = Router();
 
-  // router.get(
-  //   "/landlords",
-  //   isAuth,
-  //   isAdmin,
-  //   userManagementRouter.getAllLandlords
-  // );
-
-  // router.get("/students", isAuth, isAdmin, userManagementRouter.getAllStudents);
-
   router.patch(
     "/landlords/verification/:landlordId",
     validation(verifiedLandlordSchema),
@@ -26,7 +17,6 @@ export const userManagementRouter = (
     isAdmin,
     userManagementRouter.updateLandlordVerifiedStatus
   );
-
 
   router.get(
     "/users/:userRole",
@@ -43,7 +33,7 @@ export const userManagementRouter = (
   );
 
   router.get(
-    "/users/search/:email",
+    "/users/search/:userRole/:email",
     isAuth,
     isAdmin,
     userManagementRouter.findUsersByEmail

@@ -1,52 +1,20 @@
-import { IUnitOfWork } from "../../../../Domain/Repositories/UnitOfWorkRepositories.repositories";
-import { ICashMemoryService } from "../../../Interfaces/ICash.interface";
-import { IFileStorageService } from "../../../Interfaces/IFileStorage.interface";
-import { IPasswordService } from "../../../Interfaces/IPassword.interface";
-import { IProfileStrategy } from "../../../Strategy/profiles/IprofileStrategy.strategy";
-import { LandlordProfileStrategy } from "../../../Strategy/profiles/LandlordProfile.strategy";
-import { StudentProfileStrategy } from "../../../Strategy/profiles/StudentProfile.strategy";
+import { UserRole } from "../../../../Domain/Enum/UserRole.enum";
+import { IReadUserRepositories } from "../../../../Domain/Repositories/Read/ReadUserRepositories.repositories";
+import { GetUserEmailSimpleFactory } from "../../../SimpleFactory/GetUserEmailSimpleFactory";
 
 export class FindUserByEmailUseCase {
-  private profileStrategy: IProfileStrategy;
   constructor(
-    private unitOfWork: IUnitOfWork,
-    private passwordService: IPasswordService,
-    private fileService: IFileStorageService,
-    private cashService: ICashMemoryService
+    private GetUsersEmailFactory: GetUserEmailSimpleFactory,
+    private readonly readUserRepo: IReadUserRepositories
   ) {}
 
-  public async execute(email: string) {
-    await this.unitOfWork.startTransaction();
+  public async execute(email: string, role: UserRole) {
+    const results = await this.GetUsersEmailFactory.getUsers(role, email);
 
-    const user = await this.unitOfWork.userRepo.findByEmail(email);
-    if (!user) throw new Error("no user found !!");
-
-    switch (user.getRole()) {
-      case "student":
-        this.profileStrategy = new StudentProfileStrategy(
-          this.unitOfWork.studentRepo,
-          this.passwordService,
-          this.fileService,
-          this.cashService
-        );
-        break;
-
-      case "landloard":
-        this.profileStrategy = new LandlordProfileStrategy(
-          this.unitOfWork.landlordRepo,
-          this.passwordService,
-          this.fileService,
-          this.cashService
-        );
-        break;
-
-      default:
-        await this.unitOfWork.rollbackTransaction();
-        throw new Error("Invalid role !!");
+    if (!results || results.length === 0) {
+      throw new Error("no user found !!");
     }
 
-    const profile = await this.profileStrategy.UserProfile(user.getUserId());
-    await this.unitOfWork.commitTransaction();
-    return profile;
+    return results;
   }
 }
