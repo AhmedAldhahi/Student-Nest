@@ -1,10 +1,10 @@
 import { LandlordAggregateRoot } from "../../../Domain/AggregatesRoot/landloardEntity.entity";
 import { IReadLandlordRepositories } from "../../../Domain/Repositories/Read/ReadLandlordRepositories.repositoreies";
 import { LandlordModel } from "../../Database/orm/TypeOrm/entity/Landloard.entity";
-import { LandlordMapper } from "../landloard.mapper";
+import { LandlordMapper } from "../mapper/landloard.mapper";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { LandlordResponseDTO } from "../../../Application/Dtos/profile/LandlordResponeDTO";
-import { UserMapper } from "../user.mapper";
+import { UserMapper } from "../mapper/user.mapper";
 import { Like } from "typeorm";
 
 export class ReadLandlordRepositories implements IReadLandlordRepositories {

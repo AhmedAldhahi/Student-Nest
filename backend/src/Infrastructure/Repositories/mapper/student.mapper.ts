@@ -1,11 +1,11 @@
-import { StudentAggregateRoot } from "../../Domain/AggregatesRoot/studentEntity.entity";
-import { StudentCard } from "../../Domain/Value-Object/StudentCard.vo";
-import { studentGraduateYear } from "../../Domain/Value-Object/StudentGraduateYear.vo";
-import { StudentMajor } from "../../Domain/Value-Object/StudentMajor.vo";
-import { StudentUniversity } from "../../Domain/Value-Object/StudentUniversity.vo";
-import { GovernmentID } from "../../Domain/Value-Object/UserGovId.vo";
-import { VerificationDocument } from "../../Domain/Value-Object/VerficationDocument.vo";
-import { StudentModel } from "../Database/orm/TypeOrm/entity/Student.entity";
+import { StudentAggregateRoot } from "../../../Domain/AggregatesRoot/studentEntity.entity";
+import { StudentCard } from "../../../Domain/Value-Object/StudentCard.vo";
+import { studentGraduateYear } from "../../../Domain/Value-Object/StudentGraduateYear.vo";
+import { StudentMajor } from "../../../Domain/Value-Object/StudentMajor.vo";
+import { StudentUniversity } from "../../../Domain/Value-Object/StudentUniversity.vo";
+import { GovernmentID } from "../../../Domain/Value-Object/UserGovId.vo";
+import { VerificationDocument } from "../../../Domain/Value-Object/VerficationDocument.vo";
+import { StudentModel } from "../../Database/orm/TypeOrm/entity/Student.entity";
 import { UserMapper } from "./user.mapper";
 
 

@@ -2,9 +2,6 @@ import { QueryRunner } from "typeorm";
 import { IStudentRepository } from "../../Domain/Repositories/StudentRepositories.repositories";
 import { IUnitOfWork } from "../../Domain/Repositories/UnitOfWorkRepositories.repositories";
 import { AppDataSource } from "../Database/orm/TypeOrm/data-source";
-import { LandlordRepository } from "./landloard.repositories";
-import { StudentRepository } from "./student.repositories";
-import { UserRepository } from "./user.repositories";
 import { IWriteUserRepositories } from "../../Domain/Repositories/Write/WriteUserRepositories.repositories";
 import { WriteUserRepositories } from "./Write/WriteUserRepositories";
 import { IWriteStudentRepositories } from "../../Domain/Repositories/Write/WriteStudentRepositories.repositories";
@@ -17,8 +14,6 @@ export class UnitOfWork implements IUnitOfWork {
 
   private queryRunner: QueryRunner | null = null;
 
-  public userRepo!: UserRepository;
-  public landlordRepo!: LandlordRepository;
   public studentRepo!: IStudentRepository;
 
   // CQRS
@@ -34,9 +29,6 @@ export class UnitOfWork implements IUnitOfWork {
     const manager = this.queryRunner.manager;
 
     // Inject the TRANSACTIONAL manager into repositories
-    this.userRepo = new UserRepository(manager);
-    this.landlordRepo = new LandlordRepository(manager);
-    this.studentRepo = new StudentRepository(manager);
 
     // CQRS
     this.writeUserRepo = new WriteUserRepositories(manager);

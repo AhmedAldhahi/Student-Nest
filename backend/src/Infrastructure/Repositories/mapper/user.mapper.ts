@@ -1,11 +1,11 @@
-import { UserResponseDTO } from "../../Application/Dtos/profile/ UserResponseDTO";
-import { UserEntity } from "../../Domain/Entities/userEntity.entity";
-import { OTP } from "../../Domain/Value-Object/OTP.vo";
-import { UserDateOfBirth } from "../../Domain/Value-Object/UserDateOfBirth.vo";
-import { UserEmail } from "../../Domain/Value-Object/UserEmail.vo";
-import { UserName } from "../../Domain/Value-Object/UserName.vo";
-import { userPhoneNumber } from "../../Domain/Value-Object/UserPhoneNumber.vo";
-import { UserModel } from "../Database/orm/TypeOrm/entity/User.entity";
+import { UserResponseDTO } from "../../../Application/Dtos/profile/ UserResponseDTO";
+import { UserEntity } from "../../../Domain/Entities/userEntity.entity";
+import { OTP } from "../../../Domain/Value-Object/OTP.vo";
+import { UserDateOfBirth } from "../../../Domain/Value-Object/UserDateOfBirth.vo";
+import { UserEmail } from "../../../Domain/Value-Object/UserEmail.vo";
+import { UserName } from "../../../Domain/Value-Object/UserName.vo";
+import { userPhoneNumber } from "../../../Domain/Value-Object/UserPhoneNumber.vo";
+import { UserModel } from "../../Database/orm/TypeOrm/entity/User.entity";
 
 export class UserMapper {
   public static toOrm(user: UserEntity): UserModel {

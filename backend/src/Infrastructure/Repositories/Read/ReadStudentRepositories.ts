@@ -4,8 +4,8 @@ import { StudentAggregateRoot } from "../../../Domain/AggregatesRoot/studentEnti
 import { IReadStudentRepositories } from "../../../Domain/Repositories/Read/ReadStudentRepositories.repositories";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { StudentModel } from "../../Database/orm/TypeOrm/entity/Student.entity";
-import { StudentMapper } from "../student.mapper";
-import { UserMapper } from "../user.mapper";
+import { StudentMapper } from "../mapper/student.mapper";
+import { UserMapper } from "../mapper/user.mapper";
 
 export class ReadStudentRepositories implements IReadStudentRepositories {
   public async findAllStudent(): Promise<StudentResponseDto[] | null> {

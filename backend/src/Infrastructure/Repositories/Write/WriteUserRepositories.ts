@@ -2,7 +2,7 @@ import { EntityManager } from "typeorm";
 import { UserEntity } from "../../../Domain/Entities/userEntity.entity";
 import { IWriteUserRepositories } from "../../../Domain/Repositories/Write/WriteUserRepositories.repositories";
 import { UserModel } from "../../Database/orm/TypeOrm/entity/User.entity";
-import { UserMapper } from "../user.mapper";
+import { UserMapper } from "../mapper/user.mapper";
 
 export class WriteUserRepositories implements IWriteUserRepositories {
   constructor(private readonly manager: EntityManager) {}

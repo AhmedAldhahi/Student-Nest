@@ -2,7 +2,7 @@ import { EntityManager } from "typeorm";
 import { StudentAggregateRoot } from "../../../Domain/AggregatesRoot/studentEntity.entity";
 import { IWriteStudentRepositories } from "../../../Domain/Repositories/Write/WriteStudentRepositories.repositories";
 import { WriteUserRepositories } from "./WriteUserRepositories";
-import { StudentMapper } from "../student.mapper";
+import { StudentMapper } from "../mapper/student.mapper";
 import { StudentModel } from "../../Database/orm/TypeOrm/entity/Student.entity";
 
 export class WriteStudentRepositories implements IWriteStudentRepositories {

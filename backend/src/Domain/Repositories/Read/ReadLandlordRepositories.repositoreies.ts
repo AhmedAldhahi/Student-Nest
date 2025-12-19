@@ -4,4 +4,5 @@ import { LandlordAggregateRoot } from "../../AggregatesRoot/landloardEntity.enti
 export interface IReadLandlordRepositories {
   findLandlordById(userId: string): Promise<LandlordAggregateRoot | null>;
   findAllLandlord(): Promise<LandlordResponseDTO[] | null>;
+  searchByEmail(prefix: string): Promise<LandlordResponseDTO[] | null>;
 }

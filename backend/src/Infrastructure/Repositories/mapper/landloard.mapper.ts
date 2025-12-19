@@ -1,7 +1,7 @@
-import { LandlordAggregateRoot } from "../../Domain/AggregatesRoot/landloardEntity.entity";
-import { GovernmentID } from "../../Domain/Value-Object/UserGovId.vo";
-import { VerificationDocument } from "../../Domain/Value-Object/VerficationDocument.vo";
-import { LandlordModel } from "../Database/orm/TypeOrm/entity/Landloard.entity";
+import { LandlordAggregateRoot } from "../../../Domain/AggregatesRoot/landloardEntity.entity";
+import { GovernmentID } from "../../../Domain/Value-Object/UserGovId.vo";
+import { VerificationDocument } from "../../../Domain/Value-Object/VerficationDocument.vo";
+import { LandlordModel } from "../../Database/orm/TypeOrm/entity/Landloard.entity";
 import { UserMapper } from "./user.mapper";
 
 export class LandlordMapper {

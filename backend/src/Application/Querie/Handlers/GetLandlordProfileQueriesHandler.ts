@@ -1,6 +1,4 @@
 import { IReadLandlordRepositories } from "../../../Domain/Repositories/Read/ReadLandlordRepositories.repositoreies";
-import { LandlordRepository } from "../../../Infrastructure/Repositories/landloard.repositories";
-import { LandlordResponseDTO } from "../../Dtos/profile/LandlordResponeDTO";
 import { IQueriesHandlers } from "../IQuerieHandlers";
 import { GetUserProfileQueries } from "../Queries/GetUserProfileQueries";
 
