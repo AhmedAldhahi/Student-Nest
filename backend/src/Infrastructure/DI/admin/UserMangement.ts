@@ -16,7 +16,6 @@ import { ReadStudentRepositories } from "../../Repositories/Read/ReadStudentRepo
 import { ReadUserRepositories } from "../../Repositories/Read/ReadUserRepositories";
 import { UnitOfWork } from "../../Repositories/unitOfWork.repositories";
 import { CloudinaryService } from "../../Services/media/CloudinaryService.service";
-import { BcryptPasswordHasher } from "../../Services/security/BcryptPasswordHasher.service";
 
 export function updateLandlordStatus(): EditLandlordVerificationStatusUseCase {
   const uow = new UnitOfWork();

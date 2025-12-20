@@ -1,33 +1,94 @@
+import { LandlordAggregateRoot } from "../AggregatesRoot/landloardEntity.entity";
+import { StudentAggregateRoot } from "../AggregatesRoot/studentEntity.entity";
+import { LeaseEndDate } from "../Value-Object/LeaseEndDate.vo";
+import { LeaseStartDate } from "../Value-Object/LeaseStartDate.vo";
+import { LeaseTerm } from "../Value-Object/LeaseTerm.vo";
+import { MonthlyRent } from "../Value-Object/MonthlyRent.vo";
+
 export interface ILeaseData {
   leaseId: number;
-
-  leaseStartData: Date;
-  leaseEndData: Date;
-  monthlyRent: number;
-  includeUtilities?: string;
   houseRule: string;
-  leaseTerm: string;
-
   isLandlordSigned: boolean;
   isStudentSigned: boolean;
   ActivationStatus: boolean;
+  includeUtilities?: string;
+  leaseStartData: LeaseStartDate;
+  leaseEndData: LeaseEndDate;
+  monthlyRent: MonthlyRent;
+  leaseTerm: LeaseTerm;
 
-  //student id  fk
-  // landlord id fk
+  student: StudentAggregateRoot;
+  landlord: LandlordAggregateRoot;
+  createAt: Date;
+
   // apartment id fk
 }
 
-export class LeaseEntity { 
+export class LeaseEntity {
   private leaseId: number;
-  private activateStatus: boolean = false;
   private isLandlordSigned: boolean;
   private isStudentSigned: boolean;
+  private houseRule: string;
+  private includeUtilities?: string;
+  private leaseStartData: LeaseStartDate;
+  private leaseEndData: LeaseEndDate;
+  private monthlyRent: MonthlyRent;
+  private leaseTerm: LeaseTerm;
+
+  private student: StudentAggregateRoot;
+  private landlord: LandlordAggregateRoot;
+  private createAt: Date;
+  private activateStatus: boolean = true;
 
   constructor(data: ILeaseData) {
     this.leaseId = data.leaseId;
     this.activateStatus = data.ActivationStatus;
     this.isLandlordSigned = data.isLandlordSigned;
+    this.houseRule = data.houseRule;
     this.isStudentSigned = data.isStudentSigned;
+    this.leaseStartData = data.leaseStartData;
+    this.leaseEndData = data.leaseEndData;
+    this.monthlyRent = data.monthlyRent;
+    this.leaseTerm = data.leaseTerm;
+    this.student = data.student;
+    this.landlord = data.landlord;
+    this.createAt = data.createAt;
+  }
+
+  public getCreateAt(): Date {
+    return this.createAt;
+  }
+
+  public updateStatus(status: boolean) {
+    this.activateStatus = status;
+  }
+
+  public getStatus(): boolean {
+    return this.activateStatus;
+  }
+
+  public ActivateStatus(): void {
+    this.activateStatus = true;
+  }
+
+  public DeactivateStatus(): void {
+    this.activateStatus = false;
+  }
+
+  public updateLeaseTerm(term: LeaseTerm): void {
+    this.leaseTerm = term;
+  }
+
+  public getLeaseTerm(): string {
+    return this.leaseTerm.getValue();
+  }
+
+  public updateMonthRent(rent: MonthlyRent): void {
+    this.monthlyRent = rent;
+  }
+
+  public getMonthlyRent(): string {
+    return this.monthlyRent.getValue();
   }
 
   public setLeaseId(id: number): void {
@@ -36,6 +97,22 @@ export class LeaseEntity {
 
   public getLeaseId(): number {
     return this.leaseId;
+  }
+
+  public updateLeaseStartDate(date: LeaseStartDate): void {
+    this.leaseStartData = date;
+  }
+
+  public getLeaseStartDate(): string {
+    return this.leaseStartData.getValue();
+  }
+
+  public updateLeaseEndDate(date: LeaseEndDate): void {
+    this.leaseEndData = date;
+  }
+
+  public getLeaseEndDate(): string {
+    return this.leaseEndData.getValue();
   }
 
   public markAsActivated(): void {
@@ -72,5 +149,29 @@ export class LeaseEntity {
 
   public getIsStudentSigned(): boolean {
     return this.isStudentSigned;
+  }
+
+  public updateHouseRule(rule: string) {
+    this.houseRule = rule;
+  }
+
+  public getHouseRule(): string {
+    return this.houseRule;
+  }
+
+  public updateIncludeUtilities(util: string) {
+    this.includeUtilities = util;
+  }
+
+  public getIncludeUtilities(): string | undefined {
+    return this.includeUtilities;
+  }
+
+  public getLandlord(): LandlordAggregateRoot {
+    return this.landlord;
+  }
+
+  public getStudent(): StudentAggregateRoot {
+    return this.student;
   }
 }

@@ -1,5 +1,13 @@
-import { Entity, Column, OneToOne, JoinColumn, PrimaryColumn } from "typeorm";
+import {
+  Entity,
+  Column,
+  OneToOne,
+  JoinColumn,
+  PrimaryColumn,
+  OneToMany,
+} from "typeorm";
 import { UserModel } from "./User.entity";
+import { LeaseModel } from "./Lease.entity";
 
 @Entity("students")
 export class StudentModel {
@@ -16,17 +24,19 @@ export class StudentModel {
 
   @Column({ type: "varchar", length: 200 })
   verificationFiles: string;
-  
+
   @PrimaryColumn()
   userId: string; // same id as user
 
-  @Column({type: "varchar", nullable: true})
+  @Column({ type: "varchar", nullable: true })
   walletAddress: string;
 
   @OneToOne(() => UserModel, { cascade: true, onDelete: "CASCADE" })
   @JoinColumn({ name: "userId" })
   user: UserModel;
+
+  @OneToMany(() => LeaseModel, (lease) => lease.student)
+  leases: LeaseModel[];
 }
 
 //TODO: add wallet address
-

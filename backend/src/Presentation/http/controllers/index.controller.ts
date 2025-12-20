@@ -1,10 +1,10 @@
 import { buildDependencies } from "../../../Infrastructure/DI/container";
+import { LeaseManagementController } from "./admin/leaseMangement.controller";
 import { UserManagementController } from "./admin/userMangement.controller";
 import { PasswordRecoverController } from "./PasswordRecovery.controller";
 import { ProfileController } from "./Profile.controller";
 import { AuthController } from "./Registeration.controller";
 import { VerificationController } from "./Verfication.controller";
-
 
 export const buildControllers = () => {
   const { useCases } = buildDependencies();
@@ -37,14 +37,19 @@ export const buildControllers = () => {
     useCases.GetAllUsersUseCase,
     useCases.updateLandlordStatusUseCase,
     useCases.DeleteLandlordByIdUseCase,
-    useCases.findUserByEmailUseCase,
+    useCases.findUserByEmailUseCase
+  );
+
+  const adminLeaseMangementController = new LeaseManagementController(
+    useCases.GetAllLeaseUseCase
   );
 
   return {
     authController,
     verificationController,
-   passwordRecoverController,
+    passwordRecoverController,
     profileController,
     adminLandloardManagementController,
+    adminLeaseMangementController
   };
 };

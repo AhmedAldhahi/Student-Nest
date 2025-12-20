@@ -14,7 +14,7 @@ import { PasswordRecoveryRouter } from "./Presentation/http/routes/registeration
 import { profileRouter } from "./Presentation/http/routes/profile.routes";
 import { UserManagementController } from "./Presentation/http/controllers/admin/userMangement.controller";
 import { userManagementRouter } from "./Presentation/http/routes/admin/userMangement.routes";
-
+import { LeaseManagementRouter } from "./Presentation/http/routes/admin/leaseMangement.router";
 
 export class Server {
   public app = express();
@@ -91,6 +91,7 @@ export class Server {
       verificationController,
       passwordRecoverController,
       profileController,
+      adminLeaseMangementController,
       adminLandloardManagementController,
     } = buildControllers();
 
@@ -100,9 +101,13 @@ export class Server {
 
     this.app.use(
       "/api/v1/admin",
-      userManagementRouter(adminLandloardManagementController)
+      LeaseManagementRouter(adminLeaseMangementController)
     );
 
+    this.app.use(
+      "/api/v1/admin",
+      userManagementRouter(adminLandloardManagementController)
+    );
 
     this.app.use(
       "/api/v1/password-recovery",
@@ -121,5 +126,3 @@ export class Server {
     });
   }
 }
-
-

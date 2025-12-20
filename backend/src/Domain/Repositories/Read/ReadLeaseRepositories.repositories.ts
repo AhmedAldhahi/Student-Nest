@@ -1,8 +1,6 @@
-import { LeaseEntity } from "../../Entities/leaseEntity.entity";
+import { ILeaseEntityDTO } from "../../../Application/Dtos/admin/LeaseDTO.dtos";
 
 export interface IReadLeaseRepositories {
-  findByName(name: string): Promise<LeaseEntity | null>;
-  findAll(): Promise<LeaseEntity[] | null>;
-} 
-
-
+  findById(id: number): Promise<ILeaseEntityDTO | null>;
+  findAll(): Promise<ILeaseEntityDTO[] | null>;
+}

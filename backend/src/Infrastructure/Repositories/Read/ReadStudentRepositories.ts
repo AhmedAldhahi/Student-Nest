@@ -41,7 +41,7 @@ export class ReadStudentRepositories implements IReadStudentRepositories {
           },
         });
 
-      if (!studentModels || studentModels.length === 0) return null;
+      if (!studentModels || studentModels.length === 0) return [];
 
       return studentModels.map((orm) => {
         const studentEntity = StudentMapper.toEntity(orm);

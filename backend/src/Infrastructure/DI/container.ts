@@ -22,6 +22,8 @@ import {
   // GetAllStudents,
 } from "./admin/UserMangement";
 
+import { getAllLease } from "./admin/UserLease";
+
 export function buildDependencies() {
   return {
     useCases: {
@@ -35,12 +37,11 @@ export function buildDependencies() {
       verfiedForgetPasswordUseCase: makeVerfiedForgetPasswordOTP(),
       userProfileData: getUserProfileData(),
       updateProfileUseCase: updateUserProfile(),
-      // getAllLandlordUseCase: GetAllLandlords(),
       updateLandlordStatusUseCase: updateLandlordStatus(),
       DeleteLandlordByIdUseCase: deleteLandlordById(),
       findUserByEmailUseCase: findUserByEmail(),
-      // GetAllStudentUseCase: GetAllStudents(),
       GetAllUsersUseCase: GetAllUsers(),
+      GetAllLeaseUseCase: getAllLease(),
     },
   };
 }
