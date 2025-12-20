@@ -1,18 +1,21 @@
 import { ILeaseEntityDTO } from "../../../Application/Dtos/admin/LeaseDTO.dtos";
-import { LeaseEntity } from "../../../Domain/Entities/leaseEntity.entity";
 import { IReadLeaseRepositories } from "../../../Domain/Repositories/Read/ReadLeaseRepositories.repositories";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { LeaseModel } from "../../Database/orm/TypeOrm/entity/Lease.entity";
-import { LandlordMapper } from "../mapper/landloard.mapper";
 import { LeaseMapper } from "../mapper/lease.mapper";
-import { StudentMapper } from "../mapper/student.mapper";
 
 export class ReadLeaseRepositories implements IReadLeaseRepositories {
   public async findById(id: number): Promise<ILeaseEntityDTO | null> {
     try {
       const lease = await AppDataSource.getInstance()
         .getRepository(LeaseModel)
-        .findOne({ where: { leaseId: id } });
+        .findOne({
+          where: { leaseId: id },
+          relations: {
+            student: { user: true },
+            landlord: { user: true },
+          },
+        });
       return lease ? LeaseMapper.toResponse(lease) : null;
     } catch (error: any) {
       console.error("Error finding lease by ID:", error);

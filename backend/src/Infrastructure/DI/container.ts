@@ -22,7 +22,7 @@ import {
   // GetAllStudents,
 } from "./admin/UserMangement";
 
-import { getAllLease } from "./admin/UserLease";
+import { getAllLease, GetLeaseById } from "./admin/UserLease";
 
 export function buildDependencies() {
   return {
@@ -42,6 +42,7 @@ export function buildDependencies() {
       findUserByEmailUseCase: findUserByEmail(),
       GetAllUsersUseCase: GetAllUsers(),
       GetAllLeaseUseCase: getAllLease(),
+      getLeaseById: GetLeaseById(),
     },
   };
 }

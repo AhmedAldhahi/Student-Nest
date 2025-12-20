@@ -41,7 +41,8 @@ export const buildControllers = () => {
   );
 
   const adminLeaseMangementController = new LeaseManagementController(
-    useCases.GetAllLeaseUseCase
+    useCases.GetAllLeaseUseCase,
+    useCases.getLeaseById
   );
 
   return {
@@ -50,6 +51,6 @@ export const buildControllers = () => {
     passwordRecoverController,
     profileController,
     adminLandloardManagementController,
-    adminLeaseMangementController
+    adminLeaseMangementController,
   };
 };

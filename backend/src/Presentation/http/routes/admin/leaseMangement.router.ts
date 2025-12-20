@@ -10,5 +10,7 @@ export const LeaseManagementRouter = (
 
   router.get("/leases", isAuth, isAdmin, leaseManagementController.getAllLease);
 
+  router.get("/lease/:id", isAuth, isAdmin, leaseManagementController.getLeaseById);
+
   return router;
 };
