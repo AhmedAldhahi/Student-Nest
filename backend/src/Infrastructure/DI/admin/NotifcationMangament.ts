@@ -1,10 +1,14 @@
 import { GetAllNotificationQueriesHandler } from "../../../Application/Querie/Handlers/GetAllNotifcationQueriesHandler";
 import { GetAllNotificationUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/GetAllNotifcation.usecase";
+import { readNotificationRepositories } from "../../Repositories/Read/ReadNotificationRepositories";
 
-// export function GetAllNotification(): GetAllNotificationUseCase {
-//   const readNoticationRepo;
-//   //const queriesHandler = new GetAllNotificationQueriesHandler();
-//   return new GetAllNotificationUseCase(queriesHandler);
-// }
+export function GetAllNotification(): GetAllNotificationUseCase {
+  const readNotificationRepo = new readNotificationRepositories();
 
-// export function updateNotificationStatus() {}
+  const queriesHandler = new GetAllNotificationQueriesHandler(
+    readNotificationRepo
+  );
+  return new GetAllNotificationUseCase(queriesHandler);
+}
+
+export function updateNotificationStatus() {}

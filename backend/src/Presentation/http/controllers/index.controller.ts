@@ -1,6 +1,7 @@
 import { buildDependencies } from "../../../Infrastructure/DI/container";
 import { LeaseManagementController } from "./admin/leaseMangement.controller";
 import { LeaseRequestManagementController } from "./admin/leaseRequestMangement.controller";
+import { NotificationController } from "./admin/Notifcation.controller";
 import { UserManagementController } from "./admin/userMangement.controller";
 import { PasswordRecoverController } from "./PasswordRecovery.controller";
 import { ProfileController } from "./Profile.controller";
@@ -52,6 +53,10 @@ export const buildControllers = () => {
       useCases.getLeaseRequestByIdUseCase
     );
 
+  const adminNotificationController = new NotificationController(
+    useCases.GetAllNotificationUseCase
+  );
+
   return {
     authController,
     verificationController,
@@ -60,5 +65,6 @@ export const buildControllers = () => {
     adminLandloardManagementController,
     adminLeaseMangementController,
     adminLeaseRequestManagementController,
+    adminNotificationController,
   };
 };

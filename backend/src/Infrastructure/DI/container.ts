@@ -54,8 +54,8 @@ export function buildDependencies() {
       getLeaseById: GetLeaseById(),
       getAllLeaseRequestUseCase: GetAllLeaseRequest(),
       getLeaseRequestByIdUseCase: GetLeaseRequestById(),
-      // GetAllNotificationUseCase: GetAllNotification(),
-      // updateNotficationUseCase: updateNotificationStatus(),
+      GetAllNotificationUseCase: GetAllNotification(),
+      updateNotficationUseCase: updateNotificationStatus(),
     },
   };
 }

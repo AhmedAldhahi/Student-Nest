@@ -1,5 +1,5 @@
-import { NotificationEntity } from "../../Entities/Notification.entity";
+import { INotificationDTO } from "../../../Application/Dtos/admin/NotificationDTO.dtos";
 
 export interface IReadNotificationRepositories {
-  GetAllNotification(): Promise<NotificationEntity | null>;
+  GetAllNotification(): Promise<INotificationDTO[] | null>;
 }

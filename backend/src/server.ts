@@ -16,6 +16,8 @@ import { UserManagementController } from "./Presentation/http/controllers/admin/
 import { userManagementRouter } from "./Presentation/http/routes/admin/userMangement.routes";
 import { LeaseManagementRouter } from "./Presentation/http/routes/admin/leaseMangement.router";
 import { LeaseRequestManagementRouter } from "./Presentation/http/routes/admin/leaseRequestMangement.router";
+import { notificationRouter } from "./Presentation/http/routes/admin/notifcationMangement.routes";
+import { NotificationController } from "./Presentation/http/controllers/admin/Notifcation.controller";
 
 export class Server {
   public app = express();
@@ -95,6 +97,7 @@ export class Server {
       adminLeaseMangementController,
       adminLandloardManagementController,
       adminLeaseRequestManagementController,
+      adminNotificationController,
     } = buildControllers();
 
     this.app.use("/api/v1/auth", createAuthRouter(authController));
@@ -109,6 +112,11 @@ export class Server {
     this.app.use(
       "/api/v1/admin",
       LeaseRequestManagementRouter(adminLeaseRequestManagementController)
+    );
+
+    this.app.use(
+      "/api/v1/admin",
+      notificationRouter(adminNotificationController)
     );
 
     this.app.use(
