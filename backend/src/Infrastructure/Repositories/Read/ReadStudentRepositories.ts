@@ -5,7 +5,6 @@ import { IReadStudentRepositories } from "../../../Domain/Repositories/Read/Read
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { StudentModel } from "../../Database/orm/TypeOrm/entity/Student.entity";
 import { StudentMapper } from "../mapper/student.mapper";
-import { UserMapper } from "../mapper/user.mapper";
 
 export class ReadStudentRepositories implements IReadStudentRepositories {
   public async findAllStudent(): Promise<StudentResponseDto[] | null> {
@@ -44,20 +43,7 @@ export class ReadStudentRepositories implements IReadStudentRepositories {
       if (!studentModels || studentModels.length === 0) return [];
 
       return studentModels.map((orm) => {
-        const studentEntity = StudentMapper.toEntity(orm);
-        const userResponse = UserMapper.toUserResponse(orm.user);
-
-        return {
-          user: userResponse,
-          studentCardID: studentEntity.getStudentCardID().valueOf(),
-          GraduationYear: studentEntity.getGraduateYear().valueOf(),
-          Major: studentEntity.getMajor().valueOf(),
-          universityName: studentEntity.getUniversityName().valueOf(),
-          userGovId: studentEntity.getGovernmentId().valueOf(),
-          studentValidateDocument: studentEntity
-            .getVerificationDocument()
-            .valueOf(),
-        };
+        return StudentMapper.toResponse(orm);
       });
     } catch (error: any) {
       console.error("fail to get all students", error);
@@ -126,21 +112,7 @@ export class ReadStudentRepositories implements IReadStudentRepositories {
       if (!studentModels || studentModels.length === 0) return [];
 
       return studentModels.map((orm) => {
-        const studentEntity = StudentMapper.toEntity(orm);
-
-        const userResponse = UserMapper.toUserResponse(orm.user);
-
-        return {
-          user: userResponse,
-          studentCardID: studentEntity.getStudentCardID().valueOf(),
-          GraduationYear: studentEntity.getGraduateYear().valueOf(),
-          Major: studentEntity.getMajor().valueOf(),
-          universityName: studentEntity.getUniversityName().valueOf(),
-          userGovId: studentEntity.getGovernmentId().valueOf(),
-          studentValidateDocument: studentEntity
-            .getVerificationDocument()
-            .valueOf(),
-        };
+        return StudentMapper.toResponse(orm);
       });
     } catch (error: any) {
       console.error("Failed to search students by email", error);

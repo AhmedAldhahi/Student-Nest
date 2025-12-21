@@ -15,11 +15,15 @@ export class RegisterLandloardUseCase {
     const user = await this.commandHandler.handle(dto);
 
     try {
+      const email = user.getEmail();
+      const otp = user.getOtpForEmail();
+
+      if (!email || !otp) {
+        throw new Error("email or otp is missed !!");
+      }
+
       try {
-        await this.emailService.sendRegistrationEmail(
-          user.getEmail(),
-          user.getOtpForEmail()!
-        );
+        await this.emailService.sendRegistrationEmail(email, otp);
       } catch (emailErr) {
         console.log("email service failed!!", emailErr);
       }

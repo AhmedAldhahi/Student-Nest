@@ -13,9 +13,12 @@ export class ResendOtpForgetPasswordUseCase {
     try {
       const value = await this.commandHandler.handle(dto);
       const { user, otpvalue } = value;
+      const email = user.getEmail();
+
+      if (!email) throw new Error("email  is missed !!");
 
       // Send OTP email after saving to DB
-      await this.emailService.sendPasswordResetEmail(user.getEmail(), otpvalue);
+      await this.emailService.sendPasswordResetEmail(email, otpvalue);
 
       return {
         message: "OTP has been resent successfully. Check your email.",

@@ -58,17 +58,7 @@ export class ReadLandlordRepositories implements IReadLandlordRepositories {
       if (!landlordModels || landlordModels.length === 0) return [];
 
       return landlordModels.map((orm) => {
-        const landlordEntity = LandlordMapper.toEntity(orm);
-
-        const userResponse = UserMapper.toUserResponse(orm.user);
-
-        return {
-          user: userResponse,
-          cliQAccount: landlordEntity.getCliQAccount(),
-          landlordGovId: landlordEntity.getGovId(),
-          document: landlordEntity.getVerificationFile(),
-          verifiedLandlord: landlordEntity.getLandlordVerified(),
-        };
+        return LandlordMapper.toResponse(orm);
       });
     } catch (err: any) {
       console.error("fail to get all landlord", err);
@@ -109,24 +99,14 @@ export class ReadLandlordRepositories implements IReadLandlordRepositories {
             },
           },
           relations: {
-            user: true, 
+            user: true,
           },
         });
 
       if (!landlordsModel || landlordsModel.length === 0) return [];
 
       return landlordsModel.map((orm) => {
-        const landlordEntity = LandlordMapper.toEntity(orm);
-
-        const userResponse = UserMapper.toUserResponse(orm.user);
-
-        return {
-          user: userResponse,
-          cliQAccount: landlordEntity.getCliQAccount(),
-          landlordGovId: landlordEntity.getGovId(),
-          document: landlordEntity.getVerificationFile(),
-          verifiedLandlord: landlordEntity.getLandlordVerified(),
-        };
+        return LandlordMapper.toResponse(orm);
       });
     } catch (err: any) {
       console.error("Failed to search landlords by email", err);

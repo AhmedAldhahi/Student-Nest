@@ -15,11 +15,15 @@ export class RegisterStudentUseCase {
     try {
       const user = await this.commandHandler.handle(dto);
 
+      const email = user.getEmail();
+      const otp = user.getOtpForEmail();
+
+      if (!email || !otp) {
+        throw new Error("email or otp is missed !!");
+      }
+
       try {
-        await this.emailService.sendRegistrationEmail(
-          user.getEmail(),
-          user.getOtpForEmail()!
-        );
+        await this.emailService.sendRegistrationEmail(email, otp);
       } catch (emailErr) {
         console.log("email service failed!!", emailErr);
         // Email error should NOT rollback DB transaction

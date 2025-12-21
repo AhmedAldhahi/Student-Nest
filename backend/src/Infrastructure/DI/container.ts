@@ -28,6 +28,11 @@ import {
   GetLeaseRequestById,
 } from "./admin/LeaseRequestMangament";
 
+import {
+  GetAllNotification,
+  updateNotificationStatus,
+} from "./admin/NotifcationMangament";
+
 export function buildDependencies() {
   return {
     useCases: {
@@ -49,6 +54,8 @@ export function buildDependencies() {
       getLeaseById: GetLeaseById(),
       getAllLeaseRequestUseCase: GetAllLeaseRequest(),
       getLeaseRequestByIdUseCase: GetLeaseRequestById(),
+      // GetAllNotificationUseCase: GetAllNotification(),
+      // updateNotficationUseCase: updateNotificationStatus(),
     },
   };
 }

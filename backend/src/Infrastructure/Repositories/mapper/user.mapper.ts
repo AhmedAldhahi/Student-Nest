@@ -9,14 +9,16 @@ import { UserModel } from "../../Database/orm/TypeOrm/entity/User.entity";
 
 export class UserMapper {
   public static toOrm(user: UserEntity): UserModel {
+    const dateValidation = this.toModelValidation(user);
     const userModel = new UserModel();
+
     userModel.userId = user.getUserId();
-    userModel.Name = user.getName();
-    userModel.DateOfBirth = user.getDateOfBirth();
-    userModel.Email = user.getEmail();
-    userModel.Role = user.getRole();
-    userModel.Password = user.getPass();
-    userModel.PhoneNumber = user.getPhoneNumber();
+    userModel.Name = dateValidation.name;
+    userModel.DateOfBirth = dateValidation.DateOfBirth;
+    userModel.Email = dateValidation.email;
+    userModel.Role = dateValidation.role;
+    userModel.Password = dateValidation.password;
+    userModel.PhoneNumber = dateValidation.phoneNumber;
 
     // OTP Email
     userModel.otpCode = user.getOtpForEmail() ?? null;
@@ -34,6 +36,26 @@ export class UserMapper {
     userModel.Photo = user.getPhoto();
 
     return userModel;
+  }
+
+  private static toModelValidation(user: UserEntity) {
+    const name = user.getName();
+    const DateOfBirth = user.getDateOfBirth();
+    const email = user.getEmail();
+    const role = user.getRole();
+    const password = user.getPass();
+    const phoneNumber = user.getPhoneNumber();
+
+    if (!name) throw new Error("Cannot save user, name is require !!");
+    if (!DateOfBirth)
+      throw new Error("Cannot save user, date of birth is require !!");
+    if (!email) throw new Error("Cannot save user, email is require !!");
+    if (!role) throw new Error("Cannot save user, role is require !!");
+    if (!password) throw new Error("Cannot save user, password is require !!");
+    if (!phoneNumber)
+      throw new Error("Cannot save user, phone number is require !!");
+
+    return { name, DateOfBirth, email, role, password, phoneNumber };
   }
 
   public static toEntity(user: UserModel): UserEntity {
@@ -77,11 +99,11 @@ export class UserMapper {
   public static toUserResponse(user: UserModel): UserResponseDTO {
     return {
       userId: user.userId,
-      name: new UserName(user.Name).getValue(),
-      dateOfBirth: new UserDateOfBirth(user.DateOfBirth).getValue(),
-      email: new UserEmail(user.Email).getValue(),
+      name: user.Name,
+      dateOfBirth: user.DateOfBirth,
+      email: user.Email,
       role: user.Role,
-      phoneNumber: new userPhoneNumber(user.PhoneNumber).getValue(),
+      phoneNumber: user.PhoneNumber,
       address: user.Address,
       photo: user.Photo,
       createdAt: user.createAt,

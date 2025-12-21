@@ -1,3 +1,4 @@
+import { StudentResponseDto } from "../../../Application/Dtos/profile/StudentResponseDto";
 import { StudentAggregateRoot } from "../../../Domain/AggregatesRoot/studentEntity.entity";
 import { StudentCard } from "../../../Domain/Value-Object/StudentCard.vo";
 import { studentGraduateYear } from "../../../Domain/Value-Object/StudentGraduateYear.vo";
@@ -7,7 +8,6 @@ import { GovernmentID } from "../../../Domain/Value-Object/UserGovId.vo";
 import { VerificationDocument } from "../../../Domain/Value-Object/VerficationDocument.vo";
 import { StudentModel } from "../../Database/orm/TypeOrm/entity/Student.entity";
 import { UserMapper } from "./user.mapper";
-
 
 export class StudentMapper {
   public static toEntity(stdModel: StudentModel): StudentAggregateRoot {
@@ -25,18 +25,58 @@ export class StudentMapper {
     });
   }
 
+  public static toResponse(stdModel: StudentModel): StudentResponseDto {
+    return {
+      user: UserMapper.toUserResponse(stdModel.user),
+      GraduationYear: stdModel.GraduationYear,
+      Major: stdModel.Major,
+      studentCardID: stdModel.StudentCardId,
+      userGovId: stdModel.StudentGovId,
+      universityName: stdModel.UniversityName,
+      studentValidateDocument: stdModel.verificationFiles,
+    };
+  }
+
   public static toModel(stdEntity: StudentAggregateRoot): StudentModel {
+    const validationData = this.toModelValidation(stdEntity);
     const userModel = new StudentModel();
 
     userModel.user = UserMapper.toOrm(stdEntity.getUser());
     userModel.userId = stdEntity.getUserId();
-    userModel.StudentCardId = stdEntity.getStudentCardID();
-    userModel.StudentGovId = stdEntity.getGovernmentId();
-    userModel.UniversityName = stdEntity.getUniversityName();
-    userModel.GraduationYear = stdEntity.getGraduateYear();
-    userModel.Major = stdEntity.getMajor();
-    userModel.verificationFiles = stdEntity.getVerificationDocument();
+    userModel.StudentCardId = validationData.stdCardId;
+    userModel.StudentGovId = validationData.stdGovId;
+    userModel.UniversityName = validationData.stdUnv;
+    userModel.GraduationYear = validationData.stdGrdYear;
+    userModel.Major = validationData.stdMajor;
+    userModel.verificationFiles = validationData.stdFile;
 
     return userModel;
+  }
+
+  private static toModelValidation(stdEntity: StudentAggregateRoot) {
+    const stdCardId = stdEntity.getStudentCardID();
+    const stdGovId = stdEntity.getGovernmentId();
+    const stdUnv = stdEntity.getUniversityName();
+    const stdGrdYear = stdEntity.getGraduateYear();
+    const stdMajor = stdEntity.getMajor();
+    const stdFile = stdEntity.getVerificationDocument();
+
+    if (!stdCardId)
+      throw new Error("Cannot save student, card Id is require !!");
+
+    if (!stdGovId)
+      throw new Error("Cannot save student, Government id is require !!");
+
+    if (!stdUnv)
+      throw new Error("Cannot save student, university name is require !!");
+
+    if (!stdGrdYear)
+      throw new Error("Cannot save student, graduate year is require !!");
+    if (!stdMajor) throw new Error("Cannot save student,major is require !!");
+
+    if (!stdFile)
+      throw new Error("Cannot save student, verification file is require !!");
+
+    return { stdCardId, stdGovId, stdUnv, stdGrdYear, stdMajor, stdFile };
   }
 }

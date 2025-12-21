@@ -48,7 +48,6 @@ export function findUserByEmail(): FindUserByEmailUseCase {
   // Read repo
   const ReadLandlordsRepo = new ReadLandlordRepositories();
   const ReadStudentsRepo = new ReadStudentRepositories();
-  const ReadUserRepo = new ReadUserRepositories();
 
   const GetLandlordsEmailQueriesHandler =
     new GetAllLandlordByEmailQueriesHandler(ReadLandlordsRepo);
@@ -62,7 +61,7 @@ export function findUserByEmail(): FindUserByEmailUseCase {
     GetStudentEmailQueriesHandler
   );
 
-  return new FindUserByEmailUseCase(getEmailsUsersSimpleFactors, ReadUserRepo);
+  return new FindUserByEmailUseCase(getEmailsUsersSimpleFactors);
 }
 
 export function GetAllUsers(): GetAllUserUseCase {

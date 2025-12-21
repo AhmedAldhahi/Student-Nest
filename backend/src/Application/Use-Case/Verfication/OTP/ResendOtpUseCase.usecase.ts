@@ -13,9 +13,12 @@ export class ResendOtpUseCase {
     try {
       const command = await this.commandHandler.handle(dto);
       const { user, otpValue } = command;
+      const email = user.getEmail();
+
+      if (!email) throw new Error("email is missed !!");
 
       try {
-        await this.emailService.resendOtpEmail(user.getEmail(), otpValue);
+        await this.emailService.resendOtpEmail(email, otpValue);
 
         return {
           message: "OTP has been resent successfully. Check your email.",
