@@ -8,7 +8,6 @@
  */
 export class GovernmentID {
   /** The validated government ID value. */
-  private readonly value: string;
 
   /**
    * Creates a new GovernmentID value object and validates it.
@@ -16,9 +15,19 @@ export class GovernmentID {
    * @param {string} id - The government ID string.
    * @throws {Error} Throws if the ID is not exactly 10 digits or contains non-numeric characters.
    */
-  constructor(id: string) {
-    this.validate(id);
-    this.value = id;
+  constructor(private value?: string | undefined) {
+    if (!this.value) {
+      this.value = undefined;
+    }
+  }
+
+  public static create(value: string): GovernmentID {
+    if (!value || value.trim().length === 0)
+      throw new Error("the government id is require");
+
+    this.validate(value);
+
+    return new GovernmentID(value);
   }
 
   /**
@@ -28,7 +37,7 @@ export class GovernmentID {
    * @param {string} id - The government ID to validate.
    * @throws {Error} If the ID is invalid.
    */
-  private validate(id: string): void {
+  private static validate(id: string): void {
     id = id.trim();
 
     // Check for negative numbers first
@@ -53,7 +62,9 @@ export class GovernmentID {
 
     // Check for numeric characters only
     if (!/^\d+$/.test(id)) {
-      throw new Error("User Government ID number must contain only numeric digits.");
+      throw new Error(
+        "User Government ID number must contain only numeric digits."
+      );
     }
   }
 
@@ -62,7 +73,7 @@ export class GovernmentID {
    *
    * @returns {string} The government ID.
    */
-  public getValue(): string {
-    return this.value;
+  public getValue(): string | undefined {
+    return this.value ?? undefined;
   }
 }

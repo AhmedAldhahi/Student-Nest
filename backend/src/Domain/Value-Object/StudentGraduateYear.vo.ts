@@ -11,9 +11,17 @@ import { currentYear } from "../../Shared/constants/validationZod.constant";
  */
 export class studentGraduateYear {
   /** The validated graduation year. */
-  constructor(private value: number) { 
+  constructor(private value?: number | undefined) {
+    if (!value) {
+      this.value = undefined;
+    }
+  }
+
+  public static create(value: number): studentGraduateYear {
     if (!value) throw new Error("student Graduated year is required");
     if (value < currentYear) throw new Error("invalid graduate year !!");
+
+    return new studentGraduateYear(value);
   }
 
   /**
@@ -21,7 +29,7 @@ export class studentGraduateYear {
    *
    * @returns {number} The student's graduation year.
    */
-  public getValue(): number {
-    return this.value;
+  public getValue(): number | undefined {
+    return this.value ?? undefined;
   }
 }

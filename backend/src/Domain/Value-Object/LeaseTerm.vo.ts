@@ -6,20 +6,27 @@ export class LeaseTerm {
   private difMonth: number;
   private difYear: number;
 
-  constructor(startDate: LeaseStartDate, endDate: LeaseEndDate) {
+  constructor(private value?: string | undefined) {
+    if (!this.value) this.value = undefined;
+  }
+
+  public static create(
+    startDate: LeaseStartDate,
+    endDate: LeaseEndDate
+  ): LeaseTerm {
     if (!startDate || !endDate) {
       throw new Error("Start and end date for lease are required.");
-    } 
+    }
 
     // Initialize date objects
     const start = new Date(
       startDate.getYear(),
-      startDate.getMonth(),
+      startDate.getMonth() - 1,
       startDate.getDays()
     );
     const end = new Date(
       endDate.getYear(),
-      endDate.getMonth(),
+      endDate.getMonth() - 1,
       endDate.getDays()
     );
 
@@ -45,9 +52,11 @@ export class LeaseTerm {
       months += 12;
     }
 
-    this.difYear = years;
-    this.difMonth = months;
-    this.difDays = days;
+    const calculatedString = `Day: ${days}, Month: ${
+      months + 1
+    }, Year: ${years}`;
+
+    return new LeaseTerm(calculatedString);
   }
 
   public getValue(): string {

@@ -1,13 +1,21 @@
 export class RentTerm {
-  constructor(private readonly value: string) {
+  constructor(private value?: string | undefined) {
+    if (!value) this.value = undefined;
+  }
+
+  public static create(value: string): RentTerm {
+    if (!value) throw new Error("rent term is require !!");
+
     this.validate(value);
+
+    return new RentTerm(value);
   }
 
-  public getValue(): string {
-    return this.value;
+  public getValue(): string | undefined {
+    return this.value ?? undefined;
   }
 
-  private validate(term: string): void {
+  private static validate(term: string): void {
     // 1. Format Check: DD,MM,YY (comma separated as per your comment example)
     // or DD-MM-YY? I will support both separators just in case.
     const regex = /^(\d{2})[-/.,](\d{2})[-/.,](\d{2})$/;

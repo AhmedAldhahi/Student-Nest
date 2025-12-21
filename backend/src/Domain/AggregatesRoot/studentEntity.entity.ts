@@ -1,4 +1,3 @@
-
 import { UserEntity } from "../Entities/userEntity.entity";
 import { StudentCard } from "../Value-Object/StudentCard.vo";
 import { studentGraduateYear } from "../Value-Object/StudentGraduateYear.vo";
@@ -54,30 +53,30 @@ export class StudentAggregateRoot {
     return this.walletAddress;
   }
 
-  public getStudentCardID(): string {
-    return this.studentCardID.getValue();
+  public getStudentCardID(): string | undefined {
+    return this.studentCardID.getValue() ?? undefined;
   }
 
   public updateUniversityName(newUniversity: StudentUniversity): void {
     this.universityName = newUniversity;
   }
 
-  public getUniversityName(): string {
-    return this.universityName.getValue();
+  public getUniversityName(): string | undefined {
+    return this.universityName.getValue() ?? undefined;
   }
 
   public updateMajor(major: StudentMajor): void {
     this.major = major;
   }
 
-  public getMajor(): string {
-    return this.major.getValue();
+  public getMajor(): string | undefined {
+    return this.major.getValue() ?? undefined;
   }
 
   public updateGraduateYear(stdGraduateYear: studentGraduateYear) {
     if (
-      Number.parseInt(this.user.getDateOfBirth()) >=
-      this.graduateYear.getValue()
+      Number.parseInt(this.user.getDateOfBirth()!) >=
+      this.graduateYear.getValue()!
     )
       throw new Error(
         "invalid date, student can not graduate before he born !!"
@@ -85,20 +84,20 @@ export class StudentAggregateRoot {
     this.graduateYear = stdGraduateYear;
   }
 
-  public getGraduateYear(): number {
-    return this.graduateYear.getValue();
+  public getGraduateYear(): number | undefined {
+    return this.graduateYear.getValue() ?? undefined;
   }
 
   public updateVerificationDocument(document: VerificationDocument) {
     this.studentValidateDocument = document;
   }
 
-  public getVerificationDocument(): string {
-    return this.studentValidateDocument.getValue();
+  public getVerificationDocument(): string | undefined {
+    return this.studentValidateDocument.getValue() ?? undefined;
   }
 
-  public getGovernmentId(): string {
-    return this.userGovId.getValue();
+  public getGovernmentId(): string | undefined {
+    return this.userGovId.getValue() ?? undefined;
   }
 
   public getUser(): UserEntity {

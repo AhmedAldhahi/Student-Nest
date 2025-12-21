@@ -37,7 +37,7 @@ export class ResendOtpForgetPassCommandHandler
       );
 
       await this.uow.startTransaction();
-      await this.uow.userRepo.updateUser(user);
+      await this.uow.writeUserRepo.updateUser(user);
       await this.uow.commitTransaction();
 
       return { user, otpvalue };

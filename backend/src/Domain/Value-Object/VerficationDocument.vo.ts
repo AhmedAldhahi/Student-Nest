@@ -7,13 +7,19 @@
  */
 export class VerificationDocument {
   /** The student's verification document value. */
-  constructor(private value: string) {
-    if (this.value === undefined) {
+  constructor(private value?: string | null) {
+    if (!value) {
+      this.value = undefined;
       return;
     }
-    if (!this.value || this.value.trim().length === 0) {
+  }
+
+  public static create(value: string): VerificationDocument {
+    if (!value || value.trim().length === 0) {
       throw new Error("validate document is required !!");
-    } 
+    }
+
+    return new VerificationDocument(value);
   }
 
   /**
@@ -21,7 +27,8 @@ export class VerificationDocument {
    *
    * @returns {string} The verification document.
    */
-  public getValue(): string {
-    return this.value;
+
+  public getValue(): string | undefined {
+    return this.value ?? undefined;
   }
 }

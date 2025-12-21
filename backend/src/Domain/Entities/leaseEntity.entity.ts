@@ -87,8 +87,8 @@ export class LeaseEntity {
     this.monthlyRent = rent;
   }
 
-  public getMonthlyRent(): string {
-    return this.monthlyRent.getValue();
+  public getMonthlyRent(): string | undefined {
+    return this.monthlyRent.getValue() ?? undefined;
   }
 
   public setLeaseId(id: number): void {
@@ -103,16 +103,16 @@ export class LeaseEntity {
     this.leaseStartData = date;
   }
 
-  public getLeaseStartDate(): string {
-    return this.leaseStartData.getValue();
+  public getLeaseStartDate(): string | undefined {
+    return this.leaseStartData.getValue() ?? undefined;
   }
 
   public updateLeaseEndDate(date: LeaseEndDate): void {
     this.leaseEndData = date;
   }
 
-  public getLeaseEndDate(): string {
-    return this.leaseEndData.getValue();
+  public getLeaseEndDate(): string | undefined {
+    return this.leaseEndData.getValue() ?? undefined;
   }
 
   public markAsActivated(): void {

@@ -63,16 +63,16 @@ export class LandlordAggregateRoot {
    *
    * @returns {string}
    */
-  public getGovId(): string {
-    return this.landlordGovId.getValue();
+  public getGovId(): string | undefined {
+    return this.landlordGovId.getValue() ?? undefined;
   }
 
   public updateVerificationFile(file: VerificationDocument): void {
     this.document = file;
   }
 
-  public getVerificationFile(): string {
-    return this.document.getValue();
+  public getVerificationFile(): string | undefined {
+    return this.document.getValue() ?? undefined;
   }
 
   public markLandlordAsVerified(): void {

@@ -36,10 +36,10 @@ export class CreateLandlordCommandHandler
     const user = new UserEntity({
       userId: userId,
       password: hashedPassword,
-      name: new UserName(command.name),
-      dateOfBirth: new UserDateOfBirth(command.dateOfBirth),
-      phoneNumber: new userPhoneNumber(command.phoneNumber),
-      email: new UserEmail(command.email),
+      name: UserName.create(command.name),
+      dateOfBirth: UserDateOfBirth.create(command.dateOfBirth),
+      phoneNumber: userPhoneNumber.create(command.phoneNumber),
+      email: UserEmail.create(command.email),
       role: UserRole.landloard,
       address: command.address,
       createdAt: new Date(),
@@ -53,26 +53,23 @@ export class CreateLandlordCommandHandler
     const landlord = new LandlordAggregateRoot({
       user: user,
       cliQAccount: command.cliQAccount,
-      landlordGovId: new GovernmentID(command.LandloardGovId),
-      document: new VerificationDocument(fileUrl),
-    }); 
+      landlordGovId: GovernmentID.create(command.LandloardGovId),
+      document: VerificationDocument.create(fileUrl),
+    });
 
     // Start Transaction
     await this.unitOfWork.startTransaction();
 
     try {
-      const foundUser = await this.ReadUserRepo.findByEmail(
-        command.email
-      );
+      const foundUser = await this.ReadUserRepo.findByEmail(command.email);
       if (foundUser) throw new Error("user with this email already exist");
 
       await this.unitOfWork.writeUserRepo.addNewUser(user);
       await this.unitOfWork.writeLandlordRepo.addNewLandlord(landlord);
 
-      await this.unitOfWork.commitTransaction(); 
+      await this.unitOfWork.commitTransaction();
 
       return user;
-
     } catch (err) {
       await this.unitOfWork.rollbackTransaction();
       console.log("Failed to register landlord!!", err);

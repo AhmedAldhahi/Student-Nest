@@ -9,12 +9,19 @@
  */
 export class StudentCard {
   /** The validated student card ID. */
-  constructor(private value: string) {
+  constructor(private value?: string | undefined) {
+    if (!value) {
+      this.value = undefined;
+    }
+  }
+
+  public static create(value: string): StudentCard {
     if (!value) throw new Error("student card is required");
     const trimmed = value.trim();
     if (trimmed.length < 8) {
       throw new Error("Invalid student card id ");
     }
+    return new StudentCard(trimmed);
   }
 
   /**
@@ -22,7 +29,7 @@ export class StudentCard {
    *
    * @returns {string} The student's card ID.
    */
-  public getValue(): string {
-    return this.value;
+  public getValue(): string | undefined {
+    return this.value ?? undefined;
   }
 }

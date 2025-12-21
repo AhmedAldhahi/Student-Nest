@@ -58,16 +58,16 @@ export class LeaseRequestEntity {
     this.startDate = date;
   }
 
-  public getStartDate(): string {
-    return this.startDate.getValue();
+  public getStartDate(): string | undefined {
+    return this.startDate.getValue() ?? undefined;
   }
 
   public updateRentTerm(term: RentTerm): void {
     this.rentTerm = term;
   }
 
-  public getRentTerm(): string {
-    return this.rentTerm.getValue();
+  public getRentTerm(): string | undefined {
+    return this.rentTerm.getValue() ?? undefined;
   }
 
   public updateRequestLeaseStatus(status: LeaseRequestStatus): void {

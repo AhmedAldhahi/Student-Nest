@@ -39,10 +39,10 @@ export class CreateStudentCommandHandler
     const user = new UserEntity({
       userId: userId,
       password: hashPass,
-      name: new UserName(command.name),
-      dateOfBirth: new UserDateOfBirth(command.dateOfBirth),
-      phoneNumber: new userPhoneNumber(command.phoneNumber),
-      email: new UserEmail(command.email),
+      name: UserName.create(command.name),
+      dateOfBirth: UserDateOfBirth.create(command.dateOfBirth),
+      phoneNumber: userPhoneNumber.create(command.phoneNumber),
+      email: UserEmail.create(command.email),
       role: UserRole.student,
       address: command.address,
       createdAt: new Date(),
@@ -56,12 +56,13 @@ export class CreateStudentCommandHandler
 
     const student = new StudentAggregateRoot({
       user: user,
-      major: new StudentMajor(command.major),
-      graduateYear: new studentGraduateYear(command.gradateYear),
-      studentCardId: new StudentCard(command.studentCardId),
-      universityName: new StudentUniversity(command.universityName),
-      userGovId: new GovernmentID(command.studentGovId),
-      validateStudentDocument: new VerificationDocument(verificationFilesUrl),
+      major: StudentMajor.create(command.major),
+      graduateYear: studentGraduateYear.create(command.gradateYear),
+      studentCardId: StudentCard.create(command.studentCardId),
+      universityName: StudentUniversity.create(command.universityName),
+      userGovId: GovernmentID.create(command.studentGovId),
+      validateStudentDocument:
+        VerificationDocument.create(verificationFilesUrl),
     });
 
     await this.unitOfWork.startTransaction();
@@ -80,7 +81,6 @@ export class CreateStudentCommandHandler
       await this.unitOfWork.commitTransaction();
 
       return user;
-      
     } catch (error: any) {
       await this.unitOfWork.rollbackTransaction();
       console.log("Failed to register student!!", error);

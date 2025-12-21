@@ -12,16 +12,31 @@ import { defaultYear } from "../../Shared/constants/helperValue.constant";
  */
 export class UserDateOfBirth {
   /** The validated date of birth string. */
-  constructor(private value: string) {
-    if (!value) throw new Error("date of birth is required");
+  constructor(private value?: string | undefined) {
+    if (!value) {
+      this.value = undefined;
+    }
+  }
 
+  public static create(value: string): UserDateOfBirth {
+    if (!value) throw new Error("Date of birth is required for registration");
+
+    // Create the object
+    const dob = new UserDateOfBirth(value);
+
+    // Enforce Business Rule (18+)
+    if (!dob.validate(value)) {
+      throw new Error("The User must be at least 18 !!");
+    }
+
+    return dob;
+  }
+
+  private validate(value: string): boolean {
+    if (!value) return false;
     const Dob = Number.parseInt(value);
 
-    if (Number.isNaN(Dob)) throw new Error("the date of birth must be number");
-
-    if (defaultYear - Dob < 18) {
-      throw new Error("the User must be at least 18 !!");
-    }
+    return defaultYear - Dob >= 18;
   }
 
   /**
@@ -29,7 +44,7 @@ export class UserDateOfBirth {
    *
    * @returns {string} The user's date of birth.
    */
-  public getValue(): string {
-    return this.value;
+  public getValue(): string | undefined {
+    return this.value ?? undefined;
   }
 }

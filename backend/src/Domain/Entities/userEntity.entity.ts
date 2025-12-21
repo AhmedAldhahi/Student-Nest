@@ -21,7 +21,6 @@ import { UserEmail } from "../Value-Object/UserEmail.vo";
 import { UserName } from "../Value-Object/UserName.vo";
 import { userPhoneNumber } from "../Value-Object/UserPhoneNumber.vo";
 
-
 /**
  * Represents the domain User Aggregate Root.
  *
@@ -104,8 +103,8 @@ export class UserEntity {
   }
 
   /** Returns the user's email address. */
-  public getEmail(): string {
-    return this.email.getValue();
+  public getEmail(): string | undefined {
+    return this.email.getValue() ?? undefined;
   }
 
   /** Marks the user's email as unverified. */
@@ -228,8 +227,8 @@ export class UserEntity {
   }
 
   /** Returns the user's name. */
-  public getName(): string {
-    return this.name.getValue();
+  public getName(): string | undefined {
+    return this.name.getValue() ?? undefined;
   }
 
   /** Sets user password. */
@@ -248,8 +247,8 @@ export class UserEntity {
   }
 
   /** Returns user date of birth. */
-  public getDateOfBirth(): string {
-    return this.dateOfBirth.getValue();
+  public getDateOfBirth(): string | undefined {
+    return this.dateOfBirth.getValue() ?? undefined;
   }
 
   /** Updates user phone number. */
@@ -258,8 +257,8 @@ export class UserEntity {
   }
 
   /** Returns user phone number. */
-  public getPhoneNumber(): string {
-    return this.phoneNumber.getValue();
+  public getPhoneNumber(): string | undefined {
+    return this.phoneNumber.getValue() ?? undefined;
   }
 
   /** Sets user profile photo. */

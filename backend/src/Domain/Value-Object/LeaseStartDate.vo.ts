@@ -1,48 +1,73 @@
 import { currentYear } from "../../Shared/constants/validationZod.constant";
 
 export class LeaseStartDate {
-  constructor(private value: string) {
-    if (value.length !== 10)
+  // Allow value to be undefined for lenient loading
+  constructor(private value?: string) {
+    if (!value) {
+      this.value = undefined;
+      return;
+    }
+
+    // --- STRUCTURAL VALIDATION (Always Run) ---
+    // 1. Basic Length & Format Check
+    if (value.length !== 10) {
       throw new Error("Invalid date length; it must be exactly 10 characters.");
+    }
 
     if (!this.validationDateFormate(value)) {
       throw new Error("Invalid date format. The correct format is DD-MM-YYYY.");
     }
 
-    // Parse the date into day, month, and year
-    const chunkDay = value[0] + value[1];
-    const chunkMonth = value[3] + value[4];
-    const chunkYear = value[6] + value[7] + value[8] + value[9];
+    // 2. Parse Valid chunks
+    const chunkDay = value.substring(0, 2);
+    const chunkMonth = value.substring(3, 5);
+    const chunkYear = value.substring(6, 10);
 
-    // Validate the day, month, and year
-    this.daysValidation(chunkDay, chunkMonth, chunkYear);
+    // 3. Validate it is a Real Calendar Date (e.g., No Feb 30th)
     this.monthValidation(chunkMonth);
-    this.yearValidation(chunkYear);
+    this.daysValidation(chunkDay, chunkMonth, chunkYear);
+    // Note: We do NOT run 'dateLogicValidation' here.
+    // We allow past dates when loading from the DB.
 
-    // Validate the overall date logic (e.g., today, 7 days rule)
-    this.dateLogicValidation(chunkDay, chunkMonth, chunkYear);
+    this.value = value;
   }
 
-  public getValue(): string {
+  // --- STATIC FACTORY (Strict Creation) ---
+  public static create(value: string): LeaseStartDate {
+    if (!value) throw new Error("Lease start date is required.");
+
+    // 1. Create the object (Runs structural validation)
+    const instance = new LeaseStartDate(value);
+
+    // 2. Run Strict Business Rules (Only for NEW leases)
+    // (e.g., Cannot be in the past, must be within 7 days)
+    instance.validateBusinessRules();
+
+    return instance;
+  }
+
+  // --- GETTERS ---
+
+  public getValue(): string | undefined {
     return this.value;
   }
 
-  public getDays() {
-    const chunkDay = this.value[0] + this.value[1];
-    return Number.parseInt(chunkDay);
+  public getDays(): number {
+    if (!this.value) throw new Error("Value is undefined");
+    return Number.parseInt(this.value.substring(0, 2));
   }
 
-  public getMonth() {
-    const chunkMonth = this.value[3] + this.value[4];
-    return Number.parseInt(chunkMonth);
+  public getMonth(): number {
+    if (!this.value) throw new Error("Value is undefined");
+    return Number.parseInt(this.value.substring(3, 5));
   }
 
-  public getYear() {
-    const chunkYear =
-      this.value[6] + this.value[7] + this.value[8] + this.value[9];
-
-    return Number.parseInt(chunkYear);
+  public getYear(): number {
+    if (!this.value) throw new Error("Value is undefined");
+    return Number.parseInt(this.value.substring(6, 10));
   }
+
+  // --- VALIDATION LOGIC ---
 
   private validationDateFormate(value: string): boolean {
     const regex = /^(\d{2})-(\d{2})-(\d{4})$/;
@@ -50,85 +75,75 @@ export class LeaseStartDate {
   }
 
   private isLeapYear(year: number): boolean {
-    // Check if the year is a leap year
-    if ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) return true;
-    return false;
+    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
   }
 
-  private daysValidation(value: string, month: string, year: string): void {
-    const dayNum = Number.parseInt(value);
-    const monthNum = Number.parseInt(month);
-    const yearNum = Number.parseInt(year);
+  private daysValidation(dayStr: string, monthStr: string, yearStr: string): void {
+    const day = Number.parseInt(dayStr);
+    const month = Number.parseInt(monthStr);
+    const year = Number.parseInt(yearStr);
 
-    // Validate day range based on month
-    if (monthNum === 2) {
-      // February
-      if (this.isLeapYear(yearNum)) {
-        if (dayNum < 1 || dayNum > 29)
-          throw new Error(
-            "February in a leap year can have a maximum of 29 days."
-          );
-      } else {
-        if (dayNum < 1 || dayNum > 28)
-          throw new Error(
-            "February in a non-leap year can have a maximum of 28 days."
-          );
+    if (month === 2) {
+      const maxDays = this.isLeapYear(year) ? 29 : 28;
+      if (day < 1 || day > maxDays) {
+        throw new Error(
+          `February in ${year} has a maximum of ${maxDays} days.`
+        );
       }
-    } else if ([4, 6, 9, 11].includes(monthNum)) {
-      // Months with 30 days
-      if (dayNum < 1 || dayNum > 30)
+    } else if ([4, 6, 9, 11].includes(month)) {
+      if (day < 1 || day > 30) {
         throw new Error("This month can have a maximum of 30 days.");
+      }
     } else {
-      // Months with 31 days
-      if (dayNum < 1 || dayNum > 31)
+      if (day < 1 || day > 31) {
         throw new Error("This month can have a maximum of 31 days.");
+      }
     }
   }
 
   private monthValidation(value: string): void {
-    const monthNum = Number.parseInt(value);
-    if (monthNum < 1 || monthNum > 12) {
+    const month = Number.parseInt(value);
+    if (month < 1 || month > 12) {
       throw new Error("Invalid month; it must be between 1 and 12.");
     }
   }
 
-  private yearValidation(value: string): void {
-    const yearNum = Number.parseInt(value);
+  // --- STRICT BUSINESS RULES (Called by Factory) ---
+  
+  private validateBusinessRules(): void {
+    if (!this.value) return; // Should not happen in create(), but safe to check
+
+    const day = this.value.substring(0, 2);
+    const month = this.value.substring(3, 5);
+    const year = this.value.substring(6, 10);
+    const yearNum = Number.parseInt(year);
+
+    // 1. Year Check
     if (yearNum < currentYear) {
       throw new Error("Year must not be in the past.");
     }
     if (yearNum > currentYear + 1) {
       throw new Error("Year must not be more than one year ahead.");
     }
-  }
 
-  // Validate if the date is between today and the next 7 days
-  private dateLogicValidation(day: string, month: string, year: string): void {
-    // Create a Date object from the given day, month, and year
-    const inputDate = new Date(`${year}-${month}-${day}T00:00:00`); // Set time to 00:00:00
+    // 2. 7-Day Logic
+    // Parse "DD-MM-YYYY" to ISO "YYYY-MM-DD" for Date constructor
+    const inputDate = new Date(`${year}-${month}-${day}T00:00:00`); 
 
-    // Get today's date and set the maximum allowed date (7 days from today)
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Set today's time to 00:00:00 to avoid time differences
+    today.setHours(0, 0, 0, 0);
+
     const maxDate = new Date(today);
-    maxDate.setDate(today.getDate() + 7);
+    maxDate.setDate(today.getDate() + 7); // Max 7 days from now
 
-    // Check if the year is more than one year ahead
-    const maxAllowedYear = today.getFullYear() + 1; // Allow max one year ahead
-    if (inputDate.getFullYear() > maxAllowedYear) {
-      throw new Error("Year must not be more than one year ahead.");
-    }
-
-    // Ensure the date is not in the past (at least today)
+    // Ensure the date is not in the past
     if (inputDate < today) {
-      throw new Error(
-        "The date cannot be in the past. It must be today or later."
-      );
+      throw new Error("The lease start date cannot be in the past.");
     }
 
     // Ensure the date is not more than 7 days in the future
     if (inputDate > maxDate) {
-      throw new Error("The date cannot be more than 7 days in the future.");
+      throw new Error("The lease start date cannot be more than 7 days in the future.");
     }
   }
 }

@@ -10,7 +10,13 @@
  */
 export class StudentMajor {
   /** The validated major name. */
-  constructor(private value: string) {
+  constructor(private value?: string | undefined) {
+    if (!value) {
+      this.value = undefined;
+    }
+  }
+
+  public static create(value: string): StudentMajor {
     if (!value) throw new Error("studentMajor is required");
 
     const majorPattern = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
@@ -20,6 +26,7 @@ export class StudentMajor {
         "Invalid major: only letters and single spaces are allowed. No numbers or special characters"
       );
     }
+    return new StudentMajor(value);
   }
 
   /**
@@ -27,7 +34,7 @@ export class StudentMajor {
    *
    * @returns {string} The student's major.
    */
-  public getValue(): string {
-    return this.value;
+  public getValue(): string | undefined {
+    return this.value ?? undefined;
   }
 }
