@@ -4,7 +4,6 @@ import { LandlordModel } from "../../Database/orm/TypeOrm/entity/Landloard.entit
 import { LandlordMapper } from "../mapper/landloard.mapper";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { LandlordResponseDTO } from "../../../Application/Dtos/profile/LandlordResponeDTO";
-import { UserMapper } from "../mapper/user.mapper";
 import { Like } from "typeorm";
 
 export class ReadLandlordRepositories implements IReadLandlordRepositories {

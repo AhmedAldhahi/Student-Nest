@@ -2,10 +2,7 @@ import { ILeaseRequestDTO } from "../../../Application/Dtos/admin/LeaseRequestDT
 import { IReadLeaseRequestRepositories } from "../../../Domain/Repositories/Read/ReadLeaseRequestRepositories.repositories";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { LeaseRequestModel } from "../../Database/orm/TypeOrm/entity/LeaseRequest";
-import { LandlordMapper } from "../mapper/landloard.mapper";
-import { LeaseMapper } from "../mapper/lease.mapper";
 import { LeaseRequestMapper } from "../mapper/leaseRequest.mapper";
-import { StudentMapper } from "../mapper/student.mapper";
 
 export class ReadLeaseRequestRepositories
   implements IReadLeaseRequestRepositories
@@ -45,19 +42,7 @@ export class ReadLeaseRequestRepositories
       if (!leaseRequest || leaseRequest.length === 0) return [];
 
       return leaseRequest.map((orm) => {
-        return {
-          requestLeaseId: orm.leaseRequestId,
-          requestMessage: orm.requestMessage,
-          startDate: orm.startDate,
-
-          rentTerm: orm.rentTerm,
-          requestStatus: orm.requestStatus,
-
-          createAt: orm.createAt,
-          studentName: orm.student.user.Name,
-          landlordName: orm.landlord.user.Name,
-          Major: orm.student.Major,
-        };
+        return LeaseRequestMapper.toResponse(orm);
       });
     } catch (error: any) {
       console.error("Error fetching lease requests:", error);
@@ -80,19 +65,7 @@ export class ReadLeaseRequestRepositories
         });
 
       if (!orm) return null;
-      return {
-        requestLeaseId: orm.leaseRequestId,
-        requestMessage: orm.requestMessage,
-        startDate: orm.startDate,
-
-        rentTerm: orm.rentTerm,
-        requestStatus: orm.requestStatus,
-
-        createAt: orm.createAt,
-        studentName: orm.student.user.Name,
-        landlordName: orm.landlord.user.Name,
-        Major: orm.student.Major,
-      };
+      return LeaseRequestMapper.toResponse(orm);
     } catch (error: any) {
       console.error("fail to get lease request by id");
       throw error;

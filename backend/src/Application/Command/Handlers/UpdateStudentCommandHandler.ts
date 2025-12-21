@@ -34,15 +34,15 @@ export class UpdateStudentCommandHandler
       if (command.dateOfBirth)
         student
           .getUser()
-          .updateDateOfBirth(new UserDateOfBirth(command.dateOfBirth));
+          .updateDateOfBirth(UserDateOfBirth.create(command.dateOfBirth));
 
       if (command.name)
-        student.getUser().updateName(new UserName(command.name));
+        student.getUser().updateName(UserName.create(command.name));
 
       if (command.phoneNumber)
         student
           .getUser()
-          .updatePhoneNumber(new userPhoneNumber(command.phoneNumber));
+          .updatePhoneNumber(userPhoneNumber.create(command.phoneNumber));
 
       if (command.photo) {
         const photo = student.getUser().getPhoto();
@@ -78,19 +78,23 @@ export class UpdateStudentCommandHandler
       }
 
       if (command.major) {
-        student.updateMajor(new StudentMajor(command.major));
+        student.updateMajor(StudentMajor.create(command.major));
       }
 
       if (command.gradateYear) {
-        student.updateGraduateYear(new studentGraduateYear(command.gradateYear));
+        student.updateGraduateYear(
+          studentGraduateYear.create(command.gradateYear)
+        );
       }
 
       if (command.studentCardId) {
-        student.updateStudentCardID(new StudentCard(command.studentCardId));
+        student.updateStudentCardID(StudentCard.create(command.studentCardId));
       }
 
       if (command.universityName) {
-        student.updateUniversityName(new StudentUniversity(command.universityName));
+        student.updateUniversityName(
+          StudentUniversity.create(command.universityName)
+        );
       }
 
       if (command.verificationFile) {
@@ -98,7 +102,9 @@ export class UpdateStudentCommandHandler
           command.verificationFile
         );
 
-        student.updateVerificationDocument(new VerificationDocument(verifiedFile));
+        student.updateVerificationDocument(
+          VerificationDocument.create(verifiedFile)
+        );
       }
 
       //   if (command.cliQAccount) {

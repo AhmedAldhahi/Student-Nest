@@ -27,12 +27,12 @@ export class UpdateAdminCommandHandler
       if (command.address) user.setAddress(command.address);
 
       if (command.dateOfBirth)
-        user.updateDateOfBirth(new UserDateOfBirth(command.dateOfBirth));
+        user.updateDateOfBirth(UserDateOfBirth.create(command.dateOfBirth));
 
-      if (command.name) user.updateName(new UserName(command.name));
+      if (command.name) user.updateName(UserName.create(command.name));
 
       if (command.phoneNumber)
-        user.updatePhoneNumber(new userPhoneNumber(command.phoneNumber));
+        user.updatePhoneNumber(userPhoneNumber.create(command.phoneNumber));
 
       if (command.photo) {
         const photo = user.getPhoto();

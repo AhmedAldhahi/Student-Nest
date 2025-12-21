@@ -22,7 +22,7 @@ export class LeaseMapper {
       leaseStartData: startD,
       leaseEndData: lastD,
       monthlyRent: new MonthlyRent(model.monthlyRent),
-      leaseTerm: new LeaseTerm(startD, lastD),
+      leaseTerm: new LeaseTerm(model.leaseTerm),
       student: StudentMapper.toEntity(model.student),
       landlord: LandlordMapper.toEntity(model.landlord),
       includeUtilities: model.includeUtilities ?? undefined, // optional
@@ -31,37 +31,26 @@ export class LeaseMapper {
   }
 
   public static toResponse(model: LeaseModel): ILeaseEntityDTO {
-    // We can still use Value Objects for the Lease fields if we want formatting,
-    // or just pass strings directly if we want to be even safer.
-    const startD = new LeaseStartDate(model.leaseStartDate);
-    const lastD = new LeaseEndDate(model.leaseEndDate);
-
     return {
       leaseId: model.leaseId,
       LeaseActivationStatus: model.LeaseActivationStatus,
       isLandlordSigned: model.isLandlordSigned,
       isStudentSigned: model.isStudentSigned,
       houseRule: model.houseRule,
-
-      // Date formatting
-      leaseStartDate: startD.getValue(),
-      leaseEndDate: lastD.getValue(),
-
-      monthlyRent: new MonthlyRent(model.monthlyRent).getValue(),
-      leaseTerm: new LeaseTerm(startD, lastD).getValue(),
-
+      leaseStartDate: model.leaseStartDate,
+      leaseEndDate: model.leaseEndDate,
+      monthlyRent: model.monthlyRent,
+      leaseTerm: model.leaseTerm,
       includeUtilities: model.includeUtilities ?? undefined,
       createAt: model.createAt,
-
-      // Access the name directly via the ORM relation.
-      // Use optional chaining (?.) and "||" to handle missing users gracefully.
-      studentName: model.student?.user?.Name || "Unknown",
-      landlordName: model.landlord?.user?.Name || "Unknown",
+      studentName: model.student.user.Name,
+      landlordName: model.landlord.user.Name,
     };
   }
 
   public static toModel(entity: LeaseEntity): LeaseModel {
     const leaseModel = new LeaseModel();
+    const dataValidation = this.toModelValidation(entity);
     const utilities = entity.getIncludeUtilities();
 
     leaseModel.leaseId = entity.getLeaseId();
@@ -69,9 +58,9 @@ export class LeaseMapper {
     leaseModel.isLandlordSigned = entity.getIsLandlordSigned();
     leaseModel.isStudentSigned = entity.getIsStudentSigned();
     leaseModel.houseRule = entity.getHouseRule();
-    leaseModel.leaseStartDate = entity.getLeaseStartDate();
-    leaseModel.leaseEndDate = entity.getLeaseEndDate();
-    leaseModel.monthlyRent = entity.getMonthlyRent();
+    leaseModel.leaseStartDate = dataValidation.leaseStartDate;
+    leaseModel.leaseEndDate = dataValidation.leaseEndDate;
+    leaseModel.monthlyRent = dataValidation.monthlyRent;
     leaseModel.leaseTerm = entity.getLeaseTerm();
     leaseModel.includeUtilities = utilities ?? null;
     leaseModel.student = StudentMapper.toModel(entity.getStudent());
@@ -79,5 +68,22 @@ export class LeaseMapper {
     leaseModel.createAt = entity.getCreateAt();
 
     return leaseModel;
+  }
+
+  private static toModelValidation(lease: LeaseEntity) {
+    const leaseStartDate = lease.getLeaseStartDate();
+    const leaseEndDate = lease.getLeaseEndDate();
+    const monthlyRent = lease.getMonthlyRent();
+
+    if (!leaseStartDate)
+      throw new Error("Cannot save lease, lease start date is require !!");
+
+    if (!leaseEndDate)
+      throw new Error("Cannot save lease, lease end date is require!!");
+
+    if (!monthlyRent)
+      throw new Error("Cannot save lease, monthly rent is require !!");
+
+    return { leaseEndDate, leaseStartDate, monthlyRent };
   }
 }

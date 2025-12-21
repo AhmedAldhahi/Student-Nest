@@ -29,15 +29,15 @@ export class UpdateLandlordCommandHandler
       if (command.dateOfBirth)
         landlord
           .getUser()
-          .updateDateOfBirth(new UserDateOfBirth(command.dateOfBirth));
+          .updateDateOfBirth(UserDateOfBirth.create(command.dateOfBirth));
 
       if (command.name)
-        landlord.getUser().updateName(new UserName(command.name));
+        landlord.getUser().updateName(UserName.create(command.name));
 
       if (command.phoneNumber)
         landlord
           .getUser()
-          .updatePhoneNumber(new userPhoneNumber(command.phoneNumber));
+          .updatePhoneNumber( userPhoneNumber.create(command.phoneNumber));
 
       if (command.photo) {
         const photo = landlord.getUser().getPhoto();
@@ -88,6 +88,6 @@ export class UpdateLandlordCommandHandler
       throw error;
     } finally {
       await this.uow.releaseTransaction();
-    } 
+    }
   }
 }
