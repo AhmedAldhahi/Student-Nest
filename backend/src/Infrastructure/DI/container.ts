@@ -23,6 +23,10 @@ import {
 } from "./admin/UserMangement";
 
 import { getAllLease, GetLeaseById } from "./admin/UserLease";
+import {
+  GetAllLeaseRequest,
+  GetLeaseRequestById,
+} from "./admin/LeaseRequestMangament";
 
 export function buildDependencies() {
   return {
@@ -43,6 +47,8 @@ export function buildDependencies() {
       GetAllUsersUseCase: GetAllUsers(),
       GetAllLeaseUseCase: getAllLease(),
       getLeaseById: GetLeaseById(),
+      getAllLeaseRequestUseCase: GetAllLeaseRequest(),
+      getLeaseRequestByIdUseCase: GetLeaseRequestById(),
     },
   };
 }

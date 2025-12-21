@@ -31,6 +31,8 @@ export class LeaseMapper {
   }
 
   public static toResponse(model: LeaseModel): ILeaseEntityDTO {
+    // We can still use Value Objects for the Lease fields if we want formatting,
+    // or just pass strings directly if we want to be even safer.
     const startD = new LeaseStartDate(model.leaseStartDate);
     const lastD = new LeaseEndDate(model.leaseEndDate);
 
@@ -40,14 +42,21 @@ export class LeaseMapper {
       isLandlordSigned: model.isLandlordSigned,
       isStudentSigned: model.isStudentSigned,
       houseRule: model.houseRule,
+
+      // Date formatting
       leaseStartDate: startD.getValue(),
       leaseEndDate: lastD.getValue(),
+
       monthlyRent: new MonthlyRent(model.monthlyRent).getValue(),
       leaseTerm: new LeaseTerm(startD, lastD).getValue(),
-      includeUtilities: model.includeUtilities ?? undefined, // optional
+
+      includeUtilities: model.includeUtilities ?? undefined,
       createAt: model.createAt,
-      studentName: StudentMapper.toEntity(model.student).getUser().getName(),
-      landlordName: LandlordMapper.toEntity(model.landlord).getUser().getName(),
+
+      // Access the name directly via the ORM relation.
+      // Use optional chaining (?.) and "||" to handle missing users gracefully.
+      studentName: model.student?.user?.Name || "Unknown",
+      landlordName: model.landlord?.user?.Name || "Unknown",
     };
   }
 

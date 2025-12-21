@@ -15,6 +15,7 @@ import { profileRouter } from "./Presentation/http/routes/profile.routes";
 import { UserManagementController } from "./Presentation/http/controllers/admin/userMangement.controller";
 import { userManagementRouter } from "./Presentation/http/routes/admin/userMangement.routes";
 import { LeaseManagementRouter } from "./Presentation/http/routes/admin/leaseMangement.router";
+import { LeaseRequestManagementRouter } from "./Presentation/http/routes/admin/leaseRequestMangement.router";
 
 export class Server {
   public app = express();
@@ -93,6 +94,7 @@ export class Server {
       profileController,
       adminLeaseMangementController,
       adminLandloardManagementController,
+      adminLeaseRequestManagementController,
     } = buildControllers();
 
     this.app.use("/api/v1/auth", createAuthRouter(authController));
@@ -102,6 +104,11 @@ export class Server {
     this.app.use(
       "/api/v1/admin",
       LeaseManagementRouter(adminLeaseMangementController)
+    );
+
+    this.app.use(
+      "/api/v1/admin",
+      LeaseRequestManagementRouter(adminLeaseRequestManagementController)
     );
 
     this.app.use(

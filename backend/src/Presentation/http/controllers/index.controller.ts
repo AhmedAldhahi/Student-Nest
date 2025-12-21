@@ -1,5 +1,6 @@
 import { buildDependencies } from "../../../Infrastructure/DI/container";
 import { LeaseManagementController } from "./admin/leaseMangement.controller";
+import { LeaseRequestManagementController } from "./admin/leaseRequestMangement.controller";
 import { UserManagementController } from "./admin/userMangement.controller";
 import { PasswordRecoverController } from "./PasswordRecovery.controller";
 import { ProfileController } from "./Profile.controller";
@@ -45,6 +46,12 @@ export const buildControllers = () => {
     useCases.getLeaseById
   );
 
+  const adminLeaseRequestManagementController =
+    new LeaseRequestManagementController(
+      useCases.getAllLeaseRequestUseCase,
+      useCases.getLeaseRequestByIdUseCase
+    );
+
   return {
     authController,
     verificationController,
@@ -52,5 +59,6 @@ export const buildControllers = () => {
     profileController,
     adminLandloardManagementController,
     adminLeaseMangementController,
+    adminLeaseRequestManagementController,
   };
 };

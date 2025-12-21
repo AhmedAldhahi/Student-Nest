@@ -9,7 +9,7 @@ export class LeaseTerm {
   constructor(startDate: LeaseStartDate, endDate: LeaseEndDate) {
     if (!startDate || !endDate) {
       throw new Error("Start and end date for lease are required.");
-    }
+    } 
 
     // Initialize date objects
     const start = new Date(

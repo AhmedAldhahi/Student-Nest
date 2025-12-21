@@ -1,4 +1,5 @@
 import { DataSource } from "typeorm";
+import { LeaseRequestModel } from "./entity/LeaseRequest";
 
 export class AppDataSource {
   // Private constructor to prevent instantiation
@@ -22,7 +23,7 @@ export class AppDataSource {
       },
       synchronize: true,
       logging: false,
-      entities: [__dirname + "/entity/**/*.entity{.ts,.js}"],
+      entities: [__dirname + "/entity/**/*.{ts,js}"],
       migrations: [],
       subscribers: [],
     });

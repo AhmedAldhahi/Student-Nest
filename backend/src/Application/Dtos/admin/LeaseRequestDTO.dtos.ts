@@ -1,0 +1,18 @@
+import { LeaseRequestStatus } from "../../../Domain/Enum/LeaseRequestStatus.enum";
+
+export interface ILeaseRequestDTO {
+  requestLeaseId: number;
+  requestMessage: string;
+  startDate: string;
+  rentTerm: string;
+  requestStatus: string;
+  createAt: Date;
+  studentName: string;
+  landlordName: string;
+  Major: string;
+  
+  // price  ? do u want me to add to db 
+  // apartment title 
+  // apartment
+  //TODO: need to add end date
+}
