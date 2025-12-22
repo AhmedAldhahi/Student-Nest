@@ -1,5 +1,5 @@
 import { ILeaseRequestDTO } from "../../../Application/Dtos/admin/LeaseRequestDTO.dtos";
-import { LeaseRequestEntity } from "../../../Domain/Entities/leaseRequest.entity";
+import { LeaseRequestEntity } from "../../../Domain/Entities/leaseRequestEntity.entity";
 import { LeaseStartDate } from "../../../Domain/Value-Object/LeaseStartDate.vo";
 import { RentTerm } from "../../../Domain/Value-Object/RentTerm.vo";
 import { LeaseRequestModel } from "../../Database/orm/TypeOrm/entity/LeaseRequest";

@@ -1,5 +1,5 @@
 import { ILeaseEntityDTO } from "../../../Application/Dtos/admin/LeaseDTO.dtos";
-import { LeaseEntity } from "../../../Domain/Entities/leaseEntity.entity";
+import { LeaseAggregateRoot } from "../../../Domain/AggregatesRoot/leaseEntity.entity";
 import { LeaseEndDate } from "../../../Domain/Value-Object/LeaseEndDate.vo";
 import { LeaseStartDate } from "../../../Domain/Value-Object/LeaseStartDate.vo";
 import { LeaseTerm } from "../../../Domain/Value-Object/LeaseTerm.vo";
@@ -9,11 +9,11 @@ import { LandlordMapper } from "./landloard.mapper";
 import { StudentMapper } from "./student.mapper";
 
 export class LeaseMapper {
-  public static toEntity(model: LeaseModel): LeaseEntity {
+  public static toEntity(model: LeaseModel): LeaseAggregateRoot {
     const startD = new LeaseStartDate(model.leaseStartDate);
     const lastD = new LeaseEndDate(model.leaseEndDate);
 
-    return new LeaseEntity({
+    return new LeaseAggregateRoot({
       leaseId: model.leaseId,
       ActivationStatus: model.LeaseActivationStatus,
       isLandlordSigned: model.isLandlordSigned,
@@ -48,7 +48,7 @@ export class LeaseMapper {
     };
   }
 
-  public static toModel(entity: LeaseEntity): LeaseModel {
+  public static toModel(entity: LeaseAggregateRoot): LeaseModel {
     const leaseModel = new LeaseModel();
     const dataValidation = this.toModelValidation(entity);
     const utilities = entity.getIncludeUtilities();
@@ -70,7 +70,7 @@ export class LeaseMapper {
     return leaseModel;
   }
 
-  private static toModelValidation(lease: LeaseEntity) {
+  private static toModelValidation(lease: LeaseAggregateRoot) {
     const leaseStartDate = lease.getLeaseStartDate();
     const leaseEndDate = lease.getLeaseEndDate();
     const monthlyRent = lease.getMonthlyRent();

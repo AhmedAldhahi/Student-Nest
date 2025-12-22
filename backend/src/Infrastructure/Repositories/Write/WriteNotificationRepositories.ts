@@ -1,5 +1,5 @@
 import { EntityManager } from "typeorm";
-import { NotificationEntity } from "../../../Domain/Entities/Notification.entity";
+import { NotificationEntity } from "../../../Domain/Entities/NotificationEntity.entity";
 import { IWriteNotificationRepo } from "../../../Domain/Repositories/Write/IWriteUpdateNotficationStatusRepositories.repositores";
 import { WriteUserRepositories } from "./WriteUserRepositories";
 import { NotificationMapper } from "../mapper/notification.mapper";

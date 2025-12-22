@@ -1,9 +1,10 @@
-import { LandlordAggregateRoot } from "../AggregatesRoot/landloardEntity.entity";
-import { StudentAggregateRoot } from "../AggregatesRoot/studentEntity.entity";
+import { LandlordAggregateRoot } from "./landloardEntity.entity";
+import { StudentAggregateRoot } from "./studentEntity.entity";
 import { LeaseEndDate } from "../Value-Object/LeaseEndDate.vo";
 import { LeaseStartDate } from "../Value-Object/LeaseStartDate.vo";
 import { LeaseTerm } from "../Value-Object/LeaseTerm.vo";
 import { MonthlyRent } from "../Value-Object/MonthlyRent.vo";
+import { ApartmentEntity } from "./apartmentEntity.entity";
 
 export interface ILeaseData {
   leaseId: number;
@@ -21,10 +22,11 @@ export interface ILeaseData {
   landlord: LandlordAggregateRoot;
   createAt: Date;
 
-  // apartment id fk
+  // apartment fk need to add
+  //apartment: ApartmentEntity;
 }
 
-export class LeaseEntity {
+export class LeaseAggregateRoot {
   private leaseId: number;
   private isLandlordSigned: boolean;
   private isStudentSigned: boolean;
@@ -35,8 +37,10 @@ export class LeaseEntity {
   private monthlyRent: MonthlyRent;
   private leaseTerm: LeaseTerm;
 
+  private apartment: ApartmentEntity;
   private student: StudentAggregateRoot;
   private landlord: LandlordAggregateRoot;
+
   private createAt: Date;
   private activateStatus: boolean = true;
 

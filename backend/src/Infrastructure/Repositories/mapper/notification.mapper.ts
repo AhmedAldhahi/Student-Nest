@@ -1,6 +1,6 @@
 import { INotificationDTO } from "../../../Application/Dtos/admin/NotificationDTO.dtos";
 import { UserResponseDTO } from "../../../Application/Dtos/profile/ UserResponseDTO";
-import { NotificationEntity } from "../../../Domain/Entities/Notification.entity";
+import { NotificationEntity } from "../../../Domain/Entities/NotificationEntity.entity";
 import { UserEntity } from "../../../Domain/Entities/userEntity.entity";
 import { NotificationModel } from "../../Database/orm/TypeOrm/entity/Notifcation.entity";
 import { UserMapper } from "./user.mapper";

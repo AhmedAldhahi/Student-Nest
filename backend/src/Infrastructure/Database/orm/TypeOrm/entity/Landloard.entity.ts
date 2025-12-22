@@ -9,6 +9,7 @@ import {
 } from "typeorm";
 import { UserModel } from "./User.entity";
 import { LeaseModel } from "./Lease.entity";
+import { ApartmentModel } from "./Apartment.entity";
 
 @Entity("landlords")
 export class LandlordModel {
@@ -35,9 +36,8 @@ export class LandlordModel {
   user: UserModel;
 
   @OneToMany(() => LeaseModel, (lease) => lease.landlord)
-  leases: LeaseModel[]; 
+  leases: LeaseModel[];
 
-  
-
-
+  @OneToMany(() => ApartmentModel, (apartment) => apartment.landlord)
+  apartments: ApartmentModel[];
 }

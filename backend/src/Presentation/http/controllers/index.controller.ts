@@ -1,4 +1,5 @@
 import { buildDependencies } from "../../../Infrastructure/DI/container";
+import { ApartmentManagementController } from "./admin/apartmentMangement.controller";
 import { LeaseManagementController } from "./admin/leaseMangement.controller";
 import { LeaseRequestManagementController } from "./admin/leaseRequestMangement.controller";
 import { NotificationController } from "./admin/Notifcation.controller";
@@ -58,6 +59,10 @@ export const buildControllers = () => {
     useCases.updateNotficationUseCase
   );
 
+  const adminApartmentController = new ApartmentManagementController(
+    useCases.GetAllApartmentUseCase
+  );
+
   return {
     authController,
     verificationController,
@@ -67,5 +72,6 @@ export const buildControllers = () => {
     adminLeaseMangementController,
     adminLeaseRequestManagementController,
     adminNotificationController,
+    adminApartmentController,
   };
 };
