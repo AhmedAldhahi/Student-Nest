@@ -54,7 +54,8 @@ export const buildControllers = () => {
     );
 
   const adminNotificationController = new NotificationController(
-    useCases.GetAllNotificationUseCase
+    useCases.GetAllNotificationUseCase,
+    useCases.updateNotficationUseCase
   );
 
   return {

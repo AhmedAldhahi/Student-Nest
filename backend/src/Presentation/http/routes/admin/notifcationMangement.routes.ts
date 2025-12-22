@@ -15,5 +15,7 @@ export const notificationRouter = (
     notificationController.getAllNotification
   );
 
+  router.patch("/notifications-status/:id",isAuth,isAdmin,notificationController.updateNotificationsStatus)
+
   return router;
 };

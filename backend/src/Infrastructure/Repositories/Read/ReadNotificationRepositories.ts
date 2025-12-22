@@ -1,4 +1,5 @@
 import { INotificationDTO } from "../../../Application/Dtos/admin/NotificationDTO.dtos";
+import { NotificationEntity } from "../../../Domain/Entities/Notification.entity";
 import { IReadNotificationRepositories } from "../../../Domain/Repositories/Read/ReadNotificationRepositories.repositories";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { NotificationModel } from "../../Database/orm/TypeOrm/entity/Notifcation.entity";
@@ -27,7 +28,8 @@ export class readNotificationRepositories
               userId: true,
               Name: true,
             },
-          },relations: {
+          },
+          relations: {
             sender: true,
             receiver: true,
           },
@@ -40,6 +42,26 @@ export class readNotificationRepositories
       });
     } catch (error: any) {
       console.error("fail to fetch notifications !!");
+      throw error;
+    }
+  }
+
+  public async GetNotificationById(
+    id: number
+  ): Promise<NotificationEntity | null> {
+    try {
+      const orm = await AppDataSource.getInstance()
+        .getRepository(NotificationModel)
+        .findOne({
+          where: { notificationId: id },
+          relations: { sender: true, receiver: true },
+        });
+
+      if (!orm) return null;
+
+      return NotificationMapper.toEntity(orm);
+    } catch (error: any) {
+      console.error("fail to get the notification id : " + id);
       throw error;
     }
   }

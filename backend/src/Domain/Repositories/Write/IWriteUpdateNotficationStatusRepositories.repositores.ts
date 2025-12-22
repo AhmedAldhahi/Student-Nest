@@ -1,3 +1,5 @@
-export interface IWriteUpdateNotificationStatusRepo {
-  updateNotificationStatus(status: boolean): Promise<void>;
+import { NotificationEntity } from "../../Entities/Notification.entity";
+
+export interface IWriteNotificationRepo {
+  updateNotificationStatus(notification: NotificationEntity): Promise<void>;
 }
