@@ -162,6 +162,8 @@ export class ApartmentAggregateRoot {
     return this.landlord;
   }
 
+  
+
   public getApartmentDocument(): ApartmentDocumentEntity[] {
     return this.apartmentDocument;
   }

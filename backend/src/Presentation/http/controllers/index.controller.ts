@@ -65,7 +65,8 @@ export const buildControllers = () => {
     useCases.editStatusApartmentVerifiedUseCase,
     useCases.deleteApartmentByIdUseCase,
     useCases.findApartmentDocumentById,
-    useCases.findApartmentDetailById
+    useCases.findApartmentDetailById,
+    useCases.editApartmentUseCase
   );
 
   return {

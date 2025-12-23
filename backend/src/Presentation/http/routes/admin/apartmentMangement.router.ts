@@ -23,7 +23,7 @@ export const ApartmentRouter = (
   );
 
   router.patch(
-    "/apartment/:apartmentId",
+    "/apartment/:apartmentId/verify",
     isAuth,
     isAdmin,
     apartmentController.updateApartmentVerificationStatus
@@ -48,6 +48,13 @@ export const ApartmentRouter = (
     isAuth,
     isAdmin,
     apartmentController.getApartmentDetailById
+  );
+
+  router.patch(
+    "/apartment/:id",
+    isAuth,
+    isAdmin,
+    apartmentController.UpdateApartmentDetailsById
   );
 
   return router;

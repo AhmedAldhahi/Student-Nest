@@ -1,5 +1,4 @@
 import { EntityManager } from "typeorm";
-import { WriteUserRepositories } from "./WriteUserRepositories";
 import { IWriteApartmentRepo } from "../../../Domain/Repositories/Write/IWriteApartmentRepositories.repositories";
 import { ApartmentAggregateRoot } from "../../../Domain/AggregatesRoot/apartmentEntity.entity";
 import { ApartmentMapper } from "../mapper/apartment.mapper";

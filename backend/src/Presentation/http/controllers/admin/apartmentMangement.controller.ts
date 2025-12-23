@@ -5,6 +5,7 @@ import { EditApartmentStatusVerifiedUseCase } from "../../../../Application/Use-
 import { DeleteApartmentByIdUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/DeleteApartment.usecase";
 import { findApartmentDocumentByIdUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/FindApartmentDocument.usecase";
 import { findApartmentByIdUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/FindApartmentDetailsById.usecase";
+import { EditApartmentDetailUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/EditApartmentDetail.usecase";
 export class ApartmentManagementController {
   constructor(
     private readonly getAllApartment: findAllApartmentUseCase,
@@ -12,7 +13,8 @@ export class ApartmentManagementController {
     private readonly editApartmentVerificationStatus: EditApartmentStatusVerifiedUseCase,
     private readonly deleteApartmentById: DeleteApartmentByIdUseCase,
     private readonly getApartmentDocumentById: findApartmentDocumentByIdUseCase,
-    private readonly GetApartmentDetailById: findApartmentByIdUseCase
+    private readonly GetApartmentDetailById: findApartmentByIdUseCase,
+    private readonly EditApartmentDetailsById: EditApartmentDetailUseCase
   ) {}
 
   public getAllApartments = async (req: Request, res: Response) => {
@@ -112,7 +114,6 @@ export class ApartmentManagementController {
 
   public getApartmentDetailById = async (req: Request, res: Response) => {
     try {
-      
       const { id } = req.params;
       const userId = req.user?.userId;
 
@@ -120,6 +121,30 @@ export class ApartmentManagementController {
         return res.status(400).json({ error: "no user id found !!" });
 
       const result = await this.GetApartmentDetailById.execute(Number(id));
+      return res.status(200).json(result);
+    } catch (error: any) {
+      return res
+        .status(400)
+        .json({ error: error.message || "internal server error" });
+    }
+  };
+
+  public UpdateApartmentDetailsById = async (req: Request, res: Response) => {
+    try {
+      const userId = req.user?.userId;
+      const dto = req.body;
+      const { id } = req.params;
+
+      console.log(dto);
+
+      if (!userId)
+        return res.status(400).json({ error: "no user id found !!" });
+
+      const result = await this.EditApartmentDetailsById.execute(
+        dto,
+        Number(id)
+      );
+
       return res.status(200).json(result);
     } catch (error: any) {
       return res

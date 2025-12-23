@@ -1,10 +1,12 @@
 import { deleteApartmentByIdCommandHandler } from "../../../Application/Command/Handlers/DeleteApartmentByIdCommandHandler";
+import { EditApartmentDetailByIdCommandHandler } from "../../../Application/Command/Handlers/EditApartmentDetailByIdCommandHandler";
 import { EditApartmentStatusVerifiedCommandHandler } from "../../../Application/Command/Handlers/EditApartmetVerficationStatusCommandHandler";
 import { GetAllApartmentByNameQueriesHandler } from "../../../Application/Querie/Handlers/GetAllApartmentByName.QueriesHandler";
 import { GetAllApartmentQueriesHandler } from "../../../Application/Querie/Handlers/GetAllApartmentQueriesHandler";
 import { GetApartmentByIdQueriesHandler } from "../../../Application/Querie/Handlers/GetApartmentByIdQueriesHandler";
 import { GetApartmentDocumentByIdQueriesHandler } from "../../../Application/Querie/Handlers/GetApartmentDocumentById.QueriesHandler";
 import { DeleteApartmentByIdUseCase } from "../../../Application/Use-Case/admin/ApartmentMangament/DeleteApartment.usecase";
+import { EditApartmentDetailUseCase } from "../../../Application/Use-Case/admin/ApartmentMangament/EditApartmentDetail.usecase";
 import { EditApartmentStatusVerifiedUseCase } from "../../../Application/Use-Case/admin/ApartmentMangament/EditApartmentStatus.usecase";
 import { findAllApartmentUseCase } from "../../../Application/Use-Case/admin/ApartmentMangament/FindAllApartment.usecase";
 import { FindAllApartmentByNameUseCase } from "../../../Application/Use-Case/admin/ApartmentMangament/findAllApartmentByName.usecase";
@@ -73,5 +75,16 @@ export function FindApartmentDetailByIdUseCase(): findApartmentByIdUseCase {
   const queriesHandler = new GetApartmentByIdQueriesHandler(ReadApartmentRepo);
 
   return new findApartmentByIdUseCase(queriesHandler);
-  
+}
+
+export function editApartmentDetailUseCase(): EditApartmentDetailUseCase {
+  const ReadApartmentRepo = new ReadApartmentRepositories();
+  const uow = new UnitOfWork();
+
+  const commandHandler = new EditApartmentDetailByIdCommandHandler(
+    ReadApartmentRepo,
+    uow
+  );
+
+  return new EditApartmentDetailUseCase(commandHandler);
 }
