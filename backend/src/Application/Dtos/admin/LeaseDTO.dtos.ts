@@ -12,4 +12,5 @@ export interface ILeaseEntityDTO {
   createAt: Date;
   landlordName: string;
   studentName: string;
+  apartmentTitle: string;
 }

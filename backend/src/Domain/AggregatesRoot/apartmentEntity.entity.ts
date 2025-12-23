@@ -25,7 +25,7 @@ export interface ApartmentData {
   googleMapLocation: GoogleMapLocationEntity;
 }
 
-export class ApartmentEntity {
+export class ApartmentAggregateRoot {
   private apartmentId: number;
   private propertyStatus: boolean;
   private title: string;

@@ -4,7 +4,9 @@ import { LeaseEndDate } from "../../../Domain/Value-Object/LeaseEndDate.vo";
 import { LeaseStartDate } from "../../../Domain/Value-Object/LeaseStartDate.vo";
 import { LeaseTerm } from "../../../Domain/Value-Object/LeaseTerm.vo";
 import { MonthlyRent } from "../../../Domain/Value-Object/MonthlyRent.vo";
+import { ApartmentModel } from "../../Database/orm/TypeOrm/entity/Apartment.entity";
 import { LeaseModel } from "../../Database/orm/TypeOrm/entity/Lease.entity";
+import { ApartmentMapper } from "./apartment.mapper";
 import { LandlordMapper } from "./landloard.mapper";
 import { StudentMapper } from "./student.mapper";
 
@@ -25,6 +27,7 @@ export class LeaseMapper {
       leaseTerm: new LeaseTerm(model.leaseTerm),
       student: StudentMapper.toEntity(model.student),
       landlord: LandlordMapper.toEntity(model.landlord),
+      apartment: ApartmentMapper.toEntity(model.apartment),
       includeUtilities: model.includeUtilities ?? undefined, // optional
       createAt: model.createAt,
     });
@@ -45,6 +48,7 @@ export class LeaseMapper {
       createAt: model.createAt,
       studentName: model.student.user.Name,
       landlordName: model.landlord.user.Name,
+      apartmentTitle: model.apartment.title,
     };
   }
 
@@ -65,6 +69,7 @@ export class LeaseMapper {
     leaseModel.includeUtilities = utilities ?? null;
     leaseModel.student = StudentMapper.toModel(entity.getStudent());
     leaseModel.landlord = LandlordMapper.toOrm(entity.getLandlord());
+    leaseModel.apartment  = ApartmentMapper.toModel(entity.getApartment());
     leaseModel.createAt = entity.getCreateAt();
 
     return leaseModel;

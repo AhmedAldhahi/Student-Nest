@@ -4,7 +4,7 @@ import { LeaseEndDate } from "../Value-Object/LeaseEndDate.vo";
 import { LeaseStartDate } from "../Value-Object/LeaseStartDate.vo";
 import { LeaseTerm } from "../Value-Object/LeaseTerm.vo";
 import { MonthlyRent } from "../Value-Object/MonthlyRent.vo";
-import { ApartmentEntity } from "./apartmentEntity.entity";
+import { ApartmentAggregateRoot } from "./apartmentEntity.entity";
 
 export interface ILeaseData {
   leaseId: number;
@@ -18,6 +18,7 @@ export interface ILeaseData {
   monthlyRent: MonthlyRent;
   leaseTerm: LeaseTerm;
 
+  apartment: ApartmentAggregateRoot;
   student: StudentAggregateRoot;
   landlord: LandlordAggregateRoot;
   createAt: Date;
@@ -37,7 +38,7 @@ export class LeaseAggregateRoot {
   private monthlyRent: MonthlyRent;
   private leaseTerm: LeaseTerm;
 
-  private apartment: ApartmentEntity;
+  private apartment: ApartmentAggregateRoot;
   private student: StudentAggregateRoot;
   private landlord: LandlordAggregateRoot;
 
@@ -56,6 +57,7 @@ export class LeaseAggregateRoot {
     this.leaseTerm = data.leaseTerm;
     this.student = data.student;
     this.landlord = data.landlord;
+    this.apartment = data.apartment;
     this.createAt = data.createAt;
   }
 
@@ -177,5 +179,9 @@ export class LeaseAggregateRoot {
 
   public getStudent(): StudentAggregateRoot {
     return this.student;
+  }
+
+  public getApartment(): ApartmentAggregateRoot {
+    return this.apartment;
   }
 }

@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 import { LandlordModel } from "./Landloard.entity";
 import { StudentModel } from "./Student.entity";
+import { ApartmentModel } from "./Apartment.entity";
 
 @Entity("leases")
 export class LeaseModel {
@@ -57,10 +58,16 @@ export class LeaseModel {
   })
   @JoinColumn({ name: "landlordId" })
   landlord: LandlordModel;
+
+  @ManyToOne(() => ApartmentModel, {
+    nullable: false,
+    onDelete: "CASCADE",
+  })
+  @JoinColumn({ name: "apartmentId" })
+  apartment: ApartmentModel;
 }
 
 /**
- * lease id *
  *
  * * apartment
  */
