@@ -3,6 +3,7 @@ import { LeaseRequestEntity } from "../../../Domain/Entities/leaseRequestEntity.
 import { LeaseStartDate } from "../../../Domain/Value-Object/LeaseStartDate.vo";
 import { RentTerm } from "../../../Domain/Value-Object/RentTerm.vo";
 import { LeaseRequestModel } from "../../Database/orm/TypeOrm/entity/LeaseRequest";
+import { ApartmentMapper } from "./apartment.mapper";
 import { LandlordMapper } from "./landloard.mapper";
 import { StudentMapper } from "./student.mapper";
 
@@ -14,6 +15,7 @@ export class LeaseRequestMapper {
     leaseRequestModel.createAt = entity.getCreateAt();
     leaseRequestModel.landlord = LandlordMapper.toOrm(entity.getLandlord());
     leaseRequestModel.student = StudentMapper.toModel(entity.getStudent());
+    leaseRequestModel.apartment = ApartmentMapper.toModel(entity.getApartment())
 
     leaseRequestModel.leaseRequestId = entity.getRequestLeaseId();
     leaseRequestModel.rentTerm = dataValidation.rentTerm;
@@ -46,6 +48,7 @@ export class LeaseRequestMapper {
       createAt: model.createAt,
       studentName: StudentMapper.toEntity(model.student),
       landlordName: LandlordMapper.toEntity(model.landlord),
+      apartment: ApartmentMapper.toEntity(model.apartment),
     });
   }
 
@@ -59,6 +62,8 @@ export class LeaseRequestMapper {
       createAt: model.createAt,
       studentName: StudentMapper.toResponse(model.student).user.name,
       landlordName: LandlordMapper.toResponse(model.landlord).user.name,
+      apartmentTitle: ApartmentMapper.toResponses(model.apartment).title,
+      apartmentPrice: ApartmentMapper.toResponses(model.apartment).price,
       Major: StudentMapper.toResponse(model.student).Major,
     };
   }

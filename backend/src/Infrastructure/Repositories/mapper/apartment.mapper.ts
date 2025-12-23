@@ -1,5 +1,5 @@
 import { IApartmentDTO } from "../../../Application/Dtos/admin/ApartmentDTo.dtos";
-import { ApartmentEntity } from "../../../Domain/AggregatesRoot/apartmentEntity.entity";
+import { ApartmentAggregateRoot } from "../../../Domain/AggregatesRoot/apartmentEntity.entity";
 import { ApartmentPrice } from "../../../Domain/Value-Object/ApartmentPrice.vo";
 import { numberOfBed } from "../../../Domain/Value-Object/NumberOfBed.vo";
 import { NumberOfRoom } from "../../../Domain/Value-Object/NumberOfRoom.vo";
@@ -9,7 +9,7 @@ import { GoogleMapMapper } from "./gogleMap.mapper";
 import { LandlordMapper } from "./landloard.mapper";
 
 export class ApartmentMapper {
-  public static toModel(apartment: ApartmentEntity): ApartmentModel {
+  public static toModel(apartment: ApartmentAggregateRoot): ApartmentModel {
     const apartmentModel = new ApartmentModel();
     const validateData = this.modelValidation(apartment);
 
@@ -18,7 +18,7 @@ export class ApartmentMapper {
       (apartmentModel.title = apartment.getTitle()),
       (apartmentModel.description = apartment.getDescription()),
       (apartmentModel.address = apartment.getAddress()),
-      apartmentModel.Verified = apartment.getVerified(),
+      (apartmentModel.Verified = apartment.getVerified()),
       (apartmentModel.isJoin = apartment.getIsJoin()),
       (apartmentModel.createAt = apartment.getCreateAt()),
       (apartmentModel.updateAt = apartment.getUpdateAt()),
@@ -38,7 +38,7 @@ export class ApartmentMapper {
     return apartmentModel;
   }
 
-  public static modelValidation(apartment: ApartmentEntity) {
+  public static modelValidation(apartment: ApartmentAggregateRoot) {
     const price = apartment.getApartmentPrice();
     const numberOfBed = apartment.getNumberOfBed();
     const numberOfRoom = apartment.getNumberOfRoom();
@@ -52,8 +52,8 @@ export class ApartmentMapper {
     return { price, numberOfBed, numberOfRoom };
   }
 
-  public static toEntity(model: ApartmentModel): ApartmentEntity {
-    return new ApartmentEntity({
+  public static toEntity(model: ApartmentModel): ApartmentAggregateRoot {
+    return new ApartmentAggregateRoot({
       apartmentId: model.apartmentId,
       propertyStatus: model.propertyStatus,
       title: model.title,

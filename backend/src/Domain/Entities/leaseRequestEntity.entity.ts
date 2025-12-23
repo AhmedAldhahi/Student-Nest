@@ -3,7 +3,7 @@ import { StudentAggregateRoot } from "../AggregatesRoot/studentEntity.entity";
 import { LeaseRequestStatus } from "../Enum/LeaseRequestStatus.enum";
 import { LeaseStartDate } from "../Value-Object/LeaseStartDate.vo";
 import { RentTerm } from "../Value-Object/RentTerm.vo";
-import { ApartmentEntity } from "../AggregatesRoot/apartmentEntity.entity";
+import { ApartmentAggregateRoot } from "../AggregatesRoot/apartmentEntity.entity";
 
 export interface ILeaseRequestDate {
   requestLeaseId: number;
@@ -16,7 +16,7 @@ export interface ILeaseRequestDate {
   landlordName: LandlordAggregateRoot;
 
   // apartment fk need to add
-  apartment: ApartmentEntity;
+  apartment: ApartmentAggregateRoot;
 }
 
 export class LeaseRequestEntity {
@@ -29,7 +29,7 @@ export class LeaseRequestEntity {
 
   private studentName: StudentAggregateRoot;
   private landlordName: LandlordAggregateRoot;
-  private apartment: ApartmentEntity;
+  private apartment: ApartmentAggregateRoot;
 
   constructor(data: ILeaseRequestDate) {
     this.requestLeaseId = data.requestLeaseId;
@@ -112,5 +112,9 @@ export class LeaseRequestEntity {
 
   public getStudent(): StudentAggregateRoot {
     return this.studentName;
+  }
+
+  public getApartment(): ApartmentAggregateRoot {
+    return this.apartment;
   }
 }

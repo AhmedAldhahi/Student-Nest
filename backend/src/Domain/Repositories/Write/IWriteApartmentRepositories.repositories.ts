@@ -1,6 +1,6 @@
-import { ApartmentEntity } from "../../AggregatesRoot/apartmentEntity.entity";
+import { ApartmentAggregateRoot } from "../../AggregatesRoot/apartmentEntity.entity";
 
 export interface IWriteApartmentRepo {
-  updateApartment(apartment: ApartmentEntity): Promise<void>;
+  updateApartment(apartment: ApartmentAggregateRoot): Promise<void>;
   deleteApartmentById(id: number): Promise<void>;
 }

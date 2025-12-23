@@ -4,7 +4,7 @@ import { IReadApartmentRepo } from "../../../Domain/Repositories/Read/ReadApartm
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { ApartmentModel } from "../../Database/orm/TypeOrm/entity/Apartment.entity";
 import { ApartmentMapper } from "../mapper/apartment.mapper";
-import { ApartmentEntity } from "../../../Domain/AggregatesRoot/apartmentEntity.entity";
+import { ApartmentAggregateRoot } from "../../../Domain/AggregatesRoot/apartmentEntity.entity";
 
 export class ReadApartmentRepositories implements IReadApartmentRepo {
   public async findAllApartment(): Promise<IApartmentDTO[] | null> {
@@ -134,7 +134,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
     }
   }
 
-  public async findApartmentById(id: number): Promise<ApartmentEntity | null> {
+  public async findApartmentById(id: number): Promise<ApartmentAggregateRoot | null> {
     try {
       const apartment = await AppDataSource.getInstance()
         .getRepository(ApartmentModel)

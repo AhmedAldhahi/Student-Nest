@@ -9,6 +9,7 @@ import {
 import { LandlordModel } from "./Landloard.entity";
 import { StudentModel } from "./Student.entity";
 import { LeaseRequestStatus } from "../../../../../Domain/Enum/LeaseRequestStatus.enum";
+import { ApartmentModel } from "./Apartment.entity";
 
 @Entity("leaseRequest")
 export class LeaseRequestModel {
@@ -40,4 +41,11 @@ export class LeaseRequestModel {
   })
   @JoinColumn({ name: "landlordId" })
   landlord: LandlordModel;
+
+  @ManyToOne(() => ApartmentModel, {
+    nullable: false,
+    onDelete: "CASCADE",
+  })
+  @JoinColumn({ name: "apartmentId" })
+  apartment: ApartmentModel;
 }
