@@ -12,12 +12,11 @@ import { buildControllers } from "./Presentation/http/controllers/index.controll
 import { createVerficationRouter } from "./Presentation/http/routes/registeration/Verfication.route";
 import { PasswordRecoveryRouter } from "./Presentation/http/routes/registeration/PasswordRecvery.route";
 import { profileRouter } from "./Presentation/http/routes/profile.routes";
-import { UserManagementController } from "./Presentation/http/controllers/admin/userMangement.controller";
 import { userManagementRouter } from "./Presentation/http/routes/admin/userMangement.routes";
 import { LeaseManagementRouter } from "./Presentation/http/routes/admin/leaseMangement.router";
 import { LeaseRequestManagementRouter } from "./Presentation/http/routes/admin/leaseRequestMangement.router";
 import { notificationRouter } from "./Presentation/http/routes/admin/notifcationMangement.routes";
-import { NotificationController } from "./Presentation/http/controllers/admin/Notifcation.controller";
+import { ApartmentRouter } from "./Presentation/http/routes/admin/apartmentMangement.router";
 
 export class Server {
   public app = express();
@@ -98,12 +97,18 @@ export class Server {
       adminLandloardManagementController,
       adminLeaseRequestManagementController,
       adminNotificationController,
+      adminApartmentController,
     } = buildControllers();
 
     this.app.use("/api/v1/auth", createAuthRouter(authController));
     this.app.use("/api/v1/me/", profileRouter(profileController));
     this.app.use("/api/v1/", createVerficationRouter(verificationController));
+    this.app.use(
+      "/api/v1/password-recovery",
+      PasswordRecoveryRouter(passwordRecoverController)
+    );
 
+    ///////////////////// start Admin section /////////////////////////////
     this.app.use(
       "/api/v1/admin",
       LeaseManagementRouter(adminLeaseMangementController)
@@ -124,10 +129,9 @@ export class Server {
       userManagementRouter(adminLandloardManagementController)
     );
 
-    this.app.use(
-      "/api/v1/password-recovery",
-      PasswordRecoveryRouter(passwordRecoverController)
-    );
+    this.app.use("/api/v1/admin", ApartmentRouter(adminApartmentController));
+
+    ///////////////////// End Admin section /////////////////////////////
 
     this.startupDebug("Server configuration completed.");
   }

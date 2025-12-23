@@ -7,8 +7,10 @@ import { IWriteStudentRepositories } from "../../Domain/Repositories/Write/Write
 import { WriteStudentRepositories } from "./Write/WriteStudentRepositories";
 import { IWriteLandlordRepositories } from "../../Domain/Repositories/Write/WriteLandlordRepositories.repositories";
 import { WriteLandlordRepositories } from "./Write/WriteLandlordRepositories";
-import { IWriteNotificationRepo } from "../../Domain/Repositories/Write/IWriteUpdateNotficationStatusRepositories.repositores";
+import { IWriteNotificationRepo } from "../../Domain/Repositories/Write/IWriteNotficationRepositories.repositores";
 import { WriteNotificationRepositories } from "./Write/WriteNotificationRepositories";
+import { IWriteApartmentRepo } from "../../Domain/Repositories/Write/IWriteApartmentRepositories.repositories";
+import { WriteApartmentsRepositories } from "./Write/WriteApartmentRepositories";
 
 export class UnitOfWork implements IUnitOfWork {
   //TESt
@@ -20,6 +22,7 @@ export class UnitOfWork implements IUnitOfWork {
   public writeStudentRepo!: IWriteStudentRepositories;
   public writeLandlordRepo!: IWriteLandlordRepositories;
   public writeNotificationRepo!: IWriteNotificationRepo;
+  public writeApartmentRepo!: IWriteApartmentRepo;
 
   async startTransaction(): Promise<void> {
     this.queryRunner = AppDataSource.getInstance().createQueryRunner();
@@ -33,6 +36,7 @@ export class UnitOfWork implements IUnitOfWork {
     this.writeStudentRepo = new WriteStudentRepositories(manager);
     this.writeLandlordRepo = new WriteLandlordRepositories(manager);
     this.writeNotificationRepo = new WriteNotificationRepositories(manager);
+    this.writeApartmentRepo = new WriteApartmentsRepositories(manager);
   }
 
   async commitTransaction(): Promise<void> {

@@ -15,5 +15,26 @@ export const ApartmentRouter = (
     apartmentController.getAllApartments
   );
 
+  router.get(
+    "/apartments/:name",
+    isAuth,
+    isAdmin,
+    apartmentController.getApartmentsByName
+  );
+
+  router.patch(
+    "/apartment/:apartmentId",
+    isAuth,
+    isAdmin,
+    apartmentController.updateApartmentVerificationStatus
+  );
+
+  router.delete(
+    "/apartment/:apartmentId",
+    isAuth,
+    isAdmin,
+    apartmentController.DeleteApartmentById
+  );
+
   return router;
 };

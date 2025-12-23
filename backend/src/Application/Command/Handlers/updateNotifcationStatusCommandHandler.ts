@@ -26,13 +26,10 @@ export class UpdateNotificationStatusCommandHandler
       // mark as read
       if (command.isRead === true) {
         notificationRepo.markAsRead();
-      } 
-      
+      }
 
       await this.uow.startTransaction();
-      await this.uow.writeNotificationRepo.updateNotificationStatus(
-        notificationRepo
-      );
+      await this.uow.writeNotificationRepo.updateNotification(notificationRepo);
       await this.uow.commitTransaction();
     } catch (error: any) {
       await this.uow.rollbackTransaction();

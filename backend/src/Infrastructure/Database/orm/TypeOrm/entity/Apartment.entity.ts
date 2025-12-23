@@ -59,7 +59,8 @@ export class ApartmentModel {
   })
   @JoinColumn({ name: "landlordId" })
   landlord: LandlordModel;
-
+ 
+  //TODO:orphanRemoval: true need to add
   @OneToMany(() => ApartmentDocumentModel, (doc) => doc.apartment, {
     cascade: true,
   })

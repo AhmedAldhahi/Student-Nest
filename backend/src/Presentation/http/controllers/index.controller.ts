@@ -60,7 +60,10 @@ export const buildControllers = () => {
   );
 
   const adminApartmentController = new ApartmentManagementController(
-    useCases.GetAllApartmentUseCase
+    useCases.GetAllApartmentUseCase,
+    useCases.getApartmentsByNameUseCase,
+    useCases.editStatusApartmentVerifiedUseCase,
+    useCases.deleteApartmentByIdUseCase
   );
 
   return {

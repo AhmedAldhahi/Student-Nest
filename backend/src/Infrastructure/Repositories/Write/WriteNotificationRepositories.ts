@@ -1,6 +1,6 @@
 import { EntityManager } from "typeorm";
 import { NotificationEntity } from "../../../Domain/Entities/NotificationEntity.entity";
-import { IWriteNotificationRepo } from "../../../Domain/Repositories/Write/IWriteUpdateNotficationStatusRepositories.repositores";
+import { IWriteNotificationRepo } from "../../../Domain/Repositories/Write/IWriteNotficationRepositories.repositores";
 import { WriteUserRepositories } from "./WriteUserRepositories";
 import { NotificationMapper } from "../mapper/notification.mapper";
 import { NotificationModel } from "../../Database/orm/TypeOrm/entity/Notifcation.entity";
@@ -14,7 +14,7 @@ export class WriteNotificationRepositories implements IWriteNotificationRepo {
     this.writeUserRepo = new WriteUserRepositories(manager);
   }
 
-  public async updateNotificationStatus(
+  public async updateNotification(
     notification: NotificationEntity
   ): Promise<void> {
     const model = NotificationMapper.toModel(notification);

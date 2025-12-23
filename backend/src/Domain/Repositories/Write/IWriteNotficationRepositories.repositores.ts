@@ -1,5 +1,5 @@
 import { NotificationEntity } from "../../Entities/NotificationEntity.entity";
 
 export interface IWriteNotificationRepo {
-  updateNotificationStatus(notification: NotificationEntity): Promise<void>;
+  updateNotification(notification: NotificationEntity): Promise<void>;
 }

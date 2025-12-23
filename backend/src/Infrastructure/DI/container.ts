@@ -32,7 +32,12 @@ import {
   GetAllNotification,
   updateNotificationStatus,
 } from "./admin/NotifcationMangament";
-import { GetAllApartment } from "./admin/ApartmentMagament";
+import {
+  DeleteApartmentById,
+  EditApartmentStatusVerified,
+  GetAllApartment,
+  GetApartmentByName,
+} from "./admin/ApartmentMagament";
 
 export function buildDependencies() {
   return {
@@ -57,7 +62,10 @@ export function buildDependencies() {
       getLeaseRequestByIdUseCase: GetLeaseRequestById(),
       GetAllNotificationUseCase: GetAllNotification(),
       updateNotficationUseCase: updateNotificationStatus(),
-      GetAllApartmentUseCase: GetAllApartment()
+      GetAllApartmentUseCase: GetAllApartment(),
+      getApartmentsByNameUseCase: GetApartmentByName(),
+      editStatusApartmentVerifiedUseCase: EditApartmentStatusVerified(),
+      deleteApartmentByIdUseCase: DeleteApartmentById(),
     },
   };
 }

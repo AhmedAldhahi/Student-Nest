@@ -1,3 +1,4 @@
+import { IApartmentDTO } from "../../../Application/Dtos/admin/ApartmentDTo.dtos";
 import { ApartmentEntity } from "../../../Domain/AggregatesRoot/apartmentEntity.entity";
 import { ApartmentPrice } from "../../../Domain/Value-Object/ApartmentPrice.vo";
 import { numberOfBed } from "../../../Domain/Value-Object/NumberOfBed.vo";
@@ -17,6 +18,7 @@ export class ApartmentMapper {
       (apartmentModel.title = apartment.getTitle()),
       (apartmentModel.description = apartment.getDescription()),
       (apartmentModel.address = apartment.getAddress()),
+      apartmentModel.Verified = apartment.getVerified(),
       (apartmentModel.isJoin = apartment.getIsJoin()),
       (apartmentModel.createAt = apartment.getCreateAt()),
       (apartmentModel.updateAt = apartment.getUpdateAt()),
@@ -75,5 +77,30 @@ export class ApartmentMapper {
         ? model.documents.map((doc) => ApartmentDocumentMapper.toEntity(doc))
         : [],
     });
+  }
+
+  public static toResponses(model: ApartmentModel): IApartmentDTO {
+    return {
+      apartmentId: model.apartmentId,
+      propertyStatus: model.propertyStatus,
+      title: model.title,
+      description: model.description,
+      address: model.address,
+      Verified: model.Verified,
+      isFully: model.isFully,
+      isJoin: model.isJoin,
+      createAt: model.createAt,
+      updateAt: model.updateAt,
+
+      numberOfBed: model.numberOfBed,
+      numberOfRoom: model.numberOfRoom,
+      price: model.price,
+
+      landlordName: model.landlord.user.Name,
+      googleMapLocation: GoogleMapMapper.toEntity(model.location),
+      apartmentDocument: model.documents
+        ? model.documents.map((doc) => ApartmentDocumentMapper.toEntity(doc))
+        : [],
+    };
   }
 }
