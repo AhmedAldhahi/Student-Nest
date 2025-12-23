@@ -11,12 +11,9 @@ export class GetAllLeaseRequestQueriesHandler
 
   public async handle(): Promise<any> {
     try {
-      const leaseRequest =
-        await this.readLeaseRequestRepo.findAllLeaseRequest();
-
-      return leaseRequest;
+      return this.readLeaseRequestRepo.findAllLeaseRequest();
     } catch (error: any) {
-      console.error("fail to fetch all lease request !!");
+      console.error("fail to fetch all lease request !!", error);
       throw error;
     }
   }

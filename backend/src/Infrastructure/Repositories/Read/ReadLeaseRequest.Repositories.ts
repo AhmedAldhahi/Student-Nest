@@ -19,6 +19,7 @@ export class ReadLeaseRequestRepositories
             rentTerm: true,
             requestStatus: true,
             createAt: true,
+            
             landlord: {
               userId: true,
               user: {
@@ -30,12 +31,20 @@ export class ReadLeaseRequestRepositories
               Major: true,
               user: {
                 Name: true,
+                userId: true,
               },
+            },
+
+            apartment: {
+              title: true,
+              price: true,
+              apartmentId: true,
             },
           },
           relations: {
             student: { user: true },
             landlord: { user: true },
+            apartment: true,
           },
         });
 
@@ -61,6 +70,7 @@ export class ReadLeaseRequestRepositories
           relations: {
             student: { user: true },
             landlord: { user: true },
+            apartment: true,
           },
         });
 

@@ -1,0 +1,24 @@
+import { IReadApartmentDocumentRepo } from "../../../Domain/Repositories/Read/ReadApartmentDocument.repositories";
+import { IQueriesHandlers } from "../IQuerieHandlers";
+import { GetDocumentOfApartmentByIdQueries } from "../Queries/GetDocumentOfApartmntByIdQueries";
+
+export class GetApartmentDocumentByIdQueriesHandler
+  implements IQueriesHandlers<GetDocumentOfApartmentByIdQueries>
+{
+  constructor(
+    private readonly ReadApartmentDocument: IReadApartmentDocumentRepo
+  ) {}
+
+  public async handle(
+    command: GetDocumentOfApartmentByIdQueries
+  ): Promise<any> {
+    try {
+      return await this.ReadApartmentDocument.findApartmentDocumentById(
+        command.apartmentDocumentId
+      );
+    } catch (error: any) {
+      console.error("fail to get apartment document by id !!");
+      throw error;
+    }
+  }
+}

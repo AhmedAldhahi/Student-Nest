@@ -15,7 +15,9 @@ export class LeaseRequestMapper {
     leaseRequestModel.createAt = entity.getCreateAt();
     leaseRequestModel.landlord = LandlordMapper.toOrm(entity.getLandlord());
     leaseRequestModel.student = StudentMapper.toModel(entity.getStudent());
-    leaseRequestModel.apartment = ApartmentMapper.toModel(entity.getApartment())
+    leaseRequestModel.apartment = ApartmentMapper.toModel(
+      entity.getApartment()
+    );
 
     leaseRequestModel.leaseRequestId = entity.getRequestLeaseId();
     leaseRequestModel.rentTerm = dataValidation.rentTerm;
@@ -60,11 +62,11 @@ export class LeaseRequestMapper {
       rentTerm: model.rentTerm,
       requestStatus: model.requestStatus,
       createAt: model.createAt,
-      studentName: StudentMapper.toResponse(model.student).user.name,
-      landlordName: LandlordMapper.toResponse(model.landlord).user.name,
-      apartmentTitle: ApartmentMapper.toResponses(model.apartment).title,
-      apartmentPrice: ApartmentMapper.toResponses(model.apartment).price,
-      Major: StudentMapper.toResponse(model.student).Major,
+      studentName: model.student.user.Name,
+      landlordName: model.landlord.user.Name,
+      apartmentTitle: model.apartment.title,
+      apartmentPrice: model.apartment.price,
+      Major: model.student.Major,
     };
   }
 }
