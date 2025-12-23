@@ -14,6 +14,7 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
           relations: {
             student: { user: true },
             landlord: { user: true },
+            apartment: true,
           },
         });
 
