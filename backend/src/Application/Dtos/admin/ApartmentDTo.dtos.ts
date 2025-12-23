@@ -21,3 +21,18 @@ export interface IApartmentDTO {
   googleMapLocation: GoogleMapLocationEntity;
   apartmentDocument: ApartmentDocumentEntity[];
 }
+
+export interface IApartmentSimpleDTO {
+  apartmentId: number;
+  propertyStatus: boolean;
+  title: string;
+  address: string;
+  Verified: boolean;
+  isFully: boolean;
+  isJoin: boolean;
+  numberOfBed: string;
+  numberOfRoom: string;
+  price: string;
+  landlordName: string;
+  apartmentDocument: ApartmentDocumentEntity[];
+}

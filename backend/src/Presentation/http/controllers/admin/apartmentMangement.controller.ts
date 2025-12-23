@@ -3,12 +3,16 @@ import { findAllApartmentUseCase } from "../../../../Application/Use-Case/admin/
 import { FindAllApartmentByNameUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/findAllApartmentByName.usecase";
 import { EditApartmentStatusVerifiedUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/EditApartmentStatus.usecase";
 import { DeleteApartmentByIdUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/DeleteApartment.usecase";
+import { findApartmentDocumentByIdUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/FindApartmentDocument.usecase";
+import { findApartmentByIdUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/FindApartmentDetailsById.usecase";
 export class ApartmentManagementController {
   constructor(
     private readonly getAllApartment: findAllApartmentUseCase,
     private readonly getApartmentByName: FindAllApartmentByNameUseCase,
     private readonly editApartmentVerificationStatus: EditApartmentStatusVerifiedUseCase,
-    private readonly deleteApartmentById: DeleteApartmentByIdUseCase
+    private readonly deleteApartmentById: DeleteApartmentByIdUseCase,
+    private readonly getApartmentDocumentById: findApartmentDocumentByIdUseCase,
+    private readonly GetApartmentDetailById: findApartmentByIdUseCase
   ) {}
 
   public getAllApartments = async (req: Request, res: Response) => {
@@ -83,6 +87,41 @@ export class ApartmentManagementController {
       return res.status(200).json(result);
     } catch (error: any) {
       console.error("fail delete apartment,", error);
+      return res
+        .status(400)
+        .json({ error: error.message || "internal server error" });
+    }
+  };
+
+  public FindApartmentDocumentById = async (req: Request, res: Response) => {
+    try {
+      const userId = req.user.userId;
+      const { id } = req.params;
+
+      if (!userId)
+        return res.status(400).json({ error: "no user id found !!" });
+
+      const result = await this.getApartmentDocumentById.execute(Number(id));
+      return res.status(200).json(result);
+    } catch (error: any) {
+      return res
+        .status(400)
+        .json({ error: error.message || "internal server Error" });
+    }
+  };
+
+  public getApartmentDetailById = async (req: Request, res: Response) => {
+    try {
+      
+      const { id } = req.params;
+      const userId = req.user?.userId;
+
+      if (!userId)
+        return res.status(400).json({ error: "no user id found !!" });
+
+      const result = await this.GetApartmentDetailById.execute(Number(id));
+      return res.status(200).json(result);
+    } catch (error: any) {
       return res
         .status(400)
         .json({ error: error.message || "internal server error" });

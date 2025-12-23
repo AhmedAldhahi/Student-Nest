@@ -36,5 +36,19 @@ export const ApartmentRouter = (
     apartmentController.DeleteApartmentById
   );
 
+  router.get(
+    "/apartment-document/:id",
+    isAuth,
+    isAdmin,
+    apartmentController.FindApartmentDocumentById
+  );
+
+  router.get(
+    "/apartment/:id",
+    isAuth,
+    isAdmin,
+    apartmentController.getApartmentDetailById
+  );
+
   return router;
 };

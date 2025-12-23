@@ -35,6 +35,8 @@ import {
 import {
   DeleteApartmentById,
   EditApartmentStatusVerified,
+  FindApartmentDetailByIdUseCase,
+  FindApartmentDocumentByIdUseCase,
   GetAllApartment,
   GetApartmentByName,
 } from "./admin/ApartmentMagament";
@@ -66,6 +68,8 @@ export function buildDependencies() {
       getApartmentsByNameUseCase: GetApartmentByName(),
       editStatusApartmentVerifiedUseCase: EditApartmentStatusVerified(),
       deleteApartmentByIdUseCase: DeleteApartmentById(),
+      findApartmentDocumentById: FindApartmentDocumentByIdUseCase(),
+      findApartmentDetailById: FindApartmentDetailByIdUseCase()
     },
   };
 }
