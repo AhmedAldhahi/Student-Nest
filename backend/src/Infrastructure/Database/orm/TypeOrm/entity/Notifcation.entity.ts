@@ -1,12 +1,12 @@
-import { 
-  Column, 
-  CreateDateColumn, 
-  Entity, 
-  JoinColumn, 
-  ManyToOne, 
-  PrimaryGeneratedColumn 
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
 } from "typeorm";
-import { UserModel } from "./User.entity"; 
+import { UserModel } from "./User.entity";
 
 @Entity("notification")
 export class NotificationModel {
@@ -25,13 +25,17 @@ export class NotificationModel {
   @CreateDateColumn({ name: "createAt" })
   createAt: Date;
 
-
-  @ManyToOne(() => UserModel, { nullable: true })
+  @ManyToOne(() => UserModel, {
+    nullable: true,
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "senderId" })
   sender: UserModel | null;
 
-  
-  @ManyToOne(() => UserModel, { nullable: false })
+  @ManyToOne(() => UserModel, {
+    nullable: false,
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "receiverId" })
   receiver: UserModel;
 }
