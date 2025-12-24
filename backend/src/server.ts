@@ -19,7 +19,7 @@ import { notificationRouter } from "./Presentation/http/routes/admin/notifcation
 import { ApartmentRouter } from "./Presentation/http/routes/admin/apartmentMangement.router";
 import { auditMiddleware } from "./Presentation/http/middlewares/auditLog.middleware";
 import { AuditLogRouter } from "./Presentation/http/routes/admin/auditLogMangement.router";
-import { AuditLogController } from "./Presentation/http/controllers/admin/auditLogMangement.controller";
+import { ApartmentSharedRouter } from "./Presentation/http/routes/apartment.routes";
 export class Server {
   public app = express();
   public port = parseInt(process.env.PORT || "4000", 10);
@@ -139,6 +139,12 @@ export class Server {
     this.app.use("/api/v1/admin", AuditLogRouter(adminAuditLogController));
 
     ///////////////////// End Admin section /////////////////////////////
+
+    /////////////////////Apartment section ////////////////////////////////
+
+    this.app.use("/api/v1/", ApartmentSharedRouter(adminApartmentController));
+
+    /////////////////////End apartment section ///////////////////////////
 
     this.startupDebug("Server configuration completed.");
   }
