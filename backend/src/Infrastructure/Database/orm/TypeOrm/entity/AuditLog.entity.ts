@@ -32,14 +32,14 @@ export class AuditLogModel {
   @Column({ type: "enum", enum: UserRole })
   targetUserRole: UserRole;
 
-  @Column({ type: "varchar", length: 36 })
-  performedByUserId: string;
+  @Column({ type: "varchar", length: 36, nullable: true })
+  performedByUserId: string | undefined;
 
-  @Column({ type: "varchar", length: 150 })
-  performedByUserName: string;
+  @Column({ type: "varchar", length: 150, nullable: true })
+  performedByUserName: string | undefined;
 
-  @Column({ type: "enum", enum: UserRole })
-  performedByUserRole: UserRole;
+  @Column({ type: "enum", enum: UserRole, nullable: true })
+  performedByUserRole: UserRole | undefined;
 
   @Column({ type: "varchar", length: 100 })
   record: string;

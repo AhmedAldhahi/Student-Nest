@@ -5,6 +5,7 @@ export interface IAuditLogRequest {
   actionType: AuditLogActionType;
   description: string;
   actionTimestamp: Date;
+  
   targetUserId: string;
   targetUserName: string;
   targetUserRole: string;

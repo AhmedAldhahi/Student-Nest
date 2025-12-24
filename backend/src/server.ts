@@ -17,7 +17,7 @@ import { LeaseManagementRouter } from "./Presentation/http/routes/admin/leaseMan
 import { LeaseRequestManagementRouter } from "./Presentation/http/routes/admin/leaseRequestMangement.router";
 import { notificationRouter } from "./Presentation/http/routes/admin/notifcationMangement.routes";
 import { ApartmentRouter } from "./Presentation/http/routes/admin/apartmentMangement.router";
-
+import { auditMiddleware } from "./Presentation/http/middlewares/auditLog.middleware";
 export class Server {
   public app = express();
   public port = parseInt(process.env.PORT || "4000", 10);
@@ -55,6 +55,9 @@ export class Server {
 
     // Body parsers
     this.app.use(express.json());
+
+    
+    this.app.use(auditMiddleware);
 
     // Winston request logging
     this.app.use(

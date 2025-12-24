@@ -16,9 +16,9 @@ interface AuditLogData {
   ipAddress: string;
   deviceInfo: string;
   location: string;
-  performedByUserId: string;
-  performedByUserName: string;
-  performedByUserRole: UserRole;
+  performedByUserId?: string;
+  performedByUserName?: string;
+  performedByUserRole?: UserRole;
 }
 
 export class AuditLogEntity {
@@ -36,9 +36,9 @@ export class AuditLogEntity {
   private ipAddress: string;
   private deviceInfo: string;
   private location: string;
-  private performedByUserId: string;
-  private performedByUserName: string;
-  private performedByUserRole: UserRole;
+  private performedByUserId?: string | undefined;
+  private performedByUserName?: string | undefined;
+  private performedByUserRole?: UserRole | undefined;
 
   constructor(data: AuditLogData) {
     this.actionType = data.actionType;
@@ -112,16 +112,16 @@ export class AuditLogEntity {
     return this.location;
   }
 
-  public getPerformedByUserId(): string {
-    return this.performedByUserId;
+  public getPerformedByUserId(): string | undefined {
+    return this.performedByUserId ?? undefined;
   }
 
-  public getPerformedByUserName(): string {
-    return this.performedByUserName;
+  public getPerformedByUserName(): string | undefined {
+    return this.performedByUserName ?? undefined;
   }
 
-  public getPerformedByUserRole(): UserRole {
-    return this.performedByUserRole;
+  public getPerformedByUserRole(): UserRole | undefined {
+    return this.performedByUserRole ?? undefined;
   }
 
   public getFieldName(): Record<string, any> {

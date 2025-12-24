@@ -3,6 +3,11 @@ import { Request, Response } from "express";
 import { RegisterStudentUseCase } from "../../../Application/Use-Case/Registeration/RegisterStudentUseCase.usecase";
 import { RegisterLandloardUseCase } from "../../../Application/Use-Case/Registeration/RegisterLandloardUseCase.usecase";
 import { LoginUseCase } from "../../../Application/Use-Case/Registeration/LoginUseCase.usecase";
+import { AuditLogActionType } from "../../../Domain/Enum/AuditLogAction.enum";
+import { UserRole } from "../../../Domain/Enum/UserRole.enum";
+import { IReadUserRepositories } from "../../../Domain/Repositories/Read/ReadUserRepositories.repositories";
+import { JwtTokenService } from "../../../Infrastructure/Services/security/TokenService.service";
+import { ReadUserRepositories } from "../../../Infrastructure/Repositories/Read/ReadUserRepositories";
 
 export class AuthController {
   constructor(
@@ -11,7 +16,7 @@ export class AuthController {
     private loginUserUseCase: LoginUseCase
   ) {}
 
-  public registerLandloard = async (req: Request, res: Response) => {
+  public registerLandlord = async (req: Request, res: Response) => {
     try {
       let fileBeenUpload = req.file;
 
@@ -29,12 +34,6 @@ export class AuthController {
           }
         }
       }
-
-      //debug
-      console.log(
-        "file uploaded check: ",
-        fileBeenUpload ? "Found" : "Not Found"
-      );
 
       if (!fileBeenUpload) {
         return res
@@ -110,6 +109,32 @@ export class AuthController {
     try {
       const dto = req.body;
       const result = await this.loginUserUseCase.execute(dto);
+
+      let extractedUserId = "UNKNOWN";
+      let user;
+
+      if (result.token) {
+        try {
+          const base64Payload = result.token.split(".")[1];
+          const payloadBuffer = Buffer.from(base64Payload, "base64");
+          const payload = JSON.parse(payloadBuffer.toString());
+          if (payload.userId) extractedUserId = payload.userId;
+
+          user = await new ReadUserRepositories().findById(extractedUserId);
+        } catch (e) {
+          console.error("Token decode failed, using fallback ID");
+        }
+      }
+
+      req.audit = {
+        actionType: AuditLogActionType.GET,
+        description: "User logged in successfully",
+        targetUserId: extractedUserId,
+        targetUserName: user?.getName()!,
+        targetUserRole: user?.getRole()!,
+        record: "user",
+        fieldName: { email: true, password: true },
+      };
 
       return res.status(201).json(result);
     } catch (error: any) {

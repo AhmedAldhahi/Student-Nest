@@ -33,7 +33,7 @@ export const createAuthRouter = (authController: AuthController): Router => {
     upload.single("document"),
     validation(RegisterLandloardSchema),
     registerApiRateLimited,
-    authController.registerLandloard
+    authController.registerLandlord
   );
 
   router.post(
