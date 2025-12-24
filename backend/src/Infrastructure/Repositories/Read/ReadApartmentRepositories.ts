@@ -33,18 +33,10 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
           numberOfRoom: true,
 
           landlord: {
-            userId: true, 
+            userId: true,
             user: {
-              Name: true, 
+              Name: true,
             },
-          },
-          location: {
-            latitude: true,
-            longitude: true,
-          },
-          documents: {
-            documentUrl: true,
-            apartmentType: true,
           },
         },
 
@@ -53,8 +45,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
           landlord: {
             user: true, // Join Landlord -> User
           },
-          location: true, // Join Apartment -> Location
-          documents: true, // Join Apartment -> Documents
+          photos: true,
         },
       });
 
@@ -109,10 +100,12 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
             longitude: true,
           },
           documents: {
-            apartmentDocumentId: true, 
+            apartmentDocumentId: true,
             documentUrl: true,
             apartmentType: true,
           },
+
+          photos: true,
         },
 
         relations: {
@@ -121,6 +114,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
           },
           location: true,
           documents: true,
+          photos: true,
         },
       });
 

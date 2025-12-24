@@ -172,9 +172,9 @@ export class ApartmentAggregateRoot {
 
   public getGoogleMapLocation(): GoogleMapLocationEntity {
     return this.googleMapLocation;
-  } 
+  }
 
-  public getApartmentPhotoDocument() : ApartmentPhotoDocumentEntity [] {
+  public getApartmentPhotoDocument(): ApartmentPhotoDocumentEntity[] {
     return this.apartmentPhotoDocument;
   }
 
@@ -200,7 +200,11 @@ export class ApartmentAggregateRoot {
 
   public getNumberOfRoom(): string | undefined {
     return this.numberOfRoom.getValue() ?? undefined;
-  } 
+  }
 
-  
+  //=======================Apartment aggregation method ====================//
+
+  public updateApartmentPhotos(photos: ApartmentPhotoDocumentEntity[]): void {
+    this.apartmentPhotoDocument = photos;
+  }
 }

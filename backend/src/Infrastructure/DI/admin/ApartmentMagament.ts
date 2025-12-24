@@ -82,10 +82,12 @@ export function FindApartmentDetailByIdUseCase(): findApartmentByIdUseCase {
 export function editApartmentDetailUseCase(): EditApartmentDetailUseCase {
   const ReadApartmentRepo = new ReadApartmentRepositories();
   const uow = new UnitOfWork();
+  const fileService = new CloudinaryService();
 
   const commandHandler = new EditApartmentDetailByIdCommandHandler(
     ReadApartmentRepo,
-    uow
+    uow,
+    fileService
   );
 
   return new EditApartmentDetailUseCase(commandHandler);

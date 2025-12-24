@@ -1,3 +1,5 @@
+import { ApartmentPhotoDocumentEntity } from "../../../Domain/Entities/phohtoDocumentEntity.entity";
+
 export interface EditApartmentDataRequest {
   title?: string;
   description?: string;
@@ -6,4 +8,5 @@ export interface EditApartmentDataRequest {
   numberOfRoom?: string;
   isJoin?: boolean;
   price?: string;
+  photos?: ApartmentPhotoDocumentEntity[];
 }
