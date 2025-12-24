@@ -1,5 +1,6 @@
 import { buildDependencies } from "../../../Infrastructure/DI/container";
 import { ApartmentManagementController } from "./admin/apartmentMangement.controller";
+import { AuditLogController } from "./admin/auditLogMangement.controller";
 import { LeaseManagementController } from "./admin/leaseMangement.controller";
 import { LeaseRequestManagementController } from "./admin/leaseRequestMangement.controller";
 import { NotificationController } from "./admin/Notifcation.controller";
@@ -59,6 +60,10 @@ export const buildControllers = () => {
     useCases.updateNotficationUseCase
   );
 
+  const adminAuditLogController = new AuditLogController(
+    useCases.findAllAuditLogUseCase
+  );
+
   const adminApartmentController = new ApartmentManagementController(
     useCases.GetAllApartmentUseCase,
     useCases.getApartmentsByNameUseCase,
@@ -80,5 +85,6 @@ export const buildControllers = () => {
     adminLeaseRequestManagementController,
     adminNotificationController,
     adminApartmentController,
+    adminAuditLogController
   };
 };

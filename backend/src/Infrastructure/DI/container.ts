@@ -40,6 +40,7 @@ import {
   GetAllApartment,
   GetApartmentByTitle,
 } from "./admin/ApartmentMagament";
+import { findAllAuditLogUseCase } from "./admin/AuditLogMangament";
 
 
 export function buildDependencies() {
@@ -73,6 +74,7 @@ export function buildDependencies() {
       findApartmentDetailById: FindApartmentDetailByIdUseCase(),
       editApartmentUseCase: editApartmentDetailUseCase(),
       editApartmentDocumentUseCase: EditApartmentDocumentsUseCase(),
+      findAllAuditLogUseCase: findAllAuditLogUseCase(),
     },
   };
 }

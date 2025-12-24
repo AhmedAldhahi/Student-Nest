@@ -4,9 +4,6 @@ import { RegisterStudentUseCase } from "../../../Application/Use-Case/Registerat
 import { RegisterLandloardUseCase } from "../../../Application/Use-Case/Registeration/RegisterLandloardUseCase.usecase";
 import { LoginUseCase } from "../../../Application/Use-Case/Registeration/LoginUseCase.usecase";
 import { AuditLogActionType } from "../../../Domain/Enum/AuditLogAction.enum";
-import { UserRole } from "../../../Domain/Enum/UserRole.enum";
-import { IReadUserRepositories } from "../../../Domain/Repositories/Read/ReadUserRepositories.repositories";
-import { JwtTokenService } from "../../../Infrastructure/Services/security/TokenService.service";
 import { ReadUserRepositories } from "../../../Infrastructure/Repositories/Read/ReadUserRepositories";
 
 export class AuthController {
@@ -47,6 +44,29 @@ export class AuthController {
       };
 
       const result = await this.registerLandlordUseCase.execute(dto);
+
+      const user = await new ReadUserRepositories().findByEmail(dto.email);
+
+      req.audit = {
+        actionType: AuditLogActionType.CREATE,
+        description: "Landlord Register in successfully",
+        targetUserId: user?.getUserId()!,
+        targetUserName: dto.name,
+        targetUserRole: dto.role,
+        record: "user,landlord",
+
+        fieldName: {
+          email: true,
+          name: true,
+          password: true,
+          role: true,
+          dateOfBirth: true,
+          phoneNumber: true,
+          cliQAccount: true,
+          LandlordGovId: true,
+          document: true,
+        },
+      };
 
       return res.status(201).json(result);
     } catch (error: any) {
@@ -89,6 +109,32 @@ export class AuthController {
 
       // 4. EXECUTE USE CASE
       const result = await this.registerStudentUseCase.execute(dto);
+
+      const user = await new ReadUserRepositories().findByEmail(dto.email);
+
+      req.audit = {
+        actionType: AuditLogActionType.CREATE,
+        description: "Student Register in successfully",
+        targetUserId: user?.getUserId()!,
+        targetUserName: dto.name,
+        targetUserRole: dto.role,
+        record: "user,student",
+
+        fieldName: {
+          email: true,
+          name: true,
+          password: true,
+          role: true,
+          dateOfBirth: true,
+          phoneNumber: true,
+          major: true,
+          gradateYear: true,
+          studentCardId: true,
+          universityName: true,
+          studentGovId: true,
+          verificationFile: true,
+        },
+      };
 
       return res.status(201).json({ result });
     } catch (error: any) {

@@ -18,6 +18,8 @@ import { LeaseRequestManagementRouter } from "./Presentation/http/routes/admin/l
 import { notificationRouter } from "./Presentation/http/routes/admin/notifcationMangement.routes";
 import { ApartmentRouter } from "./Presentation/http/routes/admin/apartmentMangement.router";
 import { auditMiddleware } from "./Presentation/http/middlewares/auditLog.middleware";
+import { AuditLogRouter } from "./Presentation/http/routes/admin/auditLogMangement.router";
+import { AuditLogController } from "./Presentation/http/controllers/admin/auditLogMangement.controller";
 export class Server {
   public app = express();
   public port = parseInt(process.env.PORT || "4000", 10);
@@ -56,7 +58,6 @@ export class Server {
     // Body parsers
     this.app.use(express.json());
 
-    
     this.app.use(auditMiddleware);
 
     // Winston request logging
@@ -101,6 +102,7 @@ export class Server {
       adminLeaseRequestManagementController,
       adminNotificationController,
       adminApartmentController,
+      adminAuditLogController,
     } = buildControllers();
 
     this.app.use("/api/v1/auth", createAuthRouter(authController));
@@ -133,6 +135,8 @@ export class Server {
     );
 
     this.app.use("/api/v1/admin", ApartmentRouter(adminApartmentController));
+
+    this.app.use("/api/v1/admin", AuditLogRouter(adminAuditLogController));
 
     ///////////////////// End Admin section /////////////////////////////
 

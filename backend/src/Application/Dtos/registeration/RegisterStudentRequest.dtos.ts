@@ -18,3 +18,5 @@ export interface RegisterStudentRequest {
   
   address?: string;
 }
+
+  
