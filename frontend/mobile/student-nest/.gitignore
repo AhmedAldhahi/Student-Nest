@@ -129,7 +129,7 @@ test-results.xml
 *.pid.lock
 
 # Local data files
-data/
+
 database.sqlite
 *.db
 *.db-journal
