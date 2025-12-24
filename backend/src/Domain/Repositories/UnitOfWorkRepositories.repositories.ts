@@ -3,6 +3,7 @@ import { IWriteStudentRepositories } from "./Write/WriteStudentRepositories.repo
 import { IWriteLandlordRepositories } from "./Write/WriteLandlordRepositories.repositories";
 import { IWriteNotificationRepo } from "./Write/IWriteNotficationRepositories.repositores";
 import { IWriteApartmentRepo } from "./Write/IWriteApartmentRepositories.repositories";
+import { IWriteApartmentDocumentRepo } from "./Write/IWriteApartmentDocumentRepositoires.repositories";
 
 export interface IUnitOfWork {
   // cqrs
@@ -11,6 +12,7 @@ export interface IUnitOfWork {
   writeLandlordRepo: IWriteLandlordRepositories;
   writeNotificationRepo: IWriteNotificationRepo;
   writeApartmentRepo: IWriteApartmentRepo;
+  writeApartmentDocumentRepo: IWriteApartmentDocumentRepo
 
 
   startTransaction(): Promise<void>;

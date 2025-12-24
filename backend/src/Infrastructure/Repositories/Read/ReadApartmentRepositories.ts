@@ -1,5 +1,8 @@
 import { Like } from "typeorm";
-import { IApartmentDTO } from "../../../Application/Dtos/admin/ApartmentDTo.dtos";
+import {
+  IApartmentDTO,
+  IApartmentSimpleDTO,
+} from "../../../Application/Dtos/admin/ApartmentDTo.dtos";
 import { IReadApartmentRepo } from "../../../Domain/Repositories/Read/ReadApartmentRepo.repositoreis";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { ApartmentModel } from "../../Database/orm/TypeOrm/entity/Apartment.entity";
@@ -7,7 +10,7 @@ import { ApartmentMapper } from "../mapper/apartment.mapper";
 import { ApartmentAggregateRoot } from "../../../Domain/AggregatesRoot/apartmentEntity.entity";
 
 export class ReadApartmentRepositories implements IReadApartmentRepo {
-  public async findAllApartment(): Promise<IApartmentDTO[] | null> {
+  public async findAllApartment(): Promise<IApartmentSimpleDTO[] | null> {
     try {
       const apartmentRepo =
         AppDataSource.getInstance().getRepository(ApartmentModel);
@@ -30,9 +33,9 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
           numberOfRoom: true,
 
           landlord: {
-            userId: true, // Select column here
+            userId: true, 
             user: {
-              Name: true, // Select column here
+              Name: true, 
             },
           },
           location: {
@@ -59,7 +62,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
         return [];
       }
 
-      return apartments.map((apt) => ApartmentMapper.toResponses(apt));
+      return apartments.map((apt) => ApartmentMapper.toResponsesSimple(apt));
     } catch (error: any) {
       console.error("Error finding apartments:", error);
       throw new Error("Unable to retrieve apartments.");
@@ -68,7 +71,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
 
   public async findApartmentName(
     prefix: string
-  ): Promise<IApartmentDTO[] | null> {
+  ): Promise<IApartmentSimpleDTO[] | null> {
     try {
       const apartmentRepo =
         AppDataSource.getInstance().getRepository(ApartmentModel);
@@ -101,12 +104,12 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
             },
           },
           location: {
-            googleMapLocationId: true, // Don't forget the ID!
+            googleMapLocationId: true,
             latitude: true,
             longitude: true,
           },
           documents: {
-            apartmentDocumentId: true, // Don't forget the ID!
+            apartmentDocumentId: true, 
             documentUrl: true,
             apartmentType: true,
           },
@@ -127,14 +130,16 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
 
       // 3. FIX: Properly close the map function and use the correct Mapper method
       // Assuming 'toResponses' is your DTO mapper from the previous method
-      return apartments.map((orm) => ApartmentMapper.toResponses(orm));
+      return apartments.map((orm) => ApartmentMapper.toResponsesSimple(orm));
     } catch (error: any) {
       console.error("Error searching apartment name:", error);
       throw new Error(`Unable to search apartments: ${error.message}`);
     }
   }
 
-  public async findApartmentById(id: number): Promise<ApartmentAggregateRoot | null> {
+  public async findApartmentById(
+    id: number
+  ): Promise<ApartmentAggregateRoot | null> {
     try {
       const apartment = await AppDataSource.getInstance()
         .getRepository(ApartmentModel)
@@ -148,6 +153,28 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
         });
 
       return apartment ? ApartmentMapper.toEntity(apartment) : null;
+    } catch (error) {
+      console.error("Error finding landlord by ID:", error);
+      throw new Error("Error retrieving landlord data");
+    }
+  }
+
+  public async findApartmentDetailsById(
+    id: number
+  ): Promise<IApartmentDTO | null> {
+    try {
+      const apartment = await AppDataSource.getInstance()
+        .getRepository(ApartmentModel)
+        .findOne({
+          where: { apartmentId: id },
+          relations: {
+            landlord: { user: true },
+            documents: true,
+            location: true,
+          },
+        });
+
+      return apartment ? ApartmentMapper.toResponsesDetail(apartment) : null;
     } catch (error) {
       console.error("Error finding landlord by ID:", error);
       throw new Error("Error retrieving landlord data");

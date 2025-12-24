@@ -1,4 +1,7 @@
-import { IApartmentDTO } from "../../../Application/Dtos/admin/ApartmentDTo.dtos";
+import {
+  IApartmentDTO,
+  IApartmentSimpleDTO,
+} from "../../../Application/Dtos/admin/ApartmentDTo.dtos";
 import { ApartmentAggregateRoot } from "../../../Domain/AggregatesRoot/apartmentEntity.entity";
 import { ApartmentPrice } from "../../../Domain/Value-Object/ApartmentPrice.vo";
 import { numberOfBed } from "../../../Domain/Value-Object/NumberOfBed.vo";
@@ -79,7 +82,27 @@ export class ApartmentMapper {
     });
   }
 
-  public static toResponses(model: ApartmentModel): IApartmentDTO {
+  public static toResponsesSimple(model: ApartmentModel): IApartmentSimpleDTO {
+    return {
+      apartmentId: model.apartmentId,
+      propertyStatus: model.propertyStatus,
+      title: model.title,
+      address: model.address,
+      Verified: model.Verified,
+      isFully: model.isFully,
+      isJoin: model.isJoin,
+      numberOfBed: model.numberOfBed,
+      numberOfRoom: model.numberOfRoom,
+      price: model.price,
+
+      landlordName: model.landlord.user.Name,
+      apartmentDocument: model.documents
+        ? model.documents.map((doc) => ApartmentDocumentMapper.toEntity(doc))
+        : [],
+    };
+  }
+
+  public static toResponsesDetail(model: ApartmentModel): IApartmentDTO {
     return {
       apartmentId: model.apartmentId,
       propertyStatus: model.propertyStatus,
@@ -89,18 +112,28 @@ export class ApartmentMapper {
       Verified: model.Verified,
       isFully: model.isFully,
       isJoin: model.isJoin,
-      createAt: model.createAt,
-      updateAt: model.updateAt,
-
       numberOfBed: model.numberOfBed,
       numberOfRoom: model.numberOfRoom,
       price: model.price,
-
-      landlordName: model.landlord.user.Name,
+      createAt: model.createAt,
+      updateAt: model.updateAt,
       googleMapLocation: GoogleMapMapper.toEntity(model.location),
+      landlordName: model.landlord.user.Name,
       apartmentDocument: model.documents
         ? model.documents.map((doc) => ApartmentDocumentMapper.toEntity(doc))
         : [],
     };
   }
 }
+
+/**
+ * no id
+ * jameel missed description
+ * is fully
+ *
+ * no create at,update at ,
+ * no google map locations
+ *
+ * one photo
+ *
+ */

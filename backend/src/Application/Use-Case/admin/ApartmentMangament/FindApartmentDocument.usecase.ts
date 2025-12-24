@@ -1,9 +1,18 @@
 import { GetApartmentDocumentByIdQueriesHandler } from "../../../Querie/Handlers/GetApartmentDocumentById.QueriesHandler";
+import { GetDocumentOfApartmentByIdQueries } from "../../../Querie/Queries/GetDocumentOfApartmntByIdQueries";
 
 export class findApartmentDocumentByIdUseCase {
-    constructor(private readonly queriesHandler: GetApartmentDocumentByIdQueriesHandler){}
+  constructor(
+    private readonly queriesHandler: GetApartmentDocumentByIdQueriesHandler
+  ) {}
 
-    public async execute() {
-           
+  public async execute(id: number) {
+    try {
+      const command = new GetDocumentOfApartmentByIdQueries(id);
+      return await this.queriesHandler.handle(command);
+    } catch (error: any) {
+      console.error("fail to get all apartment document !!");
+      throw error;
     }
+  }
 }

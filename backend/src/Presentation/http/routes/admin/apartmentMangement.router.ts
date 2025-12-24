@@ -23,7 +23,7 @@ export const ApartmentRouter = (
   );
 
   router.patch(
-    "/apartment/:apartmentId",
+    "/apartment/:apartmentId/verify",
     isAuth,
     isAdmin,
     apartmentController.updateApartmentVerificationStatus
@@ -34,6 +34,34 @@ export const ApartmentRouter = (
     isAuth,
     isAdmin,
     apartmentController.DeleteApartmentById
+  );
+
+  router.get(
+    "/apartment-document/:id",
+    isAuth,
+    isAdmin,
+    apartmentController.FindApartmentDocumentById
+  );
+
+  router.get(
+    "/apartment/:id",
+    isAuth,
+    isAdmin,
+    apartmentController.getApartmentDetailById
+  );
+
+  router.patch(
+    "/apartment/:id",
+    isAuth,
+    isAdmin,
+    apartmentController.UpdateApartmentDetailsById
+  );
+
+  router.patch(
+    "/apartment-document/:id", // <--- Added Slash
+    isAuth,
+    isAdmin,
+    apartmentController.updateApartmentDocuments
   );
 
   return router;

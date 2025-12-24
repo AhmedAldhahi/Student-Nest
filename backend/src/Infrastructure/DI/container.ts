@@ -15,11 +15,9 @@ import {
 
 import {
   deleteLandlordById,
-  // GetAllLandlords,
   updateLandlordStatus,
   findUserByEmail,
   GetAllUsers,
-  // GetAllStudents,
 } from "./admin/UserMangement";
 
 import { getAllLease, GetLeaseById } from "./admin/UserLease";
@@ -34,10 +32,15 @@ import {
 } from "./admin/NotifcationMangament";
 import {
   DeleteApartmentById,
+  editApartmentDetailUseCase,
+  EditApartmentDocumentsUseCase,
   EditApartmentStatusVerified,
+  FindApartmentDetailByIdUseCase,
+  FindApartmentDocumentByIdUseCase,
   GetAllApartment,
   GetApartmentByName,
 } from "./admin/ApartmentMagament";
+
 
 export function buildDependencies() {
   return {
@@ -66,6 +69,10 @@ export function buildDependencies() {
       getApartmentsByNameUseCase: GetApartmentByName(),
       editStatusApartmentVerifiedUseCase: EditApartmentStatusVerified(),
       deleteApartmentByIdUseCase: DeleteApartmentById(),
+      findApartmentDocumentById: FindApartmentDocumentByIdUseCase(),
+      findApartmentDetailById: FindApartmentDetailByIdUseCase(),
+      editApartmentUseCase: editApartmentDetailUseCase(),
+      editApartmentDocumentUseCase: EditApartmentDocumentsUseCase(),
     },
   };
 }
