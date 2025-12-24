@@ -38,7 +38,7 @@ import {
   FindApartmentDetailByIdUseCase,
   FindApartmentDocumentByIdUseCase,
   GetAllApartment,
-  GetApartmentByName,
+  GetApartmentByTitle,
 } from "./admin/ApartmentMagament";
 
 
@@ -66,7 +66,7 @@ export function buildDependencies() {
       GetAllNotificationUseCase: GetAllNotification(),
       updateNotficationUseCase: updateNotificationStatus(),
       GetAllApartmentUseCase: GetAllApartment(),
-      getApartmentsByNameUseCase: GetApartmentByName(),
+      getApartmentsByNameUseCase: GetApartmentByTitle(),
       editStatusApartmentVerifiedUseCase: EditApartmentStatusVerified(),
       deleteApartmentByIdUseCase: DeleteApartmentById(),
       findApartmentDocumentById: FindApartmentDocumentByIdUseCase(),

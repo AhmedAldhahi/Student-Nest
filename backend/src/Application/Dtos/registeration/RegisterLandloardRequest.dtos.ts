@@ -5,7 +5,7 @@ export interface RegisterLandloardRequest {
   email: string;
   name: string;
   password: string;
-  role: UserRole.landloard;
+  role: UserRole.landlord;
   dateOfBirth: string;
   phoneNumber: string;
 

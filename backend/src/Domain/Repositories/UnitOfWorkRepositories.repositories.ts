@@ -4,6 +4,7 @@ import { IWriteLandlordRepositories } from "./Write/WriteLandlordRepositories.re
 import { IWriteNotificationRepo } from "./Write/IWriteNotficationRepositories.repositores";
 import { IWriteApartmentRepo } from "./Write/IWriteApartmentRepositories.repositories";
 import { IWriteApartmentDocumentRepo } from "./Write/IWriteApartmentDocumentRepositoires.repositories";
+import { IWriteAuditLogRepositories } from "./Write/IWriteAuditLogRepo.repositories";
 
 export interface IUnitOfWork {
   // cqrs
@@ -13,8 +14,9 @@ export interface IUnitOfWork {
   writeNotificationRepo: IWriteNotificationRepo;
   writeApartmentRepo: IWriteApartmentRepo;
   writeApartmentDocumentRepo: IWriteApartmentDocumentRepo
+  writeAuditLogRepo: IWriteAuditLogRepositories
 
-
+  
   startTransaction(): Promise<void>;
 
   commitTransaction(): Promise<void>;

@@ -10,7 +10,7 @@ export class UserSimpleFactory {
 
   public async getUsers(userRole: UserRole) {
     try {
-      if (userRole === UserRole.landloard)
+      if (userRole === UserRole.landlord)
         return await this.getAllLandlordQueryHandler.handle();
       else if (userRole === UserRole.student)
         return await this.getAllStudentQueryHandler.handle();

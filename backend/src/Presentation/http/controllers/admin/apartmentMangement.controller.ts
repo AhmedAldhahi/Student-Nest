@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { findAllApartmentUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/FindAllApartment.usecase";
-import { FindAllApartmentByNameUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/findAllApartmentByName.usecase";
+import { FindAllApartmentByTitleUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/findAllApartmentByName.usecase";
 import { EditApartmentStatusVerifiedUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/EditApartmentStatus.usecase";
 import { DeleteApartmentByIdUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/DeleteApartment.usecase";
 import { findApartmentDocumentByIdUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/FindApartmentDocument.usecase";
@@ -10,7 +10,7 @@ import { UpdateApartmentDocumentUseCase } from "../../../../Application/Use-Case
 export class ApartmentManagementController {
   constructor(
     private readonly getAllApartment: findAllApartmentUseCase,
-    private readonly getApartmentByName: FindAllApartmentByNameUseCase,
+    private readonly getApartmentByTitle: FindAllApartmentByTitleUseCase,
     private readonly editApartmentVerificationStatus: EditApartmentStatusVerifiedUseCase,
     private readonly deleteApartmentById: DeleteApartmentByIdUseCase,
     private readonly getApartmentDocumentById: findApartmentDocumentByIdUseCase,
@@ -42,7 +42,7 @@ export class ApartmentManagementController {
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.getApartmentByName.execute(name);
+      const result = await this.getApartmentByTitle.execute(name);
       return res.status(200).json(result);
     } catch (error: any) {
       return res

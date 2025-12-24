@@ -36,16 +36,14 @@ export class ApartmentDocumentEntity {
     return this.apartmentType;
   }
 
-  public markAsPdfType(): void {
-    this.apartmentType = ApartmentDocumentType.PdfFile;
+
+
+  public markAsVerifiedFile(): void {
+    this.apartmentType = ApartmentDocumentType.ApartmentVerifiedFile;
   }
 
-  public markAsPhoto(): void {
-    this.apartmentType = ApartmentDocumentType.Photo;
-  }
-
-  public markAsVideo(): void {
-    this.apartmentType = ApartmentDocumentType.Video;
+  public markAsLeaseFile(): void {
+    this.apartmentType = ApartmentDocumentType.LeaseFile;
   }
 
   public UpdateDocumentUrl(url: string): void {

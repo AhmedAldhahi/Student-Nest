@@ -1,6 +1,6 @@
 import { IQueries } from "../IQuerie";
 
-export class GetAllApartmentByNameQueries implements IQueries {
+export class GetAllApartmentByTitleQueries implements IQueries {
   public name: string;
   constructor(name: string) {
     this.name = name;

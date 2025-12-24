@@ -8,6 +8,6 @@
  */
 export enum UserRole {
   admin = "admin",
-  landloard = "landloard",
+  landlord = "landlord",
   student = "student",
 }

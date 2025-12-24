@@ -1,13 +1,13 @@
 import { IReadApartmentRepo } from "../../../Domain/Repositories/Read/ReadApartmentRepo.repositoreis";
 import { IQueriesHandlers } from "../IQuerieHandlers";
-import { GetAllApartmentByNameQueries } from "../Queries/GetApartmentByName";
+import { GetAllApartmentByTitleQueries } from "../Queries/GetApartmentByName";
 
-export class GetAllApartmentByNameQueriesHandler
-  implements IQueriesHandlers<GetAllApartmentByNameQueries>
+export class GetAllApartmentByTitleQueriesHandler
+  implements IQueriesHandlers<GetAllApartmentByTitleQueries>
 {
   constructor(private readonly ReadApartmentRepo: IReadApartmentRepo) {}
 
-  public async handle(command: GetAllApartmentByNameQueries): Promise<any> {
+  public async handle(command: GetAllApartmentByTitleQueries): Promise<any> {
     try {
       return await this.ReadApartmentRepo.findApartmentName(command.name);
     } catch (error: any) {

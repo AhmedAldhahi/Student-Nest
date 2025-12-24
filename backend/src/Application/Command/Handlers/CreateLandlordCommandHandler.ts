@@ -40,7 +40,7 @@ export class CreateLandlordCommandHandler
       dateOfBirth: UserDateOfBirth.create(command.dateOfBirth),
       phoneNumber: userPhoneNumber.create(command.phoneNumber),
       email: UserEmail.create(command.email),
-      role: UserRole.landloard,
+      role: UserRole.landlord,
       address: command.address,
       createdAt: new Date(),
     });

@@ -7,7 +7,7 @@ export class CreateLandlordCommand implements ICommand {
   public readonly email: string;
   public readonly name: string;
   public readonly password: string;
-  public readonly role: UserRole.landloard;
+  public readonly role: UserRole.landlord;
   public readonly dateOfBirth: string;
   public readonly phoneNumber: string;
 

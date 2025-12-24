@@ -12,7 +12,7 @@ export class GetUserEmailSimpleFactory {
   public async getUsers(userRole: UserRole, email: string) {
     try {
       const query = new GetUserEmailQueries(email);
-      if (userRole === UserRole.landloard)
+      if (userRole === UserRole.landlord)
         return await this.getLandlordEmailQueryHandler.handle(query);
       else if (userRole === UserRole.student)
         return await this.getStudentsEmailQueryHandler.handle(query);

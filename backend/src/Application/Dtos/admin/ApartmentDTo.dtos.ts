@@ -1,5 +1,6 @@
-import { ApartmentDocumentEntity } from "../../../Domain/Entities/apartmentDocument.entity";
+import { ApartmentDocumentEntity } from "../../../Domain/Entities/apartmentDocumentEntity.entity";
 import { GoogleMapLocationEntity } from "../../../Domain/Entities/googleMapLocationEntity.entity";
+import { ApartmentPhotoDocumentEntity } from "../../../Domain/Entities/phohtoDocumentEntity.entity";
 
 export interface IApartmentDTO {
   apartmentId: number;
@@ -20,12 +21,14 @@ export interface IApartmentDTO {
   landlordName: string;
   googleMapLocation: GoogleMapLocationEntity;
   apartmentDocument: ApartmentDocumentEntity[];
+  apartmentPhoto: ApartmentPhotoDocumentEntity[];
 }
 
 export interface IApartmentSimpleDTO {
   apartmentId: number;
   propertyStatus: boolean;
   title: string;
+  description: string;
   address: string;
   Verified: boolean;
   isFully: boolean;
@@ -34,5 +37,5 @@ export interface IApartmentSimpleDTO {
   numberOfRoom: string;
   price: string;
   landlordName: string;
-  apartmentDocument: ApartmentDocumentEntity[];
+  apartmentPhoto: ApartmentPhotoDocumentEntity[];
 }
