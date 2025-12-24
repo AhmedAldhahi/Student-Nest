@@ -59,3 +59,17 @@ export interface Lease {
     landlordName: string;
     apartmentTitle: string;
 }
+
+export interface LeaseRequest {
+    requestLeaseId: number;
+    requestMessage: string;
+    startDate: string;
+    rentTerm: string;
+    requestStatus: "Pending" | "Accept" | "Reject";
+    createAt: string;
+    studentName: string;
+    landlordName: string;
+    apartmentTitle: string;
+    apartmentPrice: string;
+    Major: string;
+}

@@ -136,15 +136,99 @@ export const getAllLeases = async (token: string) => {
             },
         });
 
-        const result = await response.json();
-        // console.log("getAllLeases Response:", result);
+        const text = await response.text();
+        console.log("getAllLeases Raw Response:", text);
+
+        let result;
+        try {
+            result = JSON.parse(text);
+        } catch (e) {
+            console.error("Failed to parse JSON:", text);
+            throw new Error(`Server returned non-JSON response: ${text.slice(0, 100)}...`);
+        }
 
         if (!response.ok) {
-            throw new Error(result.message || "Failed to fetch leases");
+            console.error("getAllLeases Error Response:", result);
+            throw new Error(result.message || `Failed to fetch leases (${response.status})`);
         }
         return result;
     } catch (error) {
         console.error("getAllLeases Error:", error);
+        throw error;
+    }
+};
+
+export const getLeaseById = async (token: string, leaseId: string) => {
+    try {
+        console.log("Fetching Lease by ID from:", `${API_URL}/admin/lease/${leaseId}`);
+        const response = await fetch(`${API_URL}/admin/lease/${leaseId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+
+        const result = await response.json();
+        // console.log("getLeaseById Response:", result);
+
+        if (!response.ok) {
+            throw new Error(result.message || "Failed to fetch lease");
+        }
+        return result;
+    } catch (error) {
+        console.error("getLeaseById Error:", error);
+        throw error;
+    }
+};
+
+export const getAllLeaseRequests = async (token: string) => {
+    try {
+        console.log("Fetching Lease Requests from:", `${API_URL}/admin/lease-requests`);
+        const response = await fetch(`${API_URL}/admin/lease-requests`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+
+        const result = await response.json();
+        // console.log("getAllLeaseRequests Response:", result);
+
+        if (!response.ok) {
+            throw new Error(result.message || "Failed to fetch lease requests");
+        }
+        return result;
+    } catch (error) {
+        console.error("getAllLeaseRequests Error:", error);
+        throw error;
+    }
+};
+
+export const getLeaseRequestById = async (token: string, requestId: string) => {
+    try {
+        console.log("Fetching Lease Request by ID from:", `${API_URL}/admin/lease-request/${requestId}`);
+        const response = await fetch(`${API_URL}/admin/lease-request/${requestId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+
+        const result = await response.json();
+        // console.log("getLeaseRequestById Response:", result);
+
+        if (!response.ok) {
+            throw new Error(result.message || "Failed to fetch lease request");
+        }
+        return result;
+    } catch (error) {
+        console.error("getLeaseRequestById Error:", error);
         throw error;
     }
 };
