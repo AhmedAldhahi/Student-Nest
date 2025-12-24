@@ -1,6 +1,7 @@
 import { deleteApartmentByIdCommandHandler } from "../../../Application/Command/Handlers/DeleteApartmentByIdCommandHandler";
 import { EditApartmentDetailByIdCommandHandler } from "../../../Application/Command/Handlers/EditApartmentDetailByIdCommandHandler";
 import { EditApartmentStatusVerifiedCommandHandler } from "../../../Application/Command/Handlers/EditApartmetVerficationStatusCommandHandler";
+import { UpdateApartmentDocumentFileCommandHandler } from "../../../Application/Command/Handlers/updateApartmentDocumentCommandHandler";
 import { GetAllApartmentByNameQueriesHandler } from "../../../Application/Querie/Handlers/GetAllApartmentByName.QueriesHandler";
 import { GetAllApartmentQueriesHandler } from "../../../Application/Querie/Handlers/GetAllApartmentQueriesHandler";
 import { GetApartmentByIdQueriesHandler } from "../../../Application/Querie/Handlers/GetApartmentByIdQueriesHandler";
@@ -12,6 +13,7 @@ import { findAllApartmentUseCase } from "../../../Application/Use-Case/admin/Apa
 import { FindAllApartmentByNameUseCase } from "../../../Application/Use-Case/admin/ApartmentMangament/findAllApartmentByName.usecase";
 import { findApartmentByIdUseCase } from "../../../Application/Use-Case/admin/ApartmentMangament/FindApartmentDetailsById.usecase";
 import { findApartmentDocumentByIdUseCase } from "../../../Application/Use-Case/admin/ApartmentMangament/FindApartmentDocument.usecase";
+import { UpdateApartmentDocumentUseCase } from "../../../Application/Use-Case/admin/ApartmentMangament/updateApartmentDocument.usecase";
 import { ReadApartmentDocumentRepositories } from "../../Repositories/Read/ReadApartmentDocumentRepositories";
 import { ReadApartmentRepositories } from "../../Repositories/Read/ReadApartmentRepositories";
 import { UnitOfWork } from "../../Repositories/unitOfWork.repositories";
@@ -87,4 +89,15 @@ export function editApartmentDetailUseCase(): EditApartmentDetailUseCase {
   );
 
   return new EditApartmentDetailUseCase(commandHandler);
+}
+
+export function EditApartmentDocumentsUseCase(): UpdateApartmentDocumentUseCase {
+  const uow = new UnitOfWork();
+  const ReadApartmentDocumentRepo = new ReadApartmentDocumentRepositories();
+  const commandHandler = new UpdateApartmentDocumentFileCommandHandler(
+    uow,
+    ReadApartmentDocumentRepo
+  );
+
+  return new UpdateApartmentDocumentUseCase(commandHandler);
 }

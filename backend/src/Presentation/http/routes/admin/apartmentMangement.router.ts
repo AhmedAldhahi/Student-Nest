@@ -57,5 +57,12 @@ export const ApartmentRouter = (
     apartmentController.UpdateApartmentDetailsById
   );
 
+  router.patch(
+    "/apartment-document/:id", // <--- Added Slash
+    isAuth,
+    isAdmin,
+    apartmentController.updateApartmentDocuments
+  );
+
   return router;
 };

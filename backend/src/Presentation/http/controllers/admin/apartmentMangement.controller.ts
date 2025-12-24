@@ -6,6 +6,7 @@ import { DeleteApartmentByIdUseCase } from "../../../../Application/Use-Case/adm
 import { findApartmentDocumentByIdUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/FindApartmentDocument.usecase";
 import { findApartmentByIdUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/FindApartmentDetailsById.usecase";
 import { EditApartmentDetailUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/EditApartmentDetail.usecase";
+import { UpdateApartmentDocumentUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/updateApartmentDocument.usecase";
 export class ApartmentManagementController {
   constructor(
     private readonly getAllApartment: findAllApartmentUseCase,
@@ -14,7 +15,8 @@ export class ApartmentManagementController {
     private readonly deleteApartmentById: DeleteApartmentByIdUseCase,
     private readonly getApartmentDocumentById: findApartmentDocumentByIdUseCase,
     private readonly GetApartmentDetailById: findApartmentByIdUseCase,
-    private readonly EditApartmentDetailsById: EditApartmentDetailUseCase
+    private readonly EditApartmentDetailsById: EditApartmentDetailUseCase,
+    private readonly EditApartmentDocumentById: UpdateApartmentDocumentUseCase
   ) {}
 
   public getAllApartments = async (req: Request, res: Response) => {
@@ -145,6 +147,27 @@ export class ApartmentManagementController {
         Number(id)
       );
 
+      return res.status(200).json(result);
+    } catch (error: any) {
+      return res
+        .status(400)
+        .json({ error: error.message || "internal server error" });
+    }
+  };
+
+  public updateApartmentDocuments = async (req: Request, res: Response) => {
+    try {
+      const userId = req.user?.userId;
+      const dto = req.body;
+      const { id } = req.params;
+
+      if (!userId)
+        return res.status(400).json({ error: "no user id found !!" });
+
+      const result = await this.EditApartmentDocumentById.execute(
+        dto,
+        Number(id)
+      );
       return res.status(200).json(result);
     } catch (error: any) {
       return res

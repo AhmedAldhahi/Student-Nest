@@ -33,6 +33,7 @@ import {
 import {
   DeleteApartmentById,
   editApartmentDetailUseCase,
+  EditApartmentDocumentsUseCase,
   EditApartmentStatusVerified,
   FindApartmentDetailByIdUseCase,
   FindApartmentDocumentByIdUseCase,
@@ -71,6 +72,7 @@ export function buildDependencies() {
       findApartmentDocumentById: FindApartmentDocumentByIdUseCase(),
       findApartmentDetailById: FindApartmentDetailByIdUseCase(),
       editApartmentUseCase: editApartmentDetailUseCase(),
+      editApartmentDocumentUseCase: EditApartmentDocumentsUseCase(),
     },
   };
 }
