@@ -6,9 +6,9 @@ export class GetAllNotificationQueriesHandler
   implements IQueriesHandlers<GetAllNotificationQueries>
 {
   constructor(private readonly readNotifyRepo: IReadNotificationRepositories) {}
-  public async handle(): Promise<any> {
+  public async handle(command: GetAllNotificationQueries): Promise<any> {
     try {
-      return await this.readNotifyRepo.GetAllNotification();
+      return await this.readNotifyRepo.GetAllNotification(command.userId);
     } catch (error: any) {
       console.error("fail to get all notification !!");
       throw error;

@@ -1,13 +1,15 @@
 import { GetAllNotificationQueriesHandler } from "../../../Querie/Handlers/GetAllNotifcationQueriesHandler";
+import { GetAllNotificationQueries } from "../../../Querie/Queries/GetAllNotifcation";
 
 export class GetAllNotificationUseCase {
   constructor(
     private readonly queriesHandler: GetAllNotificationQueriesHandler
   ) {}
 
-  public async execute() {
+  public async execute(userId: string) {
     try {
-      return await this.queriesHandler.handle();
+      const Queries = new GetAllNotificationQueries(userId);
+      return await this.queriesHandler.handle(Queries);
     } catch (error: any) {
       throw error;
     }

@@ -8,11 +8,19 @@ import { NotificationMapper } from "../mapper/notification.mapper";
 export class readNotificationRepositories
   implements IReadNotificationRepositories
 {
-  public async GetAllNotification(): Promise<INotificationDTO[] | null> {
+  public async GetAllNotification(
+    userId: string
+  ): Promise<INotificationDTO[] | null> {
     try {
+      console.log("🔍 Repository received userId:", userId);
       const notification = await AppDataSource.getInstance()
         .getRepository(NotificationModel)
         .find({
+          where: {
+            receiver: {
+              userId: userId, // Only get rows where 'receiver' matches this user
+            },
+          },
           select: {
             notificationId: true,
             message: true,

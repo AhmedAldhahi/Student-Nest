@@ -2,6 +2,6 @@ import { INotificationDTO } from "../../../Application/Dtos/admin/NotificationDT
 import { NotificationEntity } from "../../Entities/NotificationEntity.entity";
 
 export interface IReadNotificationRepositories {
-  GetAllNotification(): Promise<INotificationDTO[] | null>;
+  GetAllNotification(userId: string): Promise<INotificationDTO[] | null>;
   GetNotificationById(id: number): Promise<NotificationEntity | null>;
 }

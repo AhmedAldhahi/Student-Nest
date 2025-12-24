@@ -6,7 +6,7 @@ import { ApartmentAggregateRoot } from "../../AggregatesRoot/apartmentEntity.ent
 
 export interface IReadApartmentRepo {
   findAllApartment(): Promise<IApartmentSimpleDTO[] | null>;
-  findApartmentName(prefix: string): Promise<IApartmentSimpleDTO[] | null>;
+  findApartmentTitle(prefix: string): Promise<IApartmentDTO[] | null>;
   findApartmentById(id: number): Promise<ApartmentAggregateRoot | null>;
   findApartmentDetailsById(id: number): Promise<IApartmentDTO | null>;
 }

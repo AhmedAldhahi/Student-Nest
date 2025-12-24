@@ -15,7 +15,7 @@ export class NotificationController {
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.GetAllNotification.execute();
+      const result = await this.GetAllNotification.execute(userId);
       return res.status(200).json(result);
     } catch (error: any) {
       return res
@@ -44,7 +44,7 @@ export class NotificationController {
         id: notificationId,
         isRead: isRead,
       });
-      
+
       return res.status(200).json(result);
     } catch (error: any) {
       return res

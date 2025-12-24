@@ -9,7 +9,7 @@ export class GetAllApartmentByTitleQueriesHandler
 
   public async handle(command: GetAllApartmentByTitleQueries): Promise<any> {
     try {
-      return await this.ReadApartmentRepo.findApartmentName(command.name);
+      return await this.ReadApartmentRepo.findApartmentTitle(command.name);
     } catch (error: any) {
       console.error("fail to get apartments");
       throw error;

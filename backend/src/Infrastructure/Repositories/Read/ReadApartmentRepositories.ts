@@ -60,9 +60,9 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
     }
   }
 
-  public async findApartmentName(
+  public async findApartmentTitle(
     prefix: string
-  ): Promise<IApartmentSimpleDTO[] | null> {
+  ): Promise<IApartmentDTO[] | null> {
     try {
       const apartmentRepo =
         AppDataSource.getInstance().getRepository(ApartmentModel);
@@ -124,7 +124,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
 
       // 3. FIX: Properly close the map function and use the correct Mapper method
       // Assuming 'toResponses' is your DTO mapper from the previous method
-      return apartments.map((orm) => ApartmentMapper.toResponsesSimple(orm));
+      return apartments.map((orm) => ApartmentMapper.toResponsesDetail(orm));
     } catch (error: any) {
       console.error("Error searching apartment name:", error);
       throw new Error(`Unable to search apartments: ${error.message}`);
