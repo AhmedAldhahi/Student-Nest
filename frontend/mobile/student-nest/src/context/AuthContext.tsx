@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { getMe } from "../features/auth/api/authService";
 
-type Role = "student" | "landlord" | "admin";
+type Role = "student" | "landlord" | "landloard" | "admin"; // "landloard" is a backend typo
 
 export type User = {
   id: string;
@@ -106,7 +106,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         isLoading,
         loginAs,
         isStudent: user?.role === "student",
-        isLandlord: user?.role === "landlord", // Note: Check typo handling from backend if it returns "landloard"
+        isLandlord: user?.role === "landlord" || user?.role === "landloard", // Handle backend typo "landloard"
         isAdmin: user?.role === "admin",
       }}
     >
