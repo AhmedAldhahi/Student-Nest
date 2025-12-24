@@ -31,6 +31,7 @@ import AuditLogScreen from "../features/dashboard/screens/admin/AuditLogScreen";
 import StudentsScreen from "../features/dashboard/screens/admin/StudentsScreen";
 import LandlordsScreen from "../features/dashboard/screens/admin/LandlordsScreen";
 import LandlordDetailScreen from "../features/dashboard/screens/admin/LandlordDetailScreen";
+import StudentDetailScreen from "../features/dashboard/screens/admin/StudentDetailScreen";
 
 // 🏘 Apartment & Lease features
 import ApartmentDetailsScreen from "../features/apartments/screens/ApartmentDetailsScreen";
@@ -97,6 +98,7 @@ export default function RootNavigator() {
             {/* Admin */}
             <Stack.Screen name="AuditLogScreen" component={AuditLogScreen} options={{ headerShown: true, title: "Audit Log" }} />
             <Stack.Screen name="StudentsScreen" component={StudentsScreen} options={{ headerShown: true, title: "All Students" }} />
+            <Stack.Screen name="StudentDetailScreen" component={StudentDetailScreen} options={{ headerShown: true, title: "Student Details" }} />
             <Stack.Screen name="LandlordsScreen" component={LandlordsScreen} options={{ headerShown: true, title: "All Landlords" }} />
             <Stack.Screen name="LandlordDetailScreen" component={LandlordDetailScreen} options={{ headerShown: true, title: "Landlord Details" }} />
             <Stack.Screen name="AdminRequestsScreen" component={AdminRequestsScreen} options={{ headerShown: true, title: "Requests" }} />

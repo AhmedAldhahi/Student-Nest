@@ -1,140 +1,116 @@
-import React, { useState } from "react";
-import { View, Text, FlatList, TextInput, StyleSheet } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import { View, Text, FlatList, TextInput, StyleSheet, ActivityIndicator, Alert, RefreshControl } from "react-native";
 import { Card, Chip, Button } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../../../navigation/types";
+import { Lease } from "./types";
+import { useAuth } from "../../../../context/AuthContext";
+import { getAllLeases } from "../../api/adminService";
 
 type Props = NativeStackScreenProps<RootStackParamList, "AdminLeaseScreen">;
 
-type Lease = {
-  leaseID: number;
-  leaseStartDate: string;
-  leaseEndDate: string;
-  monthlyRent: number;
-  includeUtilitys?: string;
-  houseRules: string;
-  leaseTerm: number;
-  isLandlordSigned: boolean;
-  isStudentSigned: boolean;
-  status: boolean;
-  createAt: string;
-  studentId: number;
-  landlordId: number;
-  apartmentId: number;
-};
-
-// Mock data — replace with API
-const mockLeases: Lease[] = [
-  {
-    leaseID: 1,
-    leaseStartDate: "2025-12-01",
-    leaseEndDate: "2026-12-01",
-    monthlyRent: 500,
-    includeUtilitys: "Water, Electricity",
-    houseRules: "No smoking indoors",
-    leaseTerm: 12,
-    isLandlordSigned: true,
-    isStudentSigned: false,
-    status: false,
-    createAt: "2025-11-15",
-    studentId: 101,
-    landlordId: 201,
-    apartmentId: 301,
-  },
-  {
-    leaseID: 2,
-    leaseStartDate: "2025-12-15",
-    leaseEndDate: "2026-06-15",
-    monthlyRent: 300,
-    includeUtilitys: "Internet",
-    houseRules: "No pets allowed",
-    leaseTerm: 6,
-    isLandlordSigned: true,
-    isStudentSigned: true,
-    status: true,
-    createAt: "2025-11-16",
-    studentId: 102,
-    landlordId: 202,
-    apartmentId: 302,
-  },
-];
-
 export default function AdminLeaseScreen({ route }: Props) {
-  const landlordId = route.params?.landlordId;
+  const { token } = useAuth();
+  const [leases, setLeases] = useState<Lease[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [filter, setFilter] = useState<"all" | "active" | "pending">("all");
   const [search, setSearch] = useState("");
 
+  const fetchLeases = async () => {
+    if (!token) return;
+    setLoading(true);
+    try {
+      const data = await getAllLeases(token);
+      if (Array.isArray(data)) {
+        setLeases(data);
+      }
+    } catch (error) {
+      Alert.alert("Error", "Failed to fetch leases");
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchLeases();
+  }, []);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchLeases();
+  }, []);
+
   // Filter + search logic
-  const leases = mockLeases.filter((l) => {
+  const filteredLeases = leases.filter((l) => {
     const matchesFilter =
       filter === "all"
         ? true
         : filter === "active"
-        ? l.status === true
-        : l.status === false;
-
-    const matchesLandlord = landlordId ? l.landlordId === landlordId : true;
+          ? l.LeaseActivationStatus === true
+          : l.LeaseActivationStatus === false;
 
     const matchesSearch =
       search === "" ||
-      l.apartmentId.toString().includes(search) ||
-      l.studentId.toString().includes(search) ||
-      l.landlordId.toString().includes(search);
+      (l.studentName && l.studentName.toLowerCase().includes(search.toLowerCase())) ||
+      (l.landlordName && l.landlordName.toLowerCase().includes(search.toLowerCase())) ||
+      (l.apartmentTitle && l.apartmentTitle.toLowerCase().includes(search.toLowerCase()));
 
-    return matchesFilter && matchesLandlord && matchesSearch;
+    return matchesFilter && matchesSearch;
   });
 
   const renderLease = ({ item }: { item: Lease }) => (
     <Card style={styles.card}>
       <Card.Content>
         <View style={styles.rowBetween}>
-          <Text style={styles.title}>Lease #{item.leaseID}</Text>
+          <Text style={styles.title}>{item.apartmentTitle}</Text>
           <Chip
             style={[
               styles.statusChip,
-              item.status
+              item.LeaseActivationStatus
                 ? styles.active
-                : item.isLandlordSigned && item.isStudentSigned
-                ? styles.ready
-                : styles.pending,
+                : (item.isLandlordSigned && item.isStudentSigned)
+                  ? styles.ready
+                  : styles.pending,
             ]}
           >
-            {item.status
+            {item.LeaseActivationStatus
               ? "ACTIVE"
-              : item.isLandlordSigned && item.isStudentSigned
-              ? "READY"
-              : "PENDING"}
+              : (item.isLandlordSigned && item.isStudentSigned)
+                ? "READY"
+                : "PENDING"}
           </Chip>
         </View>
-        <Text style={styles.detail}>Apartment ID: {item.apartmentId}</Text>
-        <Text style={styles.detail}>Student ID: {item.studentId}</Text>
-        <Text style={styles.detail}>Landlord ID: {item.landlordId}</Text>
-        <Text style={styles.detail}>Start: {item.leaseStartDate}</Text>
-        <Text style={styles.detail}>End: {item.leaseEndDate}</Text>
+        <Text style={styles.detail}>Lease ID: {item.leaseId}</Text>
+        <Text style={styles.detail}>Student: {item.studentName}</Text>
+        <Text style={styles.detail}>Landlord: {item.landlordName}</Text>
+        <Text style={styles.detail}>Term: {item.leaseTerm} ({item.leaseStartDate} - {item.leaseEndDate})</Text>
         <Text style={styles.detail}>Rent: ${item.monthlyRent}</Text>
-        <Text style={styles.detail}>Utilities: {item.includeUtilitys || "None"}</Text>
-        <Text style={styles.detail}>Rules: {item.houseRules}</Text>
-        <Text style={styles.detail}>Created At: {item.createAt}</Text>
+        <Text style={styles.detail}>Utilities: {item.includeUtilities || "None"}</Text>
+        <Text style={styles.detail}>Rules: {item.houseRule}</Text>
+        <Text style={styles.detail}>Status: Landlord {item.isLandlordSigned ? "✅" : "❌"} | Student {item.isStudentSigned ? "✅" : "❌"}</Text>
+        <Text style={styles.detail}>Created At: {new Date(item.createAt).toLocaleDateString()}</Text>
       </Card.Content>
+      {/* 
       <Card.Actions>
-        <Button mode="outlined" onPress={() => alert(`Audit lease #${item.leaseID}`)}>
+        <Button mode="outlined" onPress={() => alert(`Audit lease #${item.leaseId}`)}>
           Audit
         </Button>
       </Card.Actions>
+       */}
     </Card>
   );
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
-        <Text style={styles.header}>
-          {landlordId ? `Leases for Landlord #${landlordId}` : "All Leases"}
-        </Text>
+        <Text style={styles.header}>All Leases</Text>
 
         {/* Search bar */}
         <TextInput
-          placeholder="Search by Apartment, Student, or Landlord ID..."
+          placeholder="Search by Student, Landlord, or Apartment..."
           value={search}
           onChangeText={setSearch}
           style={styles.searchBar}
@@ -152,8 +128,8 @@ export default function AdminLeaseScreen({ route }: Props) {
                 s === "active"
                   ? styles.active
                   : s === "pending"
-                  ? styles.pending
-                  : styles.ready,
+                    ? styles.pending
+                    : styles.ready,
               ]}
             >
               {s.charAt(0).toUpperCase() + s.slice(1)}
@@ -161,12 +137,18 @@ export default function AdminLeaseScreen({ route }: Props) {
           ))}
         </View>
 
-        <FlatList
-          data={leases}
-          keyExtractor={(l) => l.leaseID.toString()}
-          renderItem={renderLease}
-          contentContainerStyle={{ paddingBottom: 80 }}
-        />
+        {loading && !refreshing ? (
+          <ActivityIndicator size="large" color="#1E3A8A" />
+        ) : (
+          <FlatList
+            data={filteredLeases}
+            keyExtractor={(l) => l.leaseId.toString()}
+            renderItem={renderLease}
+            contentContainerStyle={{ paddingBottom: 80 }}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            ListEmptyComponent={<Text style={{ textAlign: 'center', marginTop: 20 }}>No leases found.</Text>}
+          />
+        )}
       </View>
     </SafeAreaView>
   );
@@ -194,9 +176,9 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   rowBetween: { flexDirection: "row", justifyContent: "space-between", marginBottom: 8 },
-  title: { fontSize: 18, fontWeight: "600", color: "#333" },
+  title: { fontSize: 18, fontWeight: "600", color: "#333", flex: 1, marginRight: 8 },
   detail: { fontSize: 14, color: "#555", marginBottom: 4 },
-  statusChip: { alignSelf: "flex-start" },
+  statusChip: { alignSelf: "flex-start", height: 32 },
   pending: { backgroundColor: "#f39c12" },
   ready: { backgroundColor: "#3498db" },
   active: { backgroundColor: "#2ecc71" },

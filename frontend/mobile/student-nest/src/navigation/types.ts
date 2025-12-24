@@ -1,4 +1,5 @@
 import { Apartment } from "../features/apartments/types";
+import { Landlord, Student } from "../features/dashboard/screens/admin/types";
 
 export type RootStackParamList = {
   SignInScreen: undefined;
@@ -15,24 +16,25 @@ export type RootStackParamList = {
   AuditLogScreen: undefined;
   StudentsScreen: undefined;
   LandlordsScreen: undefined;
-  LandlordDetailScreen: { landlordId: number };
-  AdminApartmentsScreen: { landlordId?: number };
-  AdminRequestsScreen: { landlordId?: number };
-  VerificationScreen: { landlordId?: number };
-  AdminLeaseScreen: { landlordId?: number };
+  LandlordDetailScreen: { landlord: Landlord };
+  StudentDetailScreen: { student: Student };
+  AdminApartmentsScreen: { landlordId?: string };
+  AdminRequestsScreen: { landlordId?: string };
+  VerificationScreen: { landlordId?: string };
+  AdminLeaseScreen: { landlordId?: string };
 
   StudentDashboardScreen: undefined;
   LandlordDashboardScreen: undefined;
   NotificationScreen: undefined;
 
-  StudentRequestsScreen: { studentId: number };
-  StudentLeaseScreen: { studentId: number };
+  StudentRequestsScreen: { studentId: string };
+  StudentLeaseScreen: { studentId: string };
 
 
-  LandlordRequestsScreen: { landlordId: number };
-  LandlordLeaseScreen: { landlordId: number };
+  LandlordRequestsScreen: { landlordId: string };
+  LandlordLeaseScreen: { landlordId: string };
 
-  LeaseScreen: { landlordId?: number; studentId?: number } | undefined;
+  LeaseScreen: { landlordId?: string; studentId?: string } | undefined;
   ProfileScreen: undefined;
   RequestsScreen: undefined;
   SettingsScreen: undefined;

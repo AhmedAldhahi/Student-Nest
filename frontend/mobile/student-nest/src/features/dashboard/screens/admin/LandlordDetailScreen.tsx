@@ -1,9 +1,11 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React from "react";
-import { View, StyleSheet, ScrollView, FlatList } from "react-native";
-import { Text, Card, Button, Chip } from "react-native-paper";
+import React, { useState } from "react";
+import { View, StyleSheet, ScrollView, FlatList, Alert } from "react-native";
+import { Text, Card, Button, Chip, ActivityIndicator, Divider, Avatar } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { RootStackParamList } from "../../../../navigation/types";
+import { useAuth } from "../../../../context/AuthContext";
+import { verifyLandlord } from "../../api/adminService";
 
 type Props = NativeStackScreenProps<RootStackParamList, "LandlordDetailScreen">;
 
@@ -15,12 +17,31 @@ const features = [
 ];
 
 export default function LandlordDetailScreen({ route, navigation }: Props) {
-  const { landlordId } = route.params;
+  const { landlord } = route.params;
+  const { token } = useAuth();
+  const [loading, setLoading] = useState(false);
+  // Local state to reflect changes immediately without refetching everything
+  const [isVerified, setIsVerified] = useState(landlord.verifiedLandlord);
+
+  const handleVerification = async (verify: boolean) => {
+    if (!token) return;
+    setLoading(true);
+    try {
+      await verifyLandlord(token, landlord.user.userId, verify);
+      setIsVerified(verify);
+      Alert.alert("Success", `Landlord has been ${verify ? "verified" : "rejected"}.`);
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Error", "Failed to update landlord status.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const renderItem = ({ item }: { item: typeof features[0] }) => (
     <Card
       style={styles.card}
-      onPress={() => navigation.navigate(item.key as any, { landlordId })}
+      onPress={() => navigation.navigate(item.key as any, { landlordId: landlord.user.userId })}
     >
       <View style={styles.cardContent}>
         <Ionicons name={item.icon as any} size={32} color="#1E3A8A" />
@@ -34,58 +55,97 @@ export default function LandlordDetailScreen({ route, navigation }: Props) {
       {/* Profile section */}
       <Card style={styles.profileCard}>
         <Card.Content>
-          <Text style={styles.header}>Landlord #{landlordId}</Text>
-          <Text style={styles.subHeader}>Name: Ahmed Khalid</Text>
-          <Text style={styles.detail}>Email: ahmed@example.com</Text>
-          <Chip style={styles.chip} icon="check">Email Verified</Chip>
-          <Text style={styles.detail}>Phone: 0791234567</Text>
-          <Text style={styles.detail}>Date of Birth: 1985-06-15</Text>
-          <Text style={styles.detail}>Address: Amman, Jordan</Text>
-          <Text style={styles.detail}>Role: Landlord</Text>
-          <Text style={styles.detail}>Account: LAND12345</Text>
-          <Text style={styles.detail}>Gov ID: ****6789</Text>
-          <Chip style={[styles.chip, styles.active]} icon="check">Active</Chip>
-          <Chip style={[styles.chip, styles.verified]} icon="shield-checkmark">Verified</Chip>
-          <Text style={styles.detail}>Created At: 2025-01-10</Text>
-          <Text style={styles.detail}>Updated At: 2025-11-18</Text>
+          <View style={styles.avatarContainer}>
+            {landlord.user.photo ? (
+              <Avatar.Image size={100} source={{ uri: landlord.user.photo }} />
+            ) : (
+              <Avatar.Icon size={100} icon="account" />
+            )}
+          </View>
+          <Text style={styles.header}>{landlord.user.name}</Text>
+          <Text style={styles.subHeader}>Landlord ID: {landlord.user.userId.slice(0, 8)}...</Text>
+
+          <Divider style={styles.divider} />
+
+          <Text style={styles.detailTitle}>Contact Info</Text>
+          <Text style={styles.detail}>Email: {landlord.user.email}</Text>
+          <Text style={styles.detail}>Phone: {landlord.user.phoneNumber}</Text>
+          <Text style={styles.detail}>Address: {landlord.user.address}</Text>
+
+          <Divider style={styles.divider} />
+
+          <Text style={styles.detailTitle}>Account Details</Text>
+          <Text style={styles.detail}>CliQ: {landlord.cliQAccount}</Text>
+          <Text style={styles.detail}>Gov ID: {landlord.landlordGovId}</Text>
+          <Text style={styles.detail}>Joined: {new Date(landlord.user.createdAt).toLocaleDateString()}</Text>
+
+          <View style={styles.chipRow}>
+            <Chip icon={landlord.user.emailVerfied ? "check" : "alert"} style={styles.chip}>
+              {landlord.user.emailVerfied ? "Email Verified" : "Email Unverified"}
+            </Chip>
+            <Chip
+              icon={isVerified ? "shield-check" : "shield-alert"}
+              style={[styles.chip, isVerified ? styles.verified : styles.unverified]}
+            >
+              {isVerified ? "Verified Landlord" : "Unverified Landlord"}
+            </Chip>
+          </View>
         </Card.Content>
       </Card>
 
       {/* Verification actions */}
       <View style={styles.verificationBlock}>
-        <Button
-          mode="contained"
-          icon="check"
-          style={styles.verifyBtn}
-          labelStyle={styles.btnLabel}
-          onPress={() => alert("Verify landlord")}
-        >
-          Verify Landlord
-        </Button>
+        {loading ? (
+          <ActivityIndicator animating={true} color="#1E3A8A" />
+        ) : (
+          <>
+            {!isVerified && (
+              <Button
+                mode="contained"
+                icon="check"
+                style={styles.verifyBtn}
+                labelStyle={styles.btnLabel}
+                onPress={() => handleVerification(true)}
+              >
+                Verify Landlord
+              </Button>
+            )}
 
-        <Button
-          mode="contained"
-          icon="close"
-          style={styles.rejectBtn}
-          labelStyle={styles.btnLabel}
-          onPress={() => alert("Reject landlord")}
-        >
-          Reject Landlord
-        </Button>
+            {isVerified && (
+              <Button
+                mode="contained"
+                icon="close"
+                style={styles.rejectBtn}
+                labelStyle={styles.btnLabel}
+                onPress={() => handleVerification(false)}
+              >
+                Reject Landlord (Unverify)
+              </Button>
+            )}
+          </>
+        )}
 
         <Button
           mode="outlined"
-          icon="information-circle"
+          icon="file-document"
           style={styles.detailsBtn}
           labelStyle={styles.btnLabel}
-          onPress={() => alert("View full landlord details")}
+          onPress={() => {
+            if (landlord.document) {
+              // In a real app, maybe open a modal or browser.
+              // For now just alert or navigate to a webview if needed.
+              Alert.alert("Document URL", landlord.document);
+            } else {
+              Alert.alert("No Document", "This landlord has not uploaded a verification document.");
+            }
+          }}
         >
-          View Details
+          View Verification Document
         </Button>
       </View>
 
       {/* Dashboard grid */}
-      <Text style={styles.sectionHeader}>Dashboard</Text>
+      <Text style={styles.sectionHeader}>Admin Actions</Text>
       <FlatList
         data={features}
         renderItem={renderItem}
@@ -108,14 +168,23 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     elevation: 3,
     backgroundColor: "#fff",
-    paddingVertical: 12,
+    overflow: 'hidden',
+    paddingVertical: 16,
   },
-  header: { fontSize: 22, fontWeight: "700", marginBottom: 6, color: "#1E3A8A" },
-  subHeader: { fontSize: 18, fontWeight: "600", marginBottom: 6, color: "#333" },
-  detail: { fontSize: 14, color: "#555", marginBottom: 4 },
-  chip: { marginVertical: 4, alignSelf: "flex-start" },
+  avatarContainer: {
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  header: { fontSize: 24, fontWeight: "700", marginTop: 12, color: "#1E3A8A" },
+  subHeader: { fontSize: 14, color: "#777", marginBottom: 12 },
+  detailTitle: { fontSize: 16, fontWeight: "600", marginTop: 8, marginBottom: 4, color: "#333" },
+  detail: { fontSize: 14, color: "#555", marginBottom: 2 },
+  divider: { marginVertical: 12 },
+  chipRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 12, gap: 8 },
+  chip: {},
   active: { backgroundColor: "#2ecc71" },
-  verified: { backgroundColor: "#3498db" },
+  verified: { backgroundColor: "#d4edda" }, // Light green for verified
+  unverified: { backgroundColor: "#f8d7da" }, // Light red for unverified
 
   // Verification block
   verificationBlock: { marginBottom: 20, gap: 12 },

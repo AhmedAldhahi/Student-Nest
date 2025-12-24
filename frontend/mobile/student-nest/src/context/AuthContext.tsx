@@ -57,11 +57,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsLoading(true);
     try {
       const userData = await getMe(newToken);
-      // Map backend user to our User type if necessary. 
-      // Assuming backend returns { id, name, email, role, ... } matching our type roughly.
-      // We might need to adjust mapping if backend fields differ (e.g. _id vs id).
-      // For now, usage of 'any' cast or direct assignment if types match.
-      setUser(userData as User);
+
+      // Check if we have the nested user object from backend
+      if (userData && userData.user) {
+        const apiUser = userData.user;
+        setUser({
+          id: apiUser.userId,
+          name: apiUser.name,
+          email: apiUser.email,
+          role: apiUser.role,
+        });
+      } else {
+        // Fallback for safety, though structure seems to be nested
+        console.warn("Unexpected user data structure", userData);
+        // If flat structure is ever returned:
+        // setUser(userData as User);
+      }
     } catch (error) {
       console.error("Failed to load user profile during login:", error);
       // Optional: clear token if fetch fails?

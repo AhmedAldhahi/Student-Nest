@@ -1,97 +1,104 @@
-import React, { useState } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, FlatList, ActivityIndicator, Alert } from "react-native";
 import { Text, Card, Avatar, Searchbar, Chip, Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../../../navigation/types";
+import { getAllLandlords } from "../../api/adminService";
+import { useAuth } from "../../../../context/AuthContext";
+import { Landlord } from "./types";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "LandlordsScreen">;
 
-const mockLandlords = [
-  {
-    landlordId: 1,
-    name: "Ahmed Khalid",
-    email: "ahmed@example.com",
-    phoneNumber: "0791234567",
-    photo: null,
-    isActive: "activate",
-    verified: true,
-    clicQAccount: "LAND12345",
-  },
-  {
-    landlordId: 2,
-    name: "Sarah Ali",
-    email: "sarah@example.com",
-    phoneNumber: "0789876543",
-    photo: null,
-    isActive: "ban",
-    verified: false,
-    clicQAccount: "LAND67890",
-  },
-];
-
 export default function LandlordsScreen() {
   const navigation = useNavigation<NavigationProp>();
+  const { token } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
-  const [landlords, setLandlords] = useState(mockLandlords);
+  const [landlords, setLandlords] = useState<Landlord[]>([]);
+  const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState<"ALL" | "VERIFIED" | "UNVERIFIED">("ALL");
+
+  useEffect(() => {
+    fetchLandlords();
+  }, []);
+
+  const fetchLandlords = async () => {
+    if (!token) return;
+    setLoading(true);
+    try {
+      const data = await getAllLandlords(token);
+      // The API returns an array directly as per user example
+      if (Array.isArray(data)) {
+        setLandlords(data);
+      } else {
+        // Fallback if it's wrapped in { data: [...] } or similar, generally safer to check
+        console.warn("Expected array but got:", data);
+        setLandlords([]);
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Error", "Failed to fetch landlords");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredLandlords = landlords.filter((l) => {
     const matchesSearch =
-      l.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      l.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      l.clicQAccount.toLowerCase().includes(searchQuery.toLowerCase());
+      l.user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      l.user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (l.cliQAccount && l.cliQAccount.toLowerCase().includes(searchQuery.toLowerCase()));
 
     const matchesFilter =
       filter === "ALL" ||
-      (filter === "VERIFIED" && l.verified) ||
-      (filter === "UNVERIFIED" && !l.verified);
+      (filter === "VERIFIED" && l.verifiedLandlord) ||
+      (filter === "UNVERIFIED" && !l.verifiedLandlord);
 
     return matchesSearch && matchesFilter;
   });
 
-  const renderLandlord = ({ item }: { item: typeof mockLandlords[0] }) => (
-  <Card
-    style={styles.card}
-    onPress={() =>
-      navigation.navigate("LandlordDetailScreen", { landlordId: item.landlordId })
-    }
-  >
-    <View style={styles.cardHeader}>
-      {item.photo ? (
-        <Avatar.Image size={48} source={{ uri: item.photo }} />
-      ) : (
-        <Avatar.Icon size={48} icon="account" />
-      )}
-      <View style={styles.info}>
-        <Text style={styles.name}>{item.name}</Text>
-        <Text style={styles.email}>{item.email}</Text>
-        <Text style={styles.detail}>Account: {item.clicQAccount}</Text>
-        <Text style={styles.detail}>Phone: {item.phoneNumber}</Text>
+  const renderLandlord = ({ item }: { item: Landlord }) => (
+    <Card
+      style={styles.card}
+      onPress={() =>
+        navigation.navigate("LandlordDetailScreen", { landlord: item })
+      }
+    >
+      <View style={styles.cardHeader}>
+        {item.user.photo ? (
+          <Avatar.Image size={48} source={{ uri: item.user.photo }} />
+        ) : (
+          <Avatar.Icon size={48} icon="account" />
+        )}
+        <View style={styles.info}>
+          <Text style={styles.name}>{item.user.name}</Text>
+          <Text style={styles.email}>{item.user.email}</Text>
+          <Text style={styles.detail}>Account: {item.cliQAccount}</Text>
+          <Text style={styles.detail}>Phone: {item.user.phoneNumber}</Text>
+        </View>
+        <Chip
+          style={[
+            styles.verifyChip,
+            item.verifiedLandlord ? styles.verified : styles.unverified,
+          ]}
+        >
+          {item.verifiedLandlord ? "Verified" : "Not Verified"}
+        </Chip>
       </View>
-      <Chip
-        style={[
-          styles.verifyChip,
-          item.verified ? styles.verified : styles.unverified,
-        ]}
-      >
-        {item.verified ? "Verified" : "Not Verified"}
-      </Chip>
-    </View>
 
-    <View style={styles.cardFooter}>
-      <Button
-        mode="outlined"
-        style={styles.btn}
-        onPress={() =>
-          navigation.navigate("LandlordDetailScreen", { landlordId: item.landlordId })
-        }
-      >
-        View Dashboard
-      </Button>
-    </View>
-  </Card>
-);
+      <View style={styles.cardFooter}>
+        <Button
+          mode="outlined"
+          style={styles.btn}
+          onPress={() =>
+            navigation.navigate("LandlordDetailScreen", { landlord: item })
+          }
+        >
+          View Dashboard
+        </Button>
+      </View>
+    </Card>
+  );
 
   return (
     <View style={styles.container}>
@@ -115,8 +122,8 @@ export default function LandlordsScreen() {
               type === "VERIFIED"
                 ? styles.verified
                 : type === "UNVERIFIED"
-                ? styles.unverified
-                : styles.all,
+                  ? styles.unverified
+                  : styles.all,
             ]}
           >
             {type}
@@ -124,12 +131,17 @@ export default function LandlordsScreen() {
         ))}
       </View>
 
-      <FlatList
-        data={filteredLandlords}
-        keyExtractor={(item) => item.landlordId.toString()}
-        renderItem={renderLandlord}
-        contentContainerStyle={{ paddingBottom: 20 }}
-      />
+      {loading ? (
+        <ActivityIndicator size="large" color="#1E3A8A" />
+      ) : (
+        <FlatList
+          data={filteredLandlords}
+          keyExtractor={(item) => item.user.userId}
+          renderItem={renderLandlord}
+          contentContainerStyle={{ paddingBottom: 20 }}
+          ListEmptyComponent={<Text style={{ textAlign: 'center', marginTop: 20 }}>No landlords found.</Text>}
+        />
+      )}
     </View>
   );
 }

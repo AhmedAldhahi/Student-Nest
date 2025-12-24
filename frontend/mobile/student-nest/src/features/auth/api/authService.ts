@@ -228,9 +228,10 @@ export const verifyPasswordRecoveryOtp = async (data: { email: string; otpCode: 
 
 export const resetPassword = async (data: { email: string; password: string }) => {
     try {
+        console.log(`the data is ${data.password} `);
         console.log("Sending JSON to:", `${API_URL}/password-recovery/forget-password`);
         const response = await fetch(`${API_URL}/password-recovery/forget-password`, {
-            method: "POST",
+            method: "PATCH",
             body: JSON.stringify(data),
             headers: {
                 "Content-Type": "application/json",
@@ -238,7 +239,15 @@ export const resetPassword = async (data: { email: string; password: string }) =
             },
         });
 
-        const result = await response.json();
+        const responseText = await response.text();
+        console.log("Raw Response:", responseText);
+
+        let result;
+        try {
+            result = JSON.parse(responseText);
+        } catch (e) {
+            throw new Error(`Server returned non-JSON response: ${responseText.slice(0, 100)}...`);
+        }
         console.log("Response:", result);
 
         if (!response.ok) {

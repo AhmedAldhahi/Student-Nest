@@ -1,105 +1,132 @@
-import React, { useState } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, FlatList, ActivityIndicator, Alert } from "react-native";
 import { Text, Card, Avatar, Searchbar, Chip, Button } from "react-native-paper";
-
-const mockUsers = [
-  {
-    userId: 1,
-    name: "John Doe",
-    email: "john@example.com",
-    emailVerified: true,
-    role: "student",
-    phoneNumber: "0791234567",
-    photo: null,
-    isActive: "activate",
-    createdAt: "2025-01-10",
-  },
-  {
-    userId: 2,
-    name: "Sarah Ali",
-    email: "sarah@example.com",
-    emailVerified: false,
-    role: "landlord",
-    phoneNumber: "0789876543",
-    photo: null,
-    isActive: "ban",
-    createdAt: "2025-02-20",
-  },
-  {
-    userId: 3,
-    name: "Michael Smith",
-    email: "michael@example.com",
-    emailVerified: true,
-    role: "student",
-    phoneNumber: "0775554443",
-    photo: null,
-    isActive: "deactivate",
-    createdAt: "2025-03-05",
-  },
-];
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../../../navigation/types";
+import { useAuth } from "../../../../context/AuthContext";
+import { searchStudentByEmail, getAllStudents } from "../../api/adminService";
+import { Student } from "./types";
 
 export default function StudentsScreen() {
+  const { token } = useAuth();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [searchQuery, setSearchQuery] = useState("");
-  const [users, setUsers] = useState(mockUsers);
+  const [students, setStudents] = useState<Student[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const filteredUsers = users.filter(
-    (u) =>
+  useEffect(() => {
+    // Debounce search or just fetch all initially
+    if (searchQuery.length === 0) {
+      fetchStudents();
+    }
+  }, [searchQuery]); // Reload all if search cleared
+
+  const fetchStudents = async () => {
+    if (!token) return;
+    setLoading(true);
+    try {
+      const data = await getAllStudents(token);
+      if (Array.isArray(data)) {
+        setStudents(data);
+      } else {
+        setStudents([]);
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Error", "Failed to fetch students");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSearch = async () => {
+    if (!token) return;
+    if (!searchQuery) {
+      fetchStudents();
+      return;
+    }
+
+    // If it looks like an email, use the search endpoint
+    if (searchQuery.includes("@")) {
+      setLoading(true);
+      try {
+        const data = await searchStudentByEmail(token, searchQuery);
+        if (Array.isArray(data)) {
+          setStudents(data);
+        } else {
+          // Sometimes search might return a single object or empty array depending on API
+          // User example showed array: [ { ... } ]
+          setStudents(Array.isArray(data) ? data : [data]);
+        }
+      } catch (error) {
+        console.error("Search error:", error);
+        // Fallback to local filtering if API fails or if purely local search desired
+        // But user explicitly asked to use the endpoint.
+        // We'll keep current list and let the local filter below handle it if API fails? 
+        // No, better to show error or empty.
+        setStudents([]);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      // Local filter will happen on render based on `students` state, 
+      // but if we are in "all students" mode, we filter locally.
+    }
+  };
+
+  const filteredStudents = students.filter((s) => {
+    // If we already searched by API (email), the list is already filtered.
+    // If we fetched all, we filter locally by name/email/uni.
+    if (searchQuery.includes("@") && students.length < 5) return true; // weak check if it's the search result
+
+    const u = s.user;
+    const matchesSearch =
       u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       u.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      u.role.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+      (s.universityName && s.universityName.toLowerCase().includes(searchQuery.toLowerCase()));
 
-  const renderUser = ({ item }: { item: typeof mockUsers[0] }) => (
+    return matchesSearch;
+  });
+
+  const renderStudent = ({ item }: { item: Student }) => (
     <Card style={styles.card}>
       <Card.Title
-        title={item.name}
-        subtitle={item.email}
+        title={item.user.name}
+        subtitle={item.user.email}
         left={(props) =>
-          item.photo ? (
-            <Avatar.Image {...props} source={{ uri: item.photo }} />
+          item.user.photo ? (
+            <Avatar.Image {...props} source={{ uri: item.user.photo }} />
           ) : (
             <Avatar.Icon {...props} icon="account" />
           )
         }
         right={() => (
-          <Chip
-            style={[
-              styles.statusChip,
-              item.isActive === "activate"
-                ? styles.active
-                : item.isActive === "ban"
-                ? styles.banned
-                : styles.deactivated,
-            ]}
-          >
-            {item.isActive}
-          </Chip>
+          <Chip style={styles.statusChip}>{item.user.role}</Chip>
         )}
       />
       <Card.Content>
-        <Text style={styles.detail}>Role: {item.role}</Text>
-        <Text style={styles.detail}>Phone: {item.phoneNumber}</Text>
-        <Text style={styles.detail}>Joined: {item.createdAt}</Text>
+        <Text style={styles.detail}>University: {item.universityName}</Text>
+        <Text style={styles.detail}>Major: {item.Major}</Text>
+        <Text style={styles.detail}>Phone: {item.user.phoneNumber}</Text>
+        <Text style={styles.detail}>Joined: {new Date(item.user.createdAt).toLocaleDateString()}</Text>
         <Chip
-          icon={item.emailVerified ? "check" : "alert"}
+          icon={item.user.emailVerfied ? "check" : "alert"}
           style={[
             styles.emailChip,
-            item.emailVerified ? styles.verified : styles.unverified,
+            item.user.emailVerfied ? styles.verified : styles.unverified,
           ]}
         >
-          {item.emailVerified ? "Email Verified" : "Email Not Verified"}
+          {item.user.emailVerfied ? "Email Verified" : "Email Not Verified"}
         </Chip>
       </Card.Content>
       <Card.Actions>
-        <Button mode="outlined" style={styles.btn}>
-          View Profile
-        </Button>
         <Button
-          mode="contained"
+          mode="outlined"
           style={styles.btn}
-          buttonColor={item.isActive === "ban" ? "#2ecc71" : "#e74c3c"}
+          onPress={() => navigation.navigate("StudentDetailScreen", { student: item })}
         >
-          {item.isActive === "ban" ? "Activate" : "Ban"}
+          View Profile
         </Button>
       </Card.Actions>
     </Card>
@@ -107,19 +134,27 @@ export default function StudentsScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>All Users</Text>
+      <Text style={styles.header}>All Students</Text>
       <Searchbar
-        placeholder="Search by name, email, or role"
+        placeholder="Search by name, email, or university"
         value={searchQuery}
         onChangeText={setSearchQuery}
+        onSubmitEditing={handleSearch}
+        onIconPress={handleSearch}
         style={styles.search}
       />
-      <FlatList
-        data={filteredUsers}
-        keyExtractor={(item) => item.userId.toString()}
-        renderItem={renderUser}
-        contentContainerStyle={{ paddingBottom: 20 }}
-      />
+
+      {loading ? (
+        <ActivityIndicator size="large" color="#1E3A8A" />
+      ) : (
+        <FlatList
+          data={filteredStudents}
+          keyExtractor={(item) => item.user.userId}
+          renderItem={renderStudent}
+          contentContainerStyle={{ paddingBottom: 20 }}
+          ListEmptyComponent={<Text style={{ textAlign: 'center', marginTop: 20 }}>No students found.</Text>}
+        />
+      )}
     </View>
   );
 }
