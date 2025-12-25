@@ -1,5 +1,5 @@
 import { IReadUserRepositories } from "../../../Domain/Repositories/Read/ReadUserRepositories.repositories";
-import { userUpdateProfileRequest } from "../../DTO/profile/adminRequest.updateProfile.profile.dtos";
+import { userUpdateProfileRequest } from "../../DTO/profile/adminRequest.updateProfile.profile.dto";
 import { ProfileContext } from "../../Strategy/profiles/profilecontext";
 
 export class updateUserProfileDataUseCase {

@@ -1,4 +1,4 @@
-import { INotificationDTO } from "../../../Application/DTO/admin/NotificationDTO.dtos";
+import { INotificationDTO } from "../../../Application/DTO/admin/NotificationDTO.dto";
 import { NotificationEntity } from "../../Entities/NotificationEntity.entity";
 
 export interface IReadNotificationRepositories {

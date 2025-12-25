@@ -1,5 +1,5 @@
 import { UserRole } from "../../../Domain/Enum/UserRole.enum";
-import { RegisterLandloardRequest } from "../../DTO/registeration/RegisterLandloardRequest.dtos";
+import { RegisterLandloardRequest } from "../../DTO/registeration/RegisterLandlordRequest.dto";
 import { ICommand } from "../ICommand";
 
 export class CreateLandlordCommand implements ICommand {

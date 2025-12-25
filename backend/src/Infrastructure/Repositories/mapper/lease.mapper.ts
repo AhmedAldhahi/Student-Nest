@@ -1,4 +1,4 @@
-import { ILeaseEntityDTO } from "../../../Application/DTO/admin/LeaseDTO.dtos";
+import { ILeaseEntityDTO } from "../../../Application/DTO/admin/LeaseDTO.dto";
 import { LeaseAggregateRoot } from "../../../Domain/AggregatesRoot/leaseEntity.entity";
 import { LeaseEndDate } from "../../../Domain/Value-Object/LeaseEndDate.vo";
 import { LeaseStartDate } from "../../../Domain/Value-Object/LeaseStartDate.vo";

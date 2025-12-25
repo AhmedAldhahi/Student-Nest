@@ -1,5 +1,5 @@
 import { ApartmentPhotoDocumentEntity } from "../../../Domain/Entities/phohtoDocumentEntity.entity";
-import { EditApartmentDataRequest } from "../../DTO/admin/EditApartmentData.dtos";
+import { EditApartmentDataRequest } from "../../DTO/admin/EditApartmentData.dto";
 import { ICommand } from "../ICommand";
 
 export class EditApartmentDetailByIdCommand implements ICommand {

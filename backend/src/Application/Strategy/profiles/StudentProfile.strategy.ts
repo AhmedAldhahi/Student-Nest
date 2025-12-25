@@ -1,6 +1,6 @@
 import { UpdateStudentCommand } from "../../Command/Commands/UpdateStudentCommand";
 import { UpdateStudentCommandHandler } from "../../Command/Handlers/UpdateStudentCommandHandler";
-import { StudentUpdateProfileRequest } from "../../DTO/profile/StudentRequest.updateProfile.profile.dtos";
+import { StudentUpdateProfileRequest } from "../../DTO/profile/StudentRequest.updateProfile.profile.dto";
 import { ICashMemoryService } from "../../Interfaces/ICash.interface";
 import { GetStudentQueriesHandlers } from "../../Queries/Handlers/GetStudentProfileQueriesHandler";
 import { GetUserProfileQueries } from "../../Queries/Queries/GetUserProfileQueries";

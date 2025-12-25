@@ -1,4 +1,4 @@
-import { userUpdateProfileRequest } from "./adminRequest.updateProfile.profile.dtos";
+import { userUpdateProfileRequest } from "./adminRequest.updateProfile.profile.dto";
 
 export interface StudentUpdateProfileRequest extends userUpdateProfileRequest {
   major?: string;

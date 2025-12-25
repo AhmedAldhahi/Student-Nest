@@ -1,6 +1,6 @@
 import { UpdateLandlordCommand } from "../../Command/Commands/UpdateLandlordCommand";
 import { UpdateLandlordCommandHandler } from "../../Command/Handlers/UpdateLandlordCommandHandler";
-import { LandlordUpdateProfileRequest } from "../../DTO/profile/LandlordRequest.updateProfile.profile.dtos";
+import { LandlordUpdateProfileRequest } from "../../DTO/profile/LandlordRequest.updateProfile.profile.dto";
 import { ICashMemoryService } from "../../Interfaces/ICash.interface";
 import { GetLandlordProfileQueriesHandlers } from "../../Queries/Handlers/GetLandlordProfileQueriesHandler";
 import { GetUserProfileQueries } from "../../Queries/Queries/GetUserProfileQueries";

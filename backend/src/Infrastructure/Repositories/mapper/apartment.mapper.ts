@@ -1,7 +1,7 @@
 import {
-  IApartmentDTO,
   IApartmentSimpleDTO,
-} from "../../../Application/DTO/admin/ApartmentDTo.dtos";
+  IApartmentDTO,
+} from "../../../Application/DTO/admin/ApartmentDTo.dto";
 import { ApartmentAggregateRoot } from "../../../Domain/AggregatesRoot/apartmentEntity.entity";
 import { ApartmentPrice } from "../../../Domain/Value-Object/ApartmentPrice.vo";
 import { numberOfBed } from "../../../Domain/Value-Object/NumberOfBed.vo";

@@ -1,13 +1,14 @@
 import { Like } from "typeorm";
-import {
-  IApartmentDTO,
-  IApartmentSimpleDTO,
-} from "../../../Application/DTO/admin/ApartmentDTo.dtos";
+
 import { IReadApartmentRepo } from "../../../Domain/Repositories/Read/ReadApartmentRepo.repositoreis";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { ApartmentModel } from "../../Database/orm/TypeOrm/entity/Apartment.entity";
 import { ApartmentMapper } from "../mapper/apartment.mapper";
 import { ApartmentAggregateRoot } from "../../../Domain/AggregatesRoot/apartmentEntity.entity";
+import {
+  IApartmentSimpleDTO,
+  IApartmentDTO,
+} from "../../../Application/DTO/admin/ApartmentDTo.dto";
 
 export class ReadApartmentRepositories implements IReadApartmentRepo {
   public async findAllApartment(): Promise<IApartmentSimpleDTO[] | null> {

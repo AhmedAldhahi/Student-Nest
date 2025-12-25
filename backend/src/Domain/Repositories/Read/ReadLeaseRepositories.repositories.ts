@@ -1,4 +1,4 @@
-import { ILeaseEntityDTO } from "../../../Application/DTO/admin/LeaseDTO.dtos";
+import { ILeaseEntityDTO } from "../../../Application/DTO/admin/LeaseDTO.dto";
 
 export interface IReadLeaseRepositories {
   findByQuery(query: string): Promise<ILeaseEntityDTO | null>;

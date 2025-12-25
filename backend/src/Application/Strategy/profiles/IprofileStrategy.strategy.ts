@@ -1,4 +1,4 @@
-import { userUpdateProfileRequest } from "../../DTO/profile/adminRequest.updateProfile.profile.dtos";
+import { userUpdateProfileRequest } from "../../DTO/profile/adminRequest.updateProfile.profile.dto";
 
 export interface IProfileStrategy {
     UserProfile (userId: string): Promise<any>;

@@ -1,6 +1,6 @@
 import { EditApartmentDetailByIdCommand } from "../../../Command/Commands/EditApartmentCommand";
 import { EditApartmentDetailByIdCommandHandler } from "../../../Command/Handlers/EditApartmentDetailByIdCommandHandler";
-import { EditApartmentDataRequest } from "../../../DTO/admin/EditApartmentData.dtos";
+import { EditApartmentDataRequest } from "../../../DTO/admin/EditApartmentData.dto";
 
 export class EditApartmentDetailUseCase {
   constructor(
