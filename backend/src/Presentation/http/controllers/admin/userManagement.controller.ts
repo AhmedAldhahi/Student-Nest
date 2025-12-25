@@ -79,7 +79,7 @@ export class UserManagementController {
   public findUsersByQuery = async (req: Request, res: Response) => {
     try {
       const userId = req.user?.userId;
-      const { query } = req.params;
+      const query = (req.query.q as string) || "";
       const { userRole } = req.params;
 
       if (!userId)
