@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { GetAllLeaseRequestUseCase } from "../../../../Application/Use-Case/admin/LeaseRequestMangament/getAllLeaseRequest.usecase";
-import { GetLeaseRequestByIdUseCase } from "../../../../Application/Use-Case/admin/LeaseRequestMangament/getLeaseRequestById.usecase";
+import { GetAllLeaseRequestUseCase } from "../../../../Application/Use-Case/admin/LeaseRequestManagement/getAllLeaseRequest.usecase";
+import { GetLeaseRequestByQueryUseCase } from "../../../../Application/Use-Case/admin/LeaseRequestManagement/getLeaseRequestByQuery.usecase";
 export class LeaseRequestManagementController {
   constructor(
     private readonly GetAllLeaseRequest: GetAllLeaseRequestUseCase,
-    private readonly GetLeaseRequestByID: GetLeaseRequestByIdUseCase
+    private readonly GetLeaseRequestByQuery: GetLeaseRequestByQueryUseCase
   ) {}
 
   public getAllLeaseRequest = async (req: Request, res: Response) => {
@@ -21,17 +21,15 @@ export class LeaseRequestManagementController {
     }
   };
 
-  public getLeaseRequestById = async (req: Request, res: Response) => {
+  public getLeaseRequestByQuery = async (req: Request, res: Response) => {
     try {
       const userId = req.user?.userId;
-      const { leaseRequestId } = req.params;
+      const leaseRequestId = (req.query.q as string) || "";
 
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.GetLeaseRequestByID.execute(
-        Number(leaseRequestId)
-      );
+      const result = await this.GetLeaseRequestByQuery.execute(leaseRequestId);
 
       return res.status(200).json(result);
     } catch (error: any) {

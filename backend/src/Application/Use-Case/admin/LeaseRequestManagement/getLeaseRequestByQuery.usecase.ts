@@ -1,7 +1,7 @@
 import { GetLeaseRequestByQueryQueriesHandler } from "../../../Queries/Handlers/GetLeaseRequestByQueryQueriesHandler";
 import { GetLeaseRequestByQuery } from "../../../Queries/Queries/GetLeaseRequestByQuery.Queries";
 
-export class GetLeaseRequestByIdUseCase {
+export class GetLeaseRequestByQueryUseCase {
   constructor(
     private readonly queriesHandler: GetLeaseRequestByQueryQueriesHandler
   ) {}

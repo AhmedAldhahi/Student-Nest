@@ -1,3 +1,4 @@
+import { FindOptionsWhere, Like } from "typeorm";
 import { ILeaseRequestDTO } from "../../../Application/DTO/admin/LeaseRequestDTO.dto";
 import { IReadLeaseRequestRepositories } from "../../../Domain/Repositories/Read/ReadLeaseRequestRepositories.repositories";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
@@ -19,7 +20,7 @@ export class ReadLeaseRequestRepositories
             rentTerm: true,
             requestStatus: true,
             createAt: true,
-            
+
             landlord: {
               userId: true,
               user: {
@@ -59,14 +60,33 @@ export class ReadLeaseRequestRepositories
     }
   }
 
-  public async findLeaseRequestById(
-    id: number
+  public async findLeaseRequestByQuery(
+    Queries: string
   ): Promise<ILeaseRequestDTO | null> {
     try {
+      const query = Queries.trim();
+      const numericId = Number(query);
+
+      const isNumeric = !Number.isNaN(numericId);
+
+      let whereCondition: FindOptionsWhere<LeaseRequestModel>[];
+
+      if (isNumeric) {
+        whereCondition = [{ leaseRequestId: numericId }];
+      } else {
+        whereCondition = [
+          { landlord: { user: { Name: Like(`%${query}%`) } } },
+
+          { student: { user: { Name: Like(`%${query}%`) } } },
+
+          { apartment: { title: Like(`%${query}%`) } },
+        ];
+      }
+
       const orm = await AppDataSource.getInstance()
         .getRepository(LeaseRequestModel)
         .findOne({
-          where: { leaseRequestId: id },
+          where: whereCondition,
           relations: {
             student: { user: true },
             landlord: { user: true },

@@ -16,10 +16,10 @@ export const LeaseRequestManagementRouter = (
   );
 
   router.get(
-    "/lease-request/:leaseRequestId",
+    "/lease-request/search",
     isAuth,
     isAdmin,
-    leaseRequestManagementController.getLeaseRequestById
+    leaseRequestManagementController.getLeaseRequestByQuery
   );
 
   return router;
