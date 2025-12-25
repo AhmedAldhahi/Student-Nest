@@ -1,5 +1,6 @@
 import { DeleteUserCommandHandler } from "../../../Application/Command/Handlers/DeleteUserCommandHandler";
 import { updateVerificationStatusCommandHandler } from "../../../Application/Command/Handlers/updateLandlordVerficationStatusCommandHandler";
+import { UpdateUserActivateStatusCommandHandler } from "../../../Application/Command/Handlers/UpdateUserActivateStatus.CommandHandler";
 import { GetAllLandlordByQueriesQueriesHandler } from "../../../Application/Queries/Handlers/GetAllLandlordByQueriesQueriesHandler";
 import { GetAllLandlordQueriesHandler } from "../../../Application/Queries/Handlers/GetAllLandlordQueriesHandler";
 import { GetAllStudentsByQueriesQueriesHandler } from "../../../Application/Queries/Handlers/GetAllStudentByQueriesQueriesHandler ";
@@ -8,6 +9,7 @@ import { GetUserEmailSimpleFactory } from "../../../Application/SimpleFactory/Ge
 import { UserSimpleFactory } from "../../../Application/SimpleFactory/GetUsersSimpleFactory";
 import { DeleteLandlordByIdUseCase } from "../../../Application/Use-Case/admin/UserMangament/DeleteUserById.usecase";
 import { EditLandlordVerificationStatusUseCase } from "../../../Application/Use-Case/admin/UserMangament/EditLandlordVerificationStatus.usecase";
+import { EditUserActivateStatsUseCase } from "../../../Application/Use-Case/admin/UserMangament/EditUserActivateStatus.usecase";
 import { FindUserByQueryUseCase } from "../../../Application/Use-Case/admin/UserMangament/FindUserByQuery.usecase";
 import { GetAllUserUseCase } from "../../../Application/Use-Case/admin/UserMangament/GetAllUser.usecase";
 import { RedisCashService } from "../../Cashing/RadisCashe";
@@ -80,4 +82,14 @@ export function GetAllUsers(): GetAllUserUseCase {
   );
 
   return new GetAllUserUseCase(userSimpleFactory);
+}
+
+export function UpdateUserActivateStatusUseCase(): EditUserActivateStatsUseCase {
+  const userRepo = new ReadUserRepositories();
+  const uow = new UnitOfWork();
+  const commandHandler = new UpdateUserActivateStatusCommandHandler(
+    uow,
+    userRepo
+  );
+  return new EditUserActivateStatsUseCase(commandHandler);
 }

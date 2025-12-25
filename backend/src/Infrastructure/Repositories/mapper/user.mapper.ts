@@ -19,6 +19,7 @@ export class UserMapper {
     userModel.Role = dateValidation.role;
     userModel.Password = dateValidation.password;
     userModel.PhoneNumber = dateValidation.phoneNumber;
+    userModel.isActive = user.getAccountStatus();
 
     // OTP Email
     userModel.otpCode = user.getOtpForEmail() ?? null;

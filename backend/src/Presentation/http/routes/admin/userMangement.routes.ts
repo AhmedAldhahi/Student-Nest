@@ -39,5 +39,12 @@ export const userManagementRouter = (
     userManagementRouter.findUsersByQuery
   );
 
+  router.patch(
+    "/users/:id/status",
+    isAuth,
+    isAdmin,
+    userManagementRouter.updateActivateStatus
+  );
+
   return router;
 };

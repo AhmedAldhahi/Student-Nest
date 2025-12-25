@@ -41,7 +41,8 @@ export const buildControllers = () => {
     useCases.GetAllUsersUseCase,
     useCases.updateLandlordStatusUseCase,
     useCases.DeleteLandlordByIdUseCase,
-    useCases.findUserByEmailUseCase
+    useCases.findUserByEmailUseCase,
+    useCases.updateAccountActivateUseCase
   );
 
   const adminLeaseManagementController = new LeaseManagementController(
