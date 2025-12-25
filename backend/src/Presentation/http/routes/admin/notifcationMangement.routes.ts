@@ -1,7 +1,6 @@
 import { Router } from "express";
-import { NotificationController } from "../../controllers/admin/Notification.controller";
+import { NotificationController } from "../../controllers/Notification.controller";
 import { isAuth } from "../../middlewares/auth/isAuth.middleware";
-import { isAdmin } from "../../middlewares/auth/isAdmin.middleware";
 
 export const notificationRouter = (
   notificationController: NotificationController
@@ -11,11 +10,20 @@ export const notificationRouter = (
   router.get(
     "/notifications",
     isAuth,
-    isAdmin,
     notificationController.getAllNotification
   );
 
-  router.patch("/notifications-status/:id",isAuth,isAdmin,notificationController.updateNotificationsStatus)
+  router.patch(
+    "/notifications-status/:id",
+    isAuth,
+    notificationController.updateNotificationsStatus
+  );
+
+  router.delete(
+    "/notification/:id",
+    isAuth,
+    notificationController.deleteNotificationById
+  );
 
   return router;
 };

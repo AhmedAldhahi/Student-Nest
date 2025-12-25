@@ -1,17 +1,35 @@
 import { EntityManager } from "typeorm";
 import { NotificationEntity } from "../../../Domain/Entities/NotificationEntity.entity";
 import { IWriteNotificationRepo } from "../../../Domain/Repositories/Write/IWriteNotficationRepositories.repositores";
-import { WriteUserRepositories } from "./WriteUserRepositories";
 import { NotificationMapper } from "../mapper/notification.mapper";
 import { NotificationModel } from "../../Database/orm/TypeOrm/entity/Notifcation.entity";
 
 export class WriteNotificationRepositories implements IWriteNotificationRepo {
   private manager: EntityManager;
-  private writeUserRepo: WriteUserRepositories;
 
   constructor(manager: EntityManager) {
     this.manager = manager;
-    this.writeUserRepo = new WriteUserRepositories(manager);
+  }
+
+  public async deleteNotificationById(
+    id: number,
+    userId: string
+  ): Promise<void> {
+    const result = await this.manager
+      .createQueryBuilder()
+      .delete()
+      .from(NotificationModel)
+      .where("notificationId = :id", { id })
+      .andWhere("receiverId = :userId", { userId })
+      .execute();
+
+    if (result.affected === 0) {
+      throw new Error("Notification not found or access denied.");
+    }
+  }
+
+  public async deleteAllNotification(): Promise<void> {
+    throw new Error("Method not implemented.");
   }
 
   public async updateNotification(

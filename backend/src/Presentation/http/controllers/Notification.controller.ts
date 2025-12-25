@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
-import { GetAllNotificationUseCase } from "../../../../Application/Use-Case/admin/NotifcationMangement/GetAllNotifcation.usecase";
-import { UpdateNotificationStatusUseCase } from "../../../../Application/Use-Case/admin/NotifcationMangement/UpdateNotifcationStatus.usecase";
+import { GetAllNotificationUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/GetAllNotifcation.usecase";
+import { UpdateNotificationStatusUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/UpdateNotifcationStatus.usecase";
+import { DeleteNotificationByIdUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/DeleteNotificationById.usecase";
 
 export class NotificationController {
   constructor(
     private readonly GetAllNotification: GetAllNotificationUseCase,
-    private readonly updateNotificationStatus: UpdateNotificationStatusUseCase
+    private readonly updateNotificationStatus: UpdateNotificationStatusUseCase,
+    private readonly DeleteNotificationById: DeleteNotificationByIdUseCase
   ) {}
 
   public getAllNotification = async (req: Request, res: Response) => {
@@ -50,6 +52,26 @@ export class NotificationController {
       return res
         .status(400)
         .json({ error: error.message || "internal server Error" });
+    }
+  };
+
+  public deleteNotificationById = async (req: Request, res: Response) => {
+    try {
+      const userId = req.user.userId;
+
+      if (!userId) return res.status(400).json({ error: "no user Id found !!" });
+
+      const { id } = req.params;
+
+      const result = await this.DeleteNotificationById.execute(
+        Number(id),
+        userId
+      );
+      return res.status(200).json(result);
+    } catch (error: any) {
+      return res
+        .status(400)
+        .json({ error: error.message || "internal server error" });
     }
   };
 }

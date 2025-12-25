@@ -3,7 +3,7 @@ import { ApartmentManagementController } from "./admin/apartmentManagement.contr
 import { ProfileController } from "./Profile.controller";
 import { PasswordRecoverController } from "./PasswordRecovery.controller";
 import { LeaseRequestManagementController } from "./admin/leaseRequestManagement.controller";
-import { NotificationController } from "./admin/Notification.controller";
+import { NotificationController } from "./Notification.controller";
 import { UserManagementController } from "./admin/userManagement.controller";
 import { AuthController } from "./Registration.controller";
 import { VerificationController } from "./Verification.controller";
@@ -58,7 +58,8 @@ export const buildControllers = () => {
 
   const adminNotificationController = new NotificationController(
     useCases.GetAllNotificationUseCase,
-    useCases.updateNotificationUseCase
+    useCases.updateNotificationUseCase,
+    useCases.deleteNotificationByIdUseCase
   );
 
   const adminAuditLogController = new AuditLogController(

@@ -1,5 +1,7 @@
+import { deleteNotificationByIdCommandHandler } from "../../../Application/Command/Handlers/DeleteNotificationByIdCommandHandler";
 import { UpdateNotificationStatusCommandHandler } from "../../../Application/Command/Handlers/updateNotifcationStatusCommandHandler";
 import { GetAllNotificationQueriesHandler } from "../../../Application/Queries/Handlers/GetAllNotifcationQueriesHandler";
+import { DeleteNotificationByIdUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/DeleteNotificationById.usecase";
 import { GetAllNotificationUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/GetAllNotifcation.usecase";
 import { UpdateNotificationStatusUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/UpdateNotifcationStatus.usecase";
 import { readNotificationRepositories } from "../../Repositories/Read/ReadNotificationRepositories";
@@ -24,4 +26,15 @@ export function updateNotificationStatus(): UpdateNotificationStatusUseCase {
   );
 
   return new UpdateNotificationStatusUseCase(commandHandler);
+}
+
+export function deleteNotificationById(): DeleteNotificationByIdUseCase {
+  const uow = new UnitOfWork();
+  const readNotificationRepo = new readNotificationRepositories();
+
+  const commandHandler = new deleteNotificationByIdCommandHandler(
+    uow,
+    readNotificationRepo
+  );
+  return new DeleteNotificationByIdUseCase(commandHandler);
 }

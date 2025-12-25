@@ -28,6 +28,7 @@ import {
 } from "./admin/LeaseRequestManagement";
 
 import {
+  deleteNotificationById,
   GetAllNotification,
   updateNotificationStatus,
 } from "./admin/NotificationManagement";
@@ -69,6 +70,7 @@ export function buildDependencies() {
       getLeaseRequestByIdUseCase: GetLeaseRequestByQuery(),
       GetAllNotificationUseCase: GetAllNotification(),
       updateNotificationUseCase: updateNotificationStatus(),
+      deleteNotificationByIdUseCase: deleteNotificationById(),
       GetAllApartmentUseCase: GetAllApartment(),
       getApartmentsByNameUseCase: GetApartmentByTitle(),
       editStatusApartmentVerifiedUseCase: EditApartmentStatusVerified(),
