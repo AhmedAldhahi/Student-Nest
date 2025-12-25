@@ -68,7 +68,6 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
         AppDataSource.getInstance().getRepository(ApartmentModel);
 
       const apartments = await apartmentRepo.find({
-        // 2. FIX: Remove double curly braces {{ }}
         where: {
           title: Like(`${prefix}%`),
         },
