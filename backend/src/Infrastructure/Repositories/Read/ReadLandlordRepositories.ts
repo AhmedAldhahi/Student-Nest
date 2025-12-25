@@ -4,7 +4,7 @@ import { LandlordModel } from "../../Database/orm/TypeOrm/entity/Landloard.entit
 import { LandlordMapper } from "../mapper/landloard.mapper";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { LandlordResponseDTO } from "../../../Application/Dtos/profile/LandlordResponeDTO";
-import { Like } from "typeorm";
+import { FindOptionsWhere, Like } from "typeorm";
 
 export class ReadLandlordRepositories implements IReadLandlordRepositories {
   public async findLandlordById(
@@ -69,15 +69,37 @@ export class ReadLandlordRepositories implements IReadLandlordRepositories {
     prefix: string
   ): Promise<LandlordResponseDTO[] | null> {
     try {
-      // Query landlords and include the related `user` entity to search by `Email`
+      const query = prefix.trim();
+
+      const phoneRegex = /^(?:(?:\+962|00)\s?0?|0)?\s?(7[789])\s?(\d{7})$/;
+      const isNumeric = /^\d+$/.test(query);
+
+      let whereCondition:
+        | FindOptionsWhere<LandlordModel>
+        | FindOptionsWhere<LandlordModel>[];
+
+      if (query.includes("@")) {
+        whereCondition = { user: { Email: Like(`%${query}%`) } };
+      } else if (isNumeric || phoneRegex.test(query)) {
+        if (phoneRegex.test(query)) {
+          whereCondition = { user: { PhoneNumber: Like(`%${query}%`) } };
+        } else {
+          whereCondition = [
+            { user: { PhoneNumber: Like(`%${query}%`) } },
+            { LandlordGovId: Like(`${query}%`) },
+          ];
+        }
+      } else {
+        whereCondition = [
+          { user: { Name: Like(`%${query}%`) } },
+          { CliQAccount: Like(`%${query}%`) },
+        ];
+      }
+
       const landlordsModel = await AppDataSource.getInstance()
         .getRepository(LandlordModel)
         .find({
-          where: {
-            user: {
-              Email: Like(`${prefix}%`), // Now we're querying the related `user` entity's `Email` field
-            },
-          },
+          where: whereCondition,
           select: {
             CliQAccount: true,
             LandlordGovId: true,

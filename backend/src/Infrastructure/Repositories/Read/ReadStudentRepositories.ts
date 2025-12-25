@@ -1,4 +1,4 @@
-import { Like } from "typeorm";
+import { FindOptionsWhere, Like } from "typeorm";
 import { StudentResponseDto } from "../../../Application/Dtos/profile/StudentResponseDto";
 import { StudentAggregateRoot } from "../../../Domain/AggregatesRoot/studentEntity.entity";
 import { IReadStudentRepositories } from "../../../Domain/Repositories/Read/ReadStudentRepositories.repositories";
@@ -73,14 +73,39 @@ export class ReadStudentRepositories implements IReadStudentRepositories {
     prefix: string
   ): Promise<StudentResponseDto[] | null> {
     try {
+      const query = prefix.trim();
+
+      const phoneRegex = /^(?:(?:\+962|00)\s?0?|0)?\s?(7[789])\s?(\d{7})$/;
+      const isNumeric = /^\d+$/.test(query);
+
+      let whereCondition:
+        | FindOptionsWhere<StudentModel>
+        | FindOptionsWhere<StudentModel>[];
+
+      if (query.includes("@")) {
+        whereCondition = { user: { Email: Like(`%${query}%`) } };
+      } else if (isNumeric || phoneRegex.test(query)) {
+        if (phoneRegex.test(query)) {
+          whereCondition = { user: { PhoneNumber: Like(`%${query}%`) } };
+        } else {
+          whereCondition = [
+            { user: { PhoneNumber: Like(`%${query}%`) } },
+            { StudentGovId: Like(`${query}%`) },
+          ];
+        }
+      } else {
+        whereCondition = [
+          { user: { Name: Like(`%${query}%`) } },
+          { Major: Like(`%${query}%`) },
+          { UniversityName: Like(`%${query}%`) },
+          { StudentCardId: Like(`${query}%`) },
+        ];
+      }
+
       const studentModels = await AppDataSource.getInstance()
         .getRepository(StudentModel)
         .find({
-          where: {
-            user: {
-              Email: Like(`${prefix}%`),
-            },
-          },
+          where: whereCondition,
           select: {
             GraduationYear: true,
             Major: true,
@@ -88,7 +113,6 @@ export class ReadStudentRepositories implements IReadStudentRepositories {
             StudentGovId: true,
             UniversityName: true,
             verificationFiles: true,
-
             user: {
               userId: true,
               Email: true,
@@ -111,12 +135,10 @@ export class ReadStudentRepositories implements IReadStudentRepositories {
 
       if (!studentModels || studentModels.length === 0) return [];
 
-      return studentModels.map((orm) => {
-        return StudentMapper.toResponse(orm);
-      });
+      return studentModels.map((orm) => StudentMapper.toResponse(orm));
     } catch (error: any) {
-      console.error("Failed to search students by email", error);
-      throw new Error("Error while searching students by email");
+      console.error("Failed to search students", error);
+      throw new Error("Error while searching students");
     }
   }
 }
