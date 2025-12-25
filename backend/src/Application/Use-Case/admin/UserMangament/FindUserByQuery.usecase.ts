@@ -1,13 +1,13 @@
 import { UserRole } from "../../../../Domain/Enum/UserRole.enum";
-import { GetUserEmailSimpleFactory } from "../../../SimpleFactory/GetUserEmailSimpleFactory";
+import { GetUserEmailSimpleFactory } from "../../../SimpleFactory/GetUserQuerySimpleFactory";
 
-export class FindUserByEmailUseCase {
+export class FindUserByQueryUseCase {
   constructor(
     private GetUsersEmailFactory: GetUserEmailSimpleFactory,
   ) {}
 
-  public async execute(email: string, role: UserRole) {
-    const results = await this.GetUsersEmailFactory.getUsers(role, email);
+  public async execute(query: string, role: UserRole) {
+    const results = await this.GetUsersEmailFactory.getUsers(role, query);
 
     if (!results || results.length === 0) {
       throw new Error("no user found !!");

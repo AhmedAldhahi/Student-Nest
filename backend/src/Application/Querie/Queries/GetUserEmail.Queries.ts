@@ -1,8 +1,8 @@
 import { IQueries } from "../IQuerie";
 
-export class GetUserEmailQueries implements IQueries {
-  public email: string;
-  constructor(email: string) {
-    this.email = email;
+export class GetUserQueriesQueries implements IQueries {
+  public query: string;
+  constructor(query: string) {
+    this.query = query;
   }
 }

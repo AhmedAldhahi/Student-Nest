@@ -1,14 +1,14 @@
 import { DeleteUserCommandHandler } from "../../../Application/Command/Handlers/DeleteUserCommandHandler";
 import { updateVerificationStatusCommandHandler } from "../../../Application/Command/Handlers/updateLandlordVerficationStatusCommandHandler";
-import { GetAllLandlordByEmailQueriesHandler } from "../../../Application/Querie/Handlers/GetAllLandlordByEmailQueriesHandler";
+import { GetAllLandlordByQueriesQueriesHandler } from "../../../Application/Querie/Handlers/GetAllLandlordByQueriesQueriesHandler";
 import { GetAllLandlordQueriesHandler } from "../../../Application/Querie/Handlers/GetAllLandlordQueriesHandler";
-import { GetAllStudentsByEmailQueriesHandler } from "../../../Application/Querie/Handlers/GetAllStudentByEmailQueriesHandler ";
+import { GetAllStudentsByQueriesQueriesHandler } from "../../../Application/Querie/Handlers/GetAllStudentByQueriesQueriesHandler ";
 import { GetAllStudentQueriesHandler } from "../../../Application/Querie/Handlers/GetAllStudentQueriesHandler";
-import { GetUserEmailSimpleFactory } from "../../../Application/SimpleFactory/GetUserEmailSimpleFactory";
+import { GetUserEmailSimpleFactory } from "../../../Application/SimpleFactory/GetUserQuerySimpleFactory";
 import { UserSimpleFactory } from "../../../Application/SimpleFactory/GetUsersSimpleFactory";
 import { DeleteLandlordByIdUseCase } from "../../../Application/Use-Case/admin/UserMangament/DeleteUserById.usecase";
 import { EditLandlordVerificationStatusUseCase } from "../../../Application/Use-Case/admin/UserMangament/EditLandlordVerificationStatus.usecase";
-import { FindUserByEmailUseCase } from "../../../Application/Use-Case/admin/UserMangament/FindUserByEmail.usecase";
+import { FindUserByQueryUseCase } from "../../../Application/Use-Case/admin/UserMangament/FindUserByQuery.usecase";
 import { GetAllUserUseCase } from "../../../Application/Use-Case/admin/UserMangament/GetAllUser.usecase";
 import { RedisCashService } from "../../Cashing/RadisCashe";
 import { ReadLandlordRepositories } from "../../Repositories/Read/ReadLandlordRepositories";
@@ -44,24 +44,23 @@ export function deleteLandlordById(): DeleteLandlordByIdUseCase {
   return new DeleteLandlordByIdUseCase(commandHandler);
 }
 
-export function findUserByEmail(): FindUserByEmailUseCase {
+export function findUserByQuery(): FindUserByQueryUseCase {
   // Read repo
   const ReadLandlordsRepo = new ReadLandlordRepositories();
   const ReadStudentsRepo = new ReadStudentRepositories();
 
-  const GetLandlordsEmailQueriesHandler =
-    new GetAllLandlordByEmailQueriesHandler(ReadLandlordsRepo);
+  const GetLandlordsQueryQueriesHandler =
+    new GetAllLandlordByQueriesQueriesHandler(ReadLandlordsRepo);
 
-  const GetStudentEmailQueriesHandler = new GetAllStudentsByEmailQueriesHandler(
-    ReadStudentsRepo
-  );
+  const GetStudentQueryQueriesHandler =
+    new GetAllStudentsByQueriesQueriesHandler(ReadStudentsRepo);
 
   const getEmailsUsersSimpleFactors = new GetUserEmailSimpleFactory(
-    GetLandlordsEmailQueriesHandler,
-    GetStudentEmailQueriesHandler
+    GetLandlordsQueryQueriesHandler,
+    GetStudentQueryQueriesHandler
   );
 
-  return new FindUserByEmailUseCase(getEmailsUsersSimpleFactors);
+  return new FindUserByQueryUseCase(getEmailsUsersSimpleFactors);
 }
 
 export function GetAllUsers(): GetAllUserUseCase {

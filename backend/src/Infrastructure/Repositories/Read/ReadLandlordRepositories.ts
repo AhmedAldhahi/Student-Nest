@@ -65,7 +65,7 @@ export class ReadLandlordRepositories implements IReadLandlordRepositories {
     }
   }
 
-  public async searchByEmail(
+  public async searchByQuery(
     prefix: string
   ): Promise<LandlordResponseDTO[] | null> {
     try {

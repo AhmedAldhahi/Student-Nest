@@ -33,10 +33,10 @@ export const userManagementRouter = (
   );
 
   router.get(
-    "/users/search/:userRole/:email",
+    "/users/search/:userRole/:query",
     isAuth,
     isAdmin,
-    userManagementRouter.findUsersByEmail
+    userManagementRouter.findUsersByQuery
   );
 
   return router;

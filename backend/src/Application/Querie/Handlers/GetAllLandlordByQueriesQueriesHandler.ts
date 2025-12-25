@@ -1,16 +1,16 @@
 import { IReadLandlordRepositories } from "../../../Domain/Repositories/Read/ReadLandlordRepositories.repositoreies";
 import { IQueriesHandlers } from "../IQuerieHandlers";
-import { GetUserEmailQueries } from "../Queries/GetUserEmail.Queries";
+import { GetUserQueriesQueries } from "../Queries/GetUserEmail.Queries";
 
-export class GetAllLandlordByEmailQueriesHandler
-  implements IQueriesHandlers<GetUserEmailQueries>
+export class GetAllLandlordByQueriesQueriesHandler
+  implements IQueriesHandlers<GetUserQueriesQueries>
 {
   constructor(private readonly readLandlordRepo: IReadLandlordRepositories) {}
 
-  public async handle(command: GetUserEmailQueries): Promise<any> {
+  public async handle(command: GetUserQueriesQueries): Promise<any> {
     try {
-      const landlords = await this.readLandlordRepo.searchByEmail(
-        command.email
+      const landlords = await this.readLandlordRepo.searchByQuery(
+        command.query
       );
       return landlords;
     } catch (error: any) {

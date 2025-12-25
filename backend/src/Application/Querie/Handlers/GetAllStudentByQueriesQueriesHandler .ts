@@ -1,15 +1,15 @@
 import { IQueriesHandlers } from "../IQuerieHandlers";
-import { GetUserEmailQueries } from "../Queries/GetUserEmail.Queries";
+import { GetUserQueriesQueries } from "../Queries/GetUserEmail.Queries";
 import { IReadStudentRepositories } from "../../../Domain/Repositories/Read/ReadStudentRepositories.repositories";
 
-export class GetAllStudentsByEmailQueriesHandler
-  implements IQueriesHandlers<GetUserEmailQueries>
+export class GetAllStudentsByQueriesQueriesHandler
+  implements IQueriesHandlers<GetUserQueriesQueries>
 {
   constructor(private readonly readStudentRepo: IReadStudentRepositories) {}
 
-  public async handle(command: GetUserEmailQueries): Promise<any> {
+  public async handle(command: GetUserQueriesQueries): Promise<any> {
     try {
-      const students = await this.readStudentRepo.searchByEmail(command.email);
+      const students = await this.readStudentRepo.searchByQuery(command.query);
       return students;
     } catch (error: any) {
       console.error("fail to fetch students !!");

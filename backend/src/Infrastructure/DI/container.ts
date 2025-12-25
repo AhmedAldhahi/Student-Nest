@@ -16,7 +16,7 @@ import {
 import {
   deleteLandlordById,
   updateLandlordStatus,
-  findUserByEmail,
+  findUserByQuery,
   GetAllUsers,
 } from "./admin/UserMangement";
 
@@ -58,7 +58,7 @@ export function buildDependencies() {
       updateProfileUseCase: updateUserProfile(),
       updateLandlordStatusUseCase: updateLandlordStatus(),
       DeleteLandlordByIdUseCase: deleteLandlordById(),
-      findUserByEmailUseCase: findUserByEmail(),
+      findUserByEmailUseCase: findUserByQuery(),
       GetAllUsersUseCase: GetAllUsers(),
       GetAllLeaseUseCase: getAllLease(),
       getLeaseById: GetLeaseById(),

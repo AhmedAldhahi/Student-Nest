@@ -69,7 +69,7 @@ export class ReadStudentRepositories implements IReadStudentRepositories {
     }
   }
 
-  public async searchByEmail(
+  public async searchByQuery(
     prefix: string
   ): Promise<StudentResponseDto[] | null> {
     try {

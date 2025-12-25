@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { DeleteLandlordByIdUseCase } from "../../../../Application/Use-Case/admin/UserMangament/DeleteUserById.usecase";
 import { EditLandlordVerificationStatusUseCase } from "../../../../Application/Use-Case/admin/UserMangament/EditLandlordVerificationStatus.usecase";
-import { FindUserByEmailUseCase } from "../../../../Application/Use-Case/admin/UserMangament/FindUserByEmail.usecase";
+import { FindUserByQueryUseCase } from "../../../../Application/Use-Case/admin/UserMangament/FindUserByQuery.usecase";
 import { GetAllUserUseCase } from "../../../../Application/Use-Case/admin/UserMangament/GetAllUser.usecase";
 import { UserRole } from "../../../../Domain/Enum/UserRole.enum";
 
@@ -11,7 +11,7 @@ export class UserManagementController {
     private readonly GetAllUsers: GetAllUserUseCase,
     private readonly updateLanadlordsVerfidStatus: EditLandlordVerificationStatusUseCase,
     private readonly deleteLandlord: DeleteLandlordByIdUseCase,
-    private readonly findUserByEmail: FindUserByEmailUseCase // private readonly GetAllStudents: GetAllStudentUseCase
+    private readonly findUserByQuery: FindUserByQueryUseCase // private readonly GetAllStudents: GetAllStudentUseCase
   ) {}
 
   public getAllUsers = async (req: Request, res: Response) => {
@@ -74,17 +74,17 @@ export class UserManagementController {
     }
   };
 
-  public findUsersByEmail = async (req: Request, res: Response) => {
+  public findUsersByQuery = async (req: Request, res: Response) => {
     try {
       const userId = req.user?.userId;
-      const { email } = req.params;
+      const { query } = req.params;
       const { userRole } = req.params;
 
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.findUserByEmail.execute(
-        email,
+      const result = await this.findUserByQuery.execute(
+        query,
         userRole as UserRole
       );
       return res.status(200).json(result);
