@@ -1,5 +1,5 @@
-import { GetAllApartmentByTitleQueriesHandler } from "../../../Querie/Handlers/GetAllApartmentByName.QueriesHandler";
-import { GetAllApartmentByTitleQueries } from "../../../Querie/Queries/GetApartmentByName";
+import { GetAllApartmentByTitleQueriesHandler } from "../../../Queries/Handlers/GetAllApartmentByName.QueriesHandler";
+import { GetAllApartmentByTitleQueries } from "../../../Queries/Queries/GetApartmentByName";
 
 export class FindAllApartmentByTitleUseCase {
   constructor(

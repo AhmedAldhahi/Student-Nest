@@ -1,5 +1,5 @@
 import { ApartmentDocumentType } from "../../../Domain/Enum/ApartmentDocument.enum";
-import { EditApartmentDocumentDataRequest } from "../../Dtos/admin/EditApaartmentDocumentDToRequest.dtos";
+import { EditApartmentDocumentDataRequest } from "../../DTO/admin/EditApaartmentDocumentDToRequest.dtos";
 import { ICommand } from "../ICommand";
 
 export class UpdateApartmentDocumentFileCommand implements ICommand {

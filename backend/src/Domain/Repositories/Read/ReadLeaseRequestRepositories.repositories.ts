@@ -1,6 +1,6 @@
-import { ILeaseRequestDTO } from "../../../Application/Dtos/admin/LeaseRequestDTO.dtos";
+import { ILeaseRequestDTO } from "../../../Application/DTO/admin/LeaseRequestDTO.dto";
 
 export interface IReadLeaseRequestRepositories {
   findAllLeaseRequest(): Promise<ILeaseRequestDTO[] | null>;
-  findLeaseRequestById(id: number): Promise<ILeaseRequestDTO | null>;
+  findLeaseRequestByQuery(query: string): Promise<ILeaseRequestDTO | null>;
 }

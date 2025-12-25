@@ -1,6 +1,6 @@
 import { ITokenService } from "../../../Interfaces/IToken.interface";
-import { ForgetPasswordRequest } from "../../../Dtos/verfication/ForgetPasswordRequest.dtos";
-import { ForgetPasswordResponse } from "../../../Dtos/verfication/ForgetPasswordRespone.dtos";
+import { ForgetPasswordRequest } from "../../../DTO/verfication/ForgetPasswordRequest.dtos";
+import { ForgetPasswordResponse } from "../../../DTO/verfication/ForgetPasswordRespone.dtos";
 import { UpdateForgetPasswordCommandHandler } from "../../../Command/Handlers/UpdateForgetPasswordCommandHandler";
 
 export class ForgetPasswordUseCase {

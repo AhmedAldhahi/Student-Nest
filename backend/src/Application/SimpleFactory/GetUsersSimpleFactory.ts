@@ -1,6 +1,6 @@
 import { UserRole } from "../../Domain/Enum/UserRole.enum";
-import { GetAllLandlordQueriesHandler } from "../Querie/Handlers/GetAllLandlordQueriesHandler";
-import { GetAllStudentQueriesHandler } from "../Querie/Handlers/GetAllStudentQueriesHandler";
+import { GetAllLandlordQueriesHandler } from "../Queries/Handlers/GetAllLandlordQueriesHandler";
+import { GetAllStudentQueriesHandler } from "../Queries/Handlers/GetAllStudentQueriesHandler";
 
 export class UserSimpleFactory {
   constructor(

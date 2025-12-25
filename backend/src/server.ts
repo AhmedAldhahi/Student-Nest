@@ -52,6 +52,7 @@ export class Server {
       })
     );
 
+    
     // Security
     this.app.use(helmet());
 
@@ -97,8 +98,8 @@ export class Server {
       verificationController,
       passwordRecoverController,
       profileController,
-      adminLeaseMangementController,
-      adminLandloardManagementController,
+      adminLeaseManagementController,
+      adminLandlordManagementController,
       adminLeaseRequestManagementController,
       adminNotificationController,
       adminApartmentController,
@@ -116,7 +117,7 @@ export class Server {
     ///////////////////// start Admin section /////////////////////////////
     this.app.use(
       "/api/v1/admin",
-      LeaseManagementRouter(adminLeaseMangementController)
+      LeaseManagementRouter(adminLeaseManagementController)
     );
 
     this.app.use(
@@ -131,7 +132,7 @@ export class Server {
 
     this.app.use(
       "/api/v1/admin",
-      userManagementRouter(adminLandloardManagementController)
+      userManagementRouter(adminLandlordManagementController)
     );
 
     this.app.use("/api/v1/admin", ApartmentRouter(adminApartmentController));

@@ -1,6 +1,6 @@
 import { UpdateApartmentDocumentFileCommand } from "../../../Command/Commands/updateApartmentDocumentFileCommand";
 import { UpdateApartmentDocumentFileCommandHandler } from "../../../Command/Handlers/updateApartmentDocumentCommandHandler";
-import { EditApartmentDocumentDataRequest } from "../../../Dtos/admin/EditApaartmentDocumentDToRequest.dtos";
+import { EditApartmentDocumentDataRequest } from "../../../DTO/admin/EditApaartmentDocumentDToRequest.dtos";
 
 export class UpdateApartmentDocumentUseCase {
   constructor(

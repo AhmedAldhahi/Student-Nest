@@ -1,5 +1,5 @@
-import { GetApartmentDocumentByIdQueriesHandler } from "../../../Querie/Handlers/GetApartmentDocumentById.QueriesHandler";
-import { GetDocumentOfApartmentByIdQueries } from "../../../Querie/Queries/GetDocumentOfApartmntByIdQueries";
+import { GetApartmentDocumentByIdQueriesHandler } from "../../../Queries/Handlers/GetApartmentDocumentById.QueriesHandler";
+import { GetDocumentOfApartmentByIdQueries } from "../../../Queries/Queries/GetDocumentOfApartmntByIdQueries";
 
 export class findApartmentDocumentByIdUseCase {
   constructor(

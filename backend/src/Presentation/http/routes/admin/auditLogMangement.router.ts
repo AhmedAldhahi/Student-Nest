@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { AuditLogController } from "../../controllers/admin/auditLogMangement.controller";
+import { AuditLogController } from "../../controllers/admin/auditLogManagement.controller";
 import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 import { isAdmin } from "../../middlewares/auth/isAdmin.middleware";
 

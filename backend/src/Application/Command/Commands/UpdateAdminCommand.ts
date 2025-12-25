@@ -1,4 +1,4 @@
-import { userUpdateProfileRequest } from "../../Dtos/profile/adminRequest.updateProfile.profile.dtos";
+import { userUpdateProfileRequest } from "../../DTO/profile/adminRequest.updateProfile.profile.dtos";
 import { ICommand } from "../ICommand";
 
 export class UpdateAdminCommand implements ICommand {

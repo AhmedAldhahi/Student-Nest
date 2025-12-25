@@ -1,4 +1,4 @@
-import { LandlordResponseDTO } from "../../../Application/Dtos/profile/LandlordResponeDTO";
+import { LandlordResponseDTO } from "../../../Application/DTO/profile/LandlordResponeDTO";
 import { LandlordAggregateRoot } from "../../AggregatesRoot/landloardEntity.entity";
 
 export interface IReadLandlordRepositories {

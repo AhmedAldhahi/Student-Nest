@@ -10,26 +10,27 @@ import {
   makeResendEmailOTP,
   makeUpdateForgetPass,
   makeResendForgetPassword,
-  makeVerfiedForgetPasswordOTP,
-} from "./verfication.DI";
+  makeVerifiedForgetPasswordOTP,
+} from "./verification.DI";
 
 import {
   deleteLandlordById,
   updateLandlordStatus,
   findUserByQuery,
   GetAllUsers,
-} from "./admin/UserMangement";
+} from "./admin/UserManagement";
 
-import { getAllLease, GetLeaseById } from "./admin/UserLease";
+import { getAllLease, GetLeaseByQuery } from "./admin/LeaseMangement";
 import {
   GetAllLeaseRequest,
-  GetLeaseRequestById,
-} from "./admin/LeaseRequestMangament";
+  GetLeaseRequestByQuery,
+} from "./admin/LeaseRequestManagement";
 
 import {
   GetAllNotification,
   updateNotificationStatus,
-} from "./admin/NotifcationMangament";
+} from "./admin/NotificationManagement";
+
 import {
   DeleteApartmentById,
   editApartmentDetailUseCase,
@@ -39,9 +40,9 @@ import {
   FindApartmentDocumentByIdUseCase,
   GetAllApartment,
   GetApartmentByTitle,
-} from "./admin/ApartmentMagament";
-import { findAllAuditLogUseCase } from "./admin/AuditLogMangament";
+} from "./admin/ApartmentManagement";
 
+import { findAllAuditLogUseCase } from "./admin/AuditLogManagement";
 
 export function buildDependencies() {
   return {
@@ -53,7 +54,7 @@ export function buildDependencies() {
       resendOTPUseCase: makeResendEmailOTP(),
       forgetPasswordUseCase: makeUpdateForgetPass(),
       resendOtpForgetPassword: makeResendForgetPassword(),
-      verfiedForgetPasswordUseCase: makeVerfiedForgetPasswordOTP(),
+      verifiedForgetPasswordUseCase: makeVerifiedForgetPasswordOTP(),
       userProfileData: getUserProfileData(),
       updateProfileUseCase: updateUserProfile(),
       updateLandlordStatusUseCase: updateLandlordStatus(),
@@ -61,11 +62,11 @@ export function buildDependencies() {
       findUserByEmailUseCase: findUserByQuery(),
       GetAllUsersUseCase: GetAllUsers(),
       GetAllLeaseUseCase: getAllLease(),
-      getLeaseById: GetLeaseById(),
+      getLeaseById: GetLeaseByQuery(),
       getAllLeaseRequestUseCase: GetAllLeaseRequest(),
-      getLeaseRequestByIdUseCase: GetLeaseRequestById(),
+      getLeaseRequestByIdUseCase: GetLeaseRequestByQuery(),
       GetAllNotificationUseCase: GetAllNotification(),
-      updateNotficationUseCase: updateNotificationStatus(),
+      updateNotificationUseCase: updateNotificationStatus(),
       GetAllApartmentUseCase: GetAllApartment(),
       getApartmentsByNameUseCase: GetApartmentByTitle(),
       editStatusApartmentVerifiedUseCase: EditApartmentStatusVerified(),

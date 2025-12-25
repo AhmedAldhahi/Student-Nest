@@ -3,7 +3,7 @@ import { IReadLandlordRepositories } from "../../../Domain/Repositories/Read/Rea
 import { LandlordModel } from "../../Database/orm/TypeOrm/entity/Landloard.entity";
 import { LandlordMapper } from "../mapper/landloard.mapper";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
-import { LandlordResponseDTO } from "../../../Application/Dtos/profile/LandlordResponeDTO";
+import { LandlordResponseDTO } from "../../../Application/DTO/profile/LandlordResponeDTO";
 import { FindOptionsWhere, Like } from "typeorm";
 
 export class ReadLandlordRepositories implements IReadLandlordRepositories {
@@ -85,7 +85,6 @@ export class ReadLandlordRepositories implements IReadLandlordRepositories {
           whereCondition = { user: { PhoneNumber: Like(`%${query}%`) } };
         } else {
           whereCondition = [
-            { user: { PhoneNumber: Like(`%${query}%`) } },
             { LandlordGovId: Like(`${query}%`) },
           ];
         }

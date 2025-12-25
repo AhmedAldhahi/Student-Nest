@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { NotificationController } from "../../controllers/admin/Notifcation.controller";
+import { NotificationController } from "../../controllers/admin/Notification.controller";
 import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 import { isAdmin } from "../../middlewares/auth/isAdmin.middleware";
 

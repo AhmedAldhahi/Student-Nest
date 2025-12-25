@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { VerificationController } from "../../controllers/Verfication.controller";
+import { VerificationController } from "../../controllers/Verification.controller";
 import { otpResendRateLimited } from "../../middlewares/rate-limited/otpResendRateLimited.middleware";
 import { validation } from "../../middlewares/validation.middleware";
 import {

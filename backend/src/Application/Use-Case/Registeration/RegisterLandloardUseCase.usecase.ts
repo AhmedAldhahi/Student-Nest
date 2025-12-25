@@ -1,5 +1,5 @@
-import { RegisterLandloardRequest } from "../../Dtos/registeration/RegisterLandloardRequest.dtos";
-import { RegisterLandloardRespone } from "../../Dtos/registeration/RegisterLandloardRespone.dtos";
+import { RegisterLandloardRequest } from "../../DTO/registeration/RegisterLandloardRequest.dtos";
+import { RegisterLandloardRespone } from "../../DTO/registeration/RegisterLandloardRespone.dtos";
 import { IEmailService } from "../../Interfaces/IEmail.interface";
 import { CreateLandlordCommandHandler } from "../../Command/Handlers/CreateLandlordCommandHandler";
 

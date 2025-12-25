@@ -1,5 +1,5 @@
-import { GetAllNotificationQueriesHandler } from "../../../Querie/Handlers/GetAllNotifcationQueriesHandler";
-import { GetAllNotificationQueries } from "../../../Querie/Queries/GetAllNotifcation";
+import { GetAllNotificationQueriesHandler } from "../../../Queries/Handlers/GetAllNotifcationQueriesHandler";
+import { GetAllNotificationQueries } from "../../../Queries/Queries/GetAllNotifcation";
 
 export class GetAllNotificationUseCase {
   constructor(

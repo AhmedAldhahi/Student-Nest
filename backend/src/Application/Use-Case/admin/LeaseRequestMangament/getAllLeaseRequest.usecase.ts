@@ -1,4 +1,4 @@
-import { GetAllLeaseRequestQueriesHandler } from "../../../Querie/Handlers/GetAllLeaseRequestQueriesHandler";
+import { GetAllLeaseRequestQueriesHandler } from "../../../Queries/Handlers/GetAllLeaseRequestQueriesHandler";
 
 export class GetAllLeaseRequestUseCase {
   constructor(

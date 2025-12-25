@@ -1,9 +1,9 @@
 import { UpdateLandlordCommand } from "../../Command/Commands/UpdateLandlordCommand";
 import { UpdateLandlordCommandHandler } from "../../Command/Handlers/UpdateLandlordCommandHandler";
-import { LandlordUpdateProfileRequest } from "../../Dtos/profile/LandlordRequest.updateProfile.profile.dtos";
+import { LandlordUpdateProfileRequest } from "../../DTO/profile/LandlordRequest.updateProfile.profile.dtos";
 import { ICashMemoryService } from "../../Interfaces/ICash.interface";
-import { GetLandlordProfileQueriesHandlers } from "../../Querie/Handlers/GetLandlordProfileQueriesHandler";
-import { GetUserProfileQueries } from "../../Querie/Queries/GetUserProfileQueries";
+import { GetLandlordProfileQueriesHandlers } from "../../Queries/Handlers/GetLandlordProfileQueriesHandler";
+import { GetUserProfileQueries } from "../../Queries/Queries/GetUserProfileQueries";
 import { IProfileStrategy } from "./IprofileStrategy.strategy";
 
 export class LandlordProfileStrategy implements IProfileStrategy {

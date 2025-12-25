@@ -1,4 +1,4 @@
-import { ILeaseRequestDTO } from "../../../Application/Dtos/admin/LeaseRequestDTO.dtos";
+import { ILeaseRequestDTO } from "../../../Application/DTO/admin/LeaseRequestDTO.dto";
 import { LeaseRequestEntity } from "../../../Domain/Entities/leaseRequestEntity.entity";
 import { LeaseStartDate } from "../../../Domain/Value-Object/LeaseStartDate.vo";
 import { RentTerm } from "../../../Domain/Value-Object/RentTerm.vo";

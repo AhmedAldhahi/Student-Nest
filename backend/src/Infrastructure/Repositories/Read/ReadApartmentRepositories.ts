@@ -2,7 +2,7 @@ import { Like } from "typeorm";
 import {
   IApartmentDTO,
   IApartmentSimpleDTO,
-} from "../../../Application/Dtos/admin/ApartmentDTo.dtos";
+} from "../../../Application/DTO/admin/ApartmentDTo.dtos";
 import { IReadApartmentRepo } from "../../../Domain/Repositories/Read/ReadApartmentRepo.repositoreis";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { ApartmentModel } from "../../Database/orm/TypeOrm/entity/Apartment.entity";

@@ -1,5 +1,5 @@
-import { GetApartmentByIdQueriesHandler } from "../../../Querie/Handlers/GetApartmentByIdQueriesHandler";
-import { GetApartmentByIdQueries } from "../../../Querie/Queries/GetApartmentById";
+import { GetApartmentByIdQueriesHandler } from "../../../Queries/Handlers/GetApartmentByIdQueriesHandler";
+import { GetApartmentByIdQueries } from "../../../Queries/Queries/GetApartmentById";
 
 export class findApartmentByIdUseCase {
   constructor(

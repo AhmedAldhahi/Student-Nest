@@ -1,14 +1,14 @@
-import { GetLeaseRequestByIDQueriesHandler } from "../../../Querie/Handlers/GetLeaseRequestByIdQueriesHandler";
-import { GetLeaseRequestById } from "../../../Querie/Queries/GetLeaseRequestById.Queries";
+import { GetLeaseRequestByQueryQueriesHandler } from "../../../Queries/Handlers/GetLeaseRequestByQueryQueriesHandler";
+import { GetLeaseRequestByQuery } from "../../../Queries/Queries/GetLeaseRequestByQuery.Queries";
 
 export class GetLeaseRequestByIdUseCase {
   constructor(
-    private readonly queriesHandler: GetLeaseRequestByIDQueriesHandler
+    private readonly queriesHandler: GetLeaseRequestByQueryQueriesHandler
   ) {}
 
-  public async execute(id: number) {
+  public async execute(query: string) {
     try {
-      const command = new GetLeaseRequestById(id);
+      const command = new GetLeaseRequestByQuery(query);
       return await this.queriesHandler.handle(command);
     } catch (error: any) {
       console.error("fail to get lease request !!");

@@ -1,4 +1,4 @@
-import { StudentResponseDto } from "../../../Application/Dtos/profile/StudentResponseDto";
+import { StudentResponseDto } from "../../../Application/DTO/profile/StudentResponseDto";
 import { StudentAggregateRoot } from "../../AggregatesRoot/studentEntity.entity";
 
 export interface IReadStudentRepositories {

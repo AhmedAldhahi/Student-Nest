@@ -1,4 +1,4 @@
-import { ILeaseRequestDTO } from "../../../Application/Dtos/admin/LeaseRequestDTO.dtos";
+import { ILeaseRequestDTO } from "../../../Application/DTO/admin/LeaseRequestDTO.dto";
 import { IReadLeaseRequestRepositories } from "../../../Domain/Repositories/Read/ReadLeaseRequestRepositories.repositories";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { LeaseRequestModel } from "../../Database/orm/TypeOrm/entity/LeaseRequest";

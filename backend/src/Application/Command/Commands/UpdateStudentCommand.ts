@@ -1,4 +1,4 @@
-import { StudentUpdateProfileRequest } from "../../Dtos/profile/StudentRequest.updateProfile.profile.dtos";
+import { StudentUpdateProfileRequest } from "../../DTO/profile/StudentRequest.updateProfile.profile.dtos";
 import { ICommand } from "../ICommand";
 
 export class UpdateStudentCommand implements ICommand {

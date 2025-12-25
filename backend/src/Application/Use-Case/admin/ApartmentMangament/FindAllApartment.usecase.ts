@@ -1,4 +1,4 @@
-import { GetAllApartmentQueriesHandler } from "../../../Querie/Handlers/GetAllApartmentQueriesHandler";
+import { GetAllApartmentQueriesHandler } from "../../../Queries/Handlers/GetAllApartmentQueriesHandler";
 
 export class findAllApartmentUseCase {
   constructor(private readonly queriesHandler: GetAllApartmentQueriesHandler) {}

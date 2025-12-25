@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { LeaseManagementController } from "../../controllers/admin/leaseMangement.controller";
+import { LeaseManagementController } from "../../controllers/admin/leaseManagement.controller";
 import { isAdmin } from "../../middlewares/auth/isAdmin.middleware";
 import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 
@@ -10,7 +10,7 @@ export const LeaseManagementRouter = (
 
   router.get("/leases", isAuth, isAdmin, leaseManagementController.getAllLease);
 
-  router.get("/lease/:id", isAuth, isAdmin, leaseManagementController.getLeaseById);
+  router.get("/lease/search", isAuth, isAdmin, leaseManagementController.getLeaseByQuery);
 
   return router;
 };

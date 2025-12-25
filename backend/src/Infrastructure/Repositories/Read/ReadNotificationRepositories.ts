@@ -1,4 +1,4 @@
-import { INotificationDTO } from "../../../Application/Dtos/admin/NotificationDTO.dtos";
+import { INotificationDTO } from "../../../Application/DTO/admin/NotificationDTO.dtos";
 import { NotificationEntity } from "../../../Domain/Entities/NotificationEntity.entity";
 import { IReadNotificationRepositories } from "../../../Domain/Repositories/Read/ReadNotificationRepositories.repositories";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";

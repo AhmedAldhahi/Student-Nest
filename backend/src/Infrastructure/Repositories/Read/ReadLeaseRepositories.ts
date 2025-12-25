@@ -1,16 +1,36 @@
-import { ILeaseEntityDTO } from "../../../Application/Dtos/admin/LeaseDTO.dtos";
+import { FindOptionsWhere, Like } from "typeorm";
+import { ILeaseEntityDTO } from "../../../Application/DTO/admin/LeaseDTO.dtos";
 import { IReadLeaseRepositories } from "../../../Domain/Repositories/Read/ReadLeaseRepositories.repositories";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { LeaseModel } from "../../Database/orm/TypeOrm/entity/Lease.entity";
 import { LeaseMapper } from "../mapper/lease.mapper";
 
 export class ReadLeaseRepositories implements IReadLeaseRepositories {
-  public async findById(id: number): Promise<ILeaseEntityDTO | null> {
+  public async findByQuery(Queries: string): Promise<ILeaseEntityDTO | null> {
     try {
+      const query = Queries.trim();
+      const numericId = Number(query);
+
+      const isNumeric = !Number.isNaN(numericId);
+
+      let whereCondition: FindOptionsWhere<LeaseModel>[];
+
+      if (isNumeric) {
+        whereCondition = [{ leaseId: numericId }];
+      } else {
+        whereCondition = [
+          { landlord: { user: { Name: Like(`%${query}%`) } } },
+
+          { student: { user: { Name: Like(`%${query}%`) } } },
+
+          { apartment: { title: Like(`%${query}%`) } },
+        ];
+      }
+
       const orm = await AppDataSource.getInstance()
         .getRepository(LeaseModel)
         .findOne({
-          where: { leaseId: id },
+          where: whereCondition,
           relations: {
             student: { user: true },
             landlord: { user: true },

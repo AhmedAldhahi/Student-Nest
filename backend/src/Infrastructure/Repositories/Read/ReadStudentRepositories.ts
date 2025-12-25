@@ -1,5 +1,5 @@
 import { FindOptionsWhere, Like } from "typeorm";
-import { StudentResponseDto } from "../../../Application/Dtos/profile/StudentResponseDto";
+import { StudentResponseDto } from "../../../Application/DTO/profile/StudentResponseDto";
 import { StudentAggregateRoot } from "../../../Domain/AggregatesRoot/studentEntity.entity";
 import { IReadStudentRepositories } from "../../../Domain/Repositories/Read/ReadStudentRepositories.repositories";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";

@@ -1,7 +1,7 @@
 import {
   IApartmentDTO,
   IApartmentSimpleDTO,
-} from "../../../Application/Dtos/admin/ApartmentDTo.dtos";
+} from "../../../Application/DTO/admin/ApartmentDTo.dtos";
 import { ApartmentAggregateRoot } from "../../AggregatesRoot/apartmentEntity.entity";
 
 export interface IReadApartmentRepo {

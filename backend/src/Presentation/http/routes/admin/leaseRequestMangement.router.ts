@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { isAdmin } from "../../middlewares/auth/isAdmin.middleware";
 import { isAuth } from "../../middlewares/auth/isAuth.middleware";
-import { LeaseRequestManagementController } from "../../controllers/admin/leaseRequestMangement.controller";
+import { LeaseRequestManagementController } from "../../controllers/admin/leaseRequestManagement.controller";
 
 export const LeaseRequestManagementRouter = (
   leaseRequestManagementController: LeaseRequestManagementController

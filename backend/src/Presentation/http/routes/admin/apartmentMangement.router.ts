@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { ApartmentManagementController } from "../../controllers/admin/apartmentMangement.controller";
+import { ApartmentManagementController } from "../../controllers/admin/apartmentManagement.controller";
 import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 import { isAdmin } from "../../middlewares/auth/isAdmin.middleware";
 

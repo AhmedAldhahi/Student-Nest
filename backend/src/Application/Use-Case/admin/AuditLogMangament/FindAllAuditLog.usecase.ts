@@ -1,4 +1,4 @@
-import { GetAllAuditLogQueriesHandler } from "../../../Querie/Handlers/GetAllAuditLogQueriesHandler";
+import { GetAllAuditLogQueriesHandler } from "../../../Queries/Handlers/GetAllAuditLogQueriesHandler";
 
 export class FindAllAuditLogUseCase {
   constructor(private readonly queriesHandler: GetAllAuditLogQueriesHandler) {}

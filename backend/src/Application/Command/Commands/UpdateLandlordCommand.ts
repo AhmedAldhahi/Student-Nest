@@ -1,4 +1,4 @@
-import { LandlordUpdateProfileRequest } from "../../Dtos/profile/LandlordRequest.updateProfile.profile.dtos";
+import { LandlordUpdateProfileRequest } from "../../DTO/profile/LandlordRequest.updateProfile.profile.dtos";
 import { ICommand } from "../ICommand";
 
 export class UpdateLandlordCommand implements ICommand {

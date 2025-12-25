@@ -5,10 +5,10 @@ import { BcryptPasswordHasher } from "../Services/security/BcryptPasswordHasher.
 import { CloudinaryService } from "../Services/media/CloudinaryService.service";
 import { RedisCashService } from "../Cashing/RadisCashe";
 import { ReadUserRepositories } from "../Repositories/Read/ReadUserRepositories";
-import { GetUserProfileQueriesHandlers } from "../../Application/Querie/Handlers/GetUserProfileQueriesHandlerts";
+import { GetUserProfileQueriesHandlers } from "../../Application/Queries/Handlers/GetUserProfileQueriesHandlerts";
 import { ProfileContext } from "../../Application/Strategy/profiles/profilecontext";
-import { GetLandlordProfileQueriesHandlers } from "../../Application/Querie/Handlers/GetLandlordProfileQueriesHandler";
-import { GetStudentQueriesHandlers } from "../../Application/Querie/Handlers/GetStudentProfileQueriesHandler";
+import { GetLandlordProfileQueriesHandlers } from "../../Application/Queries/Handlers/GetLandlordProfileQueriesHandler";
+import { GetStudentQueriesHandlers } from "../../Application/Queries/Handlers/GetStudentProfileQueriesHandler";
 import { ReadLandlordRepositories } from "../Repositories/Read/ReadLandlordRepositories";
 import { ReadStudentRepositories } from "../Repositories/Read/ReadStudentRepositories";
 import { AdminProfileStrategy } from "../../Application/Strategy/profiles/AdminProfile.strategy";

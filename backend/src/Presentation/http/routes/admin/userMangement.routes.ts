@@ -3,7 +3,7 @@ import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 import { isAdmin } from "../../middlewares/auth/isAdmin.middleware";
 import { validation } from "../../middlewares/validation.middleware";
 import { verifiedLandlordSchema } from "../../validation/admin/landlordMagement.validation.zod";
-import { UserManagementController } from "../../controllers/admin/userMangement.controller";
+import { UserManagementController } from "../../controllers/admin/userManagement.controller";
 
 export const userManagementRouter = (
   userManagementRouter: UserManagementController
@@ -33,7 +33,7 @@ export const userManagementRouter = (
   );
 
   router.get(
-    "/users/search/:userRole/:query",
+    "/users/:userRole/search",
     isAuth,
     isAdmin,
     userManagementRouter.findUsersByQuery

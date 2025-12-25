@@ -1,4 +1,4 @@
-import { VerifiedOTpRequest } from "../../../Dtos/Email-verfied/VerfiedOtpRequest.dto";
+import { VerifiedOTpRequest } from "../../../DTO/Email-verfied/VerfiedOtpRequest.dto";
 import { VerifiedOTPForgetPassCommandHandler } from "../../../Command/Handlers/VerfiedOtpResetPassCommandHandler";
 
 export class VerifiedForgetPasswordOtpUseCase {
