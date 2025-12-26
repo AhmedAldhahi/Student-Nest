@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { NotificationController } from "../../controllers/Notification.controller";
 import { isAuth } from "../../middlewares/auth/isAuth.middleware";
+import { validation } from "../../middlewares/validation.middleware";
+import { DeleteBatchSchema } from "../../validation/notificationMangement.validation.zod";
 
 export const notificationRouter = (
   notificationController: NotificationController
@@ -20,6 +22,12 @@ export const notificationRouter = (
   );
 
   router.delete(
+    "/notifications/batch",
+    isAuth,
+    notificationController.deleteSpecificNotifications
+  );
+
+  router.delete(
     "/notification/:id",
     isAuth,
     notificationController.deleteNotificationById
@@ -28,6 +36,7 @@ export const notificationRouter = (
   router.delete(
     "/notifications",
     isAuth,
+    validation(DeleteBatchSchema),
     notificationController.deleteAllNotification
   );
 

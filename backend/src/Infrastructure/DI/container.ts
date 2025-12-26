@@ -30,6 +30,7 @@ import {
 import {
   deleteAllNotification,
   deleteNotificationById,
+  DeleteSpecificNotifications,
   GetAllNotification,
   updateNotificationStatus,
 } from "./admin/NotificationManagement";
@@ -46,6 +47,7 @@ import {
 } from "./admin/ApartmentManagement";
 
 import { findAllAuditLogUseCase, FindAuditLogByQueriesUseCase } from "./admin/AuditLogManagement";
+import { deleteSpecificNotificationsCommand } from "../../Application/Command/Commands/DeleteSpecficNotificationsCommand";
 
 export function buildDependencies() {
   return {
@@ -79,6 +81,7 @@ export function buildDependencies() {
       updateNotificationUseCase: updateNotificationStatus(),
       deleteNotificationByIdUseCase: deleteNotificationById(),
       deleteAllNotificationUseCase: deleteAllNotification(),
+      deleteSpecificNotificationUseCase: DeleteSpecificNotifications(),
       
       GetAllApartmentUseCase: GetAllApartment(),
       getApartmentsByQueriesUseCase: GetApartmentByQueries(),

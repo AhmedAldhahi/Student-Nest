@@ -60,7 +60,8 @@ export const buildControllers = () => {
     useCases.GetAllNotificationUseCase,
     useCases.updateNotificationUseCase,
     useCases.deleteNotificationByIdUseCase,
-    useCases.deleteAllNotificationUseCase
+    useCases.deleteAllNotificationUseCase,
+    useCases.deleteSpecificNotificationUseCase
   );
 
   const adminAuditLogController = new AuditLogController(

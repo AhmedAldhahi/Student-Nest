@@ -43,4 +43,23 @@ export class WriteNotificationRepositories implements IWriteNotificationRepo {
     const model = NotificationMapper.toModel(notification);
     await this.manager.save(NotificationModel, model);
   }
+
+  public async deleteSpecificNotifications(
+    ids: number[],
+    userId: string
+  ): Promise<void> {
+    // 1. Optimization: If the array is empty, do nothing to avoid DB errors
+    if (!ids || ids.length === 0) {
+      return;
+    }
+
+    // 2. Use QueryBuilder with IN operator
+    await this.manager
+      .createQueryBuilder()
+      .delete()
+      .from(NotificationModel)
+      .where("notificationId IN (:...ids)", { ids })
+      .andWhere("receiverId = :userId", { userId })
+      .execute();
+  }
 }
