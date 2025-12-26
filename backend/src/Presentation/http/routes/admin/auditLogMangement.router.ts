@@ -10,5 +10,12 @@ export const AuditLogRouter = (
 
   router.get("/audit-log", isAuth, isAdmin, auditLogController.GetAllAuditLog);
 
+  router.get(
+    "/audit-log/search",
+    isAuth,
+    isAdmin,
+    auditLogController.GetAuditLogQuery
+  );
+
   return router;
 };

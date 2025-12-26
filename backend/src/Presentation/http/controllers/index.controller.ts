@@ -64,7 +64,8 @@ export const buildControllers = () => {
   );
 
   const adminAuditLogController = new AuditLogController(
-    useCases.findAllAuditLogUseCase
+    useCases.findAllAuditLogUseCase,
+    useCases.findAuditLogQueryUseCase
   );
 
   const adminApartmentController = new ApartmentManagementController(

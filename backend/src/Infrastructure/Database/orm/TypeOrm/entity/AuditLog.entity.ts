@@ -2,10 +2,8 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  ManyToOne,
   CreateDateColumn,
 } from "typeorm";
-import { AdminModel } from "./Admin.entity";
 import { AuditLogActionType } from "../../../../../Domain/Enum/AuditLogAction.enum";
 import { UserRole } from "../../../../../Domain/Enum/UserRole.enum";
 
@@ -61,9 +59,4 @@ export class AuditLogModel {
 
   @Column({ type: "varchar", length: 80 })
   location: string;
-
-  @ManyToOne(() => AdminModel, (admin) => admin.auditLogs, {
-    onDelete: "SET NULL",
-  })
-  admin: AdminModel;
 }

@@ -1,7 +1,8 @@
 export enum AuditLogActionType {
-  CREATE = "create",
-  UPDATE = "update",
-  DELETE = "delete",
+  POST = "POST",
+  DELETe = "DELETE",
   GET = "GET",
+  PUT = "PUT",
+  PATCH="PATCH",
   UNKNOWN = "UNKNOWN",
 }

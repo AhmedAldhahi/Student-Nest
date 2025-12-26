@@ -48,7 +48,7 @@ export class AuthController {
       const user = await new ReadUserRepositories().findByEmail(dto.email);
 
       req.audit = {
-        actionType: AuditLogActionType.CREATE,
+        actionType: AuditLogActionType.POST,
         description: "Landlord Register in successfully",
         targetUserId: user?.getUserId()!,
         targetUserName: dto.name,
@@ -113,7 +113,7 @@ export class AuthController {
       const user = await new ReadUserRepositories().findByEmail(dto.email);
 
       req.audit = {
-        actionType: AuditLogActionType.CREATE,
+        actionType: AuditLogActionType.POST,
         description: "Student Register in successfully",
         targetUserId: user?.getUserId()!,
         targetUserName: dto.name,
@@ -173,7 +173,7 @@ export class AuthController {
       }
 
       req.audit = {
-        actionType: AuditLogActionType.GET,
+        actionType: AuditLogActionType.POST,
         description: "User logged in successfully",
         targetUserId: extractedUserId,
         targetUserName: user?.getName()!,
