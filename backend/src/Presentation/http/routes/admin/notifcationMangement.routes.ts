@@ -23,6 +23,7 @@ export const notificationRouter = (
 
   router.delete(
     "/notifications/batch",
+    validation(DeleteBatchSchema),
     isAuth,
     notificationController.deleteSpecificNotifications
   );
@@ -36,7 +37,6 @@ export const notificationRouter = (
   router.delete(
     "/notifications",
     isAuth,
-    validation(DeleteBatchSchema),
     notificationController.deleteAllNotification
   );
 
