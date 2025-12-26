@@ -28,8 +28,13 @@ export class WriteNotificationRepositories implements IWriteNotificationRepo {
     }
   }
 
-  public async deleteAllNotification(): Promise<void> {
-    throw new Error("Method not implemented.");
+  public async deleteAllNotification(userId: string): Promise<void> {
+    await this.manager
+      .createQueryBuilder()
+      .delete()
+      .from(NotificationModel)
+      .where("receiverId = :userId", { userId }) // Strict safety check
+      .execute();
   }
 
   public async updateNotification(

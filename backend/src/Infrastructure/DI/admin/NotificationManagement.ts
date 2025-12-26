@@ -1,6 +1,8 @@
+import { DeleteAllNotificationCommandHandler } from "../../../Application/Command/Handlers/DeleteAllNotificationCommandHandler";
 import { deleteNotificationByIdCommandHandler } from "../../../Application/Command/Handlers/DeleteNotificationByIdCommandHandler";
 import { UpdateNotificationStatusCommandHandler } from "../../../Application/Command/Handlers/updateNotifcationStatusCommandHandler";
 import { GetAllNotificationQueriesHandler } from "../../../Application/Queries/Handlers/GetAllNotifcationQueriesHandler";
+import { DeleteAllNotificationUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/DeleteAllNotification.usecase";
 import { DeleteNotificationByIdUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/DeleteNotificationById.usecase";
 import { GetAllNotificationUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/GetAllNotifcation.usecase";
 import { UpdateNotificationStatusUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/UpdateNotifcationStatus.usecase";
@@ -37,4 +39,11 @@ export function deleteNotificationById(): DeleteNotificationByIdUseCase {
     readNotificationRepo
   );
   return new DeleteNotificationByIdUseCase(commandHandler);
+}
+
+export function deleteAllNotification(): DeleteAllNotificationUseCase {
+  const uow = new UnitOfWork();
+  const commandHandler = new DeleteAllNotificationCommandHandler(uow);
+
+  return new DeleteAllNotificationUseCase(commandHandler);
 }

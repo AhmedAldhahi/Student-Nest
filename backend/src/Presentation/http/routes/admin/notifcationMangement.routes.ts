@@ -25,5 +25,11 @@ export const notificationRouter = (
     notificationController.deleteNotificationById
   );
 
+  router.delete(
+    "/notifications",
+    isAuth,
+    notificationController.deleteAllNotification
+  );
+
   return router;
 };

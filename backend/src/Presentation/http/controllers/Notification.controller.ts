@@ -2,12 +2,16 @@ import { Request, Response } from "express";
 import { GetAllNotificationUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/GetAllNotifcation.usecase";
 import { UpdateNotificationStatusUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/UpdateNotifcationStatus.usecase";
 import { DeleteNotificationByIdUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/DeleteNotificationById.usecase";
+import { DeleteAllNotificationUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/DeleteAllNotification.usecase";
+import { deleteAllNotification } from "../../../Infrastructure/DI/admin/NotificationManagement";
+import { error } from "console";
 
 export class NotificationController {
   constructor(
     private readonly GetAllNotification: GetAllNotificationUseCase,
     private readonly updateNotificationStatus: UpdateNotificationStatusUseCase,
-    private readonly DeleteNotificationById: DeleteNotificationByIdUseCase
+    private readonly DeleteNotificationById: DeleteNotificationByIdUseCase,
+    private readonly DeleteAllNotification: DeleteAllNotificationUseCase
   ) {}
 
   public getAllNotification = async (req: Request, res: Response) => {
@@ -59,7 +63,8 @@ export class NotificationController {
     try {
       const userId = req.user.userId;
 
-      if (!userId) return res.status(400).json({ error: "no user Id found !!" });
+      if (!userId)
+        return res.status(400).json({ error: "no user Id found !!" });
 
       const { id } = req.params;
 
@@ -67,6 +72,22 @@ export class NotificationController {
         Number(id),
         userId
       );
+      return res.status(200).json(result);
+    } catch (error: any) {
+      return res
+        .status(400)
+        .json({ error: error.message || "internal server error" });
+    }
+  };
+
+  public deleteAllNotification = async (req: Request, res: Response) => {
+    try {
+      const userId = req.user.userId;
+
+      if (!userId)
+        return res.status(400).json({ error: "no user id found !!" });
+
+      const result = await this.DeleteAllNotification.execute(userId);
       return res.status(200).json(result);
     } catch (error: any) {
       return res
