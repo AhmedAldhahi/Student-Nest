@@ -16,10 +16,10 @@ export const ApartmentRouter = (
   );
 
   router.get(
-    "/apartments/:name",
+    "/apartments/search",
     isAuth,
     isAdmin,
-    apartmentController.getApartmentsByName
+    apartmentController.getApartmentsByQueries
   );
 
   router.patch(

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { findAllApartmentUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/FindAllApartment.usecase";
-import { FindAllApartmentByTitleUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/findAllApartmentByName.usecase";
+import { FindAllApartmentByQueryUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/findAllApartmentByQueries.usecase";
 import { EditApartmentStatusVerifiedUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/EditApartmentStatus.usecase";
 import { DeleteApartmentByIdUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/DeleteApartment.usecase";
 import { findApartmentDocumentByIdUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/FindApartmentDocument.usecase";
@@ -10,7 +10,7 @@ import { UpdateApartmentDocumentUseCase } from "../../../../Application/Use-Case
 export class ApartmentManagementController {
   constructor(
     private readonly getAllApartment: findAllApartmentUseCase,
-    private readonly getApartmentByTitle: FindAllApartmentByTitleUseCase,
+    private readonly getApartmentByQueries: FindAllApartmentByQueryUseCase,
     private readonly editApartmentVerificationStatus: EditApartmentStatusVerifiedUseCase,
     private readonly deleteApartmentById: DeleteApartmentByIdUseCase,
     private readonly getApartmentDocumentById: findApartmentDocumentByIdUseCase,
@@ -35,14 +35,14 @@ export class ApartmentManagementController {
     }
   };
 
-  public getApartmentsByName = async (req: Request, res: Response) => {
+  public getApartmentsByQueries = async (req: Request, res: Response) => {
     try {
       const userId = req.user?.userId;
-      const { name } = req.params;
+      const query = (req.query.q as string) || "";
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.getApartmentByTitle.execute(name);
+      const result = await this.getApartmentByQueries.execute(query);
       return res.status(200).json(result);
     } catch (error: any) {
       return res

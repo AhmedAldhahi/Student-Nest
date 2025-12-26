@@ -42,7 +42,7 @@ import {
   FindApartmentDetailByIdUseCase,
   FindApartmentDocumentByIdUseCase,
   GetAllApartment,
-  GetApartmentByTitle,
+  GetApartmentByQueries,
 } from "./admin/ApartmentManagement";
 
 import { findAllAuditLogUseCase, FindAuditLogByQueriesUseCase } from "./admin/AuditLogManagement";
@@ -53,34 +53,42 @@ export function buildDependencies() {
       registerLandlordUseCase: makeRegisterLandlordUseCase(),
       registerStudentUseCase: makeRegisterStudentUseCase(),
       LoginUseCase: makeLoginUseCase(),
+
       verifiedOTPUseCase: makeVerifiedEmailOTP(),
       resendOTPUseCase: makeResendEmailOTP(),
       forgetPasswordUseCase: makeUpdateForgetPass(),
       resendOtpForgetPassword: makeResendForgetPassword(),
       verifiedForgetPasswordUseCase: makeVerifiedForgetPasswordOTP(),
+      
       userProfileData: getUserProfileData(),
       updateProfileUseCase: updateUserProfile(),
+      
       updateLandlordStatusUseCase: updateLandlordStatus(),
       DeleteLandlordByIdUseCase: deleteLandlordById(),
       findUserByEmailUseCase: findUserByQuery(),
       updateAccountActivateUseCase: UpdateUserActivateStatusUseCase(),
       GetAllUsersUseCase: GetAllUsers(),
+      
       GetAllLeaseUseCase: getAllLease(),
       getLeaseById: GetLeaseByQuery(),
+      
       getAllLeaseRequestUseCase: GetAllLeaseRequest(),
       getLeaseRequestByIdUseCase: GetLeaseRequestByQuery(),
+      
       GetAllNotificationUseCase: GetAllNotification(),
       updateNotificationUseCase: updateNotificationStatus(),
       deleteNotificationByIdUseCase: deleteNotificationById(),
       deleteAllNotificationUseCase: deleteAllNotification(),
+      
       GetAllApartmentUseCase: GetAllApartment(),
-      getApartmentsByNameUseCase: GetApartmentByTitle(),
+      getApartmentsByQueriesUseCase: GetApartmentByQueries(),
       editStatusApartmentVerifiedUseCase: EditApartmentStatusVerified(),
       deleteApartmentByIdUseCase: DeleteApartmentById(),
       findApartmentDocumentById: FindApartmentDocumentByIdUseCase(),
       findApartmentDetailById: FindApartmentDetailByIdUseCase(),
       editApartmentUseCase: editApartmentDetailUseCase(),
       editApartmentDocumentUseCase: EditApartmentDocumentsUseCase(),
+      
       findAllAuditLogUseCase: findAllAuditLogUseCase(),
       findAuditLogQueryUseCase:FindAuditLogByQueriesUseCase(),
     },

@@ -2,7 +2,7 @@ import { deleteApartmentByIdCommandHandler } from "../../../Application/Command/
 import { EditApartmentDetailByIdCommandHandler } from "../../../Application/Command/Handlers/EditApartmentDetailByIdCommandHandler";
 import { EditApartmentStatusVerifiedCommandHandler } from "../../../Application/Command/Handlers/EditApartmetVerficationStatusCommandHandler";
 import { UpdateApartmentDocumentFileCommandHandler } from "../../../Application/Command/Handlers/updateApartmentDocumentCommandHandler";
-import { GetAllApartmentByTitleQueriesHandler } from "../../../Application/Queries/Handlers/GetAllApartmentByName.QueriesHandler";
+import { GetAllApartmentByQueryQueriesHandler } from "../../../Application/Queries/Handlers/GetAllApartmentQueries.QueriesHandler";
 import { GetAllApartmentQueriesHandler } from "../../../Application/Queries/Handlers/GetAllApartmentQueriesHandler";
 import { GetApartmentByIdQueriesHandler } from "../../../Application/Queries/Handlers/GetApartmentByIdQueriesHandler";
 import { GetApartmentDocumentByIdQueriesHandler } from "../../../Application/Queries/Handlers/GetApartmentDocumentById.QueriesHandler";
@@ -10,7 +10,7 @@ import { DeleteApartmentByIdUseCase } from "../../../Application/Use-Case/admin/
 import { EditApartmentDetailUseCase } from "../../../Application/Use-Case/admin/ApartmentMangament/EditApartmentDetail.usecase";
 import { EditApartmentStatusVerifiedUseCase } from "../../../Application/Use-Case/admin/ApartmentMangament/EditApartmentStatus.usecase";
 import { findAllApartmentUseCase } from "../../../Application/Use-Case/admin/ApartmentMangament/FindAllApartment.usecase";
-import { FindAllApartmentByTitleUseCase } from "../../../Application/Use-Case/admin/ApartmentMangament/findAllApartmentByName.usecase";
+import { FindAllApartmentByQueryUseCase } from "../../../Application/Use-Case/admin/ApartmentMangament/findAllApartmentByQueries.usecase";
 import { findApartmentByIdUseCase } from "../../../Application/Use-Case/admin/ApartmentMangament/FindApartmentDetailsById.usecase";
 import { findApartmentDocumentByIdUseCase } from "../../../Application/Use-Case/admin/ApartmentMangament/FindApartmentDocument.usecase";
 import { UpdateApartmentDocumentUseCase } from "../../../Application/Use-Case/admin/ApartmentMangament/updateApartmentDocument.usecase";
@@ -27,13 +27,13 @@ export function GetAllApartment(): findAllApartmentUseCase {
   return new findAllApartmentUseCase(queriesHandler);
 }
 
-export function GetApartmentByTitle(): FindAllApartmentByTitleUseCase {
+export function GetApartmentByQueries(): FindAllApartmentByQueryUseCase {
   const ReadApartmentRepo = new ReadApartmentRepositories();
-  const queriesHandler = new GetAllApartmentByTitleQueriesHandler(
+  const queriesHandler = new GetAllApartmentByQueryQueriesHandler(
     ReadApartmentRepo
   );
 
-  return new FindAllApartmentByTitleUseCase(queriesHandler);
+  return new FindAllApartmentByQueryUseCase(queriesHandler);
 }
 
 export function EditApartmentStatusVerified(): EditApartmentStatusVerifiedUseCase {

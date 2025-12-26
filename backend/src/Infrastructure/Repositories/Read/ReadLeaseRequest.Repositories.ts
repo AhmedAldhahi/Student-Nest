@@ -62,12 +62,13 @@ export class ReadLeaseRequestRepositories
 
   public async findLeaseRequestByQuery(
     Queries: string
-  ): Promise<ILeaseRequestDTO | null> {
+  ): Promise<ILeaseRequestDTO[]> {
     try {
       const query = Queries.trim();
       const numericId = Number(query);
 
-      const isNumeric = !Number.isNaN(numericId);
+      // Check if it is a valid number and strictly not NaN
+      const isNumeric = !Number.isNaN(numericId) && query !== "";
 
       let whereCondition: FindOptionsWhere<LeaseRequestModel>[];
 
@@ -75,18 +76,46 @@ export class ReadLeaseRequestRepositories
         whereCondition = [{ leaseRequestId: numericId }];
       } else {
         whereCondition = [
+          // Search in Landlord Name
           { landlord: { user: { Name: Like(`%${query}%`) } } },
-
+          // Search in Student Name
           { student: { user: { Name: Like(`%${query}%`) } } },
-
+          // Search in Apartment Title
           { apartment: { title: Like(`%${query}%`) } },
         ];
       }
 
-      const orm = await AppDataSource.getInstance()
+      const leaseRequests = await AppDataSource.getInstance()
         .getRepository(LeaseRequestModel)
-        .findOne({
+        .find({
           where: whereCondition,
+          select: {
+            leaseRequestId: true,
+            requestMessage: true,
+            startDate: true,
+            rentTerm: true,
+            requestStatus: true,
+            createAt: true,
+            landlord: {
+              userId: true,
+              user: {
+                Name: true,
+              },
+            },
+            student: {
+              userId: true,
+              Major: true,
+              user: {
+                Name: true,
+                userId: true,
+              },
+            },
+            apartment: {
+              title: true,
+              price: true,
+              apartmentId: true,
+            },
+          },
           relations: {
             student: { user: true },
             landlord: { user: true },
@@ -94,10 +123,13 @@ export class ReadLeaseRequestRepositories
           },
         });
 
-      if (!orm) return null;
-      return LeaseRequestMapper.toResponse(orm);
+      if (leaseRequests.length === 0) return [];
+
+      return leaseRequests.map((orm) => {
+        return LeaseRequestMapper.toResponse(orm);
+      });
     } catch (error: any) {
-      console.error("fail to get lease request by id");
+      console.error("fail to get lease request by query", error);
       throw error;
     }
   }
