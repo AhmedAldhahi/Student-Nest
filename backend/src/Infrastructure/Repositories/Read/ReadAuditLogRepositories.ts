@@ -46,29 +46,101 @@ export class ReadAuditLogRepositories implements IReadAuditLogRepositories {
     }
   }
 
+  // public async findByUserQuery(query: string): Promise<AuditLogEntity[]> {
+  //   try {
+  //     const isUUID =
+  //       /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(
+  //         query
+  //       );
+
+  //     const whereConditions: FindOptionsWhere<AuditLogModel>[] = [
+  //       { ipAddress: Like(`%${query}%`) },
+  //       { deviceInfo: Like(`%${query}%`) },
+  //       { description: Like(`%${query}%`) },
+  //       { location: Like(`%${query}%`) },
+  //       { record: Like(`%${query}%`) },
+  //     ];
+
+  //     const matchedRole = Object.values(UserRole).find((role) =>
+  //       role.includes(query.toUpperCase())
+  //     );
+
+  //     if (isUUID) {
+  //       whereConditions.push({ logID: query as any });
+  //       whereConditions.push({ targetUserId: query as any });
+  //       whereConditions.push({ performedByUserId: query as any });
+  //     }
+
+  //     const orm = await AppDataSource.getInstance()
+  //       .getRepository(AuditLogModel)
+  //       .find({
+  //         where: whereConditions,
+  //         order: { actionTimestamp: "DESC" },
+  //         select: {
+  //           logID: true,
+  //           actionType: true,
+  //           description: true,
+  //           actionTimestamp: true,
+  //           record: true,
+  //           ipAddress: true,
+  //           deviceInfo: true,
+  //           location: true,
+  //           fieldName: true,
+  //           oldValue: true,
+  //           newValue: true,
+  //           targetUserId: true,
+  //           performedByUserId: true,
+  //         },
+  //       });
+
+  //     if (!orm || orm.length === 0) return [];
+
+  //     return orm.map((data) => {
+  //       return AuditLogMapper.toEntity(data);
+  //     });
+  //   } catch (error: any) {
+  //     console.error("fail to search audit logs", error);
+  //     throw error;
+  //   }
+  // }
+
   public async findByUserQuery(query: string): Promise<AuditLogEntity[]> {
     try {
+      const trimmedQuery = query.trim();
       const isUUID =
         /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(
-          query
+          trimmedQuery
         );
 
+      // 1. Basic Text Search (On AuditLog Table)
       const whereConditions: FindOptionsWhere<AuditLogModel>[] = [
-        { ipAddress: Like(`%${query}%`) },
-        { deviceInfo: Like(`%${query}%`) },
-        { description: Like(`%${query}%`) },
-        { location: Like(`%${query}%`) },
-        { record: Like(`%${query}%`) },
+        { ipAddress: Like(`%${trimmedQuery}%`) },
+        { deviceInfo: Like(`%${trimmedQuery}%`) },
+        { description: Like(`%${trimmedQuery}%`) },
+        { location: Like(`%${trimmedQuery}%`) },
+        { record: Like(`%${trimmedQuery}%`) },
+
+        { targetUser: { Name: Like(`%${trimmedQuery}%`) } },
+        { targetUser: { Email: Like(`%${trimmedQuery}%`) } },
+        { performedByUser: { Name: Like(`%${trimmedQuery}%`) } },
       ];
 
+      // 3. Handle Role Search
+      // (Your previous code calculated matchedRole but didn't use it)
       const matchedRole = Object.values(UserRole).find((role) =>
-        role.includes(query.toUpperCase())
+        role.toLowerCase().includes(trimmedQuery.toLowerCase())
       );
 
+      if (matchedRole) {
+        whereConditions.push({ targetUser: { Role: matchedRole } });
+        whereConditions.push({ performedByUser: { Role: matchedRole } });
+      }
+
+      // 4. Handle UUID Search
       if (isUUID) {
-        whereConditions.push({ logID: query as any });
-        whereConditions.push({ targetUserId: query as any });
-        whereConditions.push({ performedByUserId: query as any });
+        whereConditions.push({ logID: trimmedQuery });
+        whereConditions.push({ targetUserId: trimmedQuery });
+        whereConditions.push({ performedByUserId: trimmedQuery });
       }
 
       const orm = await AppDataSource.getInstance()
@@ -76,6 +148,12 @@ export class ReadAuditLogRepositories implements IReadAuditLogRepositories {
         .find({
           where: whereConditions,
           order: { actionTimestamp: "DESC" },
+
+          relations: {
+            targetUser: true,
+            performedByUser: true,
+          },
+
           select: {
             logID: true,
             actionType: true,
@@ -90,6 +168,16 @@ export class ReadAuditLogRepositories implements IReadAuditLogRepositories {
             newValue: true,
             targetUserId: true,
             performedByUserId: true,
+            // Select nested fields for performance
+            targetUser: {
+              Name: true,
+              Role: true,
+              Email: true,
+            },
+            performedByUser: {
+              Name: true,
+              Role: true,
+            },
           },
         });
 
