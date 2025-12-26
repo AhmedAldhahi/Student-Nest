@@ -2,6 +2,8 @@ import { Router } from "express";
 import { ApartmentManagementController } from "../../controllers/admin/apartmentManagement.controller";
 import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 import { isAdmin } from "../../middlewares/auth/isAdmin.middleware";
+import { validation } from "../../middlewares/validation.middleware";
+import { apartmentVerifiedZod } from "../../validation/admin/apartment.validation.zod";
 
 export const ApartmentRouter = (
   apartmentController: ApartmentManagementController
@@ -22,10 +24,12 @@ export const ApartmentRouter = (
     apartmentController.getApartmentsByQueries
   );
 
+  
   router.patch(
     "/apartment/:apartmentId/verify",
     isAuth,
     isAdmin,
+    validation(apartmentVerifiedZod),
     apartmentController.updateApartmentVerificationStatus
   );
 
@@ -50,6 +54,7 @@ export const ApartmentRouter = (
     apartmentController.getApartmentDetailById
   );
 
+  //todo: will be removed and move to landlord
   router.patch(
     "/apartment/:id",
     isAuth,
@@ -57,6 +62,7 @@ export const ApartmentRouter = (
     apartmentController.UpdateApartmentDetailsById
   );
 
+  //todo will be remove and move to landlord
   router.patch(
     "/apartment-document/:id", // <--- Added Slash
     isAuth,

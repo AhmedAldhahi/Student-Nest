@@ -10,6 +10,7 @@ export const userManagementRouter = (
 ): Router => {
   const router = Router();
 
+
   router.patch(
     "/landlords/verification/:landlordId",
     validation(verifiedLandlordSchema),
@@ -39,6 +40,7 @@ export const userManagementRouter = (
     userManagementRouter.findUsersByQuery
   );
 
+  //todo: need to add validation zod middleware
   router.patch(
     "/users/:id/status",
     isAuth,

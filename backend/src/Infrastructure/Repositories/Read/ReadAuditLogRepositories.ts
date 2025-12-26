@@ -26,12 +26,12 @@ export class ReadAuditLogRepositories implements IReadAuditLogRepositories {
             newValue: true,
 
             targetUserId: true,
-            targetUserName: true,
-            targetUserRole: true,
 
             performedByUserId: true,
-            performedByUserName: true,
-            performedByUserRole: true,
+          },
+          relations: {
+            targetUser: true,
+            performedByUser: true,
           },
         });
 
@@ -57,8 +57,6 @@ export class ReadAuditLogRepositories implements IReadAuditLogRepositories {
         { ipAddress: Like(`%${query}%`) },
         { deviceInfo: Like(`%${query}%`) },
         { description: Like(`%${query}%`) },
-        { performedByUserName: Like(`%${query}%`) },
-        { targetUserName: Like(`%${query}%`) },
         { location: Like(`%${query}%`) },
         { record: Like(`%${query}%`) },
       ];
@@ -66,11 +64,6 @@ export class ReadAuditLogRepositories implements IReadAuditLogRepositories {
       const matchedRole = Object.values(UserRole).find((role) =>
         role.includes(query.toUpperCase())
       );
-
-      if (matchedRole) {
-        whereConditions.push({ performedByUserRole: matchedRole });
-        whereConditions.push({ targetUserRole: matchedRole });
-      }
 
       if (isUUID) {
         whereConditions.push({ logID: query as any });
@@ -96,11 +89,7 @@ export class ReadAuditLogRepositories implements IReadAuditLogRepositories {
             oldValue: true,
             newValue: true,
             targetUserId: true,
-            targetUserName: true,
-            targetUserRole: true,
             performedByUserId: true,
-            performedByUserName: true,
-            performedByUserRole: true,
           },
         });
 

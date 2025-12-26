@@ -1,4 +1,5 @@
 import { AuditLogEntity } from "../../../Domain/Entities/auditlogEntity.entity";
+import { UserRole } from "../../../Domain/Enum/UserRole.enum";
 import { AuditLogModel } from "../../Database/orm/TypeOrm/entity/AuditLog.entity";
 
 export class AuditLogMapper {
@@ -11,8 +12,6 @@ export class AuditLogMapper {
     auditModel.description = auditEntity.getDescription();
 
     auditModel.targetUserId = auditEntity.getTargetUserId();
-    auditModel.targetUserName = auditEntity.getTargetUserName();
-    auditModel.targetUserRole = auditEntity.getTargetUserRole();
 
     auditModel.record = auditEntity.getRecord();
     auditModel.fieldName = auditEntity.getFieldName();
@@ -22,8 +21,6 @@ export class AuditLogMapper {
     auditModel.deviceInfo = auditEntity.getDeviceInfo();
     auditModel.location = auditEntity.getLocation();
     auditModel.performedByUserId = auditEntity.getPerformedByUserId();
-    auditModel.performedByUserName = auditEntity.getPerformedByUserName();
-    auditModel.performedByUserRole = auditEntity.getPerformedByUserRole();
 
     return auditModel;
   }
@@ -40,15 +37,17 @@ export class AuditLogMapper {
       newValue: auditModel.newValue,
       oldValue: auditModel.oldValue,
       record: auditModel.record,
-
       targetUserId: auditModel.targetUserId,
-      targetUserName: auditModel.targetUserName,
-      targetUserRole: auditModel.targetUserRole,
+
+      targetUserName: auditModel.targetUser?.Name || "Unknown/Deleted User",
+      targetUserRole: auditModel.targetUser?.Role || UserRole.student,
 
       logId: auditModel.logID,
       performedByUserId: auditModel.performedByUserId,
-      performedByUserName: auditModel.performedByUserName,
-      performedByUserRole: auditModel.performedByUserRole,
+
+      performedByUserName: auditModel.performedByUser?.Name ?? null,
+
+      performedByUserRole: auditModel.performedByUser?.Role ?? null,
     });
   }
 }

@@ -2,7 +2,10 @@ import { Router } from "express";
 import { NotificationController } from "../../controllers/Notification.controller";
 import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 import { validation } from "../../middlewares/validation.middleware";
-import { DeleteBatchSchema } from "../../validation/notificationMangement.validation.zod";
+import {
+  changeNotificationStatusSchema,
+  DeleteBatchSchema,
+} from "../../validation/notificationMangement.validation.zod";
 
 export const notificationRouter = (
   notificationController: NotificationController
@@ -18,6 +21,7 @@ export const notificationRouter = (
   router.patch(
     "/notifications-status/:id",
     isAuth,
+    validation(changeNotificationStatusSchema),
     notificationController.updateNotificationsStatus
   );
 
