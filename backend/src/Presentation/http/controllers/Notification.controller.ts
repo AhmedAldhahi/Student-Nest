@@ -3,10 +3,7 @@ import { GetAllNotificationUseCase } from "../../../Application/Use-Case/admin/N
 import { UpdateNotificationStatusUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/UpdateNotifcationStatus.usecase";
 import { DeleteNotificationByIdUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/DeleteNotificationById.usecase";
 import { DeleteAllNotificationUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/DeleteAllNotification.usecase";
-import { deleteAllNotification } from "../../../Infrastructure/DI/admin/NotificationManagement";
-import { error } from "console";
 import { DeleteSpecificNotificationsUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/DeleteSpecificNotification.usecase";
-import { deleteSpecificNotificationsCommand } from "../../../Application/Command/Commands/DeleteSpecficNotificationsCommand";
 
 export class NotificationController {
   constructor(
