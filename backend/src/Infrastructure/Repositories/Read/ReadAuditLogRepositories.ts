@@ -46,64 +46,6 @@ export class ReadAuditLogRepositories implements IReadAuditLogRepositories {
     }
   }
 
-  // public async findByUserQuery(query: string): Promise<AuditLogEntity[]> {
-  //   try {
-  //     const isUUID =
-  //       /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(
-  //         query
-  //       );
-
-  //     const whereConditions: FindOptionsWhere<AuditLogModel>[] = [
-  //       { ipAddress: Like(`%${query}%`) },
-  //       { deviceInfo: Like(`%${query}%`) },
-  //       { description: Like(`%${query}%`) },
-  //       { location: Like(`%${query}%`) },
-  //       { record: Like(`%${query}%`) },
-  //     ];
-
-  //     const matchedRole = Object.values(UserRole).find((role) =>
-  //       role.includes(query.toUpperCase())
-  //     );
-
-  //     if (isUUID) {
-  //       whereConditions.push({ logID: query as any });
-  //       whereConditions.push({ targetUserId: query as any });
-  //       whereConditions.push({ performedByUserId: query as any });
-  //     }
-
-  //     const orm = await AppDataSource.getInstance()
-  //       .getRepository(AuditLogModel)
-  //       .find({
-  //         where: whereConditions,
-  //         order: { actionTimestamp: "DESC" },
-  //         select: {
-  //           logID: true,
-  //           actionType: true,
-  //           description: true,
-  //           actionTimestamp: true,
-  //           record: true,
-  //           ipAddress: true,
-  //           deviceInfo: true,
-  //           location: true,
-  //           fieldName: true,
-  //           oldValue: true,
-  //           newValue: true,
-  //           targetUserId: true,
-  //           performedByUserId: true,
-  //         },
-  //       });
-
-  //     if (!orm || orm.length === 0) return [];
-
-  //     return orm.map((data) => {
-  //       return AuditLogMapper.toEntity(data);
-  //     });
-  //   } catch (error: any) {
-  //     console.error("fail to search audit logs", error);
-  //     throw error;
-  //   }
-  // }
-
   public async findByUserQuery(query: string): Promise<AuditLogEntity[]> {
     try {
       const trimmedQuery = query.trim();
@@ -146,7 +88,7 @@ export class ReadAuditLogRepositories implements IReadAuditLogRepositories {
       const orm = await AppDataSource.getInstance()
         .getRepository(AuditLogModel)
         .find({
-          where: whereConditions,
+          where: whereConditions, // Executes OR logic across all these fields
           order: { actionTimestamp: "DESC" },
 
           relations: {
