@@ -72,27 +72,7 @@ export class ReadLandlordRepositories implements IReadLandlordRepositories {
       const query = prefix.trim();
 
       const phoneSearch = query.startsWith("0") ? query.substring(1) : query;
-      const isNumeric = /^\d+$/.test(query);
 
-      // let whereCondition:
-      //   | FindOptionsWhere<LandlordModel>
-      //   | FindOptionsWhere<LandlordModel>[];
-
-      // if (query.includes("@")) {
-      //   whereCondition = { user: { Email: Like(`%${query}%`) } };
-      // } else if (isNumeric || phoneRegex.test(query)) {
-      //   if (phoneRegex.test(query)) {
-      //     whereCondition = { user: { PhoneNumber: Like(`%${query}%`) } };
-      //   } else {
-      //     whereCondition = [{ LandlordGovId: Like(`${query}%`) }];
-      //   }
-      // } else {
-      //   whereCondition = [
-      //     { user: { Name: Like(`%${query}%`) } },
-      //     { CliQAccount: Like(`%${query}%`) },
-      //     { userId: Like(`%${query}%`) },
-      //   ];
-      // }
       const whereCondition: FindOptionsWhere<LandlordModel>[] = [
         { user: { Name: Like(`%${query}%`) } },
         { user: { Email: Like(`%${query}%`) } },
