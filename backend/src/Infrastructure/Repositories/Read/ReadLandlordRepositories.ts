@@ -71,28 +71,41 @@ export class ReadLandlordRepositories implements IReadLandlordRepositories {
     try {
       const query = prefix.trim();
 
-      const phoneRegex = /^(?:(?:\+962|00)\s?0?|0)?\s?(7[789])\s?(\d{7})$/;
+      const phoneSearch = query.startsWith("0") ? query.substring(1) : query;
       const isNumeric = /^\d+$/.test(query);
 
-      let whereCondition:
-        | FindOptionsWhere<LandlordModel>
-        | FindOptionsWhere<LandlordModel>[];
+      // let whereCondition:
+      //   | FindOptionsWhere<LandlordModel>
+      //   | FindOptionsWhere<LandlordModel>[];
 
-      if (query.includes("@")) {
-        whereCondition = { user: { Email: Like(`%${query}%`) } };
-      } else if (isNumeric || phoneRegex.test(query)) {
-        if (phoneRegex.test(query)) {
-          whereCondition = { user: { PhoneNumber: Like(`%${query}%`) } };
-        } else {
-          whereCondition = [{ LandlordGovId: Like(`${query}%`) }];
-        }
-      } else {
-        whereCondition = [
-          { user: { Name: Like(`%${query}%`) } },
-          { CliQAccount: Like(`%${query}%`) },
-          { userId: Like(`%${query}%`) },
-        ];
-      }
+      // if (query.includes("@")) {
+      //   whereCondition = { user: { Email: Like(`%${query}%`) } };
+      // } else if (isNumeric || phoneRegex.test(query)) {
+      //   if (phoneRegex.test(query)) {
+      //     whereCondition = { user: { PhoneNumber: Like(`%${query}%`) } };
+      //   } else {
+      //     whereCondition = [{ LandlordGovId: Like(`${query}%`) }];
+      //   }
+      // } else {
+      //   whereCondition = [
+      //     { user: { Name: Like(`%${query}%`) } },
+      //     { CliQAccount: Like(`%${query}%`) },
+      //     { userId: Like(`%${query}%`) },
+      //   ];
+      // }
+      const whereCondition: FindOptionsWhere<LandlordModel>[] = [
+        { user: { Name: Like(`%${query}%`) } },
+        { user: { Email: Like(`%${query}%`) } },
+        { user: { userId: Like(`%${query}%`) } }, // UUID search
+
+        // --- Phone Number (Check both formats) ---
+        { user: { PhoneNumber: Like(`%${query}%`) } }, // Matches exact input
+        { user: { PhoneNumber: Like(`%${phoneSearch}%`) } }, // Matches without leading zero
+
+        // --- Landlord Specific Data ---
+        { CliQAccount: Like(`%${query}%`) }, // Now works for Numbers AND Aliases
+        { LandlordGovId: Like(`${query}%`) }, // Gov ID
+      ];
 
       const landlordsModel = await AppDataSource.getInstance()
         .getRepository(LandlordModel)
