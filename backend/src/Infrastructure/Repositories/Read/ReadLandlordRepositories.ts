@@ -84,14 +84,13 @@ export class ReadLandlordRepositories implements IReadLandlordRepositories {
         if (phoneRegex.test(query)) {
           whereCondition = { user: { PhoneNumber: Like(`%${query}%`) } };
         } else {
-          whereCondition = [
-            { LandlordGovId: Like(`${query}%`) },
-          ];
+          whereCondition = [{ LandlordGovId: Like(`${query}%`) }];
         }
       } else {
         whereCondition = [
           { user: { Name: Like(`%${query}%`) } },
           { CliQAccount: Like(`%${query}%`) },
+          { userId: Like(`%${query}%`) },
         ];
       }
 
