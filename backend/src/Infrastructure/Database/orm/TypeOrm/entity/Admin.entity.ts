@@ -16,7 +16,4 @@ export class AdminModel {
   @OneToOne(() => UserModel, { cascade: true, onDelete: "CASCADE" })
   @JoinColumn({ name: "userId" })
   user: UserModel;
-
-  @OneToMany(() => AuditLogModel, (auditLog) => auditLog.admin)
-  auditLogs: AuditLogModel[];
 }

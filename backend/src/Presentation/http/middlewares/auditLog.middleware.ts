@@ -70,9 +70,6 @@ export const auditMiddleware = (
         ipAddress: ip,
         deviceInfo: req.headers["user-agent"] || "UNKNOWN",
         location: location,
-
-        // Admin Foreign Key
-        admin: req.user?.adminId ? ({ id: req.user.adminId } as any) : null,
       });
 
       await repo.save(audit);
