@@ -7,38 +7,30 @@ describe("StudentUniversity Value Object", () => {
   // =========================================================
   describe("White List (Success)", () => {
 
-    test("should accept an exact Full Name (e.g., 'University of Jordan')", () => {
+    test("should accept an exact name from the list", () => {
       const input = "University of Jordan";
       const university = StudentUniversity.create(input);
       
-      expect(university).toBeInstanceOf(StudentUniversity);
-      expect(university.getValue()).toBe(input);
-    });
-
-    test("should accept a Short Name and convert it to Full Name (e.g., 'JU' -> 'University of Jordan')", () => {
-      const input = "JU";
-      const university = StudentUniversity.create(input);
-      
-      // Verification: The Value Object should store the OFFICIAL name, not the abbreviation
       expect(university.getValue()).toBe("University of Jordan");
     });
 
-    test("should be case-insensitive (e.g., 'german-jordanian university')", () => {
-      const input = "german-jordanian university"; // Lowercase input
+    test("should be case-insensitive (e.g., 'petra university')", () => {
+      const input = "petra university"; 
       const university = StudentUniversity.create(input);
       
-      // Should match "German-Jordanian University"
-      expect(university.getValue()).toBe("German-Jordanian University");
+      // Should return the official capitalized name from the list
+      expect(university.getValue()).toBe("Petra University");
     });
 
     test("should handle names with special characters (e.g., W.I.S.E)", () => {
+      // Input from your list
       const input = "The World Islamic Science & Education University (W.I.S.E)";
       const university = StudentUniversity.create(input);
       
       expect(university.getValue()).toBe(input);
     });
 
-    test("should trim whitespace from input", () => {
+    test("should automatically trim whitespace", () => {
       const input = "   Yarmouk University   ";
       const university = StudentUniversity.create(input);
       
@@ -57,24 +49,32 @@ describe("StudentUniversity Value Object", () => {
       }).toThrow("University Name is required");
     });
 
-    test("should throw error if input is whitespace", () => {
+    test("should throw error if input is just whitespace", () => {
       expect(() => {
         StudentUniversity.create("   ");
       }).toThrow("University Name is required");
     });
 
-    test("should throw error if university does not exist in the list", () => {
-      const fakeUniversity = "Hogwarts School of Witchcraft";
+    test("should throw error if university is NOT in the list", () => {
+      const fakeUni = "Harvard University";
       expect(() => {
-        StudentUniversity.create(fakeUniversity);
-      }).toThrow(`Invalid University: "${fakeUniversity}" is not in our approved list.`);
+        StudentUniversity.create(fakeUni);
+      }).toThrow(`Invalid University: "${fakeUni}" is not in our approved list.`);
     });
 
-    test("should throw error for partial matches that are not exact", () => {
-      // "Jordan" exists in "University of Jordan", but "Jordan" alone is not a valid university name
+    test("should throw error for partial matches", () => {
+      // "Jordan" is part of the name, but not the full name
       expect(() => {
         StudentUniversity.create("Jordan");
       }).toThrow('Invalid University: "Jordan" is not in our approved list.');
+    });
+
+    // Since you removed the object structure, short names like "JU" 
+    // will now fail unless "JU" is explicitly added to your string array.
+    test("should throw error for short names (if not in list)", () => {
+      expect(() => {
+        StudentUniversity.create("JU");
+      }).toThrow('Invalid University: "JU" is not in our approved list.');
     });
   });
 

@@ -1,16 +1,7 @@
 import { currentYear } from "../../Shared/constants/validationZod.constant";
 
-/**
- * Value Object representing a student's graduation year.
- *
- * Encapsulates validation logic to ensure:
- * - A graduation year is provided
- * - The year is not in the past compared to the current year
- *
- * @class studentGraduateYear
- */
+// Recommendation: Use PascalCase for Class names (StudentGraduateYear)
 export class studentGraduateYear {
-  /** The validated graduation year. */
   constructor(private value?: number | undefined) {
     if (!value) {
       this.value = undefined;
@@ -18,17 +9,27 @@ export class studentGraduateYear {
   }
 
   public static create(value: number): studentGraduateYear {
-    if (!value) throw new Error("student Graduated year is required");
-    if (value < currentYear) throw new Error("invalid graduate year !!");
+    if (!value) throw new Error("Student graduate year is required");
+
+    // 1. Fix: Match the test expectation "whole number"
+    if (!Number.isInteger(value))
+      throw new Error("Graduation year must be a whole number");
+
+    // 2. Fix: Match "cannot" (one word)
+    if (value < currentYear)
+      throw new Error("Graduation year cannot be in the past");
+
+    const maxReasonableYear = currentYear + 10;
+
+    // 3. Fix: Match "cannot" and remove extra spaces
+    if (value > maxReasonableYear)
+      throw new Error(
+        `Graduation year cannot be further than ${maxReasonableYear}`
+      );
 
     return new studentGraduateYear(value);
   }
 
-  /**
-   * Returns the validated graduation year.
-   *
-   * @returns {number} The student's graduation year.
-   */
   public getValue(): number | undefined {
     return this.value ?? undefined;
   }
