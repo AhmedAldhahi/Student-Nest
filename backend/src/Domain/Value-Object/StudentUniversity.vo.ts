@@ -1,38 +1,53 @@
-/**
- * Value Object representing a student's university name.
- *
- * Encapsulates validation logic to ensure:
- * - A university name is provided
- * - Only letters and single spaces are allowed
- * - No numbers or special characters
- *
- * @class StudentUniversity
- */
+import { universitiesAndCollege } from "../../Shared/constants/unversityAndCollage.constant";
+
 export class StudentUniversity {
-  /** The validated university name. */
-  constructor(private value?: string | undefined) {
+  private constructor(private readonly value?: string) {
     if (!value) this.value = undefined;
   }
 
   public static create(value: string): StudentUniversity {
-    if (!value) throw new Error("university Name is required");
+    // 1. Trim first, then check if empty
+    const trimmedInput = value ? value.trim() : "";
 
-    const UniversityPattern = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
-    const trimmedName = value.trim();
+    if (!trimmedInput || trimmedInput.length === 0) {
+      throw new Error("University Name is required");
+    }
 
-    if (!UniversityPattern.test(trimmedName)) {
+    // 2. Flatten the search: Look through all cities in the data structure
+    const dataSources = universitiesAndCollege[0];
+    let foundMatch: string | null = null;
+
+    for (const city in dataSources) {
+      const universitiesInCity = dataSources[city];
+
+      const match = universitiesInCity.find((uni) => {
+        if (uni.name.toLowerCase() === trimmedInput.toLowerCase()) return true;
+
+        if (
+          uni.shortName &&
+          uni.shortName.toLowerCase() === trimmedInput.toLowerCase()
+        ) {
+          return true;
+        }
+
+        return false;
+      });
+
+      if (match) {
+        foundMatch = match.name;
+        break; 
+      }
+    }
+
+    if (!foundMatch) {
       throw new Error(
-        "Invalid University: only letters and single spaces are allowed. No numbers or special characters"
+        `Invalid University: "${trimmedInput}" is not in our approved list.`
       );
     }
-    return new StudentUniversity(trimmedName);
+
+    return new StudentUniversity(foundMatch);
   }
 
-  /**
-   * Returns the validated university name.
-   *
-   * @returns {string} The university name.
-   */
   public getValue(): string | undefined {
     return this.value ?? undefined;
   }
