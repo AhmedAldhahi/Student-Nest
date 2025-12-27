@@ -1,7 +1,7 @@
 import { IReadApartmentRepo } from "../../../Domain/Repositories/Read/ReadApartmentRepo.repositoreis";
 import { IUnitOfWork } from "../../../Domain/Repositories/UnitOfWorkRepositories.repositories";
 import { ApartmentPrice } from "../../../Domain/Value-Object/ApartmentPrice.vo";
-import { numberOfBed } from "../../../Domain/Value-Object/NumberOfBed.vo";
+import { NumberOfBed } from "../../../Domain/Value-Object/NumberOfBed.vo";
 import { NumberOfRoom } from "../../../Domain/Value-Object/NumberOfRoom.vo";
 import { IFileStorageService } from "../../Interfaces/IFileStorage.interface";
 import { EditApartmentDetailByIdCommand } from "../Commands/EditApartmentCommand";
@@ -31,7 +31,7 @@ export class EditApartmentDetailByIdCommandHandler
       if (command.isJoin) apartment.updateJoin(command.isJoin);
 
       if (command.numberOfBed)
-        apartment.updateNumberOfBed(numberOfBed.create(command.numberOfBed));
+        apartment.updateNumberOfBed(NumberOfBed.create(command.numberOfBed));
 
       if (command.numberOfRoom)
         apartment.updateNumberOfRoom(NumberOfRoom.create(command.numberOfRoom));

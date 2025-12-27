@@ -4,7 +4,7 @@ import {
 } from "../../../Application/DTO/admin/ApartmentDTo.dto";
 import { ApartmentAggregateRoot } from "../../../Domain/AggregatesRoot/apartmentEntity.entity";
 import { ApartmentPrice } from "../../../Domain/Value-Object/ApartmentPrice.vo";
-import { numberOfBed } from "../../../Domain/Value-Object/NumberOfBed.vo";
+import { NumberOfBed } from "../../../Domain/Value-Object/NumberOfBed.vo";
 import { NumberOfRoom } from "../../../Domain/Value-Object/NumberOfRoom.vo";
 import { ApartmentModel } from "../../Database/orm/TypeOrm/entity/Apartment.entity";
 import { ApartmentDocumentMapper } from "./apartmentDocument.mapper";
@@ -74,7 +74,7 @@ export class ApartmentMapper {
       updateAt: model.updateAt,
 
       // Value Objects
-      numberOfBed: new numberOfBed(model.numberOfBed),
+      numberOfBed: new NumberOfBed(model.numberOfBed),
       numberOfRoom: new NumberOfRoom(model.numberOfRoom),
       price: new ApartmentPrice(model.price),
 

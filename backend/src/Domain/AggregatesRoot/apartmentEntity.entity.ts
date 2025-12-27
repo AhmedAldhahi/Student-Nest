@@ -2,7 +2,7 @@ import { ApartmentDocumentEntity } from "../Entities/apartmentDocumentEntity.ent
 import { GoogleMapLocationEntity } from "../Entities/googleMapLocationEntity.entity";
 import { LandlordAggregateRoot } from "./landloardEntity.entity";
 import { ApartmentPrice } from "../Value-Object/ApartmentPrice.vo";
-import { numberOfBed } from "../Value-Object/NumberOfBed.vo";
+import { NumberOfBed } from "../Value-Object/NumberOfBed.vo";
 import { NumberOfRoom } from "../Value-Object/NumberOfRoom.vo";
 import { ApartmentPhotoDocumentEntity } from "../Entities/phohtoDocumentEntity.entity";
 
@@ -15,7 +15,7 @@ export interface ApartmentData {
   address: string;
   Verified: boolean;
   numberOfRoom: NumberOfRoom;
-  numberOfBed: numberOfBed;
+  numberOfBed: NumberOfBed;
   isJoin: boolean;
   createAt: Date;
   updateAt: Date;
@@ -32,11 +32,11 @@ export class ApartmentAggregateRoot {
   private propertyStatus: boolean;
   private title: string;
   private description: string;
-  private price: ApartmentPrice; // vo
+  private price: ApartmentPrice;
   private address: string;
   private Verified: boolean = false;
-  private numberOfRoom: NumberOfRoom; // vo
-  private numberOfBed: numberOfBed; // vo
+  private numberOfRoom: NumberOfRoom;
+  private numberOfBed: NumberOfBed;
   private isJoin: boolean;
   private isFully: boolean;
 
@@ -186,7 +186,7 @@ export class ApartmentAggregateRoot {
     return this.price.getValue() ?? undefined;
   }
 
-  public updateNumberOfBed(bedNum: numberOfBed): void {
+  public updateNumberOfBed(bedNum: NumberOfBed): void {
     this.numberOfBed = bedNum;
   }
 
