@@ -31,7 +31,11 @@ export class LeaseRequestModel {
   @CreateDateColumn({ name: "createAt" })
   createAt: Date;
 
-  @ManyToOne(() => StudentModel, { nullable: false })
+  @ManyToOne(() => StudentModel, {
+    nullable: false,
+    onDelete: "CASCADE",
+  })
+
   @JoinColumn({ name: "studentId" })
   student: StudentModel;
 
@@ -46,6 +50,7 @@ export class LeaseRequestModel {
     nullable: false,
     onDelete: "CASCADE",
   })
+  
   @JoinColumn({ name: "apartmentId" })
   apartment: ApartmentModel;
 }

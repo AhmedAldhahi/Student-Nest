@@ -1,35 +1,37 @@
-export class numberOfBed {
+export class NumberOfBed {
+  // Public constructor so Mappers can use it
   constructor(private numOfBed?: string | undefined) {
     if (!numOfBed || numOfBed.trim().length === 0) {
       this.numOfBed = undefined;
     }
   }
 
-  public static create(numOfBed: string): numberOfBed {
+  public static create(numOfBed: string): NumberOfBed {
     if (!numOfBed || numOfBed.trim().length === 0) {
-      throw new Error("number of bed is require !!");
+      throw new Error("Number of beds is required");
     }
 
     const trimmed = numOfBed.trim();
 
-     if (!/^\d+$/.test(trimmed)) {
-      throw new Error("The number of rooms must be a whole number");
+    // 1. Regex: Ensure it is a whole number (digits only)
+    if (!/^\d+$/.test(trimmed)) {
+      throw new Error("Number of beds must be a whole number");
     }
 
-    if (Number.isNaN(numOfBed)) {
-      throw new Error("number of bed must be number !!");
+    // 2. Parse to Number for range checks
+    const val = Number.parseInt(trimmed, 10);
+
+    // 3. Range Checks
+    if (val < 1) {
+      throw new Error("Number of beds must be at least 1");
     }
 
-    const numOfBedNum = Number.parseInt(numOfBed);
-
-    if (numOfBedNum < 1)
-      throw new Error("the number of bed must be at lease 1 ");
-
-    if (numOfBedNum > 10) {
-      throw new Error(" the number of bed must be at most 10 ");
+    if (val > 10) {
+      throw new Error("Number of beds must be at most 10");
     }
 
-    return new numberOfBed(numberOfBed.toString());
+    // 4. Return the trimmed STRING value
+    return new NumberOfBed(trimmed);
   }
 
   public getValue(): string | undefined {

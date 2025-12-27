@@ -1,4 +1,4 @@
-export class MonthlyRent { 
+export class MonthlyRent {
   constructor(private value?: string | undefined) {
     if (!value) this.value = undefined;
   }
@@ -6,7 +6,7 @@ export class MonthlyRent {
   public static create(value: string): MonthlyRent {
     if (value.length > 4) throw new Error("monthly rent at most 4 digit ");
 
-    const digitValue = Number.parseInt(value);
+    const digitValue = Number.parseInt(value, 10);
 
     if (digitValue < 1) throw new Error("the monthly rent must be at least 1 ");
 
