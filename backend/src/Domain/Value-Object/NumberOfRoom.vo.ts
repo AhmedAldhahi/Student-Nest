@@ -1,26 +1,35 @@
 export class NumberOfRoom {
-  constructor(private numOfRoom?: string | undefined) {
-    if (!numOfRoom || numOfRoom.trim().length === 0) {
-      this.numOfRoom = undefined;
-    }
+  // Private constructor for Reconstitution
+   constructor(private readonly numOfRoom?: string | undefined) {
+    if (!numOfRoom) this.numOfRoom = undefined;
   }
 
   public static create(numOfRooms: string): NumberOfRoom {
+    // 1. Check Empty
     if (!numOfRooms || numOfRooms.trim().length === 0) {
-      throw new Error("number of room is require !!");
+      throw new Error("Number of rooms is required");
     }
 
-    if (Number.isNaN(numOfRooms)) {
-      throw new Error("the type must be number !!");
+    const trimmed = numOfRooms.trim();
+
+    // 2. Check is Numeric (Fixing the Number.isInteger bug)
+    // ^\d+$ ensures it is only digits (no decimals like 1.5, no letters)
+    if (!/^\d+$/.test(trimmed)) {
+      throw new Error("The number of rooms must be a whole number");
     }
 
-    const numOfRoomsNum = Number.parseInt(numOfRooms);
+    const value = parseInt(trimmed, 10);
 
-    if (numOfRoomsNum < 1) throw new Error("the number of room at lease 1");
+    // 3. Range Check (1 - 10)
+    if (value < 1) {
+      throw new Error("The number of rooms must be at least 1");
+    }
 
-    if (numOfRoomsNum >= 10) throw new Error("the number of room at most 10");
+    if (value > 10) {
+      throw new Error("The number of rooms must be at most 10");
+    }
 
-    return new NumberOfRoom(numOfRoomsNum.toString());
+    return new NumberOfRoom(trimmed);
   }
 
   public getValue(): string | undefined {

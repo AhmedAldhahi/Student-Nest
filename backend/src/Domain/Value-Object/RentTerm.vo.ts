@@ -1,6 +1,6 @@
 export class RentTerm {
   // Private constructor for Reconstitution
-  private constructor(private readonly value?: string) {
+   constructor(private readonly value?: string) {
     if (!value) this.value = undefined;
   }
 

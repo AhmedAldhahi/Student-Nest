@@ -2,7 +2,7 @@ import { universitiesAndCollege } from "../../Shared/constants/unversityAndColla
 
 export class StudentUniversity {
   // Private constructor for Reconstitution
-  private constructor(private readonly value?: string) {
+   constructor(private readonly value?: string) {
     if (!value) this.value = undefined;
   }
 

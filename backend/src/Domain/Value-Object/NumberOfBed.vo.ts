@@ -10,6 +10,12 @@ export class numberOfBed {
       throw new Error("number of bed is require !!");
     }
 
+    const trimmed = numOfBed.trim();
+
+     if (!/^\d+$/.test(trimmed)) {
+      throw new Error("The number of rooms must be a whole number");
+    }
+
     if (Number.isNaN(numOfBed)) {
       throw new Error("number of bed must be number !!");
     }
