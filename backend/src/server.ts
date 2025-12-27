@@ -15,11 +15,11 @@ import { profileRouter } from "./Presentation/http/routes/profile.routes";
 import { userManagementRouter } from "./Presentation/http/routes/admin/userMangement.routes";
 import { LeaseManagementRouter } from "./Presentation/http/routes/admin/leaseMangement.router";
 import { LeaseRequestManagementRouter } from "./Presentation/http/routes/admin/leaseRequestMangement.router";
-import { notificationRouter } from "./Presentation/http/routes/admin/notifcationMangement.routes";
+import { notificationRouter } from "./Presentation/http/routes/notifcationMangement.routes";
 import { ApartmentRouter } from "./Presentation/http/routes/admin/apartmentMangement.router";
 import { auditMiddleware } from "./Presentation/http/middlewares/auditLog.middleware";
 import { AuditLogRouter } from "./Presentation/http/routes/admin/auditLogMangement.router";
-import { ApartmentSharedRouter } from "./Presentation/http/routes/apartment.routes";
+import { ApartmentSharedRouter } from "./Presentation/http/routes/admin/apartment.routes";
 export class Server {
   public app = express();
   public port = parseInt(process.env.PORT || "4000", 10);

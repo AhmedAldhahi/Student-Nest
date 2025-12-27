@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { ApartmentManagementController } from "../controllers/admin/apartmentManagement.controller";
-import { isAuth } from "../middlewares/auth/isAuth.middleware";
+import { ApartmentManagementController } from "../../controllers/admin/apartmentManagement.controller";
+import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 
 export const ApartmentSharedRouter = (
   apartmentController: ApartmentManagementController
