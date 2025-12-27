@@ -2,7 +2,7 @@ import { NumberOfRoom } from "../../../../src/Domain/Value-Object/NumberOfRoom.v
 
 describe("NumberOfRoom Value Object", () => {
   
-  // ✅ White List (Valid)
+  //  White List (Valid)
   describe("White List (Success)", () => {
     test("should accept valid minimum rooms (1)", () => {
       const room = NumberOfRoom.create("1");
@@ -20,7 +20,7 @@ describe("NumberOfRoom Value Object", () => {
     });
   });
 
-  // ❌ Black List (Invalid)
+  //  Black List (Invalid)
   describe("Black List (Failure)", () => {
     test("should throw if empty", () => {
       expect(() => NumberOfRoom.create("")).toThrow("required");

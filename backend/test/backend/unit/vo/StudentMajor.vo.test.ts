@@ -1,7 +1,7 @@
 import { StudentMajor } from "../../../../src/Domain/Value-Object/StudentMajor.vo";
 
 describe("StudentMajor Value Object", () => {
-  // ✅ White List (Valid)
+  //  White List (Valid)
   describe("White List (Success)", () => {
     test("should accept simple major", () => {
       const major = StudentMajor.create("Computer Science");
@@ -23,7 +23,7 @@ describe("StudentMajor Value Object", () => {
     });
   });
 
-  // ❌ Black List (Invalid)
+  //  Black List (Invalid)
   describe("Black List (Failure)", () => {
     test("should throw if empty", () => {
       expect(() => StudentMajor.create("")).toThrow("required");

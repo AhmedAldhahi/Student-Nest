@@ -2,7 +2,7 @@ import { RentTerm } from "../../../../src/Domain/Value-Object/RentTerm.vo";
 
 describe("RentTerm Value Object", () => {
   
-  // ✅ White List (Valid)
+  // White List (Valid)
   describe("White List (Success)", () => {
     test("should accept standard format (DD,MM,YY)", () => {
       const term = RentTerm.create("01,06,01"); // 1 Day, 6 Months, 1 Year
@@ -25,7 +25,7 @@ describe("RentTerm Value Object", () => {
     });
   });
 
-  // ❌ Black List (Invalid)
+  //  Black List (Invalid)
   describe("Black List (Failure)", () => {
     test("should throw if format is garbage", () => {
       expect(() => RentTerm.create("Hello World")).toThrow("Invalid format");

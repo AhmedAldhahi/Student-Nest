@@ -3,7 +3,7 @@ import { StudentUniversity } from "../../../../src/Domain/Value-Object/StudentUn
 describe("StudentUniversity Value Object", () => {
   
   // =========================================================
-  // ✅ White List (Valid Scenarios)
+  //  White List (Valid Scenarios)
   // =========================================================
   describe("White List (Success)", () => {
 
@@ -39,7 +39,7 @@ describe("StudentUniversity Value Object", () => {
   });
 
   // =========================================================
-  // ❌ Black List (Invalid Scenarios)
+  //  Black List (Invalid Scenarios)
   // =========================================================
   describe("Black List (Failure)", () => {
 

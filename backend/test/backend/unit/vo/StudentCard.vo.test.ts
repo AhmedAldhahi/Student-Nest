@@ -1,7 +1,7 @@
 import { StudentCard } from "../../../../src/Domain/Value-Object/StudentCard.vo";
 
 describe("StudentCard Value Object", () => {
-  // ✅ White List (Valid)
+  //  White List (Valid)
   describe("White List (Success)", () => {
     test("should accept valid 8-digit number string", () => {
       const input = "20210001";
@@ -21,7 +21,7 @@ describe("StudentCard Value Object", () => {
     });
   });
 
-  // ❌ Black List (Invalid)
+  //  Black List (Invalid)
   describe("Black List (Failure)", () => {
     test("should throw if empty", () => {
       expect(() => StudentCard.create("")).toThrow("required");

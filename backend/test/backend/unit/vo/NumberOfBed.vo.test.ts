@@ -2,7 +2,7 @@ import { NumberOfBed } from "../../../../src/Domain/Value-Object/NumberOfBed.vo"
 
 describe("NumberOfBed Value Object", () => {
   
-  // ✅ White List (Valid)
+  //  White List (Valid)
   describe("White List (Success)", () => {
     test("should accept valid number '1'", () => {
       const bed = NumberOfBed.create("1");
@@ -20,7 +20,7 @@ describe("NumberOfBed Value Object", () => {
     });
   });
 
-  // ❌ Black List (Failure)
+  //  Black List (Failure)
   describe("Black List (Failure)", () => {
     test("should throw if empty", () => {
       expect(() => NumberOfBed.create("")).toThrow("required");
