@@ -2,41 +2,38 @@ import { currentYear } from "../../Shared/constants/validationZod.constant";
 
 // Recommendation: Use PascalCase for Class names (StudentGraduateYear)
 export class studentGraduateYear {
-  constructor(private value?: string | undefined) {
+  constructor(private value?: number | undefined) {
     if (!value) {
       this.value = undefined;
     }
   }
 
-  public static create(value: string): studentGraduateYear {
+  public static create(value: number | string): studentGraduateYear {
     if (!value) throw new Error("Student graduate year is required");
 
     // 1. Fix: Match the test expectation "whole number"
-    const trimmed = value.trim();
-    const isNumeric = /^\d+$/.test(trimmed);
 
-    if (!isNumeric) {
-      throw new Error("Student card ID must contain only numbers");
-    }
+    const yearNumber = Number(value);
 
-    const numValue = Number.parseInt(value);
+    if (!Number.isInteger(yearNumber))
+      throw new Error("Graduation year must be a whole number");
 
     // 2. Fix: Match "cannot" (one word)
-    if (numValue < currentYear)
+    if (yearNumber < currentYear)
       throw new Error("Graduation year cannot be in the past");
 
     const maxReasonableYear = currentYear + 10;
 
     // 3. Fix: Match "cannot" and remove extra spaces
-    if (numValue > maxReasonableYear)
+    if (yearNumber > maxReasonableYear)
       throw new Error(
         `Graduation year cannot be further than ${maxReasonableYear}`
       );
 
-    return new studentGraduateYear(numValue.toString());
+    return new studentGraduateYear(yearNumber);
   }
 
-  public getValue(): string | undefined {
+  public getValue(): number | undefined {
     return this.value ?? undefined;
   }
 }
