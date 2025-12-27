@@ -85,8 +85,8 @@ export class LeaseAggregateRoot {
     this.leaseTerm = term;
   }
 
-  public getLeaseTerm(): string {
-    return this.leaseTerm.getValue();
+  public getLeaseTerm(): string | undefined {
+    return this.leaseTerm.getValue() ?? undefined;
   }
 
   public updateMonthRent(rent: MonthlyRent): void {
