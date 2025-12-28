@@ -1,5 +1,5 @@
-import { DeleteAllNotificationCommand } from "../../../Command/Commands/DeleteAllNotificationCommand";
-import { DeleteAllNotificationCommandHandler } from "../../../Command/Handlers/DeleteAllNotificationCommandHandler";
+import { DeleteAllNotificationCommand } from "../../Command/Commands/DeleteAllNotificationCommand";
+import { DeleteAllNotificationCommandHandler } from "../../Command/Handlers/DeleteAllNotificationCommandHandler";
 
 export class DeleteAllNotificationUseCase {
   constructor(

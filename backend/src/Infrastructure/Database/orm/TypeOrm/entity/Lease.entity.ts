@@ -46,16 +46,16 @@ export class LeaseModel {
   createAt: Date;
 
   @ManyToOne(() => StudentModel, (student) => student.leases, {
-    nullable: false,
-    onDelete: "CASCADE",
+    nullable: true,
+    onDelete: "SET NULL",
   })
 
   @JoinColumn({ name: "studentId" })
   student: StudentModel;
 
   @ManyToOne(() => LandlordModel, (landlord) => landlord.leases, {
-    nullable: false,
-    onDelete: "CASCADE",
+    nullable: true,
+    onDelete: "SET NULL",
   })
   @JoinColumn({ name: "landlordId" })
   landlord: LandlordModel;

@@ -73,4 +73,26 @@ export class readNotificationRepositories
       throw error;
     }
   }
+public async GetAllAdminNotification(
+    userId: string
+  ): Promise<INotificationDTO[] | null> {
+    try {
+      const adminNotifications = await AppDataSource.getInstance()
+        .getRepository(NotificationModel)
+        .createQueryBuilder("notification")
+        .leftJoinAndSelect("notification.receiver", "user") // Existing join
+        .leftJoinAndSelect("notification.sender", "sender") // <--- ADD THIS LINE
+        .where("user.role = :role", { role: "admin" })
+        .getMany();
+
+      if (!adminNotifications || adminNotifications.length === 0) return [];
+
+      return adminNotifications.map((orm) => {
+        return NotificationMapper.toResponse(orm);
+      });
+    } catch (error: any) {
+      console.error("fail to get all admin notifications !!");
+      throw error;
+    }
+  }
 }

@@ -91,6 +91,7 @@ export class ApartmentMapper {
         : [],
     });
   }
+  
 
   public static toResponsesSimple(model: ApartmentModel): IApartmentSimpleDTO {
     return {
@@ -145,10 +146,10 @@ export class ApartmentMapper {
  * no id
  * jameel missed description
  * is fully
- *
+ * add count 
  * no create at,update at ,
  * no google map locations
  *
- * one photo
+ * one photo 
  *
  */

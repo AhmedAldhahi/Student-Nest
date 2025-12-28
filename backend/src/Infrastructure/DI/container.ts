@@ -33,7 +33,7 @@ import {
   DeleteSpecificNotifications,
   GetAllNotification,
   updateNotificationStatus,
-} from "./admin/NotificationManagement";
+} from "./NotificationManagement";
 
 import {
   DeleteApartmentById,

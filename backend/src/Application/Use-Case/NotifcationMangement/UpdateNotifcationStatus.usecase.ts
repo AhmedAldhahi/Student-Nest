@@ -1,6 +1,7 @@
-import { UpdateNotificationStatusCommand } from "../../../Command/Commands/UpdateNotifcationStatusCommand";
-import { UpdateNotificationStatusCommandHandler } from "../../../Command/Handlers/updateNotifcationStatusCommandHandler";
-import { EditNotificationStatusRequest } from "../../../DTO/admin/EditNotificationStatus.Request.dto";
+import { UpdateNotificationStatusCommand } from "../../Command/Commands/UpdateNotifcationStatusCommand";
+import { UpdateNotificationStatusCommandHandler } from "../../Command/Handlers/updateNotifcationStatusCommandHandler";
+import { EditNotificationStatusRequest } from "../../DTO/admin/EditNotificationStatus.Request.dto";
+
 
 export class UpdateNotificationStatusUseCase {
   constructor(

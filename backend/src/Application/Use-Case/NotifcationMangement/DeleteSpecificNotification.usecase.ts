@@ -1,5 +1,5 @@
-import { deleteSpecificNotificationsCommand } from "../../../Command/Commands/DeleteSpecficNotificationsCommand";
-import { deleteSpecificNotificationsCommandHandler } from "../../../Command/Handlers/DeleteSpecificationNotificationCommandHandler";
+import { deleteSpecificNotificationsCommand } from "../../Command/Commands/DeleteSpecficNotificationsCommand";
+import { deleteSpecificNotificationsCommandHandler } from "../../Command/Handlers/DeleteSpecificationNotificationCommandHandler";
 
 export class DeleteSpecificNotificationsUseCase {
   constructor(
