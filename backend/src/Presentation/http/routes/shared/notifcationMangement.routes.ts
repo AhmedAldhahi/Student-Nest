@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { NotificationController } from "../controllers/Notification.controller";
-import { isAuth } from "../middlewares/auth/isAuth.middleware";
-import { validation } from "../middlewares/validation.middleware";
+import { NotificationController } from "../../controllers/Notification.controller";
+import { isAuth } from "../../middlewares/auth/isAuth.middleware";
+import { validation } from "../../middlewares/validation.middleware";
 import {
   changeNotificationStatusSchema,
   DeleteBatchSchema,
-} from "../validation/notificationMangement.validation.zod";
+} from "../../validation/notificationMangement.validation.zod";
 
 export const notificationRouter = (
   notificationController: NotificationController

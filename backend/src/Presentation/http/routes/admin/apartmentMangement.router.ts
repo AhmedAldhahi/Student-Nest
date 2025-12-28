@@ -5,8 +5,10 @@ import { isAdmin } from "../../middlewares/auth/isAdmin.middleware";
 import { validation } from "../../middlewares/validation.middleware";
 import { apartmentVerifiedZod } from "../../validation/admin/apartment.validation.zod";
 
+
 export const ApartmentRouter = (
-  apartmentController: ApartmentManagementController
+  apartmentController: ApartmentManagementController,
+  
 ): Router => {
   const router = Router();
 
@@ -33,6 +35,7 @@ export const ApartmentRouter = (
     apartmentController.updateApartmentVerificationStatus
   );
 
+  // shared need strategy 
   router.delete(
     "/apartment/:apartmentId",
     isAuth,
@@ -40,6 +43,7 @@ export const ApartmentRouter = (
     apartmentController.DeleteApartmentById
   );
 
+  // shared 
   router.get(
     "/apartment-document/:id",
     isAuth,
@@ -47,12 +51,15 @@ export const ApartmentRouter = (
     apartmentController.FindApartmentDocumentById
   );
 
+
+  // shared
   router.get(
     "/apartment/:id",
     isAuth,
     isAdmin,
     apartmentController.getApartmentDetailById
   );
+  
 
   //todo: will be removed and move to landlord
   router.patch(
@@ -64,7 +71,7 @@ export const ApartmentRouter = (
 
   //todo will be remove and move to landlord
   router.patch(
-    "/apartment-document/:id", // <--- Added Slash
+    "/apartment-document/:id",
     isAuth,
     isAdmin,
     apartmentController.updateApartmentDocuments
