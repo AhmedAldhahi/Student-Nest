@@ -49,6 +49,7 @@ export class LeaseModel {
     nullable: false,
     onDelete: "CASCADE",
   })
+
   @JoinColumn({ name: "studentId" })
   student: StudentModel;
 
@@ -63,6 +64,7 @@ export class LeaseModel {
     nullable: false,
     onDelete: "CASCADE",
   })
+  
   @JoinColumn({ name: "apartmentId" })
   apartment: ApartmentModel;
 }

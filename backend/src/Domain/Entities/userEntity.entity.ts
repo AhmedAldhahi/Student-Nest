@@ -21,18 +21,7 @@ import { UserEmail } from "../Value-Object/UserEmail.vo";
 import { UserName } from "../Value-Object/UserName.vo";
 import { userPhoneNumber } from "../Value-Object/UserPhoneNumber.vo";
 
-/**
- * Represents the domain User Aggregate Root.
- *
- * Handles:
- * - user identification
- * - email verification flow
- * - reset-password OTP flow
- * - domain value objects (email, name, phone, etc.)
- * - role & account status management
- *
- * @class UserEntity
- */
+
 export interface IUserData {
   userId: string;
   password: string;
@@ -44,7 +33,8 @@ export interface IUserData {
   address?: string;
   photo?: string;
   createdAt: Date;
-}
+} 
+
 
 export class UserEntity {
   private userId: string;
