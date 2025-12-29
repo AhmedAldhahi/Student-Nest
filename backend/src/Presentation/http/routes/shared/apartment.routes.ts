@@ -7,20 +7,23 @@ export const ApartmentSharedRouter = (
 ): Router => {
   const router = Router();
 
-  //todo: need factory and strategy  for admin and landlord
 
+  //todo: need to make landlord part
+  router.get("/", apartmentController.getAllApartments);
+
+
+  //todo: need to make landlord part
+  router.get("/search", apartmentController.getApartmentsByQueries);
+
+
+  //todo: need to make landlord part
   router.get("/:id/documents", apartmentController.FindApartmentDocumentById);
+
+  
 
   //todo: need factory and strategy  for admin and landlord
   router.get("/:id", apartmentController.getApartmentDetailById);
 
-  
-  //todo: need to add factory and strategy
-  router.get("/", apartmentController.getAllApartments);
-
-  //todo: need to add factory and strategy
-
-  router.get("/search", apartmentController.getApartmentsByQueries);
 
   //todo: need to make landlord part
   router.delete(

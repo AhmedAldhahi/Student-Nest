@@ -108,7 +108,6 @@ export class Server {
       AdminIndexRouter(
         adminApartmentController,
         adminAuditLogController,
-        adminLeaseRequestManagementController,
         adminUserManagementController
       )
     );
