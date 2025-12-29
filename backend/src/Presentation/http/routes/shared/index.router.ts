@@ -19,14 +19,15 @@ export const SharedIndexRouter = (
 
   router.use("/apartments", isAuth, ApartmentSharedRouter(apartmentController));
 
-  //TODO: need to add strategy pattern, and is student or admin
+  
+  //todo: need to implement landlord-student for strategy
   router.use(
-    "/lease-request",
+    "/leases-request",
     isAuth,
     LeaseRequestManagementRouter(leaseRequestManagementController)
   );
 
-  //TODO: need to add strategy pattern and  is landlord or student or admin and factory
+  //todo: need to implement landlord-student for strategy
   router.use(
     "/leases",
     isAuth,

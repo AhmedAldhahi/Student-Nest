@@ -1,15 +1,22 @@
-import { GetLeaseRequestByQueryQueriesHandler } from "../../../Queries/Handlers/GetLeaseRequestByQueryQueriesHandler";
-import { GetLeaseRequestByQuery } from "../../../Queries/Queries/GetLeaseRequestByQuery.Queries";
+import { IReadUserRepositories } from "../../../../Domain/Repositories/Read/ReadUserRepositories.repositories";
+import { LeaseRequestContext } from "../../../Strategy/leaseRequest/LeaseRequestContext";
 
 export class GetLeaseRequestByQueryUseCase {
   constructor(
-    private readonly queriesHandler: GetLeaseRequestByQueryQueriesHandler
+    private readonly context: LeaseRequestContext,
+    private readonly readUserRepo: IReadUserRepositories
   ) {}
 
-  public async execute(query: string) {
+  public async execute(query: string, userId: string) {
     try {
-      const command = new GetLeaseRequestByQuery(query);
-      return await this.queriesHandler.handle(command);
+      const user = await this.readUserRepo.findById(userId);
+      if (!user) throw new Error("no user been found !!");
+
+      return await this.context.executeSearchLeaseRequest(
+        userId,
+        user.getRole(),
+        query
+      );
     } catch (error: any) {
       console.error("fail to get lease request !!");
       throw error;
