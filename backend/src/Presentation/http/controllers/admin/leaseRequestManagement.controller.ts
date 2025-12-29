@@ -14,7 +14,7 @@ export class LeaseRequestManagementController {
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.GetAllLeaseRequest.execute();
+      const result = await this.GetAllLeaseRequest.execute(userId);
       return res.status(200).json(result);
     } catch (error: any) {
       throw error;
@@ -29,7 +29,10 @@ export class LeaseRequestManagementController {
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.GetLeaseRequestByQuery.execute(leaseRequestId);
+      const result = await this.GetLeaseRequestByQuery.execute(
+        leaseRequestId,
+        userId
+      );
 
       return res.status(200).json(result);
     } catch (error: any) {
