@@ -12,37 +12,25 @@ export const notificationRouter = (
 ): Router => {
   const router = Router();
 
-  router.get(
-    "/notifications",
-    isAuth,
-    notificationController.getAllNotification
-  );
+  router.get("/", notificationController.getAllNotification);
 
   router.patch(
-    "/notifications-status/:id",
-    isAuth,
+    "/:id/notifications-status/",
+
     validation(changeNotificationStatusSchema),
     notificationController.updateNotificationsStatus
   );
 
   router.delete(
-    "/notifications/batch",
+    "/batch",
     validation(DeleteBatchSchema),
-    isAuth,
+
     notificationController.deleteSpecificNotifications
   );
 
-  router.delete(
-    "/notification/:id",
-    isAuth,
-    notificationController.deleteNotificationById
-  );
+  router.delete("/:id", notificationController.deleteNotificationById);
 
-  router.delete(
-    "/notifications",
-    isAuth,
-    notificationController.deleteAllNotification
-  );
+  router.delete("/", notificationController.deleteAllNotification);
 
   return router;
 };
