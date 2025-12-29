@@ -284,3 +284,76 @@ export const getMe = async (token: string) => {
         throw error;
     }
 };
+
+export type ProfileUpdateData = {
+    name?: string;
+    dateOfBirth?: string;
+    phoneNumber?: string;
+    address?: string;
+};
+
+export const updateProfile = async (
+    token: string,
+    data: ProfileUpdateData,
+    photo?: { uri: string; name: string; type: string } | null
+) => {
+    try {
+        console.log("Updating Profile at:", `${API_URL}/me/profile`);
+
+        let body: FormData | string;
+        let headers: Record<string, string> = {
+            "Accept": "application/json",
+            "Authorization": `Bearer ${token}`,
+        };
+
+        if (photo) {
+            // Use FormData when uploading photo
+            const formData = new FormData();
+
+            if (data.name) formData.append("name", data.name);
+            if (data.dateOfBirth) formData.append("dateOfBirth", data.dateOfBirth);
+            if (data.phoneNumber) formData.append("phoneNumber", data.phoneNumber);
+            if (data.address) formData.append("address", data.address);
+
+            // Append photo file
+            const photoFile = {
+                uri: Platform.OS === "android" ? photo.uri : photo.uri.replace("file://", ""),
+                name: photo.name || "profile_photo.jpg",
+                type: photo.type || "image/jpeg",
+            };
+            formData.append("photo", photoFile as any);
+
+            body = formData;
+            // Don't set Content-Type for FormData, let fetch set the boundary
+        } else {
+            // Use JSON when no photo
+            body = JSON.stringify(data);
+            headers["Content-Type"] = "application/json";
+        }
+
+        const response = await fetch(`${API_URL}/me/profile`, {
+            method: "PATCH",
+            body: body,
+            headers: headers,
+        });
+
+        const responseText = await response.text();
+        console.log("Update Profile Raw Response:", responseText);
+
+        let result;
+        try {
+            result = JSON.parse(responseText);
+        } catch (e) {
+            throw new Error(`Server returned non-JSON response: ${responseText.slice(0, 100)}...`);
+        }
+
+        if (!response.ok) {
+            throw new Error(result.message || "Failed to update profile");
+        }
+        return result;
+    } catch (error) {
+        console.error("Update Profile Error:", error);
+        throw error;
+    }
+};
+

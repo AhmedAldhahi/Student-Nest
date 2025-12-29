@@ -73,3 +73,39 @@ export interface LeaseRequest {
     apartmentPrice: string;
     Major: string;
 }
+
+export interface AdminApartment {
+    apartmentId: number;
+    propertyStatus: boolean;
+    title: string;
+    description: string;
+    address: string;
+    Verified: boolean;
+    isFully: boolean;
+    isJoin: boolean;
+    numberOfBed: string;
+    numberOfRoom: string;
+    price: string;
+    landlordName: string;
+    apartmentPhoto: string[];
+}
+
+export interface AuditLog {
+    logId: string;
+    actionType: string;
+    actionTimestamp: string;
+    description: string;
+    deviceInfo: string;
+    fieldName: Record<string, boolean> | null;
+    ipAddress: string;
+    location: string;
+    newValue: string | null;
+    oldValue: string | null;
+    record: string;
+    targetUserId: string;
+    targetUserName: string;
+    targetUserRole: string;
+    performedByUserId: string | null;
+    performedByUserName: string | null;
+    performedByUserRole: string | null;
+}

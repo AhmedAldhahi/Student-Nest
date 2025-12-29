@@ -1,6 +1,6 @@
 import { Apartment } from "../types";
 
-export const showcase: Apartment[] = [
+export const showcase = [
   {
     apartmentId: "1",
     propertyStatus: "available",
@@ -75,7 +75,7 @@ export const showcase: Apartment[] = [
   },
 ];
 
-export const apartments: Apartment[] = [
+export const apartments = [
   {
     apartmentId: "10",
     propertyStatus: "available",

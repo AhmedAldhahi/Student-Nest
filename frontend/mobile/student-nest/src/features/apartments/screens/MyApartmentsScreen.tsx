@@ -37,7 +37,7 @@ export const myApartments: Apartment[] = [
     address: "Amman, Jordan",
     rooms: 3,
     beds: 2,
-    images: [require("../assets/apartment-picture.jpg")],
+    images: [require("../../../assets/images/apartment-picture-b.jpg")],
     verified: false, // 👈 add verified flag
   },
   {
@@ -50,7 +50,7 @@ export const myApartments: Apartment[] = [
     address: "Amman, Jordan",
     rooms: 1,
     beds: 1,
-    images: [require("../assets/apartment-picture-a.jpg")],
+    images: [require("../../../assets/images/apartment-picture-a.jpg")],
     verified: true, // 👈 verified
   },
 ];
@@ -88,15 +88,15 @@ export default function MyApartmentsScreen() {
             item.verified
               ? styles.verified
               : item.apartmentDocumentId
-              ? styles.pending
-              : styles.notVerified,
+                ? styles.pending
+                : styles.notVerified,
           ]}
         >
           {item.verified
             ? "Verified"
             : item.apartmentDocumentId
-            ? "Pending Verification"
-            : "Not Verified"}
+              ? "Pending Verification"
+              : "Not Verified"}
         </Text>
       </View>
     </TouchableOpacity>

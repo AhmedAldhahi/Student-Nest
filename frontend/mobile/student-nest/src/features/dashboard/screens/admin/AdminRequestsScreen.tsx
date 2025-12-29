@@ -1,12 +1,12 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { View, Text, FlatList, TextInput, StyleSheet, ActivityIndicator, Alert, RefreshControl } from "react-native";
 import { Card, Chip, Button } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RootStackParamList } from "../../../../navigation/types";
 import { LeaseRequest } from "./types";
 import { useAuth } from "../../../../context/AuthContext";
-import { getAllLeaseRequests, getLeaseRequestById } from "../../api/adminService";
+import { getAllLeaseRequests, searchLeaseRequests } from "../../api/adminService";
 import { Ionicons } from "@expo/vector-icons";
 
 type Props = NativeStackScreenProps<RootStackParamList, "AdminRequestsScreen">;
@@ -14,17 +14,18 @@ type Props = NativeStackScreenProps<RootStackParamList, "AdminRequestsScreen">;
 export default function AdminRequestsScreen({ route }: Props) {
   const { token } = useAuth();
   const [requests, setRequests] = useState<LeaseRequest[]>([]);
+  const [searchResults, setSearchResults] = useState<LeaseRequest[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [filter, setFilter] = useState<"all" | "Pending" | "Accept" | "Reject">("all");
   const [search, setSearch] = useState("");
-  const [searchedRequest, setSearchedRequest] = useState<LeaseRequest | null>(null);
-  const [isSearchingById, setIsSearchingById] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const searchTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const fetchRequests = async () => {
     if (!token) return;
     setLoading(true);
-    setSearchedRequest(null);
+    setSearchResults(null);
     try {
       const data = await getAllLeaseRequests(token);
       if (Array.isArray(data)) {
@@ -38,74 +39,75 @@ export default function AdminRequestsScreen({ route }: Props) {
     }
   };
 
-  const searchRequestById = async (id: string) => {
-    if (!token) return;
-    setIsSearchingById(true);
+  const performSearch = async (query: string) => {
+    if (!token || query.trim() === "") {
+      setSearchResults(null);
+      return;
+    }
+    setIsSearching(true);
     try {
-      const data = await getLeaseRequestById(token, id);
-      if (data && data.requestLeaseId) {
-        setSearchedRequest(data);
+      const data = await searchLeaseRequests(token, query.trim());
+      if (Array.isArray(data)) {
+        setSearchResults(data);
       } else {
-        setSearchedRequest(null);
-        Alert.alert("Not Found", `No lease request found with ID: ${id}`);
+        setSearchResults([]);
       }
     } catch (error: any) {
-      setSearchedRequest(null);
-      Alert.alert("Error", error.message || `Failed to find lease request with ID: ${id}`);
+      console.error("Search error:", error);
+      setSearchResults([]);
     } finally {
-      setIsSearchingById(false);
+      setIsSearching(false);
     }
   };
 
   const handleSearchChange = (text: string) => {
     setSearch(text);
-    if (text.trim() === "") {
-      setSearchedRequest(null);
-    }
-  };
 
-  const handleSearchSubmit = () => {
-    const trimmedSearch = search.trim();
-    if (/^\d+$/.test(trimmedSearch)) {
-      searchRequestById(trimmedSearch);
+    // Clear previous timeout
+    if (searchTimeout.current) {
+      clearTimeout(searchTimeout.current);
     }
+
+    if (text.trim() === "") {
+      setSearchResults(null);
+      return;
+    }
+
+    // Debounce search - wait 500ms after user stops typing
+    searchTimeout.current = setTimeout(() => {
+      performSearch(text);
+    }, 500);
   };
 
   const clearSearch = () => {
+    if (searchTimeout.current) {
+      clearTimeout(searchTimeout.current);
+    }
     setSearch("");
-    setSearchedRequest(null);
+    setSearchResults(null);
   };
 
   useEffect(() => {
     fetchRequests();
+    return () => {
+      if (searchTimeout.current) {
+        clearTimeout(searchTimeout.current);
+      }
+    };
   }, []);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    setSearch("");
-    setSearchedRequest(null);
+    clearSearch();
     fetchRequests();
   }, []);
 
   // Determine which requests to display
-  const displayRequests = searchedRequest ? [searchedRequest] : requests;
+  const displayRequests = searchResults !== null ? searchResults : requests;
 
-  // Filter + search logic
+  // Filter logic (applied to both all requests and search results)
   const filteredRequests = displayRequests.filter((r) => {
-    const matchesFilter =
-      filter === "all" ? true : r.requestStatus === filter;
-
-    // Skip local text filter if showing searched result
-    if (searchedRequest) return matchesFilter;
-
-    const matchesSearch =
-      search === "" ||
-      /^\d+$/.test(search.trim()) ||
-      r.studentName?.toLowerCase().includes(search.toLowerCase()) ||
-      r.landlordName?.toLowerCase().includes(search.toLowerCase()) ||
-      r.apartmentTitle?.toLowerCase().includes(search.toLowerCase());
-
-    return matchesFilter && matchesSearch;
+    return filter === "all" ? true : r.requestStatus === filter;
   });
 
   // Parse rent term "01,12,01" to readable format
@@ -227,14 +229,16 @@ export default function AdminRequestsScreen({ route }: Props) {
         <View style={styles.searchContainer}>
           <Ionicons name="search" size={20} color="#888" style={styles.searchIcon} />
           <TextInput
-            placeholder="Search by ID, Student, Landlord, or Apartment..."
+            placeholder="Search by Student, Landlord, or Apartment..."
             value={search}
             onChangeText={handleSearchChange}
-            onSubmitEditing={handleSearchSubmit}
             returnKeyType="search"
             style={styles.searchBar}
             placeholderTextColor="#999"
           />
+          {isSearching && (
+            <ActivityIndicator size="small" color="#1E3A8A" style={{ marginRight: 8 }} />
+          )}
           {search.length > 0 && (
             <Button
               mode="text"
@@ -248,12 +252,12 @@ export default function AdminRequestsScreen({ route }: Props) {
         </View>
 
         {/* Search result indicator */}
-        {searchedRequest && (
+        {searchResults !== null && (
           <View style={styles.searchResultIndicator}>
             <View style={styles.searchResultLeft}>
-              <Ionicons name="checkmark-circle" size={18} color="#1E3A8A" />
+              <Ionicons name="search" size={18} color="#1E3A8A" />
               <Text style={styles.searchResultText}>
-                Showing request #{searchedRequest.requestLeaseId}
+                Found {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} for "{search}"
               </Text>
             </View>
             <Button
@@ -262,7 +266,7 @@ export default function AdminRequestsScreen({ route }: Props) {
               onPress={clearSearch}
               labelStyle={styles.clearButtonLabel}
             >
-              Show All
+              Clear
             </Button>
           </View>
         )}
@@ -316,7 +320,7 @@ export default function AdminRequestsScreen({ route }: Props) {
           </View>
         </View>
 
-        {(loading && !refreshing) || isSearchingById ? (
+        {(loading && !refreshing) ? (
           <ActivityIndicator size="large" color="#1E3A8A" style={{ marginTop: 40 }} />
         ) : (
           <FlatList
