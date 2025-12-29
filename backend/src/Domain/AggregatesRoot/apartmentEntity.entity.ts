@@ -1,9 +1,10 @@
-import { ApartmentDocumentEntity } from "../Entities/apartmentDocument.entity";
+import { ApartmentDocumentEntity } from "../Entities/apartmentDocumentEntity.entity";
 import { GoogleMapLocationEntity } from "../Entities/googleMapLocationEntity.entity";
 import { LandlordAggregateRoot } from "./landloardEntity.entity";
 import { ApartmentPrice } from "../Value-Object/ApartmentPrice.vo";
-import { numberOfBed } from "../Value-Object/NumberOfBed.vo";
+import { NumberOfBed } from "../Value-Object/NumberOfBed.vo";
 import { NumberOfRoom } from "../Value-Object/NumberOfRoom.vo";
+import { ApartmentPhotoDocumentEntity } from "../Entities/phohtoDocumentEntity.entity";
 
 export interface ApartmentData {
   apartmentId: number;
@@ -14,7 +15,7 @@ export interface ApartmentData {
   address: string;
   Verified: boolean;
   numberOfRoom: NumberOfRoom;
-  numberOfBed: numberOfBed;
+  numberOfBed: NumberOfBed;
   isJoin: boolean;
   createAt: Date;
   updateAt: Date;
@@ -22,6 +23,7 @@ export interface ApartmentData {
   isFully: boolean;
 
   apartmentDocument: ApartmentDocumentEntity[];
+  apartmentPhoto: ApartmentPhotoDocumentEntity[];
   googleMapLocation: GoogleMapLocationEntity;
 }
 
@@ -30,11 +32,11 @@ export class ApartmentAggregateRoot {
   private propertyStatus: boolean;
   private title: string;
   private description: string;
-  private price: ApartmentPrice; // vo
+  private price: ApartmentPrice;
   private address: string;
   private Verified: boolean = false;
-  private numberOfRoom: NumberOfRoom; // vo
-  private numberOfBed: numberOfBed; // vo
+  private numberOfRoom: NumberOfRoom;
+  private numberOfBed: NumberOfBed;
   private isJoin: boolean;
   private isFully: boolean;
 
@@ -43,6 +45,7 @@ export class ApartmentAggregateRoot {
   private landlord: LandlordAggregateRoot;
   private apartmentDocument: ApartmentDocumentEntity[];
   private googleMapLocation: GoogleMapLocationEntity;
+  private apartmentPhotoDocument: ApartmentPhotoDocumentEntity[];
 
   constructor(data: ApartmentData) {
     this.apartmentId = data.apartmentId;
@@ -60,6 +63,7 @@ export class ApartmentAggregateRoot {
     this.landlord = data.landlord;
     this.apartmentDocument = data.apartmentDocument;
     this.googleMapLocation = data.googleMapLocation;
+    this.apartmentPhotoDocument = data.apartmentPhoto;
   }
 
   public setApartmentId(id: number): void {
@@ -162,14 +166,16 @@ export class ApartmentAggregateRoot {
     return this.landlord;
   }
 
-  
-
   public getApartmentDocument(): ApartmentDocumentEntity[] {
     return this.apartmentDocument;
   }
 
   public getGoogleMapLocation(): GoogleMapLocationEntity {
     return this.googleMapLocation;
+  }
+
+  public getApartmentPhotoDocument(): ApartmentPhotoDocumentEntity[] {
+    return this.apartmentPhotoDocument;
   }
 
   public updateApartmentPrice(price: ApartmentPrice): void {
@@ -180,7 +186,7 @@ export class ApartmentAggregateRoot {
     return this.price.getValue() ?? undefined;
   }
 
-  public updateNumberOfBed(bedNum: numberOfBed): void {
+  public updateNumberOfBed(bedNum: NumberOfBed): void {
     this.numberOfBed = bedNum;
   }
 
@@ -194,5 +200,11 @@ export class ApartmentAggregateRoot {
 
   public getNumberOfRoom(): string | undefined {
     return this.numberOfRoom.getValue() ?? undefined;
+  }
+
+  //=======================Apartment aggregation method ====================//
+
+  public updateApartmentPhotos(photos: ApartmentPhotoDocumentEntity[]): void {
+    this.apartmentPhotoDocument = photos;
   }
 }

@@ -1,4 +1,4 @@
-import { UserResponseDTO } from "../../../Application/Dtos/profile/ UserResponseDTO";
+import { UserResponseDTO } from "../../../Application/DTO/profile/ UserResponseDTO";
 import { UserEntity } from "../../../Domain/Entities/userEntity.entity";
 import { OTP } from "../../../Domain/Value-Object/OTP.vo";
 import { UserDateOfBirth } from "../../../Domain/Value-Object/UserDateOfBirth.vo";
@@ -19,6 +19,7 @@ export class UserMapper {
     userModel.Role = dateValidation.role;
     userModel.Password = dateValidation.password;
     userModel.PhoneNumber = dateValidation.phoneNumber;
+    userModel.isActive = user.getAccountStatus();
 
     // OTP Email
     userModel.otpCode = user.getOtpForEmail() ?? null;

@@ -3,12 +3,13 @@ import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 import { isAdmin } from "../../middlewares/auth/isAdmin.middleware";
 import { validation } from "../../middlewares/validation.middleware";
 import { verifiedLandlordSchema } from "../../validation/admin/landlordMagement.validation.zod";
-import { UserManagementController } from "../../controllers/admin/userMangement.controller";
+import { UserManagementController } from "../../controllers/admin/userManagement.controller";
 
 export const userManagementRouter = (
   userManagementRouter: UserManagementController
 ): Router => {
   const router = Router();
+
 
   router.patch(
     "/landlords/verification/:landlordId",
@@ -33,10 +34,18 @@ export const userManagementRouter = (
   );
 
   router.get(
-    "/users/search/:userRole/:email",
+    "/users/:userRole/search",
     isAuth,
     isAdmin,
-    userManagementRouter.findUsersByEmail
+    userManagementRouter.findUsersByQuery
+  );
+
+  //todo: need to add validation zod middleware
+  router.patch(
+    "/users/:id/status",
+    isAuth,
+    isAdmin,
+    userManagementRouter.updateActivateStatus
   );
 
   return router;

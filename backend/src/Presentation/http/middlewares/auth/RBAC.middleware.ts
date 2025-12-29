@@ -30,7 +30,7 @@ export const RBAC = async (req: Request, res: Response, next: NextFunction) => {
       case "student":
         schema = studentProfileSchema;
         break;
-      case "landloard":
+      case "landlord":
         schema = landlordProfileSchema;
         break;
       default:

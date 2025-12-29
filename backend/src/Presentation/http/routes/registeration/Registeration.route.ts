@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { AuthController } from "../../controllers/Registeration.controller";
+import { AuthController } from "../../controllers/Registration.controller";
 import { validation } from "../../middlewares/validation.middleware";
 import { RegisterStudetSchema } from "../../validation/auth/RegisterStudentSchema.zod";
 import { RegisterLandloardSchema } from "../../validation/auth/RegisterStudentSchema.zod";
@@ -33,7 +33,7 @@ export const createAuthRouter = (authController: AuthController): Router => {
     upload.single("document"),
     validation(RegisterLandloardSchema),
     registerApiRateLimited,
-    authController.registerLandloard
+    authController.registerLandlord
   );
 
   router.post(

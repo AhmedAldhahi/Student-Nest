@@ -1,4 +1,5 @@
-import { EditApartmentDataRequest } from "../../Dtos/admin/EditApartmentData.dtos";
+import { ApartmentPhotoDocumentEntity } from "../../../Domain/Entities/phohtoDocumentEntity.entity";
+import { EditApartmentDataRequest } from "../../DTO/admin/EditApartmentData.dto";
 import { ICommand } from "../ICommand";
 
 export class EditApartmentDetailByIdCommand implements ICommand {
@@ -10,6 +11,7 @@ export class EditApartmentDetailByIdCommand implements ICommand {
   public isJoin?: boolean;
   public price?: string;
   public id: number;
+  public photos?: ApartmentPhotoDocumentEntity[];
 
   constructor(data: EditApartmentDataRequest, id: number) {
     this.title = data.title;
@@ -20,5 +22,6 @@ export class EditApartmentDetailByIdCommand implements ICommand {
     this.isJoin = data.isJoin;
     this.price = data.price;
     this.id = id;
+    this.photos = data.photos;
   }
 }

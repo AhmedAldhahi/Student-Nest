@@ -1,38 +1,35 @@
-/**
- * Value Object representing a student's university name.
- *
- * Encapsulates validation logic to ensure:
- * - A university name is provided
- * - Only letters and single spaces are allowed
- * - No numbers or special characters
- *
- * @class StudentUniversity
- */
+import { universitiesAndCollege } from "../../Shared/constants/unversityAndCollage.constant";
+
 export class StudentUniversity {
-  /** The validated university name. */
-  constructor(private value?: string | undefined) {
+  // Private constructor for Reconstitution
+   constructor(private readonly value?: string) {
     if (!value) this.value = undefined;
   }
 
   public static create(value: string): StudentUniversity {
-    if (!value) throw new Error("university Name is required");
+    // 1. Validate Input
+    const trimmedInput = value ? value.trim() : "";
 
-    const UniversityPattern = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
-    const trimmedName = value.trim();
+    if (!trimmedInput || trimmedInput.length === 0) {
+      throw new Error("University Name is required");
+    }
 
-    if (!UniversityPattern.test(trimmedName)) {
+    // 2. Search in the Simple String Array
+    // We look for a case-insensitive match
+    const match = universitiesAndCollege.find(
+      (uni) => uni.toLowerCase() === trimmedInput.toLowerCase()
+    );
+
+    if (!match) {
       throw new Error(
-        "Invalid University: only letters and single spaces are allowed. No numbers or special characters"
+        `Invalid University: "${trimmedInput}" is not in our approved list.`
       );
     }
-    return new StudentUniversity(trimmedName);
+
+    // 3. Return the OFFICIAL name found in the list (to normalize capitalization)
+    return new StudentUniversity(match);
   }
 
-  /**
-   * Returns the validated university name.
-   *
-   * @returns {string} The university name.
-   */
   public getValue(): string | undefined {
     return this.value ?? undefined;
   }

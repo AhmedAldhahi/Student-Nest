@@ -3,8 +3,8 @@ import { IReadLandlordRepositories } from "../../../Domain/Repositories/Read/Rea
 import { LandlordModel } from "../../Database/orm/TypeOrm/entity/Landloard.entity";
 import { LandlordMapper } from "../mapper/landloard.mapper";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
-import { LandlordResponseDTO } from "../../../Application/Dtos/profile/LandlordResponeDTO";
-import { Like } from "typeorm";
+import { LandlordResponseDTO } from "../../../Application/DTO/profile/LandlordResponeDTO";
+import { FindOptionsWhere, Like } from "typeorm";
 
 export class ReadLandlordRepositories implements IReadLandlordRepositories {
   public async findLandlordById(
@@ -65,19 +65,32 @@ export class ReadLandlordRepositories implements IReadLandlordRepositories {
     }
   }
 
-  public async searchByEmail(
+  public async searchByQuery(
     prefix: string
   ): Promise<LandlordResponseDTO[] | null> {
     try {
-      // Query landlords and include the related `user` entity to search by `Email`
+      const query = prefix.trim();
+
+      const phoneSearch = query.startsWith("0") ? query.substring(1) : query;
+
+      const whereCondition: FindOptionsWhere<LandlordModel>[] = [
+        { user: { Name: Like(`%${query}%`) } },
+        { user: { Email: Like(`%${query}%`) } },
+        { user: { userId: Like(`%${query}%`) } }, // UUID search
+
+        // --- Phone Number (Check both formats) ---
+        { user: { PhoneNumber: Like(`%${query}%`) } }, // Matches exact input
+        { user: { PhoneNumber: Like(`%${phoneSearch}%`) } }, // Matches without leading zero
+
+        // --- Landlord Specific Data ---
+        { CliQAccount: Like(`%${query}%`) }, // Now works for Numbers AND Aliases
+        { LandlordGovId: Like(`${query}%`) }, // Gov ID
+      ];
+
       const landlordsModel = await AppDataSource.getInstance()
         .getRepository(LandlordModel)
         .find({
-          where: {
-            user: {
-              Email: Like(`${prefix}%`), // Now we're querying the related `user` entity's `Email` field
-            },
-          },
+          where: whereCondition,
           select: {
             CliQAccount: true,
             LandlordGovId: true,

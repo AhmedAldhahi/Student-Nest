@@ -1,68 +1,35 @@
 import { Router } from "express";
-import { ApartmentManagementController } from "../../controllers/admin/apartmentMangement.controller";
-import { isAuth } from "../../middlewares/auth/isAuth.middleware";
-import { isAdmin } from "../../middlewares/auth/isAdmin.middleware";
+import { ApartmentManagementController } from "../../controllers/admin/apartmentManagement.controller";
+import { validation } from "../../middlewares/validation.middleware";
+import { apartmentVerifiedZod } from "../../validation/admin/apartment.validation.zod";
 
 export const ApartmentRouter = (
   apartmentController: ApartmentManagementController
 ): Router => {
   const router = Router();
 
-  router.get(
-    "/apartments",
-    isAuth,
-    isAdmin,
-    apartmentController.getAllApartments
-  );
-
-  router.get(
-    "/apartments/:name",
-    isAuth,
-    isAdmin,
-    apartmentController.getApartmentsByName
-  );
-
   router.patch(
-    "/apartment/:apartmentId/verify",
-    isAuth,
-    isAdmin,
+    "/:apartmentId/verify",
+    validation(apartmentVerifiedZod),
     apartmentController.updateApartmentVerificationStatus
   );
 
-  router.delete(
-    "/apartment/:apartmentId",
-    isAuth,
-    isAdmin,
-    apartmentController.DeleteApartmentById
-  );
 
-  router.get(
-    "/apartment-document/:id",
-    isAuth,
-    isAdmin,
-    apartmentController.FindApartmentDocumentById
-  );
+  // //todo: will be removed and move to landlord
+  // router.patch(
+  //   "/:id",
+  //   isAuth,
+  //   isAdmin,
+  //   apartmentController.UpdateApartmentDetailsById
+  // );
 
-  router.get(
-    "/apartment/:id",
-    isAuth,
-    isAdmin,
-    apartmentController.getApartmentDetailById
-  );
-
-  router.patch(
-    "/apartment/:id",
-    isAuth,
-    isAdmin,
-    apartmentController.UpdateApartmentDetailsById
-  );
-
-  router.patch(
-    "/apartment-document/:id", // <--- Added Slash
-    isAuth,
-    isAdmin,
-    apartmentController.updateApartmentDocuments
-  );
+  // //todo will be remove and move to landlord
+  // router.patch(
+  //   "/:id/documents",
+  //   isAuth,
+  //   isAdmin,
+  //   apartmentController.updateApartmentDocuments
+  // );
 
   return router;
 };

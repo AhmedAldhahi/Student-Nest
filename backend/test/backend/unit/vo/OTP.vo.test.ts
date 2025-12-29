@@ -1,128 +1,89 @@
-// import { OTP } from "../../../../src/Domain/Value-Object/OTP.vo";
+import { OTP } from "../../../../src/Domain/Value-Object/OTP.vo"; // Adjust path as needed
 
-// describe('OTP Value Object', () => {
-//   // Freezes time to ensure deterministic tests
-//   beforeAll(() => {
-//     jest.useFakeTimers();
-//   });
+describe("OTP Value Object", () => {
+  
+  // =========================================================
+  // 1. Static Generation Tests
+  // =========================================================
+  describe("generate()", () => {
+    test("should generate a 6-digit numerical string", () => {
+      const otp = OTP.generate();
+      const value = otp.getValue();
 
-//   afterAll(() => {
-//     jest.useRealTimers();
-//   });
+      // Regex: ^ start, \d digit, {6} exactly 6 times, $ end
+      expect(value).toMatch(/^\d{6}$/);
+    });
 
-//   describe('Static Generation', () => {
-//     it('should generate a 6-digit numeric string', () => {
-//       const otp = OTP.generate();
-//       const value = otp.getValue();
+    test("should set expiration to exactly 10 minutes from now", () => {
+      // 1. Freeze time to a known point
+      const mockNow = new Date("2025-01-01T12:00:00Z");
+      jest.useFakeTimers().setSystemTime(mockNow);
 
-//       // Regex: Start with digit, exactly 6 digits, end of line
-//       expect(value).toMatch(/^\d{6}$/);
-//     });
+      // 2. Generate OTP
+      const otp = OTP.generate();
 
-//     it('should create a distinct instance on every call', () => {
-//       const otp1 = OTP.generate();
-//       const otp2 = OTP.generate();
-
-//       expect(otp1).not.toBe(otp2);
-//       // While theoretically possible to be equal, the probability is 1 in 900,000
-//       expect(otp1.getValue()).not.toBe(otp2.getValue()); 
-//     });
-
-//     it('should default to 10 minutes expiration', () => {
-//       const now = new Date('2023-01-01T10:00:00Z');
-//       jest.setSystemTime(now);
-
-//       const otp = OTP.generate();
-//       const expectedExpiry = new Date('2023-01-01T10:10:00Z'); // +10 mins
-
-//       expect(otp.getExpiresAt().toISOString()).toBe(expectedExpiry.toISOString());
-//     });
-//   });
-
-//   describe('Constructor & State', () => {
-//     it('should allow custom expiration times', () => {
-//       const now = new Date('2023-01-01T10:00:00Z');
-//       jest.setSystemTime(now);
-
-//       // Create an OTP that expires in 5 minutes
-//       const otp = new OTP('123456', 5);
-//       const expectedExpiry = new Date('2023-01-01T10:05:00Z');
-
-//       expect(otp.getExpiresAt().toISOString()).toBe(expectedExpiry.toISOString());
-//     });
-//   });
-
-//   describe('Expiration Logic (Time Travel)', () => {
-//     it('should NOT be expired immediately after creation', () => {
-//       jest.setSystemTime(new Date());
-//       const otp = OTP.generate();
-//       expect(otp.isExpired()).toBe(false);
-//     });
-
-//     it('should NOT be expired 1 millisecond before deadline', () => {
-//       const now = new Date('2023-01-01T10:00:00Z');
-//       jest.setSystemTime(now);
-
-//       const otp = new OTP('123456', 10); // Expires at 10:10:00
-
-//       // Fast forward to 10:09:59.999
-//       jest.setSystemTime(new Date('2023-01-01T10:09:59.999Z'));
+      // 3. Expected time: 12:00 + 10 mins = 12:10
+      const expectedExpiry = new Date("2025-01-01T12:10:00Z");
       
-//       expect(otp.isExpired()).toBe(false);
-//     });
+      expect(otp.getExpiresAt().toISOString()).toBe(expectedExpiry.toISOString());
 
-//     it('should be expired 1 millisecond after deadline', () => {
-//       const now = new Date('2023-01-01T10:00:00Z');
-//       jest.setSystemTime(now);
+      // 4. Clean up timers
+      jest.useRealTimers();
+    });
+  });
 
-//       const otp = new OTP('123456', 10); // Expires at 10:10:00
+  // =========================================================
+  // 2. Verification Logic Tests
+  // =========================================================
+  describe("verified Otp()", () => {
+    
+    test("should return true for a valid, non-expired OTP", () => {
+      // Create an OTP that expires in the future (1 hour from now)
+      const futureDate = new Date(Date.now() + 60 * 60 * 1000); 
+      const otp = new OTP("123456", futureDate);
 
-//       // Fast forward to 10:10:00.001
-//       jest.setSystemTime(new Date('2023-01-01T10:10:00.001Z'));
+      // Act & Assert
+      expect(otp.verfiedOtp("123456")).toBe(true);
+    });
 
-//       expect(otp.isExpired()).toBe(true);
-//     });
-//   });
+    test("should throw error if the provided code does not match", () => {
+      const futureDate = new Date(Date.now() + 10000);
+      const otp = new OTP("123456", futureDate);
 
-//   describe('Verification Logic (verfiedOtp)', () => {
-//     const FIXED_CODE = '555555';
-//     let otp: OTP;
+      expect(() => {
+        otp.verfiedOtp("999999"); // Wrong code
+      }).toThrow("Invalid OTP code.");
+    });
 
-//     beforeEach(() => {
-//       // Reset time and create a fresh OTP for each test
-//       jest.setSystemTime(new Date('2023-01-01T10:00:00Z'));
-//       otp = new OTP(FIXED_CODE, 10);
-//     });
+    test("should throw error if the OTP is expired", () => {
+      // Create an OTP that expired 1 second ago
+      const pastDate = new Date(Date.now() - 1000); 
+      const otp = new OTP("123456", pastDate);
 
-//     it('should return true for a valid code within the time limit', () => {
-//       expect(otp.verfiedOtp(FIXED_CODE)).toBe(true);
-//     });
+      expect(() => {
+        otp.verfiedOtp("123456"); // Correct code, but expired
+      }).toThrow("OTP has expired.");
+    });
+  });
 
-//     it('should throw "Invalid OTP code." when code does not match', () => {
-//       const wrongCode = '999999';
+  // =========================================================
+  // 3. Expiration Status Tests (isExpired)
+  // =========================================================
+  describe("isExpired()", () => {
+    
+    test("should return true if current time > expiresAt", () => {
+      const pastDate = new Date(Date.now() - 5000); // 5 sec ago
+      const otp = new OTP("123456", pastDate);
       
-//       expect(() => {
-//         otp.verfiedOtp(wrongCode);
-//       }).toThrow('Invalid OTP code.');
-//     });
+      expect(otp.isExpired()).toBe(true);
+    });
 
-//     it('should throw "OTP has expired." if time has passed, even if code is correct', () => {
-//       // Fast forward 11 minutes (past the 10 min limit)
-//       jest.advanceTimersByTime(11 * 60 * 1000); 
+    test("should return false if current time < expiresAt", () => {
+      const futureDate = new Date(Date.now() + 5000); // 5 sec future
+      const otp = new OTP("123456", futureDate);
+      
+      expect(otp.isExpired()).toBe(false);
+    });
+  });
 
-//       expect(() => {
-//         otp.verfiedOtp(FIXED_CODE);
-//       }).toThrow('OTP has expired.');
-//     });
-
-//     it('should prioritize expiration check over invalid code check', () => {
-//       // Fast forward 11 minutes
-//       jest.advanceTimersByTime(11 * 60 * 1000);
-
-//       // Even though the code is wrong, it should fail because it's expired FIRST
-//       expect(() => {
-//         otp.verfiedOtp('WRONG_CODE');
-//       }).toThrow('OTP has expired.');
-//     });
-//   });
-// });
+});

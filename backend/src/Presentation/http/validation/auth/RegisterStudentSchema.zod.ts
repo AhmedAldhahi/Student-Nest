@@ -44,7 +44,7 @@ export const RegisterLandloardSchema = basedUserSchema
   .extend({
     cliQAccount: z.string(),
     LandloardGovId: z.string(),
-    role: z.literal("landloard"),
+    role: z.literal("landlord"),
     address: z.string().optional(),
     document: z.any(),
   })

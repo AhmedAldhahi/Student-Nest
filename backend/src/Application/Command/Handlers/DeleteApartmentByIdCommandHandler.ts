@@ -26,6 +26,8 @@ export class deleteApartmentByIdCommandHandler
 
       const files = apartment.getApartmentDocument();
 
+      const photos = apartment.getApartmentPhotoDocument();
+
       if (files) {
         for (let i: number = 0; i < files.length; i++) {
           try {
@@ -39,6 +41,25 @@ export class deleteApartmentByIdCommandHandler
               `Failed to delete image: ${files[
                 i
               ].getDocumentUrl()}. Proceeding anyway...`,
+              error.message
+            );
+          }
+        }
+      }
+
+      if (photos) {
+        for (let i: number = 0; i < photos.length; i++) {
+          try {
+            await this.fileService.deleteImageFromCloudinary(
+              photos[i].getPhotoUrl()
+            );
+          } catch (error: any) {
+            // CHANGE: Just log the error, do NOT throw it.
+            // This ensures the loop finishes and we move on to DB deletion.
+            console.error(
+              `Failed to delete image: ${photos[
+                i
+              ].getPhotoUrl()}. Proceeding anyway...`,
               error.message
             );
           }

@@ -1,7 +1,5 @@
-import { INotificationDTO } from "../../../Application/Dtos/admin/NotificationDTO.dtos";
-import { UserResponseDTO } from "../../../Application/Dtos/profile/ UserResponseDTO";
+import { INotificationDTO } from "../../../Application/DTO/admin/NotificationDTO.dto";
 import { NotificationEntity } from "../../../Domain/Entities/NotificationEntity.entity";
-import { UserEntity } from "../../../Domain/Entities/userEntity.entity";
 import { NotificationModel } from "../../Database/orm/TypeOrm/entity/Notifcation.entity";
 import { UserMapper } from "./user.mapper";
 
@@ -44,8 +42,9 @@ export class NotificationMapper {
       title: model.title,
       isRead: model.isRead,
       receiver: UserMapper.toUserResponse(model.receiver),
-      sender: model.sender ? UserMapper.toUserResponse(model.sender) : undefined,
+      sender: model.sender
+        ? UserMapper.toUserResponse(model.sender)
+        : undefined,
     };
   }
 }
-

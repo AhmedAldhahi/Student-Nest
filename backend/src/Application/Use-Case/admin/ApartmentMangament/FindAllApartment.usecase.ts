@@ -1,11 +1,22 @@
-import { GetAllApartmentQueriesHandler } from "../../../Querie/Handlers/GetAllApartmentQueriesHandler";
+import { IReadUserRepositories } from "../../../../Domain/Repositories/Read/ReadUserRepositories.repositories";
+import { ApartmentContext } from "../../../Strategy/apartment/ApartmentContext";
 
 export class findAllApartmentUseCase {
-  constructor(private readonly queriesHandler: GetAllApartmentQueriesHandler) {}
+  constructor(
+    private readonly apartmentContext: ApartmentContext,
+    private readonly readUserRepo: IReadUserRepositories
+  ) {}
 
-  public async execute() {
+  public async execute(userId: string) {
     try {
-      return await this.queriesHandler.handle();
+      const user = await this.readUserRepo.findById(userId);
+
+      if (!user) throw new Error("no user been found !!");
+
+      return await this.apartmentContext.executeGetAllApartments(
+        userId,
+        user.getRole()
+      );
     } catch (error: any) {
       console.error("fail to get all apartments !!");
       throw error;

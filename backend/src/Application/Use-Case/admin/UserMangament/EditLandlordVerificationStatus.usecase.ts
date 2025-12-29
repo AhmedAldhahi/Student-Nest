@@ -1,6 +1,6 @@
 import { EditLandlordVerificationStatus } from "../../../Command/Commands/UpdateVerficationLandlordStatusCommand";
 import { updateVerificationStatusCommandHandler } from "../../../Command/Handlers/updateLandlordVerficationStatusCommandHandler";
-import { EditLandlordVerificationStatusRequest } from "../../../Dtos/admin/EditLandlordVerificationStatusRequest.dto";
+import { EditLandlordVerificationStatusRequest } from "../../../DTO/admin/EditLandlordVerificationStatusRequest.dto";
 import { ICashMemoryService } from "../../../Interfaces/ICash.interface";
 
 export class EditLandlordVerificationStatusUseCase {

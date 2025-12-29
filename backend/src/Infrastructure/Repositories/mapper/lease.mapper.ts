@@ -1,4 +1,4 @@
-import { ILeaseEntityDTO } from "../../../Application/Dtos/admin/LeaseDTO.dtos";
+import { ILeaseEntityDTO } from "../../../Application/DTO/admin/LeaseDTO.dto";
 import { LeaseAggregateRoot } from "../../../Domain/AggregatesRoot/leaseEntity.entity";
 import { LeaseEndDate } from "../../../Domain/Value-Object/LeaseEndDate.vo";
 import { LeaseStartDate } from "../../../Domain/Value-Object/LeaseStartDate.vo";
@@ -65,11 +65,11 @@ export class LeaseMapper {
     leaseModel.leaseStartDate = dataValidation.leaseStartDate;
     leaseModel.leaseEndDate = dataValidation.leaseEndDate;
     leaseModel.monthlyRent = dataValidation.monthlyRent;
-    leaseModel.leaseTerm = entity.getLeaseTerm();
+    leaseModel.leaseTerm = dataValidation.leaseTerm;
     leaseModel.includeUtilities = utilities ?? null;
     leaseModel.student = StudentMapper.toModel(entity.getStudent());
     leaseModel.landlord = LandlordMapper.toOrm(entity.getLandlord());
-    leaseModel.apartment  = ApartmentMapper.toModel(entity.getApartment());
+    leaseModel.apartment = ApartmentMapper.toModel(entity.getApartment());
     leaseModel.createAt = entity.getCreateAt();
 
     return leaseModel;
@@ -79,6 +79,10 @@ export class LeaseMapper {
     const leaseStartDate = lease.getLeaseStartDate();
     const leaseEndDate = lease.getLeaseEndDate();
     const monthlyRent = lease.getMonthlyRent();
+    const leaseTerm = lease.getLeaseTerm();
+
+    if (!leaseTerm)
+      throw new Error("Cannot save lease, lease term is require !!");
 
     if (!leaseStartDate)
       throw new Error("Cannot save lease, lease start date is require !!");
@@ -89,6 +93,6 @@ export class LeaseMapper {
     if (!monthlyRent)
       throw new Error("Cannot save lease, monthly rent is require !!");
 
-    return { leaseEndDate, leaseStartDate, monthlyRent };
+    return { leaseEndDate, leaseStartDate, monthlyRent, leaseTerm };
   }
 }

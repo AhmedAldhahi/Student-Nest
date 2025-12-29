@@ -1,4 +1,4 @@
-import { ApartmentDocumentEntity } from "../../../Domain/Entities/apartmentDocument.entity";
+import { ApartmentDocumentEntity } from "../../../Domain/Entities/apartmentDocumentEntity.entity";
 import { ApartmentDocumentModel } from "../../Database/orm/TypeOrm/entity/ApartmentDocument.entity";
 
 export class ApartmentDocumentMapper {

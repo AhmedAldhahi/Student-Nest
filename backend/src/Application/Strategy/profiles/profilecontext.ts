@@ -19,7 +19,7 @@ export class ProfileContext {
       case UserRole.admin:
         strategy = this.adminStrategy;
         break;
-      case UserRole.landloard:
+      case UserRole.landlord:
         strategy = this.landlordStrategy;
         break;
       case UserRole.student:
@@ -45,7 +45,7 @@ export class ProfileContext {
       case UserRole.admin:
         strategy = this.adminStrategy;
         break;
-      case UserRole.landloard:
+      case UserRole.landlord:
         strategy = this.landlordStrategy;
         break;
       case UserRole.student:

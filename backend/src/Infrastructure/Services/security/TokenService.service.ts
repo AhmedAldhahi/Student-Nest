@@ -20,7 +20,7 @@ export class JwtTokenService implements ITokenService {
   // 2. Implement the interface methods
   generateAccessToken(payload: ITokenPayload): string {
     return jwt.sign(payload, this.accessSecret, {
-      expiresIn: "15m", // Access tokens should be short-lived
+      expiresIn: "1d", // Access tokens should be short-lived
     });
   }
 

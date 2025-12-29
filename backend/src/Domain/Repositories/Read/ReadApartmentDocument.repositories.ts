@@ -1,4 +1,4 @@
-import { ApartmentDocumentEntity } from "../../Entities/apartmentDocument.entity";
+import { ApartmentDocumentEntity } from "../../Entities/apartmentDocumentEntity.entity";
 
 export interface IReadApartmentDocumentRepo {
     findApartmentDocumentById(id: number) : Promise<ApartmentDocumentEntity | null>;

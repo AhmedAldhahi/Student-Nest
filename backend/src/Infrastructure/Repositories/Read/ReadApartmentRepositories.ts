@@ -1,13 +1,14 @@
-import { Like } from "typeorm";
-import {
-  IApartmentDTO,
-  IApartmentSimpleDTO,
-} from "../../../Application/Dtos/admin/ApartmentDTo.dtos";
+import { FindOptionsWhere, Like } from "typeorm";
+
 import { IReadApartmentRepo } from "../../../Domain/Repositories/Read/ReadApartmentRepo.repositoreis";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { ApartmentModel } from "../../Database/orm/TypeOrm/entity/Apartment.entity";
 import { ApartmentMapper } from "../mapper/apartment.mapper";
 import { ApartmentAggregateRoot } from "../../../Domain/AggregatesRoot/apartmentEntity.entity";
+import {
+  IApartmentSimpleDTO,
+  IApartmentDTO,
+} from "../../../Application/DTO/admin/ApartmentDTo.dto";
 
 export class ReadApartmentRepositories implements IReadApartmentRepo {
   public async findAllApartment(): Promise<IApartmentSimpleDTO[] | null> {
@@ -33,18 +34,10 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
           numberOfRoom: true,
 
           landlord: {
-            userId: true, 
+            userId: true,
             user: {
-              Name: true, 
+              Name: true,
             },
-          },
-          location: {
-            latitude: true,
-            longitude: true,
-          },
-          documents: {
-            documentUrl: true,
-            apartmentType: true,
           },
         },
 
@@ -53,8 +46,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
           landlord: {
             user: true, // Join Landlord -> User
           },
-          location: true, // Join Apartment -> Location
-          documents: true, // Join Apartment -> Documents
+          photos: true,
         },
       });
 
@@ -69,18 +61,35 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
     }
   }
 
-  public async findApartmentName(
+  public async findApartmentByQuery(
     prefix: string
   ): Promise<IApartmentSimpleDTO[] | null> {
     try {
       const apartmentRepo =
         AppDataSource.getInstance().getRepository(ApartmentModel);
 
+      const query = prefix.trim();
+
+      // Check if the query is a valid number to search by ID
+      const isNumeric = /^\d+$/.test(query);
+
+      // Initialize the array for OR logic
+      let whereCondition: FindOptionsWhere<ApartmentModel>[] = [
+        { title: Like(`%${query}%`) },
+        { address: Like(`%${query}%`) },
+        { description: Like(`%${query}%`) },
+
+        // Optional: Search by Landlord Name via relation
+        { landlord: { user: { Name: Like(`%${query}%`) } } },
+      ];
+
+      // If the query is a number, add the ID search to the array
+      if (isNumeric) {
+        whereCondition.push({ apartmentId: Number(query) });
+      }
+
       const apartments = await apartmentRepo.find({
-        // 2. FIX: Remove double curly braces {{ }}
-        where: {
-          title: Like(`${prefix}%`),
-        },
+        where: whereCondition,
 
         select: {
           apartmentId: true,
@@ -103,24 +112,13 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
               Name: true,
             },
           },
-          location: {
-            googleMapLocationId: true,
-            latitude: true,
-            longitude: true,
-          },
-          documents: {
-            apartmentDocumentId: true, 
-            documentUrl: true,
-            apartmentType: true,
-          },
         },
 
         relations: {
           landlord: {
             user: true,
           },
-          location: true,
-          documents: true,
+          photos: true,
         },
       });
 
@@ -128,11 +126,9 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
         return [];
       }
 
-      // 3. FIX: Properly close the map function and use the correct Mapper method
-      // Assuming 'toResponses' is your DTO mapper from the previous method
       return apartments.map((orm) => ApartmentMapper.toResponsesSimple(orm));
     } catch (error: any) {
-      console.error("Error searching apartment name:", error);
+      console.error("Error searching apartment:", error);
       throw new Error(`Unable to search apartments: ${error.message}`);
     }
   }
@@ -149,6 +145,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
             landlord: { user: true },
             documents: true,
             location: true,
+            photos: true,
           },
         });
 
@@ -171,6 +168,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
             landlord: { user: true },
             documents: true,
             location: true,
+            photos: true,
           },
         });
 

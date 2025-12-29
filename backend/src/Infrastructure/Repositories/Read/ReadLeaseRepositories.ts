@@ -1,16 +1,67 @@
-import { ILeaseEntityDTO } from "../../../Application/Dtos/admin/LeaseDTO.dtos";
+import { FindOptionsWhere, Like, TreeLevelColumn } from "typeorm";
 import { IReadLeaseRepositories } from "../../../Domain/Repositories/Read/ReadLeaseRepositories.repositories";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { LeaseModel } from "../../Database/orm/TypeOrm/entity/Lease.entity";
 import { LeaseMapper } from "../mapper/lease.mapper";
+import { ILeaseEntityDTO } from "../../../Application/DTO/admin/LeaseDTO.dto";
 
 export class ReadLeaseRepositories implements IReadLeaseRepositories {
-  public async findById(id: number): Promise<ILeaseEntityDTO | null> {
+  public async findByQuery(Queries: string): Promise<ILeaseEntityDTO[] | null> {
     try {
-      const orm = await AppDataSource.getInstance()
+      const query = Queries.trim();
+      const numericId = Number(query);
+
+      const isNumeric = !Number.isNaN(numericId);
+
+      let whereCondition: FindOptionsWhere<LeaseModel>[];
+
+      if (isNumeric) {
+        whereCondition = [{ leaseId: numericId }];
+      } else {
+        whereCondition = [
+          { landlord: { user: { Name: Like(`%${query}%`) } } },
+
+          { student: { user: { Name: Like(`%${query}%`) } } },
+
+          { apartment: { title: Like(`%${query}%`) } },
+        ];
+      }
+
+      const leasesModel = await AppDataSource.getInstance()
         .getRepository(LeaseModel)
-        .findOne({
-          where: { leaseId: id },
+        .find({
+          where: whereCondition,
+          select: {
+            leaseId: true,
+            LeaseActivationStatus: true,
+            isLandlordSigned: true,
+            isStudentSigned: true,
+            houseRule: true,
+            leaseStartDate: true,
+            leaseEndDate: true,
+            monthlyRent: true,
+            leaseTerm: true,
+            includeUtilities: true,
+            createAt: true,
+            landlord: {
+              userId: true,
+              user: {
+                Name: true,
+              },
+            },
+            student: {
+              userId: true,
+
+              user: {
+                Name: true,
+              },
+            },
+
+            apartment: {
+              apartmentId: true,
+              title: true,
+            },
+          },
           relations: {
             student: { user: true },
             landlord: { user: true },
@@ -18,12 +69,15 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
           },
         });
 
-      if (!orm) return null;
+      if (!leasesModel) return [];
 
-      return LeaseMapper.toResponse(orm);
+      if (!leasesModel || leasesModel.length === 0) return [];
+
+      return leasesModel.map((orm) => {
+        return LeaseMapper.toResponse(orm);
+      });
     } catch (error: any) {
-      // Log the real error
-      console.error("Error finding lease by ID:", error);
+      console.error("fail to get all lease", error);
       throw error;
     }
   }

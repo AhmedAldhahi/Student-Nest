@@ -1,13 +1,14 @@
 import { buildDependencies } from "../../../Infrastructure/DI/container";
-import { ApartmentManagementController } from "./admin/apartmentMangement.controller";
-import { LeaseManagementController } from "./admin/leaseMangement.controller";
-import { LeaseRequestManagementController } from "./admin/leaseRequestMangement.controller";
-import { NotificationController } from "./admin/Notifcation.controller";
-import { UserManagementController } from "./admin/userMangement.controller";
-import { PasswordRecoverController } from "./PasswordRecovery.controller";
+import { ApartmentManagementController } from "./admin/apartmentManagement.controller";
 import { ProfileController } from "./Profile.controller";
-import { AuthController } from "./Registeration.controller";
-import { VerificationController } from "./Verfication.controller";
+import { PasswordRecoverController } from "./PasswordRecovery.controller";
+import { LeaseRequestManagementController } from "./admin/leaseRequestManagement.controller";
+import { NotificationController } from "./Notification.controller";
+import { UserManagementController } from "./admin/userManagement.controller";
+import { AuthController } from "./Registration.controller";
+import { VerificationController } from "./Verification.controller";
+import { AuditLogController } from "./admin/auditLogManagement.controller";
+import { LeaseManagementController } from "./admin/leaseManagement.controller";
 
 export const buildControllers = () => {
   const { useCases } = buildDependencies();
@@ -27,7 +28,7 @@ export const buildControllers = () => {
   const passwordRecoverController = new PasswordRecoverController(
     useCases.forgetPasswordUseCase,
     useCases.resendOtpForgetPassword,
-    useCases.verfiedForgetPasswordUseCase
+    useCases.verifiedForgetPasswordUseCase
   );
 
   const profileController = new ProfileController(
@@ -35,15 +36,16 @@ export const buildControllers = () => {
     useCases.updateProfileUseCase
   );
 
-  const adminLandloardManagementController = new UserManagementController(
+  const adminUserManagementController = new UserManagementController(
     // useCases.getAllLandlordUseCase,
     useCases.GetAllUsersUseCase,
     useCases.updateLandlordStatusUseCase,
     useCases.DeleteLandlordByIdUseCase,
-    useCases.findUserByEmailUseCase
+    useCases.findUserByEmailUseCase,
+    useCases.updateAccountActivateUseCase
   );
 
-  const adminLeaseMangementController = new LeaseManagementController(
+  const adminLeaseManagementController = new LeaseManagementController(
     useCases.GetAllLeaseUseCase,
     useCases.getLeaseById
   );
@@ -56,12 +58,20 @@ export const buildControllers = () => {
 
   const adminNotificationController = new NotificationController(
     useCases.GetAllNotificationUseCase,
-    useCases.updateNotficationUseCase
+    useCases.updateNotificationUseCase,
+    useCases.deleteNotificationByIdUseCase,
+    useCases.deleteAllNotificationUseCase,
+    useCases.deleteSpecificNotificationUseCase
+  );
+
+  const adminAuditLogController = new AuditLogController(
+    useCases.findAllAuditLogUseCase,
+    useCases.findAuditLogQueryUseCase
   );
 
   const adminApartmentController = new ApartmentManagementController(
     useCases.GetAllApartmentUseCase,
-    useCases.getApartmentsByNameUseCase,
+    useCases.getApartmentsByQueriesUseCase,
     useCases.editStatusApartmentVerifiedUseCase,
     useCases.deleteApartmentByIdUseCase,
     useCases.findApartmentDocumentById,
@@ -75,10 +85,11 @@ export const buildControllers = () => {
     verificationController,
     passwordRecoverController,
     profileController,
-    adminLandloardManagementController,
-    adminLeaseMangementController,
+    adminUserManagementController,
+    adminLeaseManagementController,
     adminLeaseRequestManagementController,
     adminNotificationController,
     adminApartmentController,
+    adminAuditLogController,
   };
 };

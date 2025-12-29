@@ -10,26 +10,31 @@ import {
   makeResendEmailOTP,
   makeUpdateForgetPass,
   makeResendForgetPassword,
-  makeVerfiedForgetPasswordOTP,
-} from "./verfication.DI";
+  makeVerifiedForgetPasswordOTP,
+} from "./verification.DI";
 
 import {
   deleteLandlordById,
   updateLandlordStatus,
-  findUserByEmail,
+  findUserByQuery,
   GetAllUsers,
-} from "./admin/UserMangement";
+  UpdateUserActivateStatusUseCase,
+} from "./admin/UserManagement";
 
-import { getAllLease, GetLeaseById } from "./admin/UserLease";
+import { getAllLease, GetLeaseByQuery } from "./admin/LeaseMangement";
 import {
   GetAllLeaseRequest,
-  GetLeaseRequestById,
-} from "./admin/LeaseRequestMangament";
+  GetLeaseRequestByQuery,
+} from "./admin/LeaseRequestManagement";
 
 import {
+  deleteAllNotification,
+  deleteNotificationById,
+  DeleteSpecificNotifications,
   GetAllNotification,
   updateNotificationStatus,
-} from "./admin/NotifcationMangament";
+} from "./NotificationManagement";
+
 import {
   DeleteApartmentById,
   editApartmentDetailUseCase,
@@ -38,9 +43,11 @@ import {
   FindApartmentDetailByIdUseCase,
   FindApartmentDocumentByIdUseCase,
   GetAllApartment,
-  GetApartmentByName,
-} from "./admin/ApartmentMagament";
+  GetApartmentByQueries,
+} from "./admin/ApartmentManagement";
 
+import { findAllAuditLogUseCase, FindAuditLogByQueriesUseCase } from "./admin/AuditLogManagement";
+import { deleteSpecificNotificationsCommand } from "../../Application/Command/Commands/DeleteSpecficNotificationsCommand";
 
 export function buildDependencies() {
   return {
@@ -48,31 +55,45 @@ export function buildDependencies() {
       registerLandlordUseCase: makeRegisterLandlordUseCase(),
       registerStudentUseCase: makeRegisterStudentUseCase(),
       LoginUseCase: makeLoginUseCase(),
+
       verifiedOTPUseCase: makeVerifiedEmailOTP(),
       resendOTPUseCase: makeResendEmailOTP(),
       forgetPasswordUseCase: makeUpdateForgetPass(),
       resendOtpForgetPassword: makeResendForgetPassword(),
-      verfiedForgetPasswordUseCase: makeVerfiedForgetPasswordOTP(),
+      verifiedForgetPasswordUseCase: makeVerifiedForgetPasswordOTP(),
+      
       userProfileData: getUserProfileData(),
       updateProfileUseCase: updateUserProfile(),
+      
       updateLandlordStatusUseCase: updateLandlordStatus(),
       DeleteLandlordByIdUseCase: deleteLandlordById(),
-      findUserByEmailUseCase: findUserByEmail(),
+      findUserByEmailUseCase: findUserByQuery(),
+      updateAccountActivateUseCase: UpdateUserActivateStatusUseCase(),
       GetAllUsersUseCase: GetAllUsers(),
+      
       GetAllLeaseUseCase: getAllLease(),
-      getLeaseById: GetLeaseById(),
+      getLeaseById: GetLeaseByQuery(),
+      
       getAllLeaseRequestUseCase: GetAllLeaseRequest(),
-      getLeaseRequestByIdUseCase: GetLeaseRequestById(),
+      getLeaseRequestByIdUseCase: GetLeaseRequestByQuery(),
+      
       GetAllNotificationUseCase: GetAllNotification(),
-      updateNotficationUseCase: updateNotificationStatus(),
+      updateNotificationUseCase: updateNotificationStatus(),
+      deleteNotificationByIdUseCase: deleteNotificationById(),
+      deleteAllNotificationUseCase: deleteAllNotification(),
+      deleteSpecificNotificationUseCase: DeleteSpecificNotifications(),
+      
       GetAllApartmentUseCase: GetAllApartment(),
-      getApartmentsByNameUseCase: GetApartmentByName(),
+      getApartmentsByQueriesUseCase: GetApartmentByQueries(),
       editStatusApartmentVerifiedUseCase: EditApartmentStatusVerified(),
       deleteApartmentByIdUseCase: DeleteApartmentById(),
       findApartmentDocumentById: FindApartmentDocumentByIdUseCase(),
       findApartmentDetailById: FindApartmentDetailByIdUseCase(),
       editApartmentUseCase: editApartmentDetailUseCase(),
       editApartmentDocumentUseCase: EditApartmentDocumentsUseCase(),
+      
+      findAllAuditLogUseCase: findAllAuditLogUseCase(),
+      findAuditLogQueryUseCase:FindAuditLogByQueriesUseCase(),
     },
   };
 }

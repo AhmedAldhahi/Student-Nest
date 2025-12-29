@@ -1,4 +1,4 @@
-import { ApartmentDocumentEntity } from "../../../Domain/Entities/apartmentDocument.entity";
+import { ApartmentDocumentEntity } from "../../../Domain/Entities/apartmentDocumentEntity.entity";
 import { IReadApartmentDocumentRepo } from "../../../Domain/Repositories/Read/ReadApartmentDocument.repositories";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { ApartmentDocumentModel } from "../../Database/orm/TypeOrm/entity/ApartmentDocument.entity";

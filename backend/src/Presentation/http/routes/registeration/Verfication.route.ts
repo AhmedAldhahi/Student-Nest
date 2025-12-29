@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { VerificationController } from "../../controllers/Verfication.controller";
+import { VerificationController } from "../../controllers/Verification.controller";
 import { otpResendRateLimited } from "../../middlewares/rate-limited/otpResendRateLimited.middleware";
 import { validation } from "../../middlewares/validation.middleware";
 import {
@@ -8,7 +8,7 @@ import {
 } from "../../validation/verfication/VerficationSchema.zod";
 import { otpVerifyRateLimited } from "../../middlewares/rate-limited/otpVerifyRateLimited.middleware";
 
-export const createVerficationRouter = (
+export const createVerificationRouter = (
   verificationController: VerificationController
 ): Router => {
   const router = Router();

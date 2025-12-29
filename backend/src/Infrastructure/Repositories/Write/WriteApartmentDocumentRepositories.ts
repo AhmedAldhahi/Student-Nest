@@ -1,5 +1,5 @@
 import { EntityManager } from "typeorm";
-import { ApartmentDocumentEntity } from "../../../Domain/Entities/apartmentDocument.entity";
+import { ApartmentDocumentEntity } from "../../../Domain/Entities/apartmentDocumentEntity.entity";
 import { IWriteApartmentDocumentRepo } from "../../../Domain/Repositories/Write/IWriteApartmentDocumentRepositoires.repositories";
 import { ApartmentDocumentMapper } from "../mapper/apartmentDocument.mapper";
 import { ApartmentDocumentModel } from "../../Database/orm/TypeOrm/entity/ApartmentDocument.entity";

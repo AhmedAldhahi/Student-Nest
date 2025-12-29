@@ -1,49 +1,28 @@
-import { defaultYear } from "../../Shared/constants/helperValue.constant";
+import { currentYear } from "../../Shared/constants/validationZod.constant";
 
-/**
- * Value Object representing a user's date of birth.
- *
- * Encapsulates validation logic to ensure:
- * - A date of birth is provided
- * - The value is a valid number
- * - The user is at least 18 years old
- *
- * @class UserDateOfBirth
- */
 export class UserDateOfBirth {
-  /** The validated date of birth string. */
-  constructor(private value?: string | undefined) {
-    if (!value) {
-      this.value = undefined;
-    }
-  }
+  // Public constructor for the Mapper (Reconstitution)
+  constructor(private readonly value?: string | undefined) {}
 
+  // Factory method for the Controller/User Input (Validation)
   public static create(value: string): UserDateOfBirth {
     if (!value) throw new Error("Date of birth is required for registration");
 
-    // Create the object
-    const dob = new UserDateOfBirth(value);
-
-    // Enforce Business Rule (18+)
-    if (!dob.validate(value)) {
-      throw new Error("The User must be at least 18 !!");
+    // 1. Check Format (YYYY)
+    if (!/^\d{4}$/.test(value)) {
+      throw new Error("Invalid date of birth format. Must be YYYY");
     }
 
-    return dob;
+    // 2. Check Age Rules
+    const birthYear = Number.parseInt(value);
+    const age = currentYear - birthYear;
+
+    if (age < 18) throw new Error("The User must be at least 18 years old!");
+    if (age > 70) throw new Error("The User must be under 70 years old!");
+
+    return new UserDateOfBirth(value);
   }
 
-  private validate(value: string): boolean {
-    if (!value) return false;
-    const Dob = Number.parseInt(value);
-
-    return defaultYear - Dob >= 18;
-  }
-
-  /**
-   * Returns the validated date of birth string.
-   *
-   * @returns {string} The user's date of birth.
-   */
   public getValue(): string | undefined {
     return this.value ?? undefined;
   }

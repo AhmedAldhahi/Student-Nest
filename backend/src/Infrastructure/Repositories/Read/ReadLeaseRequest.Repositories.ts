@@ -1,4 +1,5 @@
-import { ILeaseRequestDTO } from "../../../Application/Dtos/admin/LeaseRequestDTO.dtos";
+import { FindOptionsWhere, Like } from "typeorm";
+import { ILeaseRequestDTO } from "../../../Application/DTO/admin/LeaseRequestDTO.dto";
 import { IReadLeaseRequestRepositories } from "../../../Domain/Repositories/Read/ReadLeaseRequestRepositories.repositories";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { LeaseRequestModel } from "../../Database/orm/TypeOrm/entity/LeaseRequest";
@@ -19,7 +20,7 @@ export class ReadLeaseRequestRepositories
             rentTerm: true,
             requestStatus: true,
             createAt: true,
-            
+
             landlord: {
               userId: true,
               user: {
@@ -59,14 +60,62 @@ export class ReadLeaseRequestRepositories
     }
   }
 
-  public async findLeaseRequestById(
-    id: number
-  ): Promise<ILeaseRequestDTO | null> {
+  public async findLeaseRequestByQuery(
+    Queries: string
+  ): Promise<ILeaseRequestDTO[]> {
     try {
-      const orm = await AppDataSource.getInstance()
+      const query = Queries.trim();
+      const numericId = Number(query);
+
+      // Check if it is a valid number and strictly not NaN
+      const isNumeric = !Number.isNaN(numericId) && query !== "";
+
+      let whereCondition: FindOptionsWhere<LeaseRequestModel>[];
+
+      if (isNumeric) {
+        whereCondition = [{ leaseRequestId: numericId }];
+      } else {
+        whereCondition = [
+          // Search in Landlord Name
+          { landlord: { user: { Name: Like(`%${query}%`) } } },
+          // Search in Student Name
+          { student: { user: { Name: Like(`%${query}%`) } } },
+          // Search in Apartment Title
+          { apartment: { title: Like(`%${query}%`) } },
+        ];
+      }
+
+      const leaseRequests = await AppDataSource.getInstance()
         .getRepository(LeaseRequestModel)
-        .findOne({
-          where: { leaseRequestId: id },
+        .find({
+          where: whereCondition,
+          select: {
+            leaseRequestId: true,
+            requestMessage: true,
+            startDate: true,
+            rentTerm: true,
+            requestStatus: true,
+            createAt: true,
+            landlord: {
+              userId: true,
+              user: {
+                Name: true,
+              },
+            },
+            student: {
+              userId: true,
+              Major: true,
+              user: {
+                Name: true,
+                userId: true,
+              },
+            },
+            apartment: {
+              title: true,
+              price: true,
+              apartmentId: true,
+            },
+          },
           relations: {
             student: { user: true },
             landlord: { user: true },
@@ -74,10 +123,13 @@ export class ReadLeaseRequestRepositories
           },
         });
 
-      if (!orm) return null;
-      return LeaseRequestMapper.toResponse(orm);
+      if (leaseRequests.length === 0) return [];
+
+      return leaseRequests.map((orm) => {
+        return LeaseRequestMapper.toResponse(orm);
+      });
     } catch (error: any) {
-      console.error("fail to get lease request by id");
+      console.error("fail to get lease request by query", error);
       throw error;
     }
   }

@@ -1,26 +1,36 @@
 import { AuditLogActionType } from "../../../../src/Domain/Enum/AuditLogAction.enum";
 
 describe("AuditLogActionType Enum", () => {
-  test("should have 'CREATE' action", () => {
-    expect(AuditLogActionType.CREATE).toBe("create");
+  test("should have 'POST' action", () => {
+    expect(AuditLogActionType.POST).toBe("POST");
   });
 
-  test("should have 'UPDATE' action", () => {
-    expect(AuditLogActionType.UPDATE).toBe("update");
+  test("should have 'GET' action", () => {
+    expect(AuditLogActionType.GET).toBe("GET");
   });
 
   test("should have 'DELETE' action", () => {
-    expect(AuditLogActionType.DELETE).toBe("delete");
+    expect(AuditLogActionType.DELETe).toBe("DELETE");
+  });
+
+  test("should have 'PUT' action", () => {
+    expect(AuditLogActionType.PUT).toBe("PUT");
+  });
+
+  test("should have 'PATCH' action", () => {
+    expect(AuditLogActionType.PATCH).toBe("PATCH");
   });
 
   test("should have correct action values", () => {
-    expect(AuditLogActionType.CREATE).toEqual("create");
-    expect(AuditLogActionType.UPDATE).toEqual("update");
-    expect(AuditLogActionType.DELETE).toEqual("delete");
+    expect(AuditLogActionType.POST).toEqual("POST");
+    expect(AuditLogActionType.GET).toEqual("GET");
+    expect(AuditLogActionType.PATCH).toEqual("PATCH");
+    expect(AuditLogActionType.POST).toEqual("PUT");
+    expect(AuditLogActionType.DELETe).toEqual("DELETE");
   });
 
   test("should return all possible actions", () => {
     const actions = Object.values(AuditLogActionType);
-    expect(actions).toEqual(["create", "update", "delete"]);
+    expect(actions).toEqual(["POST", "GET", "PUT", "PATCH,DELETE"]);
   });
 });

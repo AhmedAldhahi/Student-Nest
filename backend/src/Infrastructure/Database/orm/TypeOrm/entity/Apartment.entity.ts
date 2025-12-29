@@ -12,6 +12,7 @@ import {
 import { LandlordModel } from "./Landloard.entity";
 import { ApartmentDocumentModel } from "./ApartmentDocument.entity";
 import { GoogleMapLocationModel } from "./GoogleMapLocation.entity";
+import { ApartmentPhotoModel } from "./ApartmentPhoto.entity";
 
 @Entity("apartment")
 export class ApartmentModel {
@@ -36,8 +37,8 @@ export class ApartmentModel {
   @Column({ type: "boolean", nullable: false, default: false })
   Verified: boolean;
 
-  @Column({type: "boolean", nullable: false, default: false})
-  isFully: boolean
+  @Column({ type: "boolean", nullable: false, default: false })
+  isFully: boolean;
 
   @Column({ type: "varchar", nullable: false })
   numberOfRoom: string;
@@ -59,12 +60,19 @@ export class ApartmentModel {
   })
   @JoinColumn({ name: "landlordId" })
   landlord: LandlordModel;
- 
-  //TODO:orphanRemoval: true need to add
+
   @OneToMany(() => ApartmentDocumentModel, (doc) => doc.apartment, {
     cascade: true,
   })
   documents: ApartmentDocumentModel[];
+
+  
+  
+  @OneToMany(() => ApartmentPhotoModel, (doc) => doc.apartment, {
+    cascade: true,
+  })
+  photos: ApartmentPhotoModel[];
+
 
   @OneToOne(() => GoogleMapLocationModel, (loc) => loc.apartment, {
     cascade: true, // Allows saving Apartment + Location in one go

@@ -1,4 +1,5 @@
 export class ApartmentPrice {
+  // Public constructor allows Mappers to load data without re-validation
   constructor(private price?: string | undefined) {
     if (!price || price.trim().length === 0) {
       this.price = undefined;
@@ -6,21 +7,33 @@ export class ApartmentPrice {
   }
 
   public static create(price: string): ApartmentPrice {
+    // 1. Check Required
     if (!price || price.trim().length === 0) {
-      throw new Error("apartment price is require !!");
+      throw new Error("Apartment price is required");
     }
 
-    if (Number.isNaN(price)) {
-      throw new Error("apartment price value must be number !!");
+    const trimmed = price.trim();
+
+    // 2. Strict Numeric Check (Fixing the Number.isNaN bug)
+    // This regex ensures only digits are allowed (no letters, no symbols)
+    if (!/^\d+$/.test(trimmed)) {
+      throw new Error("Apartment price value must be a whole number");
     }
 
-    const priceNum = Number.parseInt(price);
+    const priceNum = Number.parseInt(trimmed, 10);
 
-    if (priceNum <= 0) throw new Error("apartment price must be at lease 1 jd");
-    if (priceNum >= 999)
-      throw new Error("apartment price must be at most 9999 jd");
+    // 3. Range Checks
+    if (priceNum < 1) {
+      throw new Error("Apartment price must be at least 1 JD");
+    }
 
-    return new ApartmentPrice(priceNum.toString());
+    // Fixed logic: The error said 9999, so I updated the check to 9999.
+    // If you actually meant 999, change this to > 999.
+    if (priceNum > 9999) {
+      throw new Error("Apartment price must be at most 9999 JD");
+    }
+
+    return new ApartmentPrice(trimmed);
   }
 
   public getValue(): string | undefined {

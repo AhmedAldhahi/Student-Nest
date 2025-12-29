@@ -1,39 +1,29 @@
-/**
- * Value Object representing a student's major field of study.
- *
- * Encapsulates validation logic to ensure:
- * - A major is provided
- * - Only letters and single spaces are allowed
- * - No numbers or special characters
- *
- * @class StudentMajor
- */
 export class StudentMajor {
-  /** The validated major name. */
-  constructor(private value?: string | undefined) {
+  constructor(private readonly value?: string | undefined) {
     if (!value) {
       this.value = undefined;
     }
   }
 
   public static create(value: string): StudentMajor {
-    if (!value) throw new Error("studentMajor is required");
+    if (!value || value.trim().length === 0) {
+      throw new Error("Student Major is required");
+    }
 
-    const majorPattern = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
+    const trimmedValue = value.trim();
 
-    if (!majorPattern.test(value.trim())) {
+   
+    const majorPattern = /^[A-Za-z&.\-]+(?: [A-Za-z&.\-]+)*$/;
+
+    if (!majorPattern.test(trimmedValue)) {
       throw new Error(
-        "Invalid major: only letters and single spaces are allowed. No numbers or special characters"
+        "Invalid major: Only letters, spaces, '&', '-', and '.' are allowed."
       );
     }
-    return new StudentMajor(value);
+
+    return new StudentMajor(trimmedValue);
   }
 
-  /**
-   * Returns the validated major name.
-   *
-   * @returns {string} The student's major.
-   */
   public getValue(): string | undefined {
     return this.value ?? undefined;
   }

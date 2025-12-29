@@ -9,15 +9,15 @@ import cors from "cors";
 import { AppDataSource } from "./Infrastructure/Database/orm/TypeOrm/data-source";
 import { createAuthRouter } from "./Presentation/http/routes/registeration/Registeration.route";
 import { buildControllers } from "./Presentation/http/controllers/index.controller";
-import { createVerficationRouter } from "./Presentation/http/routes/registeration/Verfication.route";
+import { createVerificationRouter } from "./Presentation/http/routes/registeration/Verfication.route";
 import { PasswordRecoveryRouter } from "./Presentation/http/routes/registeration/PasswordRecvery.route";
-import { profileRouter } from "./Presentation/http/routes/profile.routes";
-import { userManagementRouter } from "./Presentation/http/routes/admin/userMangement.routes";
-import { LeaseManagementRouter } from "./Presentation/http/routes/admin/leaseMangement.router";
-import { LeaseRequestManagementRouter } from "./Presentation/http/routes/admin/leaseRequestMangement.router";
-import { notificationRouter } from "./Presentation/http/routes/admin/notifcationMangement.routes";
-import { ApartmentRouter } from "./Presentation/http/routes/admin/apartmentMangement.router";
-
+import { profileRouter } from "./Presentation/http/routes/shared/profile.routes";
+import { auditMiddleware } from "./Presentation/http/middlewares/auditLog.middleware";
+import { ApartmentSharedRouter } from "./Presentation/http/routes/shared/apartment.routes";
+import { AdminIndexRouter } from "./Presentation/http/routes/admin/index.router";
+import { SharedIndexRouter } from "./Presentation/http/routes/shared/index.router";
+import { LeaseRequestManagementController } from "./Presentation/http/controllers/admin/leaseRequestManagement.controller";
+import { LeaseManagementController } from "./Presentation/http/controllers/admin/leaseManagement.controller";
 export class Server {
   public app = express();
   public port = parseInt(process.env.PORT || "4000", 10);
@@ -56,6 +56,8 @@ export class Server {
     // Body parsers
     this.app.use(express.json());
 
+    this.app.use(auditMiddleware);
+
     // Winston request logging
     this.app.use(
       expressWinston.logger({
@@ -93,45 +95,54 @@ export class Server {
       verificationController,
       passwordRecoverController,
       profileController,
-      adminLeaseMangementController,
-      adminLandloardManagementController,
+      adminLeaseManagementController,
+      adminUserManagementController,
       adminLeaseRequestManagementController,
-      adminNotificationController,
       adminApartmentController,
+      adminAuditLogController,
+      adminNotificationController,
     } = buildControllers();
 
+    this.app.use(
+      "/api/v1/admin",
+      AdminIndexRouter(
+        adminApartmentController,
+        adminAuditLogController,
+        adminUserManagementController
+      )
+    );
+
+    this.app.use(
+      "/api/v1/",
+      SharedIndexRouter(
+        adminApartmentController,
+        adminLeaseRequestManagementController,
+        adminLeaseManagementController,
+        adminNotificationController
+      )
+    );
+
     this.app.use("/api/v1/auth", createAuthRouter(authController));
+    this.app.use("/api/v1/", createVerificationRouter(verificationController));
+
+    //shared
     this.app.use("/api/v1/me/", profileRouter(profileController));
-    this.app.use("/api/v1/", createVerficationRouter(verificationController));
+
     this.app.use(
       "/api/v1/password-recovery",
       PasswordRecoveryRouter(passwordRecoverController)
     );
 
-    ///////////////////// start Admin section /////////////////////////////
-    this.app.use(
-      "/api/v1/admin",
-      LeaseManagementRouter(adminLeaseMangementController)
-    );
+    // this.app.use(
+    //   "/api/v1/admin",
+    //   notificationRouter(adminNotificationController)
+    // );
 
-    this.app.use(
-      "/api/v1/admin",
-      LeaseRequestManagementRouter(adminLeaseRequestManagementController)
-    );
+    /////////////////////Apartment section ////////////////////////////////
 
-    this.app.use(
-      "/api/v1/admin",
-      notificationRouter(adminNotificationController)
-    );
+    this.app.use("/api/v1/", ApartmentSharedRouter(adminApartmentController));
 
-    this.app.use(
-      "/api/v1/admin",
-      userManagementRouter(adminLandloardManagementController)
-    );
-
-    this.app.use("/api/v1/admin", ApartmentRouter(adminApartmentController));
-
-    ///////////////////// End Admin section /////////////////////////////
+    /////////////////////End apartment section ///////////////////////////
 
     this.startupDebug("Server configuration completed.");
   }

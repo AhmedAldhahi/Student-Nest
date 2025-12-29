@@ -1,13 +1,14 @@
 import {
-  IApartmentDTO,
   IApartmentSimpleDTO,
-} from "../../../Application/Dtos/admin/ApartmentDTo.dtos";
+  IApartmentDTO,
+} from "../../../Application/DTO/admin/ApartmentDTo.dto";
 import { ApartmentAggregateRoot } from "../../../Domain/AggregatesRoot/apartmentEntity.entity";
 import { ApartmentPrice } from "../../../Domain/Value-Object/ApartmentPrice.vo";
-import { numberOfBed } from "../../../Domain/Value-Object/NumberOfBed.vo";
+import { NumberOfBed } from "../../../Domain/Value-Object/NumberOfBed.vo";
 import { NumberOfRoom } from "../../../Domain/Value-Object/NumberOfRoom.vo";
 import { ApartmentModel } from "../../Database/orm/TypeOrm/entity/Apartment.entity";
 import { ApartmentDocumentMapper } from "./apartmentDocument.mapper";
+import { apartmentPhotoMapper } from "./apartmentPhoto.mapper";
 import { GoogleMapMapper } from "./gogleMap.mapper";
 import { LandlordMapper } from "./landloard.mapper";
 
@@ -34,9 +35,13 @@ export class ApartmentMapper {
     (apartmentModel.location = GoogleMapMapper.toModel(
       apartment.getGoogleMapLocation()
     )),
-      (apartmentModel.documents = apartment
-        .getApartmentDocument()
-        .map((doc) => ApartmentDocumentMapper.toModel(doc)));
+      (apartmentModel.photos = apartment
+        .getApartmentPhotoDocument()
+        .map((file) => apartmentPhotoMapper.toModel(file)));
+
+    apartmentModel.documents = apartment
+      .getApartmentDocument()
+      .map((doc) => ApartmentDocumentMapper.toModel(doc));
 
     return apartmentModel;
   }
@@ -69,24 +74,31 @@ export class ApartmentMapper {
       updateAt: model.updateAt,
 
       // Value Objects
-      numberOfBed: new numberOfBed(model.numberOfBed),
+      numberOfBed: new NumberOfBed(model.numberOfBed),
       numberOfRoom: new NumberOfRoom(model.numberOfRoom),
       price: new ApartmentPrice(model.price),
 
       // Relationships
       landlord: LandlordMapper.toEntity(model.landlord),
       googleMapLocation: GoogleMapMapper.toEntity(model.location),
+
       apartmentDocument: model.documents
         ? model.documents.map((doc) => ApartmentDocumentMapper.toEntity(doc))
         : [],
+
+      apartmentPhoto: model.photos
+        ? model.photos.map((file) => apartmentPhotoMapper.toEntity(file))
+        : [],
     });
   }
+  
 
   public static toResponsesSimple(model: ApartmentModel): IApartmentSimpleDTO {
     return {
       apartmentId: model.apartmentId,
       propertyStatus: model.propertyStatus,
       title: model.title,
+      description: model.description,
       address: model.address,
       Verified: model.Verified,
       isFully: model.isFully,
@@ -96,8 +108,8 @@ export class ApartmentMapper {
       price: model.price,
 
       landlordName: model.landlord.user.Name,
-      apartmentDocument: model.documents
-        ? model.documents.map((doc) => ApartmentDocumentMapper.toEntity(doc))
+      apartmentPhoto: model.photos
+        ? model.photos.map((file) => apartmentPhotoMapper.toEntity(file))
         : [],
     };
   }
@@ -119,6 +131,10 @@ export class ApartmentMapper {
       updateAt: model.updateAt,
       googleMapLocation: GoogleMapMapper.toEntity(model.location),
       landlordName: model.landlord.user.Name,
+
+      apartmentPhoto: model.photos
+        ? model.photos.map((file) => apartmentPhotoMapper.toEntity(file))
+        : [],
       apartmentDocument: model.documents
         ? model.documents.map((doc) => ApartmentDocumentMapper.toEntity(doc))
         : [],
@@ -130,10 +146,10 @@ export class ApartmentMapper {
  * no id
  * jameel missed description
  * is fully
- *
+ * add count 
  * no create at,update at ,
  * no google map locations
  *
- * one photo
+ * one photo 
  *
  */
