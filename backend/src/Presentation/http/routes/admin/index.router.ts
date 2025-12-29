@@ -13,7 +13,6 @@ import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 export const AdminIndexRouter = (
   apartmentController: ApartmentManagementController,
   auditLogController: AuditLogController,
-  leaseRequestManagementController: LeaseRequestManagementController,
   userManagementController: UserManagementController
 ): Router => {
   const router = Router();
@@ -28,11 +27,6 @@ export const AdminIndexRouter = (
   );
 
   router.use("/audit-log", isAuth, isAdmin, AuditLogRouter(auditLogController));
-
-
-  
-
-  router.use(LeaseRequestManagementRouter(leaseRequestManagementController));
 
   router.use(userManagementRouter(userManagementController));
 

@@ -26,7 +26,7 @@ export class ApartmentManagementController {
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.getAllApartment.execute();
+      const result = await this.getAllApartment.execute(userId);
       return res.status(200).json(result);
     } catch (error: any) {
       return res
@@ -37,12 +37,13 @@ export class ApartmentManagementController {
 
   public getApartmentsByQueries = async (req: Request, res: Response) => {
     try {
-      const userId = req.user?.userId;
+      const userId = req.user.userId;
+      console.log("user id : ", userId);
       const query = (req.query.q as string) || "";
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.getApartmentByQueries.execute(query);
+      const result = await this.getApartmentByQueries.execute(query, userId);
       return res.status(200).json(result);
     } catch (error: any) {
       return res
@@ -87,7 +88,7 @@ export class ApartmentManagementController {
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.deleteApartmentById.execute(userId,id);
+      const result = await this.deleteApartmentById.execute(userId, id);
       return res.status(200).json(result);
     } catch (error: any) {
       console.error("fail delete apartment,", error);
@@ -105,7 +106,10 @@ export class ApartmentManagementController {
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.getApartmentDocumentById.execute(Number(id));
+      const result = await this.getApartmentDocumentById.execute(
+        Number(id),
+        userId
+      );
       return res.status(200).json(result);
     } catch (error: any) {
       return res
@@ -122,7 +126,10 @@ export class ApartmentManagementController {
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.GetApartmentDetailById.execute(Number(id));
+      const result = await this.GetApartmentDetailById.execute(
+        Number(id),
+        userId
+      );
       return res.status(200).json(result);
     } catch (error: any) {
       return res

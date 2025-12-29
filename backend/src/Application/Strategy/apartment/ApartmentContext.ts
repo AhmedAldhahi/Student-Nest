@@ -1,12 +1,12 @@
 import { UserRole } from "../../../Domain/Enum/UserRole.enum";
-import { AdminDeleteApartmentStrategy } from "./AdminDeleteApartment.strategy";
+import { AdminApartmentStrategy } from "./AdminApartment.strategy";
 import { IApartmentStrategy } from "./IApartment.strategy";
-import { LandlordDeleteApartmentStrategy } from "./LandlordDeleteApartment.strategy";
+import { LandlordApartmentStrategy } from "./LandlordApartment.strategy";
 
 export class ApartmentContext {
   constructor(
-    private readonly adminStrategy: AdminDeleteApartmentStrategy,
-    private readonly landlordStrategy: LandlordDeleteApartmentStrategy
+    private readonly adminStrategy: AdminApartmentStrategy,
+    private readonly landlordStrategy: LandlordApartmentStrategy
   ) {}
 
   public async DeleteApartment(userId: number, role: UserRole) {
@@ -25,6 +25,94 @@ export class ApartmentContext {
       }
 
       return strategy.deleteApartments(userId);
+    } catch (error: any) {}
+  }
+
+  public async GetApartmentsBySearchByQueries(
+    userId: string,
+    role: UserRole,
+    Queried: string
+  ) {
+    try {
+      let strategy: IApartmentStrategy;
+      switch (role) {
+        case UserRole.admin:
+          strategy = this.adminStrategy;
+          break;
+        case UserRole.landlord:
+          strategy = this.landlordStrategy;
+          break;
+
+        default:
+          throw new Error("Invalid user Role");
+      }
+
+      return strategy.getApartmentByQueries(Queried, userId);
+    } catch (error: any) {}
+  }
+
+  public async executeGetAllApartments(userId: string, role: UserRole) {
+    try {
+      let strategy: IApartmentStrategy;
+      switch (role) {
+        case UserRole.admin:
+          strategy = this.adminStrategy;
+          break;
+        case UserRole.landlord:
+          strategy = this.landlordStrategy;
+          break;
+
+        default:
+          throw new Error("Invalid user Role");
+      }
+
+      return strategy.getAllApartment(userId);
+    } catch (error: any) {}
+  }
+
+  public async executeApartmentDocumentById(
+    userId: string,
+    role: UserRole,
+    id: number
+  ) {
+    try {
+      let strategy: IApartmentStrategy;
+      switch (role) {
+        case UserRole.admin:
+          strategy = this.adminStrategy;
+          break;
+        case UserRole.landlord:
+          strategy = this.landlordStrategy;
+          break;
+
+        default:
+          throw new Error("Invalid user Role");
+      }
+
+      return strategy.FindApartmentDocumentById(userId, id);
+    } catch (error: any) {}
+  }
+
+  public async executeGetApartmentDetailById(
+    userId: string,
+    role: UserRole,
+    id: number
+  ) {
+    try {
+      let strategy: IApartmentStrategy;
+      switch (role) {
+        case UserRole.admin:
+          strategy = this.adminStrategy;
+          break;
+        case UserRole.landlord:
+          strategy = this.landlordStrategy;
+          break;
+
+        default:
+          throw new Error("Invalid user Role");
+      }
+
+      return strategy.GetApartmentDetailById(userId, id);
     } catch (error: any) {}
   }
 }

@@ -1,6 +1,4 @@
 import { Router } from "express";
-import { isAdmin } from "../../middlewares/auth/isAdmin.middleware";
-import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 import { LeaseRequestManagementController } from "../../controllers/admin/leaseRequestManagement.controller";
 
 export const LeaseRequestManagementRouter = (
@@ -10,19 +8,11 @@ export const LeaseRequestManagementRouter = (
 
   //TODO: shared between it and students and need strategy
 
-  router.get(
-    "/",
-    isAuth,
-    isAdmin,
-    leaseRequestManagementController.getAllLeaseRequest
-  );
-
+  router.get("/", leaseRequestManagementController.getAllLeaseRequest);
 
   //TODO: shared between it and students and need strategy
   router.get(
     "/search",
-    isAuth,
-    isAdmin,
     leaseRequestManagementController.getLeaseRequestByQuery
   );
 
