@@ -6,6 +6,9 @@ import { GetAllApartmentByQueryQueriesHandler } from "../../../Application/Queri
 import { GetAllApartmentQueriesHandler } from "../../../Application/Queries/Handlers/GetAllApartmentQueriesHandler";
 import { GetApartmentByIdQueriesHandler } from "../../../Application/Queries/Handlers/GetApartmentByIdQueriesHandler";
 import { GetApartmentDocumentByIdQueriesHandler } from "../../../Application/Queries/Handlers/GetApartmentDocumentById.QueriesHandler";
+import { AdminDeleteApartmentStrategy } from "../../../Application/Strategy/apartment/AdminDeleteApartment.strategy";
+import { ApartmentContext } from "../../../Application/Strategy/apartment/ApartmentContext";
+import { LandlordDeleteApartmentStrategy } from "../../../Application/Strategy/apartment/LandlordDeleteApartment.strategy";
 import { DeleteApartmentByIdUseCase } from "../../../Application/Use-Case/admin/ApartmentMangament/DeleteApartment.usecase";
 import { EditApartmentDetailUseCase } from "../../../Application/Use-Case/admin/ApartmentMangament/EditApartmentDetail.usecase";
 import { EditApartmentStatusVerifiedUseCase } from "../../../Application/Use-Case/admin/ApartmentMangament/EditApartmentStatus.usecase";
@@ -16,6 +19,7 @@ import { findApartmentDocumentByIdUseCase } from "../../../Application/Use-Case/
 import { UpdateApartmentDocumentUseCase } from "../../../Application/Use-Case/admin/ApartmentMangament/updateApartmentDocument.usecase";
 import { ReadApartmentDocumentRepositories } from "../../Repositories/Read/ReadApartmentDocumentRepositories";
 import { ReadApartmentRepositories } from "../../Repositories/Read/ReadApartmentRepositories";
+import { ReadUserRepositories } from "../../Repositories/Read/ReadUserRepositories";
 import { UnitOfWork } from "../../Repositories/unitOfWork.repositories";
 import { CloudinaryService } from "../../Services/media/CloudinaryService.service";
 
@@ -51,7 +55,9 @@ export function EditApartmentStatusVerified(): EditApartmentStatusVerifiedUseCas
 export function DeleteApartmentById(): DeleteApartmentByIdUseCase {
   const fileService = new CloudinaryService();
   const uow = new UnitOfWork();
+
   const ReadApartmentRepo = new ReadApartmentRepositories();
+  const readUserRepositories = new ReadUserRepositories();
 
   const commandHandler = new deleteApartmentByIdCommandHandler(
     uow,
@@ -59,7 +65,18 @@ export function DeleteApartmentById(): DeleteApartmentByIdUseCase {
     fileService
   );
 
-  return new DeleteApartmentByIdUseCase(commandHandler);
+  const adminDeleteApartmentStrategy = new AdminDeleteApartmentStrategy(
+    commandHandler
+  );
+
+  const landlordDeleteApartmentStrategy = new LandlordDeleteApartmentStrategy();
+
+  const apartmentContext = new ApartmentContext(
+    adminDeleteApartmentStrategy,
+    landlordDeleteApartmentStrategy
+  );
+
+  return new DeleteApartmentByIdUseCase(apartmentContext,readUserRepositories);
 }
 
 export function FindApartmentDocumentByIdUseCase(): findApartmentDocumentByIdUseCase {

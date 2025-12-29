@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { GetAllNotificationUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/GetAllNotifcation.usecase";
-import { UpdateNotificationStatusUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/UpdateNotifcationStatus.usecase";
-import { DeleteNotificationByIdUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/DeleteNotificationById.usecase";
-import { DeleteAllNotificationUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/DeleteAllNotification.usecase";
-import { DeleteSpecificNotificationsUseCase } from "../../../Application/Use-Case/admin/NotifcationMangement/DeleteSpecificNotification.usecase";
+import { DeleteAllNotificationUseCase } from "../../../Application/Use-Case/NotifcationMangement/DeleteAllNotification.usecase";
+import { DeleteNotificationByIdUseCase } from "../../../Application/Use-Case/NotifcationMangement/DeleteNotificationById.usecase";
+import { DeleteSpecificNotificationsUseCase } from "../../../Application/Use-Case/NotifcationMangement/DeleteSpecificNotification.usecase";
+import { GetAllNotificationUseCase } from "../../../Application/Use-Case/NotifcationMangement/GetAllNotifcation.usecase";
+import { UpdateNotificationStatusUseCase } from "../../../Application/Use-Case/NotifcationMangement/UpdateNotifcationStatus.usecase";
 
 export class NotificationController {
   constructor(
@@ -16,7 +16,8 @@ export class NotificationController {
 
   public getAllNotification = async (req: Request, res: Response) => {
     try {
-      const userId = req.user?.userId;
+      const userId = req.user.userId;
+      console.log(userId);
 
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });

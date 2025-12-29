@@ -36,7 +36,7 @@ export const buildControllers = () => {
     useCases.updateProfileUseCase
   );
 
-  const adminLandlordManagementController = new UserManagementController(
+  const adminUserManagementController = new UserManagementController(
     // useCases.getAllLandlordUseCase,
     useCases.GetAllUsersUseCase,
     useCases.updateLandlordStatusUseCase,
@@ -85,7 +85,7 @@ export const buildControllers = () => {
     verificationController,
     passwordRecoverController,
     profileController,
-    adminLandlordManagementController,
+    adminUserManagementController,
     adminLeaseManagementController,
     adminLeaseRequestManagementController,
     adminNotificationController,

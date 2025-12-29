@@ -14,7 +14,7 @@ export class LeaseManagementController {
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.GetAllLease.execute();
+      const result = await this.GetAllLease.execute(userId);
       return res.status(200).json(result);
     } catch (error: any) {
       return res
@@ -31,7 +31,7 @@ export class LeaseManagementController {
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.findLeaseByQuery.execute(query);
+      const result = await this.findLeaseByQuery.execute(query, userId);
 
       return res.status(200).json(result);
     } catch (error: any) {

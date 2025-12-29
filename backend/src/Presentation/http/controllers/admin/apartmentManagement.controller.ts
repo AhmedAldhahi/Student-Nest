@@ -87,7 +87,7 @@ export class ApartmentManagementController {
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.deleteApartmentById.execute(id);
+      const result = await this.deleteApartmentById.execute(userId,id);
       return res.status(200).json(result);
     } catch (error: any) {
       console.error("fail delete apartment,", error);
@@ -117,7 +117,7 @@ export class ApartmentManagementController {
   public getApartmentDetailById = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const userId = req.user?.userId;
+      const userId = req.user.userId;
 
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });

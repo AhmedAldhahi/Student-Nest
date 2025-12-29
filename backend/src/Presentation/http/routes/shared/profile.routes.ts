@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { ProfileController } from "../controllers/Profile.controller";
-import { GetProfile } from "../middlewares/rate-limited/getProfileRatelimit.middleware";
-import { isAuth } from "../middlewares/auth/isAuth.middleware";
-import { updateProfile } from "../middlewares/rate-limited/updateProfileRateLimit.middleware";
-import { validation } from "../middlewares/validation.middleware";
+import { ProfileController } from "../../controllers/Profile.controller";
+import { GetProfile } from "../../middlewares/rate-limited/getProfileRatelimit.middleware";
+import { isAuth } from "../../middlewares/auth/isAuth.middleware";
+import { updateProfile } from "../../middlewares/rate-limited/updateProfileRateLimit.middleware";
+import { validation } from "../../middlewares/validation.middleware";
 import multer from "multer";
-import { RBAC } from "../middlewares/auth/RBAC.middleware";
+import { RBAC } from "../../middlewares/auth/RBAC.middleware";
 
 const upload = multer({ storage: multer.memoryStorage() });
 

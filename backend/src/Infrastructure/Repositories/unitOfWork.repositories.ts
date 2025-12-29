@@ -17,7 +17,7 @@ import { IWriteAuditLogRepositories } from "../../Domain/Repositories/Write/IWri
 import { WriteAuditLogRepositories } from "./Write/WriteAuditLog.repositories";
 
 export class UnitOfWork implements IUnitOfWork {
-  //TESt
+  
 
   private queryRunner: QueryRunner | null = null;
 

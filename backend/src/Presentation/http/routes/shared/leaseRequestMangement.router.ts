@@ -8,15 +8,19 @@ export const LeaseRequestManagementRouter = (
 ): Router => {
   const router = Router();
 
+  //TODO: shared between it and students and need strategy
+
   router.get(
-    "/lease-requests",
+    "/",
     isAuth,
     isAdmin,
     leaseRequestManagementController.getAllLeaseRequest
   );
 
+
+  //TODO: shared between it and students and need strategy
   router.get(
-    "/lease-request/search",
+    "/search",
     isAuth,
     isAdmin,
     leaseRequestManagementController.getLeaseRequestByQuery

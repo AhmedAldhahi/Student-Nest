@@ -145,6 +145,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
             landlord: { user: true },
             documents: true,
             location: true,
+            photos: true,
           },
         });
 
@@ -167,6 +168,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
             landlord: { user: true },
             documents: true,
             location: true,
+            photos: true,
           },
         });
 
