@@ -126,7 +126,10 @@ export class ApartmentManagementController {
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.GetApartmentDetailById.execute(Number(id));
+      const result = await this.GetApartmentDetailById.execute(
+        Number(id),
+        userId
+      );
       return res.status(200).json(result);
     } catch (error: any) {
       return res

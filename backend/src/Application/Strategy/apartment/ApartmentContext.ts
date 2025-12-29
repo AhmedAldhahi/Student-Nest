@@ -70,8 +70,12 @@ export class ApartmentContext {
     } catch (error: any) {}
   }
 
-  public async executeApartmentDocumentById(userId:string,role: UserRole,id: number) {
-     try {
+  public async executeApartmentDocumentById(
+    userId: string,
+    role: UserRole,
+    id: number
+  ) {
+    try {
       let strategy: IApartmentStrategy;
       switch (role) {
         case UserRole.admin:
@@ -85,7 +89,30 @@ export class ApartmentContext {
           throw new Error("Invalid user Role");
       }
 
-      return strategy.FindApartmentDocumentById(userId,id);
+      return strategy.FindApartmentDocumentById(userId, id);
     } catch (error: any) {}
-  } 
+  }
+
+  public async executeGetApartmentDetailById(
+    userId: string,
+    role: UserRole,
+    id: number
+  ) {
+    try {
+      let strategy: IApartmentStrategy;
+      switch (role) {
+        case UserRole.admin:
+          strategy = this.adminStrategy;
+          break;
+        case UserRole.landlord:
+          strategy = this.landlordStrategy;
+          break;
+
+        default:
+          throw new Error("Invalid user Role");
+      }
+
+      return strategy.GetApartmentDetailById(userId, id);
+    } catch (error: any) {}
+  }
 }

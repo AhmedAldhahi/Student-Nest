@@ -21,7 +21,7 @@ export const ApartmentSharedRouter = (
 
   
 
-  //todo: need factory and strategy  for admin and landlord
+  //todo: need to make landlord part
   router.get("/:id", apartmentController.getApartmentDetailById);
 
 

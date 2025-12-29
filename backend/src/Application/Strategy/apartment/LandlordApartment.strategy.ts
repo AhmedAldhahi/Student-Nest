@@ -2,6 +2,10 @@ import { IApartmentStrategy } from "./IApartment.strategy";
 
 export class LandlordApartmentStrategy implements IApartmentStrategy {
   constructor() {}
+
+  public async GetApartmentDetailById(userId: string, id: number): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
   
   public async FindApartmentDocumentById(userId: string, id: number): Promise<any> {
     throw new Error("Method not implemented.");

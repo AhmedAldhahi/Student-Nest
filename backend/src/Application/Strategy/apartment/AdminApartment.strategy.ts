@@ -2,7 +2,9 @@ import { deleteApartmentByIdCommand } from "../../Command/Commands/DeleteApartme
 import { deleteApartmentByIdCommandHandler } from "../../Command/Handlers/DeleteApartmentByIdCommandHandler";
 import { GetAllApartmentByQueryQueriesHandler } from "../../Queries/Handlers/GetAllApartmentQueries.QueriesHandler";
 import { GetAllApartmentQueriesHandler } from "../../Queries/Handlers/GetAllApartmentQueriesHandler";
+import { GetApartmentByIdQueriesHandler } from "../../Queries/Handlers/GetApartmentByIdQueriesHandler";
 import { GetApartmentDocumentByIdQueriesHandler } from "../../Queries/Handlers/GetApartmentDocumentById.QueriesHandler";
+import { GetApartmentByIdQueries } from "../../Queries/Queries/GetApartmentById";
 import { GetAllApartmentByTitleQueries } from "../../Queries/Queries/GetApartmentByName";
 import { GetDocumentOfApartmentByIdQueries } from "../../Queries/Queries/GetDocumentOfApartmntByIdQueries";
 import { IApartmentStrategy } from "./IApartment.strategy";
@@ -13,15 +15,31 @@ export class AdminApartmentStrategy implements IApartmentStrategy {
     private readonly SearchForApartmentByQH: GetAllApartmentByQueryQueriesHandler,
     private readonly GetAllApartmentQH: GetAllApartmentQueriesHandler,
     private readonly GetApartmentDocumentByIdQH: GetApartmentDocumentByIdQueriesHandler,
+    private readonly GetApartmentDetailByIdQH: GetApartmentByIdQueriesHandler
   ) {}
 
-  public async FindApartmentDocumentById(userId: string, id: number): Promise<any> {
+  public async GetApartmentDetailById(
+    userId: string,
+    id: number
+  ): Promise<any> {
+    try {
+      const queries = new GetApartmentByIdQueries(id);
+      return await this.GetApartmentDetailByIdQH.handle(queries);
+    } catch (error: any) {
+      console.error("fail to get apartment by id, !!", error);
+      throw error;
+    }
+  }
+
+  public async FindApartmentDocumentById(
+    userId: string,
+    id: number
+  ): Promise<any> {
     try {
       const queries = new GetDocumentOfApartmentByIdQueries(id);
       return await this.GetApartmentDocumentByIdQH.handle(queries);
-
-    } catch(error:any) {
-      console.error("fail to get apartment documents",error);
+    } catch (error: any) {
+      console.error("fail to get apartment documents", error);
       throw error;
     }
   }
