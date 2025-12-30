@@ -14,11 +14,6 @@ export class NotificationMapper {
     notificationModel.isRead = entity.getIsRead();
     notificationModel.receiver = UserMapper.toOrm(entity.getReceiver());
 
-    const senderEntity = entity.getSender();
-    notificationModel.sender = senderEntity
-      ? UserMapper.toOrm(senderEntity)
-      : null;
-
     return notificationModel;
   }
 
@@ -30,7 +25,6 @@ export class NotificationMapper {
       title: model.title,
       isRead: model.isRead,
       receiver: UserMapper.toEntity(model.receiver),
-      sender: model.sender ? UserMapper.toEntity(model.sender) : undefined,
     });
   }
 
@@ -42,9 +36,6 @@ export class NotificationMapper {
       title: model.title,
       isRead: model.isRead,
       receiver: UserMapper.toUserResponse(model.receiver),
-      sender: model.sender
-        ? UserMapper.toUserResponse(model.sender)
-        : undefined,
     };
   }
 }

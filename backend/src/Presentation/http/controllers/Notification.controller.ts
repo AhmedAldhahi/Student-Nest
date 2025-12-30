@@ -67,12 +67,9 @@ export class NotificationController {
       if (!userId)
         return res.status(400).json({ error: "no user Id found !!" });
 
-      const { id } = req.params;
+      const id = req.body;
 
-      const result = await this.DeleteNotificationById.execute(
-        Number(id),
-        userId
-      );
+      const result = await this.DeleteNotificationById.execute(id, userId);
       return res.status(200).json(result);
     } catch (error: any) {
       return res

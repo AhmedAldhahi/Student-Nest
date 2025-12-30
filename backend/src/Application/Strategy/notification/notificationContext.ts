@@ -9,7 +9,7 @@ export class NotificationContext {
     private readonly adminNotificationStrategy: AdminNotificationsStrategy
   ) {}
 
-  public async execute(userId: string, role: UserRole): Promise<any> {
+  public async executeGetNotifications(userId: string, role: UserRole): Promise<any> {
     let strategy: INotificationsStrategy;
 
     switch (role) {
@@ -27,5 +27,25 @@ export class NotificationContext {
     }
 
     return await strategy.UserNotifications(userId);
+  }
+
+   public async executeDeleteNotifications(userId: string, role: UserRole): Promise<any> {
+    let strategy: INotificationsStrategy;
+
+    switch (role) {
+      case UserRole.admin:
+        strategy = this.adminNotificationStrategy;
+        break;
+
+      case UserRole.landlord:
+      case UserRole.student:
+        strategy = this.userNotificationStrategy;
+        break;
+
+      default:
+        throw new Error("Invalid User Role");
+    }
+
+    return await strategy.DeleteAllNotifications(userId)
   }
 }

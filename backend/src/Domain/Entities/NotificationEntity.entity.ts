@@ -6,7 +6,7 @@ export interface INotificationData {
   title: string;
   isRead: boolean;
   createAt: Date;
-  sender?: UserEntity | undefined;
+  sender?: UserEntity | null;
   receiver: UserEntity;
 }
 
@@ -16,7 +16,7 @@ export class NotificationEntity {
   private title: string;
   private isRead: boolean = false;
   private createAt: Date;
-  private sender?: UserEntity | undefined;
+  private sender?: UserEntity | null;
   private receiver: UserEntity;
 
   constructor(data: INotificationData) {
@@ -73,8 +73,8 @@ export class NotificationEntity {
     return this.createAt;
   }
 
-  public getSender(): UserEntity | undefined {
-    return this.sender;
+  public getSender(): UserEntity | null {
+    return this.sender ?? null;
   }
 
   public getReceiver(): UserEntity {

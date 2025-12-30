@@ -106,6 +106,8 @@ export class ApartmentMapper {
       numberOfBed: model.numberOfBed,
       numberOfRoom: model.numberOfRoom,
       price: model.price,
+      
+      // need to add number of student
 
       landlordName: model.landlord.user.Name,
       apartmentPhoto: model.photos

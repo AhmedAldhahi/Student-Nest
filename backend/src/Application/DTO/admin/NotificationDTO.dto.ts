@@ -7,5 +7,4 @@ export interface INotificationDTO {
   title: string;
   isRead: boolean;
   receiver: UserResponseDTO;
-  sender: UserResponseDTO | undefined;
 }

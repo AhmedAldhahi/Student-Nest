@@ -18,7 +18,7 @@ export class readNotificationRepositories
         .find({
           where: {
             receiver: {
-              userId: userId, // Only get rows where 'receiver' matches this user
+              userId: userId, 
             },
           },
           select: {
@@ -28,17 +28,12 @@ export class readNotificationRepositories
             isRead: true,
             createAt: true,
 
-            sender: {
-              userId: true,
-              Name: true,
-            },
             receiver: {
               userId: true,
               Name: true,
             },
           },
           relations: {
-            sender: true,
             receiver: true,
           },
         });
@@ -62,7 +57,7 @@ export class readNotificationRepositories
         .getRepository(NotificationModel)
         .findOne({
           where: { notificationId: id },
-          relations: { sender: true, receiver: true },
+          relations: { receiver: true },
         });
 
       if (!orm) return null;
@@ -73,7 +68,7 @@ export class readNotificationRepositories
       throw error;
     }
   }
-public async GetAllAdminNotification(
+  public async GetAllAdminNotification(
     userId: string
   ): Promise<INotificationDTO[] | null> {
     try {
@@ -81,7 +76,6 @@ public async GetAllAdminNotification(
         .getRepository(NotificationModel)
         .createQueryBuilder("notification")
         .leftJoinAndSelect("notification.receiver", "user") // Existing join
-        .leftJoinAndSelect("notification.sender", "sender") // <--- ADD THIS LINE
         .where("user.role = :role", { role: "admin" })
         .getMany();
 

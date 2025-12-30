@@ -1,14 +1,48 @@
-import { EntityManager } from "typeorm";
+import { EntityManager, In } from "typeorm";
 import { NotificationEntity } from "../../../Domain/Entities/NotificationEntity.entity";
 import { IWriteNotificationRepo } from "../../../Domain/Repositories/Write/IWriteNotficationRepositories.repositores";
 import { NotificationMapper } from "../mapper/notification.mapper";
 import { NotificationModel } from "../../Database/orm/TypeOrm/entity/Notifcation.entity";
+import { UserRole } from "../../../Domain/Enum/UserRole.enum";
+import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
+import { UserModel } from "../../Database/orm/TypeOrm/entity/User.entity";
 
 export class WriteNotificationRepositories implements IWriteNotificationRepo {
   private manager: EntityManager;
 
   constructor(manager: EntityManager) {
     this.manager = manager;
+  }
+
+  public async deleteAllAdminNotification(
+    userId: string,
+    role: UserRole
+  ): Promise<void> {
+    try {
+      const notificationRepo =
+        AppDataSource.getInstance().getRepository(NotificationModel);
+
+      // CASE 1: ADMIN (Delete notifications for ME and ALL OTHER ADMINS)
+      if (role === UserRole.admin) {
+        // Step A: Find all users who have the 'admin' role
+        const userRepo = AppDataSource.getInstance().getRepository(UserModel);
+        const allAdmins = await userRepo.find({
+          where: { Role: UserRole.admin },
+          select: { userId: true }, // We only need the IDs
+        });
+
+        const adminIds = allAdmins.map((user) => user.userId);
+
+        if (adminIds.length > 0) {
+          await notificationRepo.delete({
+            receiver: { userId: In(adminIds) },
+          });
+        }
+      }
+    } catch (error: any) {
+      console.error("Failed to delete notifications:", error);
+      throw new Error("Could not delete notifications.");
+    }
   }
 
   public async deleteNotificationById(

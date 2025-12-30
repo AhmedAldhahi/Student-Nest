@@ -12,7 +12,7 @@ export class GetAllNotificationUseCase {
       const user = await this.getUserRepo.findById(userId);
       if (!user) throw new Error("no user with this id been found !!");
 
-      return await this.context.execute(userId, user.getRole());
+      return await this.context.executeGetNotifications(userId, user.getRole());
     } catch (error: any) {
       throw error;
     }

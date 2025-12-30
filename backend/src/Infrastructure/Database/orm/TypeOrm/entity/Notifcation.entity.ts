@@ -26,13 +26,6 @@ export class NotificationModel {
   createAt: Date;
 
   @ManyToOne(() => UserModel, {
-    nullable: true,
-    onDelete: "CASCADE",
-  })
-  @JoinColumn({ name: "senderId" })
-  sender: UserModel | null;
-
-  @ManyToOne(() => UserModel, {
     nullable: false,
     onDelete: "CASCADE",
   })
