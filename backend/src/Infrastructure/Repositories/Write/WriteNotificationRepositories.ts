@@ -58,7 +58,9 @@ export class WriteNotificationRepositories implements IWriteNotificationRepo {
       .execute();
 
     if (result.affected === 0) {
-      throw new Error("Notification not found or access denied.");
+      throw new Error(
+        "OPERATION_FAILED: Notification not found or you don't own it."
+      );
     }
   }
 

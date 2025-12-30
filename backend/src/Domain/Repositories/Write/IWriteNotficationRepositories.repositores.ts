@@ -1,4 +1,3 @@
-import { deleteAllNotification } from "../../../Infrastructure/DI/NotificationManagement";
 import { NotificationEntity } from "../../Entities/NotificationEntity.entity";
 import { UserRole } from "../../Enum/UserRole.enum";
 

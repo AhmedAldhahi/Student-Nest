@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { NotificationController } from "../../controllers/Notification.controller";
-import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 import { validation } from "../../middlewares/validation.middleware";
 import {
   changeNotificationStatusSchema,
