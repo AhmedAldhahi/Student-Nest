@@ -1,3 +1,4 @@
+import { deleteAdminNotificationByIdCommandHandler } from "../../Application/Command/Handlers/DeleteAdminNotificationByIdCommandHandler";
 import { DeleteAllAdminNotificationCommandHandler } from "../../Application/Command/Handlers/DeleteAllAdminNotificationCommandHandler";
 import { DeleteAllNotificationCommandHandler } from "../../Application/Command/Handlers/DeleteAllNotificationCommandHandler";
 import { deleteNotificationByIdCommandHandler } from "../../Application/Command/Handlers/DeleteNotificationByIdCommandHandler";
@@ -35,16 +36,27 @@ export function GetAllNotification(): GetAllNotificationUseCase {
     new DeleteAllAdminNotificationCommandHandler(uow, readUserRepositories);
 
   const DeleteAllNotificationCH = new DeleteAllNotificationCommandHandler(uow);
+
+  const DeleteAdminNotificationByIdCH =
+    new deleteAdminNotificationByIdCommandHandler(uow, readNotificationRepo);
+
+  const DeleteNotificationById = new deleteNotificationByIdCommandHandler(
+    uow,
+    readNotificationRepo
+  );
+
   // strategy
 
   const userNotificationStrategy = new UserNotificationsStrategy(
     GetAllNotificationForUsersQueriesHandler,
-    DeleteAllNotificationCH
+    DeleteAllNotificationCH,
+    DeleteNotificationById
   );
 
   const adminNotificationsStrategy = new AdminNotificationsStrategy(
     GetAdminNotificationForAdminQueriesHandler,
-    DeleteAllAdminNotificationCH
+    DeleteAllAdminNotificationCH,
+    DeleteAdminNotificationByIdCH
   );
 
   const contextNotification = new NotificationContext(
@@ -71,14 +83,54 @@ export function updateNotificationStatus(): UpdateNotificationStatusUseCase {
 }
 
 export function deleteNotificationById(): DeleteNotificationByIdUseCase {
-  const uow = new UnitOfWork();
   const readNotificationRepo = new readNotificationRepositories();
+  const readUserRepositories = new ReadUserRepositories();
+  const uow = new UnitOfWork();
 
-  const commandHandler = new deleteNotificationByIdCommandHandler(
+  // query handler
+
+  const GetAllNotificationForUsersQueriesHandler =
+    new GetAllNotificationQueriesHandler(readNotificationRepo);
+
+  const GetAdminNotificationForAdminQueriesHandler =
+    new GetAllAdminNotificationQueriesHandler(readNotificationRepo);
+
+  const DeleteAllAdminNotificationCH =
+    new DeleteAllAdminNotificationCommandHandler(uow, readUserRepositories);
+
+  const DeleteAllNotificationCH = new DeleteAllNotificationCommandHandler(uow);
+
+  const DeleteAdminNotificationByIdCH =
+    new deleteAdminNotificationByIdCommandHandler(uow, readNotificationRepo);
+
+  const DeleteNotificationById = new deleteNotificationByIdCommandHandler(
     uow,
     readNotificationRepo
   );
-  return new DeleteNotificationByIdUseCase(commandHandler);
+
+  // strategy
+
+  const userNotificationStrategy = new UserNotificationsStrategy(
+    GetAllNotificationForUsersQueriesHandler,
+    DeleteAllNotificationCH,
+    DeleteNotificationById
+  );
+
+  const adminNotificationsStrategy = new AdminNotificationsStrategy(
+    GetAdminNotificationForAdminQueriesHandler,
+    DeleteAllAdminNotificationCH,
+    DeleteAdminNotificationByIdCH
+  );
+
+  const contextNotification = new NotificationContext(
+    userNotificationStrategy,
+    adminNotificationsStrategy
+  );
+
+  return new DeleteNotificationByIdUseCase(
+    contextNotification,
+    readUserRepositories
+  );
 }
 
 export function deleteAllNotification(): DeleteAllNotificationUseCase {
@@ -101,14 +153,24 @@ export function deleteAllNotification(): DeleteAllNotificationUseCase {
   const DeleteAllNotificationCH = new DeleteAllNotificationCommandHandler(uow);
   // strategy
 
+  const DeleteAdminNotificationByIdCH =
+    new deleteAdminNotificationByIdCommandHandler(uow, readNotificationRepo);
+
+  const DeleteNotificationById = new deleteNotificationByIdCommandHandler(
+    uow,
+    readNotificationRepo
+  );
+
   const userNotificationStrategy = new UserNotificationsStrategy(
     GetAllNotificationForUsersQueriesHandler,
-    DeleteAllNotificationCH
+    DeleteAllNotificationCH,
+    DeleteNotificationById
   );
 
   const adminNotificationsStrategy = new AdminNotificationsStrategy(
     GetAdminNotificationForAdminQueriesHandler,
-    DeleteAllAdminNotificationCH
+    DeleteAllAdminNotificationCH,
+    DeleteAdminNotificationByIdCH
   );
 
   const contextNotification = new NotificationContext(

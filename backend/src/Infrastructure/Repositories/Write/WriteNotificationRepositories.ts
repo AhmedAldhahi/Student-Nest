@@ -14,6 +14,45 @@ export class WriteNotificationRepositories implements IWriteNotificationRepo {
     this.manager = manager;
   }
 
+  public async deleteAdminNotificationById(
+    userId: string,
+    id: number
+  ): Promise<void> {
+    try {
+      const userRepo = this.manager.getRepository(UserModel);
+      const adminUsers = await userRepo.find({
+        where: { Role: UserRole.admin },
+        select: { userId: true }, // Optimization: Select only IDs
+      });
+
+      const adminIds = adminUsers.map((user) => user.userId);
+
+      if (adminIds.length === 0) {
+        throw new Error("No admin users found in the system.");
+      }
+      // Step 2: Delete the notification ONLY IF:
+      // A. The Notification ID matches
+      // B. The ReceiverId is inside the list of Admin IDs
+      const result = await this.manager
+        .createQueryBuilder()
+        .delete()
+        .from(NotificationModel)
+        .where("notificationId = :id", { id })
+        .andWhere("receiverId IN (:...adminIds)", { adminIds }) // Checks if owner is ANY admin
+        .execute();
+
+      // Step 3: Check if anything was actually deleted
+      if (result.affected === 0) {
+        throw new Error(
+          "OPERATION_FAILED: Notification not found, or it does not belong to an Admin account."
+        );
+      }
+    } catch (error: any) {
+      console.error("fail to delete admin notifications !!");
+      throw error;
+    }
+  }
+
   public async deleteAllAdminNotification(
     userId: string,
     role: UserRole

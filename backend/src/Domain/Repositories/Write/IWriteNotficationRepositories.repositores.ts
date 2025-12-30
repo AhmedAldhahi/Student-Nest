@@ -5,6 +5,8 @@ export interface IWriteNotificationRepo {
   updateNotification(notification: NotificationEntity): Promise<void>;
   deleteNotificationById(id: number, userId: string): Promise<void>;
   deleteAllNotification(userId: string): Promise<void>;
-  deleteAllAdminNotification(userId: string, role: UserRole): Promise<void>;
   deleteSpecificNotifications(ids: number[], userId: string): Promise<void>;
+
+  deleteAdminNotificationById(userId: string, id: number): Promise<void>;
+  deleteAllAdminNotification(userId: string, role: UserRole): Promise<void>;
 }

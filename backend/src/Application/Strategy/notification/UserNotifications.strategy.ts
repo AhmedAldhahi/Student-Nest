@@ -1,5 +1,7 @@
+import { deleteAdminNotificationByIdCommand } from "../../Command/Commands/DeleteAdminNotifcationByIdCommand";
 import { DeleteAllNotificationCommand } from "../../Command/Commands/DeleteAllNotificationCommand";
 import { DeleteAllNotificationCommandHandler } from "../../Command/Handlers/DeleteAllNotificationCommandHandler";
+import { deleteNotificationByIdCommandHandler } from "../../Command/Handlers/DeleteNotificationByIdCommandHandler";
 import { GetAllNotificationQueriesHandler } from "../../Queries/Handlers/GetAllNotifcationQueriesHandler";
 import { GetAllNotificationQueries } from "../../Queries/Queries/GetAllNotifcation";
 import { INotificationsStrategy } from "./Inotification.strategy";
@@ -7,15 +9,26 @@ import { INotificationsStrategy } from "./Inotification.strategy";
 export class UserNotificationsStrategy implements INotificationsStrategy {
   constructor(
     private readonly queryHandler: GetAllNotificationQueriesHandler,
-    private readonly commandHandler: DeleteAllNotificationCommandHandler
+    private readonly commandHandler: DeleteAllNotificationCommandHandler,
+    private readonly DeleteNotificationByIdCH: deleteNotificationByIdCommandHandler
   ) {}
+
+  public async DeleteNotificationById(userId: string, id: number): Promise<any> {
+    try {
+      const command = new deleteAdminNotificationByIdCommand(id, userId);
+      return await this.DeleteNotificationByIdCH.handle(command);
+    } catch (error: any) {
+      console.error("fail to delete  notifications message !!");
+      throw error;
+    }
+  }
 
   public async DeleteAllNotifications(userId: string): Promise<any> {
     try {
-       const command = new DeleteAllNotificationCommand(userId);
-        return await this.commandHandler.handle(command);
+      const command = new DeleteAllNotificationCommand(userId);
+      return await this.commandHandler.handle(command);
     } catch (error: any) {
-      console.error("fail to delete all notifications",error);
+      console.error("fail to delete all notifications", error);
       throw error;
     }
   }

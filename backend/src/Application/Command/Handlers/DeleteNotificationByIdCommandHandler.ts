@@ -26,8 +26,11 @@ export class deleteNotificationByIdCommandHandler
       );
       await this.uow.commitTransaction();
     } catch (error: any) {
+      await this.uow.rollbackTransaction();
       console.error("fail to delete notification !!");
       throw error;
+    } finally {
+      await this.uow.releaseTransaction();
     }
   }
 }

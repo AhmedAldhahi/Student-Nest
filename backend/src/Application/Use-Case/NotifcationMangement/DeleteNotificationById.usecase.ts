@@ -1,15 +1,23 @@
+import { IReadUserRepositories } from "../../../Domain/Repositories/Read/ReadUserRepositories.repositories";
 import { deleteNotificationByIdCommand } from "../../Command/Commands/DeleteNotificationByIdCommand";
-import { deleteNotificationByIdCommandHandler } from "../../Command/Handlers/DeleteNotificationByIdCommandHandler";
+import { NotificationContext } from "../../Strategy/notification/notificationContext";
 
 export class DeleteNotificationByIdUseCase {
   constructor(
-    private readonly commandHandler: deleteNotificationByIdCommandHandler
+    private readonly context: NotificationContext,
+    private readonly readUserRepo: IReadUserRepositories
   ) {}
 
   public async execute(id: number, userId: string) {
     try {
-      const command = new deleteNotificationByIdCommand(id, userId);
-      await this.commandHandler.handle(command);
+      const user = await this.readUserRepo.findById(userId);
+      if (!user) throw new Error("no user been found !!");
+
+      await this.context.executeDeleteNotificationById(
+        userId,
+        user.getRole(),
+        id
+      );
       return {
         message: "notification delete successfully",
       };

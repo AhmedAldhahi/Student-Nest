@@ -126,6 +126,8 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
           },
         });
 
+      if (!leasesModel) return [];
+
       if (!leasesModel || leasesModel.length === 0) return [];
 
       return leasesModel.map((orm) => {
