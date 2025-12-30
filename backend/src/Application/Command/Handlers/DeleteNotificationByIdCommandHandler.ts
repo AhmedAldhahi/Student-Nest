@@ -13,9 +13,8 @@ export class deleteNotificationByIdCommandHandler
 
   public async handle(command: deleteNotificationByIdCommand): Promise<any> {
     try {
-      const notification = await this.ReadNotificationRepo.GetNotificationById(
-        command.id
-      );
+      const notification = 
+      await this.ReadNotificationRepo.GetNotificationById(command.id);
 
       if (!notification)
         throw new Error("no notification with this id found !!");
