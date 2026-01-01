@@ -16,7 +16,7 @@ export class GetLandlordProfileQueriesHandlers
       const landlord = await this.readLandlord.findLandlordById(command.userId);
       if (!landlord) throw new Error("no landlord found !!");
 
-      const user = await this.readUserRepo.findByEmail(command.userId);
+      const user = await this.readUserRepo.findById(command.userId);
       if (!user) throw new Error("no user been found !!");
 
       return {

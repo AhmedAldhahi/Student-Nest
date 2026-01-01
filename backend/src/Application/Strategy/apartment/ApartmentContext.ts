@@ -9,7 +9,7 @@ export class ApartmentContext {
     private readonly landlordStrategy: LandlordApartmentStrategy
   ) {}
 
-  public async DeleteApartment(userId: string, role: UserRole) {
+  public async DeleteApartment(userId: string, role: UserRole,id:string) {
     try {
       let strategy: IApartmentStrategy;
       switch (role) {
@@ -24,7 +24,7 @@ export class ApartmentContext {
           throw new Error("Invalid user Role");
       }
 
-      return strategy.deleteApartments(userId);
+      return strategy.deleteApartments(userId,id);
     } catch (error: any) {}
   }
 
