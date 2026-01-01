@@ -1,5 +1,4 @@
-import { IReadUserRepositories } from "../../../../Domain/Repositories/Read/ReadUserRepositories.repositories";
-import { GetAllLeaseRequestQueriesHandler } from "../../../Queries/Handlers/GetAllLeaseRequestQueriesHandler";
+import { IReadUserRepositories } from "../../../../Domain/Modules/Identity/Repositories/ReadUserRepositories.repositories";
 import { LeaseRequestContext } from "../../../Strategy/leaseRequest/LeaseRequestContext";
 
 export class GetAllLeaseRequestUseCase {

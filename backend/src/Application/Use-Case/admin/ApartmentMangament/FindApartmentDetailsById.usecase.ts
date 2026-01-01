@@ -1,4 +1,4 @@
-import { IReadUserRepositories } from "../../../../Domain/Repositories/Read/ReadUserRepositories.repositories";
+import { IReadUserRepositories } from "../../../../Domain/Modules/Identity/Repositories/ReadUserRepositories.repositories";
 import { ApartmentContext } from "../../../Strategy/apartment/ApartmentContext";
 
 export class findApartmentByIdUseCase {
@@ -7,7 +7,7 @@ export class findApartmentByIdUseCase {
     private readonly readUserRepo: IReadUserRepositories
   ) {}
 
-  public async execute(id: number, userId: string) {
+  public async execute(id: string, userId: string) {
     try {
       const user = await this.readUserRepo.findById(userId);
       if (!user) throw new Error("no user been found !!");

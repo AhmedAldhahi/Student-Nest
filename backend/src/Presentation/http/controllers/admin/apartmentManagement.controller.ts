@@ -58,8 +58,7 @@ export class ApartmentManagementController {
   ) => {
     try {
       const userId = req.user.userId;
-      const { apartmentId } = req.params;
-      const id = Number(apartmentId);
+      const { id } = req.params;
       const { Verified } = req.body;
 
       if (!userId)
@@ -82,8 +81,7 @@ export class ApartmentManagementController {
   public DeleteApartmentById = async (req: Request, res: Response) => {
     try {
       const userId = req.user.userId;
-      const { apartmentId } = req.params;
-      const id = Number(apartmentId);
+      const { id } = req.params;
 
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
@@ -106,10 +104,7 @@ export class ApartmentManagementController {
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.getApartmentDocumentById.execute(
-        Number(id),
-        userId
-      );
+      const result = await this.getApartmentDocumentById.execute(id, userId);
       return res.status(200).json(result);
     } catch (error: any) {
       return res
@@ -126,10 +121,7 @@ export class ApartmentManagementController {
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.GetApartmentDetailById.execute(
-        Number(id),
-        userId
-      );
+      const result = await this.GetApartmentDetailById.execute(id, userId);
       return res.status(200).json(result);
     } catch (error: any) {
       return res
@@ -149,10 +141,7 @@ export class ApartmentManagementController {
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.EditApartmentDetailsById.execute(
-        dto,
-        Number(id)
-      );
+      const result = await this.EditApartmentDetailsById.execute(dto, id);
 
       return res.status(200).json(result);
     } catch (error: any) {
@@ -171,10 +160,7 @@ export class ApartmentManagementController {
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.EditApartmentDocumentById.execute(
-        dto,
-        Number(id)
-      );
+      const result = await this.EditApartmentDocumentById.execute(dto, id);
       return res.status(200).json(result);
     } catch (error: any) {
       return res

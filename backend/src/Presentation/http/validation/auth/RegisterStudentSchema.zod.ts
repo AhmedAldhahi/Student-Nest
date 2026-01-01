@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { hasSequentialNumbers } from "../../../../Shared/utils/zodValidationMethod.util";
-import { UserRole } from "../../../../Domain/Enum/UserRole.enum";
+import { UserRole } from "../../../../Domain/Shared/Enum/UserRole.enum";
 import { roleEnum } from "../../../../Shared/constants/validationZod.constant";
 
 const basedUserSchema = z.object({
@@ -43,7 +43,7 @@ export const RegisterStudetSchema = basedUserSchema
 export const RegisterLandloardSchema = basedUserSchema
   .extend({
     cliQAccount: z.string(),
-    LandloardGovId: z.string(),
+    LandlordGovId: z.string(),
     role: z.literal("landlord"),
     address: z.string().optional(),
     document: z.any(),

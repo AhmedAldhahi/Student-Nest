@@ -2,15 +2,14 @@ import {
   IApartmentSimpleDTO,
   IApartmentDTO,
 } from "../../../Application/DTO/admin/ApartmentDTo.dto";
-import { ApartmentAggregateRoot } from "../../../Domain/AggregatesRoot/apartmentEntity.entity";
-import { ApartmentPrice } from "../../../Domain/Value-Object/ApartmentPrice.vo";
-import { NumberOfBed } from "../../../Domain/Value-Object/NumberOfBed.vo";
-import { NumberOfRoom } from "../../../Domain/Value-Object/NumberOfRoom.vo";
+import { ApartmentAggregateRoot } from "../../../Domain/Modules/Housing/AgregateRoot/apartmentEntity.entity";
+import { ApartmentPrice } from "../../../Domain/Modules/Housing/Value-Object/ApartmentPrice.vo";
+import { NumberOfBed } from "../../../Domain/Modules/Housing/Value-Object/NumberOfBed.vo";
+import { NumberOfRoom } from "../../../Domain/Modules/Housing/Value-Object/NumberOfRoom.vo";
 import { ApartmentModel } from "../../Database/orm/TypeOrm/entity/Apartment.entity";
 import { ApartmentDocumentMapper } from "./apartmentDocument.mapper";
 import { apartmentPhotoMapper } from "./apartmentPhoto.mapper";
 import { GoogleMapMapper } from "./gogleMap.mapper";
-import { LandlordMapper } from "./landloard.mapper";
 
 export class ApartmentMapper {
   public static toModel(apartment: ApartmentAggregateRoot): ApartmentModel {
@@ -27,7 +26,8 @@ export class ApartmentMapper {
       (apartmentModel.createAt = apartment.getCreateAt()),
       (apartmentModel.updateAt = apartment.getUpdateAt()),
       (apartmentModel.isFully = apartment.getFully()),
-      (apartmentModel.landlord = LandlordMapper.toOrm(apartment.getLandlord()));
+      // (apartmentModel.landlord = LandlordMapper.toOrm(apartment.getLandlord()));
+      apartmentModel.landlordId  =  apartment.getLandlord(),
     apartmentModel.price = validateData.price;
     apartmentModel.numberOfBed = validateData.numberOfBed;
     apartmentModel.numberOfRoom = validateData.numberOfRoom;
@@ -79,7 +79,7 @@ export class ApartmentMapper {
       price: new ApartmentPrice(model.price),
 
       // Relationships
-      landlord: LandlordMapper.toEntity(model.landlord),
+      landlordId: model.landlordId,
       googleMapLocation: GoogleMapMapper.toEntity(model.location),
 
       apartmentDocument: model.documents
@@ -144,14 +144,3 @@ export class ApartmentMapper {
   }
 }
 
-/**
- * no id
- * jameel missed description
- * is fully
- * add count 
- * no create at,update at ,
- * no google map locations
- *
- * one photo 
- *
- */

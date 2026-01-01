@@ -4,7 +4,7 @@ import {
   ITokenService,
 } from "../../../Interfaces/IToken.interface";
 import { VerifiedOTpResponse } from "../../../DTO/Email-verfied/VerifiedOtpRespone.dto";
-import { VerifiedOtpCommandHandler } from "../../../Command/Handlers/VerfiedOtpCommandHandler";
+import { VerifiedOtpCommandHandler } from "../../../Command/Handlers/Identiy/VerfiedOtpCommandHandler";
 
 export class VerifiedOtpUseCase {
   constructor(

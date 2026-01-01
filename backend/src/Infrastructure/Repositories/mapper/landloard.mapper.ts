@@ -1,9 +1,9 @@
 import { LandlordResponseDTO } from "../../../Application/DTO/profile/LandlordResponeDTO";
-import { LandlordAggregateRoot } from "../../../Domain/AggregatesRoot/landloardEntity.entity";
-import { GovernmentID } from "../../../Domain/Value-Object/UserGovId.vo";
-import { VerificationDocument } from "../../../Domain/Value-Object/VerficationDocument.vo";
+import { LandlordAggregateRoot } from "../../../Domain/Modules/Housing/AgregateRoot/landloardEntity.entity";
+import { GovernmentID } from "../../../Domain/Shared/Value-Object/UserGovId.vo";
+import { VerificationDocument } from "../../../Domain/Shared/Value-Object/VerficationDocument.vo";
 import { LandlordModel } from "../../Database/orm/TypeOrm/entity/Landloard.entity";
-import { UserMapper } from "./user.mapper";
+import { UserModel } from "../../Database/orm/TypeOrm/entity/User.entity";
 
 export class LandlordMapper {
   public static toOrm(landlord: LandlordAggregateRoot): LandlordModel {
@@ -14,7 +14,6 @@ export class LandlordMapper {
     model.CliQAccount = landlord.getCliQAccount();
     model.document = validationModel.document;
     model.LandlordGovId = validationModel.GovId;
-    model.user = UserMapper.toOrm(landlord.getUser());
     model.Verified = landlord.getLandlordVerified();
 
     return model;
@@ -35,17 +34,29 @@ export class LandlordMapper {
 
   public static toEntity(model: LandlordModel): LandlordAggregateRoot {
     return new LandlordAggregateRoot({
-      user: UserMapper.toEntity(model.user),
+      userId: model.userId,
       cliQAccount: model.CliQAccount,
       landlordGovId: new GovernmentID(model.LandlordGovId),
       document: new VerificationDocument(model.document),
-      verified: model.Verified,
+      isVerifiedLandlord: model.Verified,
     });
   }
 
   public static toResponse(landlordModel: LandlordModel): LandlordResponseDTO {
+    const userModel = new UserModel();
     return {
-      user: UserMapper.toUserResponse(landlordModel.user),
+      user: {
+        userId: userModel.userId,
+        name: userModel.Name,
+        dateOfBirth: userModel.DateOfBirth,
+        email: userModel.Email,
+        role: userModel.Role,
+        phoneNumber: userModel.PhoneNumber,
+        address: userModel.Address,
+        photo: userModel.Photo,
+        createdAt: userModel.createAt,
+        emailVerified: userModel.emailVerfied,
+      },
       cliQAccount: landlordModel.CliQAccount,
       landlordGovId: landlordModel.LandlordGovId,
       verifiedLandlord: landlordModel.Verified,
@@ -53,5 +64,3 @@ export class LandlordMapper {
     };
   }
 }
-
-

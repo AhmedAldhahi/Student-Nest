@@ -1,9 +1,9 @@
-import { UpdateStudentCommand } from "../../Command/Commands/UpdateStudentCommand";
-import { UpdateStudentCommandHandler } from "../../Command/Handlers/UpdateStudentCommandHandler";
+import { UpdateStudentCommand } from "../../Command/Commands/Student/UpdateStudentCommand";
+import { UpdateStudentCommandHandler } from "../../Command/Handlers/Student//UpdateStudentCommandHandler";
 import { StudentUpdateProfileRequest } from "../../DTO/profile/StudentRequest.updateProfile.profile.dto";
 import { ICashMemoryService } from "../../Interfaces/ICash.interface";
-import { GetStudentQueriesHandlers } from "../../Queries/Handlers/GetStudentProfileQueriesHandler";
-import { GetUserProfileQueries } from "../../Queries/Queries/GetUserProfileQueries";
+import { GetStudentQueriesHandlers } from "../../Queries/Handlers/Student/GetStudentProfileQueriesHandler";
+import { GetUserProfileQueries } from "../../Queries/Queries/User/GetUserProfileQueries";
 import { IProfileStrategy } from "./IprofileStrategy.strategy";
 
 export class StudentProfileStrategy implements IProfileStrategy {

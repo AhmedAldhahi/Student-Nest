@@ -1,5 +1,5 @@
-import { ApartmentDocumentEntity } from "../../../Domain/Entities/apartmentDocumentEntity.entity";
-import { IReadApartmentDocumentRepo } from "../../../Domain/Repositories/Read/ReadApartmentDocument.repositories";
+import { ApartmentDocumentEntity } from "../../../Domain/Modules/Housing/Entities/apartmentDocumentEntity.entity";
+import { IReadApartmentDocumentRepo } from "../../../Domain/Modules/Housing/Repositories/Read/ReadApartmentDocument.repositories";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { ApartmentDocumentModel } from "../../Database/orm/TypeOrm/entity/ApartmentDocument.entity";
 import { ApartmentDocumentMapper } from "../mapper/apartmentDocument.mapper";
@@ -8,7 +8,7 @@ export class ReadApartmentDocumentRepositories
   implements IReadApartmentDocumentRepo
 {
   public async findApartmentDocumentById(
-    id: number
+    id: string
   ): Promise<ApartmentDocumentEntity | null> {
     try {
       const apartmentDocument = await AppDataSource.getInstance()

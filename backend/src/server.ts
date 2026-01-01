@@ -16,8 +16,7 @@ import { auditMiddleware } from "./Presentation/http/middlewares/auditLog.middle
 import { ApartmentSharedRouter } from "./Presentation/http/routes/shared/apartment.routes";
 import { AdminIndexRouter } from "./Presentation/http/routes/admin/index.router";
 import { SharedIndexRouter } from "./Presentation/http/routes/shared/index.router";
-import { LeaseRequestManagementController } from "./Presentation/http/controllers/admin/leaseRequestManagement.controller";
-import { LeaseManagementController } from "./Presentation/http/controllers/admin/leaseManagement.controller";
+import { LandlordIndexRouter } from "./Presentation/http/routes/Landlord/index.router";
 export class Server {
   public app = express();
   public port = parseInt(process.env.PORT || "4000", 10);
@@ -101,6 +100,7 @@ export class Server {
       adminApartmentController,
       adminAuditLogController,
       adminNotificationController,
+      LandlordApartmentController,
     } = buildControllers();
 
     this.app.use(
@@ -110,6 +110,11 @@ export class Server {
         adminAuditLogController,
         adminUserManagementController
       )
+    );
+
+    this.app.use(
+      "/api/v1/landlord",
+      LandlordIndexRouter(LandlordApartmentController)
     );
 
     this.app.use(

@@ -1,4 +1,4 @@
-import { UserRole } from "../../../../Domain/Enum/UserRole.enum";
+import { UserRole } from "../../../../Domain/Shared/Enum/UserRole.enum";
 import { UserSimpleFactory } from "../../../SimpleFactory/GetUsersSimpleFactory";
 
 export class GetAllUserUseCase {

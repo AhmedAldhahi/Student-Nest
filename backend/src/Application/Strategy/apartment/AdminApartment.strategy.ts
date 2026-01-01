@@ -1,14 +1,14 @@
-import { deleteApartmentByIdCommand } from "../../Command/Commands/DeleteApartmentByIdCommand";
-import { deleteApartmentByIdCommandHandler } from "../../Command/Handlers/DeleteApartmentByIdCommandHandler";
-import { GetAllApartmentByQueryQueriesHandler } from "../../Queries/Handlers/GetAllApartmentQueries.QueriesHandler";
-import { GetAllApartmentQueriesHandler } from "../../Queries/Handlers/GetAllApartmentQueriesHandler";
-import { GetApartmentByIdQueriesHandler } from "../../Queries/Handlers/GetApartmentByIdQueriesHandler";
-import { GetApartmentDocumentByIdQueriesHandler } from "../../Queries/Handlers/GetApartmentDocumentById.QueriesHandler";
-import { GetApartmentByIdQueries } from "../../Queries/Queries/GetApartmentById";
-import { GetAllApartmentByTitleQueries } from "../../Queries/Queries/GetApartmentByName";
-import { GetDocumentOfApartmentByIdQueries } from "../../Queries/Queries/GetDocumentOfApartmntByIdQueries";
+import { GetApartmentByIdQueries } from "../../Queries/Queries/Apartment/GetApartmentById";
+import { GetDocumentOfApartmentByIdQueries } from "../../Queries/Queries/Apartment/GetDocumentOfApartmntByIdQueries";
 import { IApartmentStrategy } from "./IApartment.strategy";
-
+import { deleteApartmentByIdCommandHandler } from "../../Command/Handlers/Housing/Apartment/DeleteApartmentByIdCommandHandler";
+import { deleteApartmentByIdCommand } from "../../Command/Commands/Apartment/DeleteApartmentByIdCommand";
+import { GetAllApartmentByQueriesQueries } from "../../Queries/Queries/Apartment/GetApartmentByQueries";
+import { GetAllApartmentByQueryQueriesHandler } from "../../Queries/Handlers/Housing/Apartment/GetAllApartmentQueries.QueriesHandler";
+import { GetAllApartmentQueriesHandler } from "../../Queries/Handlers/Housing/Apartment/GetAllApartmentQueriesHandler";
+import { GetApartmentByIdQueriesHandler } from "../../Queries/Handlers/Housing/Apartment/GetApartmentByIdQueriesHandler";
+import { GetApartmentDocumentByIdQueriesHandler } from "../../Queries/Handlers/Housing/Apartment/GetApartmentDocumentById.QueriesHandler";
+import { GetAllApartmentQueries } from "../../Queries/Queries/Apartment/GetAllApartment";
 export class AdminApartmentStrategy implements IApartmentStrategy {
   constructor(
     private readonly commandHandler: deleteApartmentByIdCommandHandler,
@@ -20,7 +20,7 @@ export class AdminApartmentStrategy implements IApartmentStrategy {
 
   public async GetApartmentDetailById(
     userId: string,
-    id: number
+    id: string
   ): Promise<any> {
     try {
       const queries = new GetApartmentByIdQueries(id);
@@ -33,7 +33,7 @@ export class AdminApartmentStrategy implements IApartmentStrategy {
 
   public async FindApartmentDocumentById(
     userId: string,
-    id: number
+    id: string
   ): Promise<any> {
     try {
       const queries = new GetDocumentOfApartmentByIdQueries(id);
@@ -46,7 +46,9 @@ export class AdminApartmentStrategy implements IApartmentStrategy {
 
   public async getAllApartment(userId: string): Promise<any> {
     try {
-      return await this.GetAllApartmentQH.handle();
+      const Queries = new GetAllApartmentQueries(userId);
+
+      return await this.GetAllApartmentQH.handle(Queries);
     } catch (error: any) {
       console.error("fail to get all apartments", error);
     }
@@ -57,7 +59,7 @@ export class AdminApartmentStrategy implements IApartmentStrategy {
     userId: string
   ): Promise<any> {
     try {
-      const queries = new GetAllApartmentByTitleQueries(Queries);
+      const queries = new GetAllApartmentByQueriesQueries(Queries);
       return await this.SearchForApartmentByQH.handle(queries);
     } catch (error: any) {
       console.error("fail to get apartments !!");
@@ -65,7 +67,7 @@ export class AdminApartmentStrategy implements IApartmentStrategy {
     }
   }
 
-  public async deleteApartments(userId: number): Promise<any> {
+  public async deleteApartments(userId: string): Promise<any> {
     try {
       const command = new deleteApartmentByIdCommand(userId);
       return await this.commandHandler.handle(command);

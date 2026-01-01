@@ -1,6 +1,5 @@
-import { IReadUserRepositories } from "../../../../Domain/Repositories/Read/ReadUserRepositories.repositories";
-import { GetLeaseByQueryQueriesHandler } from "../../../Queries/Handlers/GetLeaseByQueryQueriesHandler";
-import { GetLeaseByQueryQueries } from "../../../Queries/Queries/GetLeaseByQuery.Queries";
+import { IReadUserRepositories } from "../../../../Domain/Modules/Identity/Repositories/ReadUserRepositories.repositories";
+import { GetLeaseByQueryQueries } from "../../../Queries/Queries/Lease/GetLeaseByQuery.Queries";
 import { LeaseContext } from "../../../Strategy/lease/LeaseContext";
 
 export class FindLeasesByIdUseCase {

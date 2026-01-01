@@ -1,10 +1,10 @@
 import { UserResponseDTO } from "../../../Application/DTO/profile/ UserResponseDTO";
-import { UserEntity } from "../../../Domain/Entities/userEntity.entity";
-import { OTP } from "../../../Domain/Value-Object/OTP.vo";
-import { UserDateOfBirth } from "../../../Domain/Value-Object/UserDateOfBirth.vo";
-import { UserEmail } from "../../../Domain/Value-Object/UserEmail.vo";
-import { UserName } from "../../../Domain/Value-Object/UserName.vo";
-import { userPhoneNumber } from "../../../Domain/Value-Object/UserPhoneNumber.vo";
+import { UserEntity } from "../../../Domain/Modules/Identity/Entities/userEntity.entity";
+import { OTP } from "../../../Domain/Shared/Value-Object/OTP.vo";
+import { UserDateOfBirth } from "../../../Domain/Shared/Value-Object/UserDateOfBirth.vo";
+import { UserEmail } from "../../../Domain/Shared/Value-Object/UserEmail.vo";
+import { UserName } from "../../../Domain/Shared/Value-Object/UserName.vo";
+import { userPhoneNumber } from "../../../Domain/Shared/Value-Object/UserPhoneNumber.vo";
 import { UserModel } from "../../Database/orm/TypeOrm/entity/User.entity";
 
 export class UserMapper {
@@ -108,7 +108,7 @@ export class UserMapper {
       address: user.Address,
       photo: user.Photo,
       createdAt: user.createAt,
-      emailVerfied: user.emailVerfied,
+      emailVerified: user.emailVerfied,
     };
   }
 }

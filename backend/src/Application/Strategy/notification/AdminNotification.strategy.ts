@@ -1,9 +1,10 @@
-import { deleteAdminNotificationByIdCommand } from "../../Command/Commands/DeleteAdminNotifcationByIdCommand";
-import { DeleteAllNotificationCommand } from "../../Command/Commands/DeleteAllNotificationCommand";
-import { deleteAdminNotificationByIdCommandHandler } from "../../Command/Handlers/DeleteAdminNotificationByIdCommandHandler";
-import { DeleteAllAdminNotificationCommandHandler } from "../../Command/Handlers/DeleteAllAdminNotificationCommandHandler";
-import { GetAllAdminNotificationQueriesHandler } from "../../Queries/Handlers/GetAllAdminNotificationQueriesHandler";
-import { GetAllNotificationQueries } from "../../Queries/Queries/GetAllNotifcation";
+import { deleteAdminNotificationByIdCommand } from "../../Command/Commands/Notification/DeleteAdminNotifcationByIdCommand";
+import { DeleteAllNotificationCommand } from "../../Command/Commands/Notification/DeleteAllNotificationCommand";
+import { deleteAdminNotificationByIdCommandHandler } from "../../Command/Handlers/Shared/Notification/DeleteAdminNotificationByIdCommandHandler";
+import { DeleteAllAdminNotificationCommandHandler } from "../../Command/Handlers/Shared/Notification/DeleteAllAdminNotificationCommandHandler";
+import { GetAllAdminNotificationQueriesHandler } from "../../Queries/Handlers/Notification/GetAllAdminNotificationQueriesHandler";
+import { GetAllNotificationQueries } from "../../Queries/Queries/Notification/GetAllNotifcation";
+
 import { INotificationsStrategy } from "./Inotification.strategy";
 
 export class AdminNotificationsStrategy implements INotificationsStrategy {

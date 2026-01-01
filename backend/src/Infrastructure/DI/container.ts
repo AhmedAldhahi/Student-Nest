@@ -46,8 +46,11 @@ import {
   GetApartmentByQueries,
 } from "./admin/ApartmentManagement";
 
-import { findAllAuditLogUseCase, FindAuditLogByQueriesUseCase } from "./admin/AuditLogManagement";
-import { deleteSpecificNotificationsCommand } from "../../Application/Command/Commands/DeleteSpecficNotificationsCommand";
+import {
+  findAllAuditLogUseCase,
+  FindAuditLogByQueriesUseCase,
+} from "./admin/AuditLogManagement";
+import { createApartmentUseCase } from "./Landlord/ApartmentMangement";
 
 export function buildDependencies() {
   return {
@@ -61,28 +64,28 @@ export function buildDependencies() {
       forgetPasswordUseCase: makeUpdateForgetPass(),
       resendOtpForgetPassword: makeResendForgetPassword(),
       verifiedForgetPasswordUseCase: makeVerifiedForgetPasswordOTP(),
-      
+
       userProfileData: getUserProfileData(),
       updateProfileUseCase: updateUserProfile(),
-      
+
       updateLandlordStatusUseCase: updateLandlordStatus(),
       DeleteLandlordByIdUseCase: deleteLandlordById(),
       findUserByEmailUseCase: findUserByQuery(),
       updateAccountActivateUseCase: UpdateUserActivateStatusUseCase(),
       GetAllUsersUseCase: GetAllUsers(),
-      
+
       GetAllLeaseUseCase: getAllLease(),
       getLeaseById: GetLeaseByQuery(),
-      
+
       getAllLeaseRequestUseCase: GetAllLeaseRequest(),
       getLeaseRequestByIdUseCase: GetLeaseRequestByQuery(),
-      
+
       GetAllNotificationUseCase: GetAllNotification(),
       updateNotificationUseCase: updateNotificationStatus(),
       deleteNotificationByIdUseCase: deleteNotificationById(),
       deleteAllNotificationUseCase: deleteAllNotification(),
       deleteSpecificNotificationUseCase: DeleteSpecificNotifications(),
-      
+
       GetAllApartmentUseCase: GetAllApartment(),
       getApartmentsByQueriesUseCase: GetApartmentByQueries(),
       editStatusApartmentVerifiedUseCase: EditApartmentStatusVerified(),
@@ -91,9 +94,11 @@ export function buildDependencies() {
       findApartmentDetailById: FindApartmentDetailByIdUseCase(),
       editApartmentUseCase: editApartmentDetailUseCase(),
       editApartmentDocumentUseCase: EditApartmentDocumentsUseCase(),
-      
+
       findAllAuditLogUseCase: findAllAuditLogUseCase(),
-      findAuditLogQueryUseCase:FindAuditLogByQueriesUseCase(),
+      findAuditLogQueryUseCase: FindAuditLogByQueriesUseCase(),
+
+      createApartmentsUseCase: createApartmentUseCase(),
     },
   };
 }

@@ -6,8 +6,8 @@ import {
   ManyToOne,
   JoinColumn,
 } from "typeorm";
-import { AuditLogActionType } from "../../../../../Domain/Enum/AuditLogAction.enum";
-import { UserRole } from "../../../../../Domain/Enum/UserRole.enum";
+import { AuditLogActionType } from "../../../../../Domain/Shared/Enum/AuditLogAction.enum";
+import { UserRole } from "../../../../../Domain/Shared/Enum/UserRole.enum";
 import { UserModel } from "./User.entity";
 
 @Entity("AuditLog")

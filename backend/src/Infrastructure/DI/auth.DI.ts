@@ -1,7 +1,6 @@
-import { CreateLandlordCommandHandler } from "../../Application/Command/Handlers/CreateLandlordCommandHandler";
-import { CreateStudentCommandHandler } from "../../Application/Command/Handlers/CreateStudentCommandHandler";
-import { LoginQueriesHandler } from "../../Application/Queries/Handlers/LoginQueriesHandlers";
-
+import { CreateLandlordCommandHandler } from "../../Application/Command/Handlers/Housing/Landlord/CreateLandlordCommandHandler";
+import { CreateStudentCommandHandler } from "../../Application/Command/Handlers/Student/CreateStudentCommandHandler";
+import { LoginQueriesHandler } from "../../Application/Queries/Handlers/Identiy/LoginQueriesHandlers";
 import { LoginUseCase } from "../../Application/Use-Case/Registeration/LoginUseCase.usecase";
 import { RegisterLandloardUseCase } from "../../Application/Use-Case/Registeration/RegisterLandloardUseCase.usecase";
 import { RegisterStudentUseCase } from "../../Application/Use-Case/Registeration/RegisterStudentUseCase.usecase";

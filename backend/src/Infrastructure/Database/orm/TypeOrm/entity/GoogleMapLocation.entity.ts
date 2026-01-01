@@ -1,10 +1,10 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from "typeorm";
 import { ApartmentModel } from "./Apartment.entity";
 
 @Entity("GoogleMapLocation")
 export class GoogleMapLocationModel {
-  @PrimaryGeneratedColumn()
-  googleMapLocationId: number;
+  @PrimaryColumn()
+  googleMapLocationId: string;
 
   @Column({ type: "decimal", precision: 11, scale: 8 })
   longitude: number;

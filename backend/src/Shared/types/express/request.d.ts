@@ -1,8 +1,8 @@
 // types/express.d.ts
 import { Request } from "express";
 import { ITokenPayload } from "../../../Application/interfaces/IToken.interface";
-import { AuditLogActionType } from "../../../Domain/Enum/AuditLogAction.enum";
-import { UserRole } from "../../../Domain/Enum/UserRole.enum";
+import { AuditLogActionType } from "../../../Domain/Shared/Enum/AuditLogAction.enum";
+import { UserRole } from "../../../Domain/Shared/Enum/UserRole.enum";
 
 declare module "express" {
   interface Request {

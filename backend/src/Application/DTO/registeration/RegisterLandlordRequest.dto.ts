@@ -1,4 +1,4 @@
-import { UserRole } from "../../../Domain/Enum/UserRole.enum";
+import { UserRole } from "../../../Domain/Shared/Enum/UserRole.enum";
 
 export interface RegisterLandloardRequest {
   // require
@@ -10,7 +10,7 @@ export interface RegisterLandloardRequest {
   phoneNumber: string;
 
   cliQAccount: string;
-  LandloardGovId: string;
+  LandlordGovId: string;
   document: Express.Multer.File;
 
   address?: string;

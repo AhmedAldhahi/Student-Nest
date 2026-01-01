@@ -1,5 +1,5 @@
 import { ITokenService } from "../../../Interfaces/IToken.interface";
-import { UpdateForgetPasswordCommandHandler } from "../../../Command/Handlers/UpdateForgetPasswordCommandHandler";
+import { UpdateForgetPasswordCommandHandler } from "../../../Command/Handlers/Identiy/UpdateForgetPasswordCommandHandler";
 import { ForgetPasswordRequest } from "../../../DTO/verfication/ForgetPasswordRequest.dto";
 import { ForgetPasswordResponse } from "../../../DTO/verfication/ForgetPasswordRespone.dto";
 

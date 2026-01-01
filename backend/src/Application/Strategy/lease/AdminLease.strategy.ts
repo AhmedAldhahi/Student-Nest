@@ -1,6 +1,7 @@
-import { GetAllLeaseQueriesHandler } from "../../Queries/Handlers/GetAllLeaseQueriesHandler";
-import { GetLeaseByQueryQueriesHandler } from "../../Queries/Handlers/GetLeaseByQueryQueriesHandler";
-import { GetLeaseByQueryQueries } from "../../Queries/Queries/GetLeaseByQuery.Queries";
+
+import { GetAllLeaseQueriesHandler } from "../../Queries/Handlers/Leases/Lease/GetAllLeaseQueriesHandler";
+import { GetLeaseByQueryQueriesHandler } from "../../Queries/Handlers/Leases/Lease/GetLeaseByQueryQueriesHandler";
+import { GetLeaseByQueryQueries } from "../../Queries/Queries/Lease/GetLeaseByQuery.Queries";
 import { ILeaseStrategy } from "./ILease.strategy";
 
 export class AdminLeaseStrategy implements ILeaseStrategy {

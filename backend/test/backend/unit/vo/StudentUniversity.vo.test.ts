@@ -1,4 +1,4 @@
-import { StudentUniversity } from "../../../../src/Domain/Value-Object/StudentUniversity.vo";
+import { StudentUniversity } from "../../../../src/Domain/Modules/Student/Value-Object/StudentUniversity.vo";
 
 describe("StudentUniversity Value Object", () => {
   

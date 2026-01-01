@@ -1,4 +1,4 @@
-import { NumberOfBed } from "../../../../src/Domain/Value-Object/NumberOfBed.vo";
+import { NumberOfBed } from "../../../../src/Domain/Modules/Housing/Value-Object/NumberOfBed.vo";
 
 describe("NumberOfBed Value Object", () => {
   

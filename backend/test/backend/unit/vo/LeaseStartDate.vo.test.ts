@@ -1,6 +1,5 @@
-import { LeaseStartDate } from "../../../../src/Domain/Value-Object/LeaseStartDate.vo";
+import { LeaseStartDate } from "../../../../src/Domain/Modules/Leases/Value-Object/LeaseStartDate.vo";
 
-// Mock constant if needed, or assume currentYear matches the frozen date
 // For this test, let's assume currentYear is 2025.
 jest.mock("../../../../src/Shared/constants/validationZod.constant", () => ({
   currentYear: 2025,

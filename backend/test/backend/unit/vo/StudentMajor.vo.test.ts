@@ -1,4 +1,4 @@
-import { StudentMajor } from "../../../../src/Domain/Value-Object/StudentMajor.vo";
+import { StudentMajor } from "../../../../src/Domain/Modules/Student/Value-Object/StudentMajor.vo";
 
 describe("StudentMajor Value Object", () => {
   //  White List (Valid)

@@ -1,5 +1,5 @@
-import { AuditLogEntity } from "../../../Domain/Entities/auditlogEntity.entity";
-import { UserRole } from "../../../Domain/Enum/UserRole.enum";
+import { AuditLogEntity } from "../../../Domain/Modules/adminstration/Entities/auditlogEntity.entity";
+import { UserRole } from "../../../Domain/Shared/Enum/UserRole.enum";
 import { AuditLogModel } from "../../Database/orm/TypeOrm/entity/AuditLog.entity";
 
 export class AuditLogMapper {

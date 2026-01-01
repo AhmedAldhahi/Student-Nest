@@ -1,4 +1,4 @@
-import { RentTerm } from "../../../../src/Domain/Value-Object/RentTerm.vo";
+import { RentTerm } from "../../../../src/Domain/Modules/Leases/Value-Object/RentTerm.vo";
 
 describe("RentTerm Value Object", () => {
   

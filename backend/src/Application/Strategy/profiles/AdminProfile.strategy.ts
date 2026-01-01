@@ -1,10 +1,10 @@
-import { UpdateAdminCommand } from "../../Command/Commands/UpdateAdminCommand";
-import { UpdateAdminCommandHandler } from "../../Command/Handlers/UpdateAdminCommandHandler";
 import { userUpdateProfileRequest } from "../../DTO/profile/adminRequest.updateProfile.profile.dto";
 import { ICashMemoryService } from "../../Interfaces/ICash.interface";
-import { GetUserProfileQueriesHandlers } from "../../Queries/Handlers/GetUserProfileQueriesHandlerts";
-import { GetUserProfileQueries } from "../../Queries/Queries/GetUserProfileQueries";
+import { GetUserProfileQueriesHandlers } from "../../Queries/Handlers/Identiy/GetUserProfileQueriesHandlerts";
+import { GetUserProfileQueries } from "../../Queries/Queries/User/GetUserProfileQueries";
 import { IProfileStrategy } from "./IprofileStrategy.strategy";
+import {UpdateAdminCommandHandler} from "../../Command/Handlers/Adminstration/UpdateAdminCommandHandler"
+import { UpdateAdminCommand } from "../../Command/Commands/Admin/UpdateAdminCommand";
 
 export class AdminProfileStrategy implements IProfileStrategy {
   constructor(

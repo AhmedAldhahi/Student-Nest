@@ -7,8 +7,8 @@ import {
   UpdateDateColumn,
   OneToOne,
 } from "typeorm";
-import { UserRole } from "../../../../../Domain/Enum/UserRole.enum";
-import { UserAccountStatus } from "../../../../../Domain/Enum/UserAccountStatus.enum";
+import { UserRole } from "../../../../../Domain/Shared/Enum/UserRole.enum";
+import { UserAccountStatus } from "../../../../../Domain/Shared/Enum/UserAccountStatus.enum";
 import { LandlordModel } from "./Landloard.entity";
 import { StudentModel } from "./Student.entity";
 import { AdminModel } from "./Admin.entity";

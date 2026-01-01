@@ -1,5 +1,5 @@
-import { UserEntity } from "../../../Domain/Entities/userEntity.entity";
-import { IReadUserRepositories } from "../../../Domain/Repositories/Read/ReadUserRepositories.repositories";
+import { UserEntity } from "../../../Domain/Modules/Identity/Entities/userEntity.entity";
+import { IReadUserRepositories } from "../../../Domain/Modules/Identity/Repositories/ReadUserRepositories.repositories";
 import { UserMapper } from "../mapper/user.mapper";
 import { UserModel } from "../../Database/orm/TypeOrm/entity/User.entity";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";

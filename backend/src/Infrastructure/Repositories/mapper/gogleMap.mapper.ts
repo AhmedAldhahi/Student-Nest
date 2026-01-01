@@ -1,7 +1,8 @@
-import { GoogleMapLocationEntity } from "../../../Domain/Entities/googleMapLocationEntity.entity";
+import { GoogleMapLocationEntity } from "../../../Domain/Modules/Housing/Entities/googleMapLocationEntity.entity";
 import { GoogleMapLocationModel } from "../../Database/orm/TypeOrm/entity/GoogleMapLocation.entity";
 
 export class GoogleMapMapper {
+  
   public static toModel(
     entity: GoogleMapLocationEntity
   ): GoogleMapLocationModel {

@@ -1,7 +1,6 @@
-import { EditApartmentVerificationStatus } from "../../../Command/Commands/udateApartmentVerfiedSTatus.command";
-import { EditApartmentStatusVerifiedCommandHandler } from "../../../Command/Handlers/EditApartmetVerficationStatusCommandHandler";
+import { EditApartmentVerificationStatus } from "../../../Command/Commands/Apartment/udateApartmentVerfiedSTatus.command";
 import { EditApartmentVerificationStatusRequest } from "../../../DTO/admin/EditApartmentVerficationStatusDTO.dto";
-
+import { EditApartmentStatusVerifiedCommandHandler } from "../../../Command/Handlers/Housing/Apartment/EditApartmetVerficationStatusCommandHandler";
 export class EditApartmentStatusVerifiedUseCase {
   constructor(
     private readonly commandHandler: EditApartmentStatusVerifiedCommandHandler

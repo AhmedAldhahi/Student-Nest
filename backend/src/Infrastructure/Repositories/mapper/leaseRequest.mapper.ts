@@ -1,7 +1,8 @@
 import { ILeaseRequestDTO } from "../../../Application/DTO/admin/LeaseRequestDTO.dto";
-import { LeaseRequestEntity } from "../../../Domain/Entities/leaseRequestEntity.entity";
-import { LeaseStartDate } from "../../../Domain/Value-Object/LeaseStartDate.vo";
-import { RentTerm } from "../../../Domain/Value-Object/RentTerm.vo";
+import { LeaseRequestEntity } from "../../../Domain/Modules/Leases/Entities/leaseRequestEntity.entity";
+import { LeaseStartDate } from "../../../Domain/Modules/Leases/Value-Object/LeaseStartDate.vo";
+import { RentTerm } from "../../../Domain/Modules/Leases/Value-Object/RentTerm.vo";
+
 import { LeaseRequestModel } from "../../Database/orm/TypeOrm/entity/LeaseRequest";
 import { ApartmentMapper } from "./apartment.mapper";
 import { LandlordMapper } from "./landloard.mapper";

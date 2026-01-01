@@ -1,4 +1,4 @@
-import { UserEntity } from "../../../../src/Domain/Entities/userEntity.entity";
+import { UserEntity } from "../../../../src/Domain/Modules/Identity/Entities/userEntity.entity";
 
 describe("UserEntity entity ", () => {
     

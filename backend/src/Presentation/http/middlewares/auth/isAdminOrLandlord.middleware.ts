@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { AppDataSource } from "../../../../Infrastructure/Database/orm/TypeOrm/data-source";
 import { UserModel } from "../../../../Infrastructure/Database/orm/TypeOrm/entity/User.entity";
-import { UserRole } from "../../../../Domain/Enum/UserRole.enum";
+import { UserRole } from "../../../../Domain/Shared/Enum/UserRole.enum";
 
 export const isAdminOrLandlord = async (
   req: Request,

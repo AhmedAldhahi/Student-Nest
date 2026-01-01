@@ -1,17 +1,89 @@
 import { FindOptionsWhere, Like } from "typeorm";
 
-import { IReadApartmentRepo } from "../../../Domain/Repositories/Read/ReadApartmentRepo.repositoreis";
+import { IReadApartmentRepo } from "../../../Domain/Modules/Housing/Repositories/Read/ReadApartmentRepo.repositoreis";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { ApartmentModel } from "../../Database/orm/TypeOrm/entity/Apartment.entity";
 import { ApartmentMapper } from "../mapper/apartment.mapper";
-import { ApartmentAggregateRoot } from "../../../Domain/AggregatesRoot/apartmentEntity.entity";
+import { ApartmentAggregateRoot } from "../../../Domain/Modules/Housing/AgregateRoot/apartmentEntity.entity";
 import {
   IApartmentSimpleDTO,
   IApartmentDTO,
 } from "../../../Application/DTO/admin/ApartmentDTo.dto";
 
 export class ReadApartmentRepositories implements IReadApartmentRepo {
-  public async findAllApartment(): Promise<IApartmentSimpleDTO[] | null> {
+  public async findAllApartmentForLandlord(
+    userId: string
+  ): Promise<IApartmentSimpleDTO[] | null> {
+    try {
+      const apartmentRepo =
+        AppDataSource.getInstance().getRepository(ApartmentModel);
+
+      const apartments = await apartmentRepo.find({
+        // 1. SELECT: Here you pick the Columns
+        where: {
+          landlordId: userId,
+        },
+        select: {
+          apartmentId: true,
+          propertyStatus: true,
+          title: true,
+          description: true,
+          address: true,
+          isJoin: true,
+          createAt: true,
+          updateAt: true,
+          isFully: true,
+          price: true,
+          Verified: true,
+          numberOfBed: true,
+          numberOfRoom: true,
+
+          landlord: {
+            userId: true,
+            user: {
+              Name: true,
+            },
+          },
+        },
+        relations: {
+          landlord: {
+            user: true,
+          },
+          photos: true,
+        },
+      });
+
+      if (!apartments || apartments.length === 0) {
+        return [];
+      }
+
+      return apartments.map((apt) => ApartmentMapper.toResponsesSimple(apt));
+    } catch (error: any) {
+      console.error("Error finding apartments:", error);
+      throw new Error("Unable to retrieve apartments.");
+    }
+  }
+  findApartmentByQueryForLandlord(
+    prefix: string,
+    userId: string
+  ): Promise<IApartmentSimpleDTO[] | null> {
+    throw new Error("Method not implemented.");
+  }
+  findApartmentForLandlordById(
+    id: string,
+    userId: string
+  ): Promise<ApartmentAggregateRoot | null> {
+    throw new Error("Method not implemented.");
+  }
+  findApartmentDetailsByIdForLandlord(
+    id: string,
+    userId: string
+  ): Promise<IApartmentDTO | null> {
+    throw new Error("Method not implemented.");
+  }
+  public async findAllApartment(
+    userId: string
+  ): Promise<IApartmentSimpleDTO[] | null> {
     try {
       const apartmentRepo =
         AppDataSource.getInstance().getRepository(ApartmentModel);
@@ -41,10 +113,9 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
           },
         },
 
-        // 2. RELATIONS: Here you ONLY pick the Tables to join
         relations: {
           landlord: {
-            user: true, // Join Landlord -> User
+            user: true,
           },
           photos: true,
         },
@@ -54,10 +125,10 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
         return [];
       }
 
-      return apartments.map((apt) => ApartmentMapper.toResponsesSimple(apt));
+      return apartments.map((orm) => ApartmentMapper.toResponsesSimple(orm));
     } catch (error: any) {
-      console.error("Error finding apartments:", error);
-      throw new Error("Unable to retrieve apartments.");
+      console.error("Error searching apartment:", error);
+      throw new Error(`Unable to search apartments: ${error.message}`);
     }
   }
 
@@ -70,9 +141,6 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
 
       const query = prefix.trim();
 
-      // Check if the query is a valid number to search by ID
-      const isNumeric = /^\d+$/.test(query);
-
       // Initialize the array for OR logic
       let whereCondition: FindOptionsWhere<ApartmentModel>[] = [
         { title: Like(`%${query}%`) },
@@ -81,12 +149,8 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
 
         // Optional: Search by Landlord Name via relation
         { landlord: { user: { Name: Like(`%${query}%`) } } },
+        { apartmentId: Like(`%${query}%`) },
       ];
-
-      // If the query is a number, add the ID search to the array
-      if (isNumeric) {
-        whereCondition.push({ apartmentId: Number(query) });
-      }
 
       const apartments = await apartmentRepo.find({
         where: whereCondition,
@@ -134,7 +198,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
   }
 
   public async findApartmentById(
-    id: number
+    id: string
   ): Promise<ApartmentAggregateRoot | null> {
     try {
       const apartment = await AppDataSource.getInstance()
@@ -157,7 +221,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
   }
 
   public async findApartmentDetailsById(
-    id: number
+    id: string
   ): Promise<IApartmentDTO | null> {
     try {
       const apartment = await AppDataSource.getInstance()

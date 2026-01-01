@@ -1,4 +1,4 @@
-import { IReadUserRepositories } from "../../../../Domain/Repositories/Read/ReadUserRepositories.repositories";
+import { IReadUserRepositories } from "../../../../Domain/Modules/Identity/Repositories/ReadUserRepositories.repositories";
 import { ApartmentContext } from "../../../Strategy/apartment/ApartmentContext";
 
 export class DeleteApartmentByIdUseCase {
@@ -7,7 +7,7 @@ export class DeleteApartmentByIdUseCase {
     private readonly readUserRepo: IReadUserRepositories
   ) {}
 
-  public async execute(userId: string, id: number) {
+  public async execute(userId: string, id: string) {
     try {
       const user = await this.readUserRepo.findById(userId);
 

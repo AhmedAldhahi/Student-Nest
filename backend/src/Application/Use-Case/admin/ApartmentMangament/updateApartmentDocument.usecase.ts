@@ -1,5 +1,5 @@
-import { UpdateApartmentDocumentFileCommand } from "../../../Command/Commands/updateApartmentDocumentFileCommand";
-import { UpdateApartmentDocumentFileCommandHandler } from "../../../Command/Handlers/updateApartmentDocumentCommandHandler";
+import { UpdateApartmentDocumentFileCommand } from "../../../Command/Commands/Admin/updateApartmentDocumentFileCommand";
+import { UpdateApartmentDocumentFileCommandHandler } from "../../../Command/Handlers/Housing/Apartment/updateApartmentDocumentCommandHandler";
 import { EditApartmentDocumentDataRequest } from "../../../DTO/admin/EditApaartmentDocumentDToRequest.dto";
 
 export class UpdateApartmentDocumentUseCase {
@@ -9,7 +9,7 @@ export class UpdateApartmentDocumentUseCase {
 
   public async execute(
     dto: EditApartmentDocumentDataRequest,
-    id: number
+    id: string
   ): Promise<{ message: string }> {
     try {
       const command = new UpdateApartmentDocumentFileCommand(dto, id);

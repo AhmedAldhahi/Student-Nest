@@ -1,5 +1,5 @@
-import { GetAuditLogByQueriesHandler } from "../../../Queries/Handlers/GetAuditLogByQueryQueryHandler";
-import { GetAuditLogByQueries } from "../../../Queries/Queries/GetAuditLogByQueries";
+import { GetAuditLogByQueriesHandler } from "../../../Queries/Handlers/Adminstrator/AuditLog/GetAuditLogByQueryQueryHandler";
+import { GetAuditLogByQueries } from "../../../Queries/Queries/AuditLog/GetAuditLogByQueries";
 export class GetAuditLogByQueriesUseCase {
   constructor(private readonly commandHandler: GetAuditLogByQueriesHandler) {}
 

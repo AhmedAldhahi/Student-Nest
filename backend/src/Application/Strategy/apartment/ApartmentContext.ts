@@ -1,4 +1,4 @@
-import { UserRole } from "../../../Domain/Enum/UserRole.enum";
+import { UserRole } from "../../../Domain/Shared/Enum/UserRole.enum";
 import { AdminApartmentStrategy } from "./AdminApartment.strategy";
 import { IApartmentStrategy } from "./IApartment.strategy";
 import { LandlordApartmentStrategy } from "./LandlordApartment.strategy";
@@ -9,7 +9,7 @@ export class ApartmentContext {
     private readonly landlordStrategy: LandlordApartmentStrategy
   ) {}
 
-  public async DeleteApartment(userId: number, role: UserRole) {
+  public async DeleteApartment(userId: string, role: UserRole) {
     try {
       let strategy: IApartmentStrategy;
       switch (role) {
@@ -73,7 +73,7 @@ export class ApartmentContext {
   public async executeApartmentDocumentById(
     userId: string,
     role: UserRole,
-    id: number
+    id: string
   ) {
     try {
       let strategy: IApartmentStrategy;
@@ -96,7 +96,7 @@ export class ApartmentContext {
   public async executeGetApartmentDetailById(
     userId: string,
     role: UserRole,
-    id: number
+    id: string
   ) {
     try {
       let strategy: IApartmentStrategy;

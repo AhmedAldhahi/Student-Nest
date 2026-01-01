@@ -1,10 +1,10 @@
-import { DeleteUserCommandHandler } from "../../../Application/Command/Handlers/DeleteUserCommandHandler";
-import { updateVerificationStatusCommandHandler } from "../../../Application/Command/Handlers/updateLandlordVerficationStatusCommandHandler";
-import { UpdateUserActivateStatusCommandHandler } from "../../../Application/Command/Handlers/UpdateUserActivateStatus.CommandHandler";
-import { GetAllLandlordByQueriesQueriesHandler } from "../../../Application/Queries/Handlers/GetAllLandlordByQueriesQueriesHandler";
-import { GetAllLandlordQueriesHandler } from "../../../Application/Queries/Handlers/GetAllLandlordQueriesHandler";
-import { GetAllStudentsByQueriesQueriesHandler } from "../../../Application/Queries/Handlers/GetAllStudentByQueriesQueriesHandler ";
-import { GetAllStudentQueriesHandler } from "../../../Application/Queries/Handlers/GetAllStudentQueriesHandler";
+import { updateVerificationStatusCommandHandler } from "../../../Application/Command/Handlers/Adminstration/updateLandlordVerficationStatusCommandHandler";
+import { DeleteUserCommandHandler } from "../../../Application/Command/Handlers/Adminstration/DeleteUserCommandHandler";
+import { UpdateUserActivateStatusCommandHandler } from "../../../Application/Command/Handlers/Adminstration/UpdateUserActivateStatus.CommandHandler";
+import { GetAllLandlordByQueriesQueriesHandler } from "../../../Application/Queries/Handlers/Housing/Landlord/GetAllLandlordByQueriesQueriesHandler";
+import { GetAllLandlordQueriesHandler } from "../../../Application/Queries/Handlers/Housing/Landlord/GetAllLandlordQueriesHandler";
+import { GetAllStudentsByQueriesQueriesHandler } from "../../../Application/Queries/Handlers/Student/GetAllStudentByQueriesQueriesHandler ";
+import { GetAllStudentQueriesHandler } from "../../../Application/Queries/Handlers/Student/GetAllStudentQueriesHandler";
 import { GetUserEmailSimpleFactory } from "../../../Application/SimpleFactory/GetUserQuerySimpleFactory";
 import { UserSimpleFactory } from "../../../Application/SimpleFactory/GetUsersSimpleFactory";
 import { DeleteLandlordByIdUseCase } from "../../../Application/Use-Case/admin/UserMangament/DeleteUserById.usecase";

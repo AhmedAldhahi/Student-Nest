@@ -8,12 +8,11 @@ import { VerifiedForgetPasswordOtpUseCase } from "../../Application/Use-Case/Ver
 import { ResendOtpUseCase } from "../../Application/Use-Case/Verfication/OTP/ResendOtpUseCase.usecase";
 import { ResendOtpForgetPasswordUseCase } from "../../Application/Use-Case/Verfication/ForgetPassword/ResendOtpForgetPasswordUseCase.usecase";
 import { ReadUserRepositories } from "../Repositories/Read/ReadUserRepositories";
-import { ResendOtpCommandHandler } from "../../Application/Command/Handlers/ResendOtpCommandHandler";
-import { VerifiedOtpCommandHandler } from "../../Application/Command/Handlers/VerfiedOtpCommandHandler";
-import { UpdateForgetPasswordCommand } from "../../Application/Command/Commands/UpdateForgetPasswordCommand";
-import { UpdateForgetPasswordCommandHandler } from "../../Application/Command/Handlers/UpdateForgetPasswordCommandHandler";
-import { ResendOtpForgetPassCommandHandler } from "../../Application/Command/Handlers/ResendOtpForgetPassCommandHandler";
-import { VerifiedOTPForgetPassCommandHandler } from "../../Application/Command/Handlers/VerfiedOtpResetPassCommandHandler";
+import { ResendOtpCommandHandler } from "../../Application/Command/Handlers/Identiy/ResendOtpCommandHandler";
+import { ResendOtpForgetPassCommandHandler } from "../../Application/Command/Handlers/Identiy/ResendOtpForgetPassCommandHandler";
+import { UpdateForgetPasswordCommandHandler } from "../../Application/Command/Handlers/Identiy/UpdateForgetPasswordCommandHandler";
+import { VerifiedOtpCommandHandler } from "../../Application/Command/Handlers/Identiy/VerfiedOtpCommandHandler";
+import { VerifiedOTPForgetPassCommandHandler } from "../../Application/Command/Handlers/Identiy/VerfiedOtpResetPassCommandHandler";
 
 export function makeVerifiedEmailOTP(): VerifiedOtpUseCase {
   const unitOfrWork = new UnitOfWork();

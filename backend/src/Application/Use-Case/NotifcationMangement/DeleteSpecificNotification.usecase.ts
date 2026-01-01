@@ -1,6 +1,5 @@
-import { deleteSpecificNotificationsCommand } from "../../Command/Commands/DeleteSpecficNotificationsCommand";
-import { deleteSpecificNotificationsCommandHandler } from "../../Command/Handlers/DeleteSpecificationNotificationCommandHandler";
-
+import { deleteSpecificNotificationsCommand } from "../../Command/Commands/Notification/DeleteSpecficNotificationsCommand";
+import { deleteSpecificNotificationsCommandHandler } from "../../Command/Handlers/Shared/Notification/DeleteSpecificationNotificationCommandHandler";
 export class DeleteSpecificNotificationsUseCase {
   constructor(
     private readonly commandHandler: deleteSpecificNotificationsCommandHandler
