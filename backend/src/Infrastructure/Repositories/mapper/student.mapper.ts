@@ -1,18 +1,18 @@
 import { StudentResponseDto } from "../../../Application/DTO/profile/StudentResponseDto";
-import { StudentAggregateRoot } from "../../../Domain/AggregatesRoot/studentEntity.entity";
-import { StudentCard } from "../../../Domain/Value-Object/StudentCard.vo";
-import { studentGraduateYear } from "../../../Domain/Value-Object/StudentGraduateYear.vo";
-import { StudentMajor } from "../../../Domain/Value-Object/StudentMajor.vo";
-import { StudentUniversity } from "../../../Domain/Value-Object/StudentUniversity.vo";
-import { GovernmentID } from "../../../Domain/Value-Object/UserGovId.vo";
-import { VerificationDocument } from "../../../Domain/Value-Object/VerficationDocument.vo";
+import { StudentAggregateRoot } from "../../../Domain/Modules/Student/AgregatesRoot/studentEntity.entity";
+import { StudentCard } from "../../../Domain/Modules/Student/Value-Object/StudentCard.vo";
+import { studentGraduateYear } from "../../../Domain/Modules/Student/Value-Object/StudentGraduateYear.vo";
+import { StudentMajor } from "../../../Domain/Modules/Student/Value-Object/StudentMajor.vo";
+import { StudentUniversity } from "../../../Domain/Modules/Student/Value-Object/StudentUniversity.vo";
+import { GovernmentID } from "../../../Domain/Shared/Value-Object/UserGovId.vo";
+import { VerificationDocument } from "../../../Domain/Shared/Value-Object/VerficationDocument.vo";
 import { StudentModel } from "../../Database/orm/TypeOrm/entity/Student.entity";
-import { UserMapper } from "./user.mapper";
+import { UserModel } from "../../Database/orm/TypeOrm/entity/User.entity";
 
 export class StudentMapper {
   public static toEntity(stdModel: StudentModel): StudentAggregateRoot {
     return new StudentAggregateRoot({
-      user: UserMapper.toEntity(stdModel.user),
+      userId: stdModel.userId,
       studentCardId: new StudentCard(stdModel.StudentCardId),
       userGovId: new GovernmentID(stdModel.StudentGovId),
       universityName: new StudentUniversity(stdModel.UniversityName),
@@ -26,8 +26,20 @@ export class StudentMapper {
   }
 
   public static toResponse(stdModel: StudentModel): StudentResponseDto {
+    const userModel = new UserModel();
     return {
-      user: UserMapper.toUserResponse(stdModel.user),
+      user: {
+        userId: userModel.userId,
+        name: userModel.Name,
+        dateOfBirth: userModel.DateOfBirth,
+        email: userModel.Email,
+        role: userModel.Role,
+        phoneNumber: userModel.PhoneNumber,
+        address: userModel.Address,
+        photo: userModel.Photo,
+        createdAt: userModel.createAt,
+        emailVerified: userModel.emailVerfied,
+      },
       GraduationYear: stdModel.GraduationYear,
       Major: stdModel.Major,
       studentCardID: stdModel.StudentCardId,
@@ -41,7 +53,6 @@ export class StudentMapper {
     const validationData = this.toModelValidation(stdEntity);
     const userModel = new StudentModel();
 
-    userModel.user = UserMapper.toOrm(stdEntity.getUser());
     userModel.userId = stdEntity.getUserId();
     userModel.StudentCardId = validationData.stdCardId;
     userModel.StudentGovId = validationData.stdGovId;

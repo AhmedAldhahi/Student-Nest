@@ -1,5 +1,5 @@
 import { IEmailService } from "../../Interfaces/IEmail.interface";
-import { CreateLandlordCommandHandler } from "../../Command/Handlers/CreateLandlordCommandHandler";
+import { CreateLandlordCommandHandler } from "../../Command/Handlers/Housing/Landlord/CreateLandlordCommandHandler";
 import { RegisterLandloardRequest } from "../../DTO/registeration/RegisterLandlordRequest.dto";
 import { RegisterLandloardRespone } from "../../DTO/registeration/RegisterLandloardRespone.dto";
 

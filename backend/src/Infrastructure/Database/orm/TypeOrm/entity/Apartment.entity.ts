@@ -6,7 +6,7 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { LandlordModel } from "./Landloard.entity";
@@ -16,8 +16,8 @@ import { ApartmentPhotoModel } from "./ApartmentPhoto.entity";
 
 @Entity("apartment")
 export class ApartmentModel {
-  @PrimaryGeneratedColumn()
-  apartmentId: number;
+  @PrimaryColumn()
+  apartmentId: string;
 
   @Column({ type: "boolean", nullable: false })
   propertyStatus: boolean;
@@ -55,6 +55,9 @@ export class ApartmentModel {
   @UpdateDateColumn({ name: "updateAt" })
   updateAt: Date;
 
+  @Column({ nullable: false })
+  landlordId: string;
+
   @ManyToOne(() => LandlordModel, (landlord) => landlord.apartments, {
     onDelete: "CASCADE",
   })
@@ -66,13 +69,10 @@ export class ApartmentModel {
   })
   documents: ApartmentDocumentModel[];
 
-  
-  
   @OneToMany(() => ApartmentPhotoModel, (doc) => doc.apartment, {
     cascade: true,
   })
   photos: ApartmentPhotoModel[];
-
 
   @OneToOne(() => GoogleMapLocationModel, (loc) => loc.apartment, {
     cascade: true, // Allows saving Apartment + Location in one go

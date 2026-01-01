@@ -1,7 +1,7 @@
 import { LoginRequest } from "../../DTO/registeration/LoginRequest.dto";
 import { LoginResponse } from "../../DTO/registeration/LoginRespone.dto";
 import { ITokenService } from "../../Interfaces/IToken.interface";
-import { LoginQueriesHandler } from "../../Queries/Handlers/LoginQueriesHandlers";
+import { LoginQueriesHandler } from "../../Queries/Handlers/Identiy/LoginQueriesHandlers";
 
 export class LoginUseCase {
   constructor(

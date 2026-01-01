@@ -1,11 +1,12 @@
-import { deleteAdminNotificationByIdCommandHandler } from "../../Application/Command/Handlers/DeleteAdminNotificationByIdCommandHandler";
-import { DeleteAllAdminNotificationCommandHandler } from "../../Application/Command/Handlers/DeleteAllAdminNotificationCommandHandler";
-import { DeleteAllNotificationCommandHandler } from "../../Application/Command/Handlers/DeleteAllNotificationCommandHandler";
-import { deleteNotificationByIdCommandHandler } from "../../Application/Command/Handlers/DeleteNotificationByIdCommandHandler";
-import { deleteSpecificNotificationsCommandHandler } from "../../Application/Command/Handlers/DeleteSpecificationNotificationCommandHandler";
-import { UpdateNotificationStatusCommandHandler } from "../../Application/Command/Handlers/updateNotifcationStatusCommandHandler";
-import { GetAllAdminNotificationQueriesHandler } from "../../Application/Queries/Handlers/GetAllAdminNotificationQueriesHandler";
-import { GetAllNotificationQueriesHandler } from "../../Application/Queries/Handlers/GetAllNotifcationQueriesHandler";
+
+import { deleteAdminNotificationByIdCommandHandler } from "../../Application/Command/Handlers/Shared/Notification/DeleteAdminNotificationByIdCommandHandler";
+import { DeleteAllAdminNotificationCommandHandler } from "../../Application/Command/Handlers/Shared/Notification/DeleteAllAdminNotificationCommandHandler";
+import { DeleteAllNotificationCommandHandler } from "../../Application/Command/Handlers/Shared/Notification/DeleteAllNotificationCommandHandler";
+import { deleteNotificationByIdCommandHandler } from "../../Application/Command/Handlers/Shared/Notification/DeleteNotificationByIdCommandHandler";
+import { deleteSpecificNotificationsCommandHandler } from "../../Application/Command/Handlers/Shared/Notification/DeleteSpecificationNotificationCommandHandler";
+import { UpdateNotificationStatusCommandHandler } from "../../Application/Command/Handlers/Shared/Notification/updateNotifcationStatusCommandHandler";
+import { GetAllAdminNotificationQueriesHandler } from "../../Application/Queries/Handlers/Notification/GetAllAdminNotificationQueriesHandler";
+import { GetAllNotificationQueriesHandler } from "../../Application/Queries/Handlers/Notification/GetAllNotifcationQueriesHandler";
 import { AdminNotificationsStrategy } from "../../Application/Strategy/notification/AdminNotification.strategy";
 import { NotificationContext } from "../../Application/Strategy/notification/notificationContext";
 import { UserNotificationsStrategy } from "../../Application/Strategy/notification/UserNotifications.strategy";

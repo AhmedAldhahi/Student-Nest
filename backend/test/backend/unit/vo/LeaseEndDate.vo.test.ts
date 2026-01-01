@@ -1,5 +1,4 @@
-import { LeaseEndDate } from "../../../../src/Domain/Value-Object/LeaseEndDate.vo";
-
+import { LeaseEndDate } from "../../../../src/Domain/Modules/Leases/Value-Object/LeaseEndDate.vo";
 // Mock constant if needed
 jest.mock("../../../../src/Shared/constants/validationZod.constant", () => ({
   currentYear: 2025

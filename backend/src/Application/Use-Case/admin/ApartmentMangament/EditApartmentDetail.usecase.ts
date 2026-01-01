@@ -1,5 +1,5 @@
-import { EditApartmentDetailByIdCommand } from "../../../Command/Commands/EditApartmentCommand";
-import { EditApartmentDetailByIdCommandHandler } from "../../../Command/Handlers/EditApartmentDetailByIdCommandHandler";
+import { EditApartmentDetailByIdCommand } from "../../../Command/Commands/Apartment/EditApartmentCommand";
+import { EditApartmentDetailByIdCommandHandler } from "../../../Command/Handlers/Housing/Apartment/EditApartmentDetailByIdCommandHandler";
 import { EditApartmentDataRequest } from "../../../DTO/admin/EditApartmentData.dto";
 
 export class EditApartmentDetailUseCase {
@@ -7,7 +7,7 @@ export class EditApartmentDetailUseCase {
     private readonly commandHandler: EditApartmentDetailByIdCommandHandler
   ) {}
 
-  public async execute(dto: EditApartmentDataRequest, id: number) {
+  public async execute(dto: EditApartmentDataRequest, id: string) {
     try {
       const command = new EditApartmentDetailByIdCommand(dto, id);
       await this.commandHandler.handle(command);

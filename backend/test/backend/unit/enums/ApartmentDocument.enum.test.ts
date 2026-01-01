@@ -1,4 +1,4 @@
-import { ApartmentDocumentType } from "../../../../src/Domain/Enum/ApartmentDocument.enum";
+import { ApartmentDocumentType } from "../../../../src/Domain/Shared/Enum/ApartmentDocument.enum";
 
 describe(" Lease Status Enum", () => {
   test("should have 'ApartmentVerifiedFile' action", () => {

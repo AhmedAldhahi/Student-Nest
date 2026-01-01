@@ -8,7 +8,7 @@ import {
 } from "typeorm";
 import { LandlordModel } from "./Landloard.entity";
 import { StudentModel } from "./Student.entity";
-import { LeaseRequestStatus } from "../../../../../Domain/Enum/LeaseRequestStatus.enum";
+import { LeaseRequestStatus } from "../../../../../Domain/Shared/Enum/LeaseRequestStatus.enum";
 import { ApartmentModel } from "./Apartment.entity";
 
 @Entity("leaseRequest")

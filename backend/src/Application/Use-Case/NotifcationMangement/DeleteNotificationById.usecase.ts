@@ -1,5 +1,4 @@
-import { IReadUserRepositories } from "../../../Domain/Repositories/Read/ReadUserRepositories.repositories";
-import { deleteNotificationByIdCommand } from "../../Command/Commands/DeleteNotificationByIdCommand";
+import { IReadUserRepositories } from "../../../Domain/Modules/Identity/Repositories/ReadUserRepositories.repositories";
 import { NotificationContext } from "../../Strategy/notification/notificationContext";
 
 export class DeleteNotificationByIdUseCase {

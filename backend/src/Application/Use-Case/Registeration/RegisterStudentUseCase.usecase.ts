@@ -1,4 +1,4 @@
-import { CreateStudentCommandHandler } from "../../Command/Handlers/CreateStudentCommandHandler";
+import { CreateStudentCommandHandler } from "../../Command/Handlers/Student/CreateStudentCommandHandler";
 import { RegisterStudentRequest } from "../../DTO/registeration/RegisterStudentRequest.dto";
 import { RegisterStudentRespone } from "../../DTO/registeration/RegisterStudentRespone.dto";
 import { IEmailService } from "../../Interfaces/IEmail.interface";

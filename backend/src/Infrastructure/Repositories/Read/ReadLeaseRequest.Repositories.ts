@@ -1,9 +1,9 @@
 import { FindOptionsWhere, Like } from "typeorm";
 import { ILeaseRequestDTO } from "../../../Application/DTO/admin/LeaseRequestDTO.dto";
-import { IReadLeaseRequestRepositories } from "../../../Domain/Repositories/Read/ReadLeaseRequestRepositories.repositories";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { LeaseRequestModel } from "../../Database/orm/TypeOrm/entity/LeaseRequest";
 import { LeaseRequestMapper } from "../mapper/leaseRequest.mapper";
+import { IReadLeaseRequestRepositories } from "../../../Domain/Modules/Leases/Repositories/Read/ReadLeaseRequestRepositories.repositories";
 
 export class ReadLeaseRequestRepositories
   implements IReadLeaseRequestRepositories

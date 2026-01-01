@@ -1,5 +1,5 @@
-import { EditLandlordVerificationStatus } from "../../../Command/Commands/UpdateVerficationLandlordStatusCommand";
-import { updateVerificationStatusCommandHandler } from "../../../Command/Handlers/updateLandlordVerficationStatusCommandHandler";
+import { EditLandlordVerificationStatus } from "../../../Command/Commands/Landlord/UpdateVerficationLandlordStatusCommand";
+import { updateVerificationStatusCommandHandler } from "../../../Command/Handlers/Adminstration/updateLandlordVerficationStatusCommandHandler"
 import { EditLandlordVerificationStatusRequest } from "../../../DTO/admin/EditLandlordVerificationStatusRequest.dto";
 import { ICashMemoryService } from "../../../Interfaces/ICash.interface";
 

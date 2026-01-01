@@ -1,4 +1,4 @@
-import { ApartmentPrice } from "../../../../src/Domain/Value-Object/ApartmentPrice.vo";
+import { ApartmentPrice } from "../../../../src/Domain/Modules/Housing/Value-Object/ApartmentPrice.vo";
 
 describe("ApartmentPrice Value Object", () => {
   //  Valid Cases

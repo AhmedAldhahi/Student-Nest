@@ -1,9 +1,9 @@
 import { EntityManager } from "typeorm";
-import { LandlordAggregateRoot } from "../../../Domain/AggregatesRoot/landloardEntity.entity";
-import { IWriteLandlordRepositories } from "../../../Domain/Repositories/Write/WriteLandlordRepositories.repositories";
+import { LandlordAggregateRoot } from "../../../Domain/Modules/Housing/AgregateRoot/landloardEntity.entity";
 import { WriteUserRepositories } from "./WriteUserRepositories";
 import { LandlordMapper } from "../mapper/landloard.mapper";
 import { LandlordModel } from "../../Database/orm/TypeOrm/entity/Landloard.entity";
+import { IWriteLandlordRepositories } from "../../../Domain/Modules/Housing/Repositories/Write/WriteLandlordRepositories.repositories";
 
 export class WriteLandlordRepositories implements IWriteLandlordRepositories {
   private manager: EntityManager;

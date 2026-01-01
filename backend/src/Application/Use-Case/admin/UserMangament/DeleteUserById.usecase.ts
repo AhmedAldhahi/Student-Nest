@@ -1,5 +1,5 @@
-import { DeleteUserCommand } from "../../../Command/Commands/DeleteUserCommand";
-import { DeleteUserCommandHandler } from "../../../Command/Handlers/DeleteUserCommandHandler";
+import { DeleteUserCommand } from "../../../Command/Commands/User/DeleteUserCommand";
+import { DeleteUserCommandHandler } from "../../../Command/Handlers/Adminstration/DeleteUserCommandHandler";
 
 export class DeleteLandlordByIdUseCase {
   constructor(private commandHandler: DeleteUserCommandHandler) {}

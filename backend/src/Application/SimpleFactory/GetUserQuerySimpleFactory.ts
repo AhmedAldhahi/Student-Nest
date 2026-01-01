@@ -1,8 +1,7 @@
-import { UserRole } from "../../Domain/Enum/UserRole.enum";
-import { GetAllLandlordByQueriesQueriesHandler } from "../Queries/Handlers/GetAllLandlordByQueriesQueriesHandler";
-import { GetAllStudentsByQueriesQueriesHandler } from "../Queries/Handlers/GetAllStudentByQueriesQueriesHandler ";
-import { GetUserQueriesQueries } from "../Queries/Queries/GetUserEmail.Queries";
-
+import { UserRole } from "../../Domain/Shared/Enum/UserRole.enum";
+import { GetAllLandlordByQueriesQueriesHandler } from "../Queries/Handlers/Housing/Landlord/GetAllLandlordByQueriesQueriesHandler";
+import { GetAllStudentsByQueriesQueriesHandler } from "../Queries/Handlers/Student/GetAllStudentByQueriesQueriesHandler ";
+import { GetUserQueriesQueries } from "../Queries/Queries/User/GetUserEmail.Queries";
 export class GetUserEmailSimpleFactory {
   constructor(
     private readonly getLandlordQueriesQueryHandler: GetAllLandlordByQueriesQueriesHandler,

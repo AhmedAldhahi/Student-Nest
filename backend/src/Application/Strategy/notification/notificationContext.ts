@@ -1,4 +1,4 @@
-import { UserRole } from "../../../Domain/Enum/UserRole.enum";
+import { UserRole } from "../../../Domain/Shared/Enum/UserRole.enum";
 import { AdminNotificationsStrategy } from "./AdminNotification.strategy";
 import { INotificationsStrategy } from "./Inotification.strategy";
 import { UserNotificationsStrategy } from "./UserNotifications.strategy";

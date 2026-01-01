@@ -1,17 +1,10 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from "typeorm";
-import { ApartmentDocumentType } from "../../../../../Domain/Enum/ApartmentDocument.enum";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { ApartmentModel } from "./Apartment.entity";
 
 @Entity("apartmentPhoto")
 export class ApartmentPhotoModel {
-  @PrimaryGeneratedColumn()
-  apartmentPhotoId: number;
+  @PrimaryColumn()
+  apartmentPhotoId: string;
 
   @Column({ type: "varchar", nullable: false })
   photoUrl: string;

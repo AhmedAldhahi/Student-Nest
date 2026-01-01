@@ -1,4 +1,4 @@
-import { ResendOtpForgetPassCommandHandler } from "../../../Command/Handlers/ResendOtpForgetPassCommandHandler";
+import { ResendOtpForgetPassCommandHandler } from "../../../Command/Handlers/Identiy/ResendOtpForgetPassCommandHandler";
 import { ResendOtpRequest } from "../../../DTO/password-recover/ResendOtpRequest.dto";
 import { ResendOtpRespone } from "../../../DTO/password-recover/ResendOtpRespone.dto";
 import { IEmailService } from "../../../Interfaces/IEmail.interface";

@@ -1,5 +1,5 @@
-import { GetAllLeaseQueriesHandler } from "../../../Application/Queries/Handlers/GetAllLeaseQueriesHandler";
-import { GetLeaseByQueryQueriesHandler } from "../../../Application/Queries/Handlers/GetLeaseByQueryQueriesHandler";
+import { GetAllLeaseQueriesHandler } from "../../../Application/Queries/Handlers/Leases/Lease/GetAllLeaseQueriesHandler";
+import { GetLeaseByQueryQueriesHandler } from "../../../Application/Queries/Handlers/Leases/Lease/GetLeaseByQueryQueriesHandler";
 import { AdminLeaseStrategy } from "../../../Application/Strategy/lease/AdminLease.strategy";
 import { LandlordLeaseStrategy } from "../../../Application/Strategy/lease/LandlordLease.strategy";
 import { LeaseContext } from "../../../Application/Strategy/lease/LeaseContext";

@@ -1,9 +1,9 @@
-import { FindOptionsWhere, Like, TreeLevelColumn } from "typeorm";
-import { IReadLeaseRepositories } from "../../../Domain/Repositories/Read/ReadLeaseRepositories.repositories";
+import { FindOptionsWhere, Like, } from "typeorm";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { LeaseModel } from "../../Database/orm/TypeOrm/entity/Lease.entity";
 import { LeaseMapper } from "../mapper/lease.mapper";
 import { ILeaseEntityDTO } from "../../../Application/DTO/admin/LeaseDTO.dto";
+import { IReadLeaseRepositories } from "../../../Domain/Modules/Leases/Repositories/Read/ReadLeaseRepositories.repositories";
 
 export class ReadLeaseRepositories implements IReadLeaseRepositories {
   public async findByQuery(Queries: string): Promise<ILeaseEntityDTO[] | null> {

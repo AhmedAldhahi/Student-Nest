@@ -1,5 +1,5 @@
-import { UpdateNotificationStatusCommand } from "../../Command/Commands/UpdateNotifcationStatusCommand";
-import { UpdateNotificationStatusCommandHandler } from "../../Command/Handlers/updateNotifcationStatusCommandHandler";
+import { UpdateNotificationStatusCommand } from "../../Command/Commands/Notification/UpdateNotifcationStatusCommand";
+import { UpdateNotificationStatusCommandHandler } from "../../Command/Handlers/Shared/Notification/updateNotifcationStatusCommandHandler";
 import { EditNotificationStatusRequest } from "../../DTO/admin/EditNotificationStatus.Request.dto";
 
 

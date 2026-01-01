@@ -1,14 +1,13 @@
 import { ILeaseEntityDTO } from "../../../Application/DTO/admin/LeaseDTO.dto";
-import { LeaseAggregateRoot } from "../../../Domain/AggregatesRoot/leaseEntity.entity";
-import { LeaseEndDate } from "../../../Domain/Value-Object/LeaseEndDate.vo";
-import { LeaseStartDate } from "../../../Domain/Value-Object/LeaseStartDate.vo";
-import { LeaseTerm } from "../../../Domain/Value-Object/LeaseTerm.vo";
-import { MonthlyRent } from "../../../Domain/Value-Object/MonthlyRent.vo";
-import { ApartmentModel } from "../../Database/orm/TypeOrm/entity/Apartment.entity";
+import { LeaseAggregateRoot } from "../../../Domain/Modules/Leases/AgregateRoot/leaseEntity.entity";
+import { MonthlyRent } from "../../../Domain/Modules/Housing/Value-Object/MonthlyRent.vo";
 import { LeaseModel } from "../../Database/orm/TypeOrm/entity/Lease.entity";
 import { ApartmentMapper } from "./apartment.mapper";
 import { LandlordMapper } from "./landloard.mapper";
 import { StudentMapper } from "./student.mapper";
+import { LeaseEndDate } from "../../../Domain/Modules/Leases/Value-Object/LeaseEndDate.vo";
+import { LeaseStartDate } from "../../../Domain/Modules/Leases/Value-Object/LeaseStartDate.vo";
+import { LeaseTerm } from "../../../Domain/Modules/Leases/Value-Object/LeaseTerm.vo";
 
 export class LeaseMapper {
   public static toEntity(model: LeaseModel): LeaseAggregateRoot {

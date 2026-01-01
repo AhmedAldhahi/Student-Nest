@@ -1,4 +1,4 @@
 export interface EditApartmentVerificationStatusRequest {
-  apartmentId: number;
+  apartmentId: string;
   Verified: boolean;
 }

@@ -1,4 +1,4 @@
-import { UserRole } from "../../../Domain/Enum/UserRole.enum";
+import { UserRole } from "../../../Domain/Shared/Enum/UserRole.enum";
 import { AdminLeaseRequestStrategy } from "./AdminLeaseRequest.strategy";
 import { ILeaseRequestStrategy } from "./IleaseRequest.strategy";
 import { LandlordLeaseRequestStrategy } from "./LandlordLeaseRequest.strategy";

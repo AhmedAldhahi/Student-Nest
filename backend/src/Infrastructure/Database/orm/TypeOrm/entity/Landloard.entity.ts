@@ -32,6 +32,7 @@ export class LandlordModel {
     cascade: true,
     onDelete: "CASCADE",
   })
+  
   @JoinColumn({ name: "userId" })
   user: UserModel;
 

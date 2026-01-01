@@ -1,20 +1,20 @@
 import { QueryRunner } from "typeorm";
-import { IUnitOfWork } from "../../Domain/Repositories/UnitOfWorkRepositories.repositories";
+import { IUnitOfWork } from "../../Domain/Shared/Repositories/UnitOfWorkRepositories.repositories";
 import { AppDataSource } from "../Database/orm/TypeOrm/data-source";
-import { IWriteUserRepositories } from "../../Domain/Repositories/Write/WriteUserRepositories.repositories";
+import { IWriteUserRepositories } from "../../Domain/Modules/Identity/Repositories/WriteUserRepositories.repositories";
 import { WriteUserRepositories } from "./Write/WriteUserRepositories";
-import { IWriteStudentRepositories } from "../../Domain/Repositories/Write/WriteStudentRepositories.repositories";
 import { WriteStudentRepositories } from "./Write/WriteStudentRepositories";
-import { IWriteLandlordRepositories } from "../../Domain/Repositories/Write/WriteLandlordRepositories.repositories";
 import { WriteLandlordRepositories } from "./Write/WriteLandlordRepositories";
-import { IWriteNotificationRepo } from "../../Domain/Repositories/Write/IWriteNotficationRepositories.repositores";
+import { IWriteNotificationRepo } from "../../Domain/Shared/Repositories/IWriteNotficationRepositories.repositores";
 import { WriteNotificationRepositories } from "./Write/WriteNotificationRepositories";
-import { IWriteApartmentRepo } from "../../Domain/Repositories/Write/IWriteApartmentRepositories.repositories";
+import { IWriteApartmentRepo } from "../../Domain/Modules/Housing/Repositories/Write/IWriteApartmentRepositories.repositories";
 import { WriteApartmentsRepositories } from "./Write/WriteApartmentRepositories";
-import { IWriteApartmentDocumentRepo } from "../../Domain/Repositories/Write/IWriteApartmentDocumentRepositoires.repositories";
+import { IWriteApartmentDocumentRepo } from "../../Domain/Modules/Housing/Repositories/Write/IWriteApartmentDocumentRepositoires.repositories";
 import { WriteApartmentDocumentRepositories } from "./Write/WriteApartmentDocumentRepositories";
-import { IWriteAuditLogRepositories } from "../../Domain/Repositories/Write/IWriteAuditLogRepo.repositories";
+import { IWriteAuditLogRepositories } from "../../Domain/Modules/adminstration/Entities/IWriteAuditLogRepo.repositories";
 import { WriteAuditLogRepositories } from "./Write/WriteAuditLog.repositories";
+import { IWriteStudentRepositories } from "../../Domain/Modules/Student/Repositories/WriteStudentRepositories.repositories";
+import { IWriteLandlordRepositories } from "../../Domain/Modules/Housing/Repositories/Write/WriteLandlordRepositories.repositories";
 
 export class UnitOfWork implements IUnitOfWork {
   

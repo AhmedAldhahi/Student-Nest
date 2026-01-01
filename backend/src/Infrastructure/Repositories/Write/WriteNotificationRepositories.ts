@@ -1,9 +1,9 @@
 import { EntityManager, In } from "typeorm";
-import { NotificationEntity } from "../../../Domain/Entities/NotificationEntity.entity";
-import { IWriteNotificationRepo } from "../../../Domain/Repositories/Write/IWriteNotficationRepositories.repositores";
+import { NotificationEntity } from "../../../Domain/Shared/Entities/NotificationEntity.entity";
+import { IWriteNotificationRepo } from "../../../Domain/Shared/Repositories/IWriteNotficationRepositories.repositores";
 import { NotificationMapper } from "../mapper/notification.mapper";
 import { NotificationModel } from "../../Database/orm/TypeOrm/entity/Notifcation.entity";
-import { UserRole } from "../../../Domain/Enum/UserRole.enum";
+import { UserRole } from "../../../Domain/Shared/Enum/UserRole.enum";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { UserModel } from "../../Database/orm/TypeOrm/entity/User.entity";
 
@@ -12,6 +12,10 @@ export class WriteNotificationRepositories implements IWriteNotificationRepo {
 
   constructor(manager: EntityManager) {
     this.manager = manager;
+  }
+  
+  public async createNotification(notification: NotificationEntity): Promise<void> {
+    throw new Error("Method not implemented.");
   }
 
   public async deleteAdminNotificationById(

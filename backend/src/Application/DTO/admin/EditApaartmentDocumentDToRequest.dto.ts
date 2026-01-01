@@ -1,4 +1,4 @@
-import { ApartmentDocumentType } from "../../../Domain/Enum/ApartmentDocument.enum";
+import { ApartmentDocumentType } from "../../../Domain/Shared/Enum/ApartmentDocument.enum";
 
 export interface EditApartmentDocumentDataRequest {
   documentUrl?: string;

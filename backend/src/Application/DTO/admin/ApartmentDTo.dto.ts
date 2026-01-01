@@ -1,9 +1,9 @@
-import { ApartmentDocumentEntity } from "../../../Domain/Entities/apartmentDocumentEntity.entity";
-import { GoogleMapLocationEntity } from "../../../Domain/Entities/googleMapLocationEntity.entity";
-import { ApartmentPhotoDocumentEntity } from "../../../Domain/Entities/phohtoDocumentEntity.entity";
+import { ApartmentDocumentEntity } from "../../../Domain/Modules/Housing/Entities/apartmentDocumentEntity.entity";
+import { GoogleMapLocationEntity } from "../../../Domain/Modules/Housing/Entities/googleMapLocationEntity.entity";
+import { ApartmentPhotoDocumentEntity } from "../../../Domain/Modules/Housing/Entities/phohtoDocumentEntity.entity";
 
 export interface IApartmentDTO {
-  apartmentId: number;
+  apartmentId: string;
   propertyStatus: boolean;
   title: string;
   description: string;
@@ -25,7 +25,7 @@ export interface IApartmentDTO {
 }
 
 export interface IApartmentSimpleDTO {
-  apartmentId: number;
+  apartmentId: string;
   propertyStatus: boolean;
   title: string;
   description: string;

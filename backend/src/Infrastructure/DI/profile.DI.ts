@@ -5,18 +5,18 @@ import { BcryptPasswordHasher } from "../Services/security/BcryptPasswordHasher.
 import { CloudinaryService } from "../Services/media/CloudinaryService.service";
 import { RedisCashService } from "../Cashing/RadisCashe";
 import { ReadUserRepositories } from "../Repositories/Read/ReadUserRepositories";
-import { GetUserProfileQueriesHandlers } from "../../Application/Queries/Handlers/GetUserProfileQueriesHandlerts";
 import { ProfileContext } from "../../Application/Strategy/profiles/profilecontext";
-import { GetLandlordProfileQueriesHandlers } from "../../Application/Queries/Handlers/GetLandlordProfileQueriesHandler";
-import { GetStudentQueriesHandlers } from "../../Application/Queries/Handlers/GetStudentProfileQueriesHandler";
 import { ReadLandlordRepositories } from "../Repositories/Read/ReadLandlordRepositories";
 import { ReadStudentRepositories } from "../Repositories/Read/ReadStudentRepositories";
 import { AdminProfileStrategy } from "../../Application/Strategy/profiles/AdminProfile.strategy";
 import { LandlordProfileStrategy } from "../../Application/Strategy/profiles/LandlordProfile.strategy";
 import { StudentProfileStrategy } from "../../Application/Strategy/profiles/StudentProfile.strategy";
-import { UpdateAdminCommandHandler } from "../../Application/Command/Handlers/UpdateAdminCommandHandler";
-import { UpdateLandlordCommandHandler } from "../../Application/Command/Handlers/UpdateLandlordCommandHandler";
-import { UpdateStudentCommandHandler } from "../../Application/Command/Handlers/UpdateStudentCommandHandler";
+import { UpdateAdminCommandHandler } from "../../Application/Command/Handlers/Adminstration/UpdateAdminCommandHandler";
+import { UpdateLandlordCommandHandler } from "../../Application/Command/Handlers/Housing/Landlord/UpdateLandlordCommandHandler";
+import { UpdateStudentCommandHandler } from "../../Application/Command/Handlers/Student/UpdateStudentCommandHandler";
+import { GetLandlordProfileQueriesHandlers } from "../../Application/Queries/Handlers/Housing/Landlord/GetLandlordProfileQueriesHandler";
+import { GetStudentQueriesHandlers } from "../../Application/Queries/Handlers/Student/GetStudentProfileQueriesHandler";
+import { GetUserProfileQueriesHandlers } from "../../Application/Queries/Handlers/Identiy/GetUserProfileQueriesHandlerts";
 
 export function getUserProfileData(): UserProfileDataUseCase {
   // shared
@@ -33,9 +33,13 @@ export function getUserProfileData(): UserProfileDataUseCase {
   // queries handler
   const UserQueries = new GetUserProfileQueriesHandlers(ReadUserRepo);
   const landlordQueries = new GetLandlordProfileQueriesHandlers(
-    ReadLandlordRepo
+    ReadLandlordRepo,
+    ReadUserRepo
   );
-  const studentQueries = new GetStudentQueriesHandlers(ReadStudentRepo);
+  const studentQueries = new GetStudentQueriesHandlers(
+    ReadStudentRepo,
+    ReadUserRepo
+  );
 
   // command handler
 
@@ -48,11 +52,13 @@ export function getUserProfileData(): UserProfileDataUseCase {
   const LandlordCommand = new UpdateLandlordCommandHandler(
     uow,
     ReadLandlordRepo,
+    ReadUserRepo,
     fileService,
     passwordService
   );
   const StudentCommand = new UpdateStudentCommandHandler(
     uow,
+    ReadUserRepo,
     ReadStudentRepo,
     fileService,
     passwordService
@@ -103,9 +109,13 @@ export function updateUserProfile(): updateUserProfileDataUseCase {
   // queries handler
   const UserQueries = new GetUserProfileQueriesHandlers(ReadUserRepo);
   const landlordQueries = new GetLandlordProfileQueriesHandlers(
-    ReadLandlordRepo
+    ReadLandlordRepo,
+    ReadUserRepo
   );
-  const studentQueries = new GetStudentQueriesHandlers(ReadStudentRepo);
+  const studentQueries = new GetStudentQueriesHandlers(
+    ReadStudentRepo,
+    ReadUserRepo
+  );
 
   // command handler
 
@@ -118,11 +128,13 @@ export function updateUserProfile(): updateUserProfileDataUseCase {
   const LandlordCommand = new UpdateLandlordCommandHandler(
     uow,
     ReadLandlordRepo,
+    ReadUserRepo,
     fileService,
     passwordService
   );
   const StudentCommand = new UpdateStudentCommandHandler(
     uow,
+    ReadUserRepo,
     ReadStudentRepo,
     fileService,
     passwordService
@@ -152,5 +164,5 @@ export function updateUserProfile(): updateUserProfileDataUseCase {
     studentStrategy
   );
 
-  return new updateUserProfileDataUseCase(ReadUserRepo,profileContext);
+  return new updateUserProfileDataUseCase(ReadUserRepo, profileContext);
 }

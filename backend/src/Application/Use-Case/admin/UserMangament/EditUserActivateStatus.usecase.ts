@@ -1,5 +1,5 @@
-import { UpdateUserActivateStatus } from "../../../Command/Commands/updateUserActivateStatus.command";
-import { UpdateUserActivateStatusCommandHandler } from "../../../Command/Handlers/UpdateUserActivateStatus.CommandHandler";
+import { UpdateUserActivateStatus } from "../../../Command/Commands/User/updateUserActivateStatus.command";
+import { UpdateUserActivateStatusCommandHandler } from "../../../Command/Handlers/Adminstration/UpdateUserActivateStatus.CommandHandler";
 import { EditUserActivateStatsRequest } from "../../../DTO/admin/EditAccountStatus.dto";
 
 export class EditUserActivateStatsUseCase {

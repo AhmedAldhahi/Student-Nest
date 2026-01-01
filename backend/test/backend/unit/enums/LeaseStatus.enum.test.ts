@@ -1,4 +1,4 @@
-import { LeaseStatus } from "../../../../src/Domain/Enum/LeaseStatus.enum";
+import { LeaseStatus } from "../../../../src/Domain/Shared/Enum/LeaseStatus.enum";
 
 describe(" Lease Status Enum", () => {
   test("should have 'Active' action", () => {

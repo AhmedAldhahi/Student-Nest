@@ -1,4 +1,4 @@
-import { ApartmentPhotoDocumentEntity } from "../../../Domain/Entities/phohtoDocumentEntity.entity";
+import { ApartmentPhotoDocumentEntity } from "../../../Domain/Modules/Housing/Entities/phohtoDocumentEntity.entity";
 
 export interface EditApartmentDataRequest {
   title?: string;

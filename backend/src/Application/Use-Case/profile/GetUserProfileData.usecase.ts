@@ -1,4 +1,4 @@
-import { IReadUserRepositories } from "../../../Domain/Repositories/Read/ReadUserRepositories.repositories";
+import { IReadUserRepositories } from "../../../Domain/Modules/Identity/Repositories/ReadUserRepositories.repositories";
 import { ProfileContext } from "../../Strategy/profiles/profilecontext";
 
 export class UserProfileDataUseCase {

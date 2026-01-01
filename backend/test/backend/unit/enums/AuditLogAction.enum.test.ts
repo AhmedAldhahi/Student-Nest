@@ -1,4 +1,4 @@
-import { AuditLogActionType } from "../../../../src/Domain/Enum/AuditLogAction.enum";
+import { AuditLogActionType } from "../../../../src/Domain/Shared/Enum/AuditLogAction.enum";
 
 describe("AuditLogActionType Enum", () => {
   test("should have 'POST' action", () => {

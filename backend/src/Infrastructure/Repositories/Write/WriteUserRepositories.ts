@@ -1,6 +1,6 @@
 import { EntityManager } from "typeorm";
-import { UserEntity } from "../../../Domain/Entities/userEntity.entity";
-import { IWriteUserRepositories } from "../../../Domain/Repositories/Write/WriteUserRepositories.repositories";
+import { UserEntity } from "../../../Domain/Modules/Identity/Entities/userEntity.entity";
+import { IWriteUserRepositories } from "../../../Domain/Modules/Identity/Repositories/WriteUserRepositories.repositories";
 import { UserModel } from "../../Database/orm/TypeOrm/entity/User.entity";
 import { UserMapper } from "../mapper/user.mapper";
 

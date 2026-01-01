@@ -1,6 +1,6 @@
 import { INotificationDTO } from "../../../Application/DTO/admin/NotificationDTO.dto";
-import { NotificationEntity } from "../../../Domain/Entities/NotificationEntity.entity";
-import { IReadNotificationRepositories } from "../../../Domain/Repositories/Read/ReadNotificationRepositories.repositories";
+import { NotificationEntity } from "../../../Domain/Shared/Entities/NotificationEntity.entity";
+import { IReadNotificationRepositories } from "../../../Domain/Shared/Repositories/ReadNotificationRepositories.repositories";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { NotificationModel } from "../../Database/orm/TypeOrm/entity/Notifcation.entity";
 import { NotificationMapper } from "../mapper/notification.mapper";

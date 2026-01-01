@@ -3,7 +3,7 @@ import { DeleteLandlordByIdUseCase } from "../../../../Application/Use-Case/admi
 import { EditLandlordVerificationStatusUseCase } from "../../../../Application/Use-Case/admin/UserMangament/EditLandlordVerificationStatus.usecase";
 import { FindUserByQueryUseCase } from "../../../../Application/Use-Case/admin/UserMangament/FindUserByQuery.usecase";
 import { GetAllUserUseCase } from "../../../../Application/Use-Case/admin/UserMangament/GetAllUser.usecase";
-import { UserRole } from "../../../../Domain/Enum/UserRole.enum";
+import { UserRole } from "../../../../Domain/Shared/Enum/UserRole.enum";
 import { EditUserActivateStatsUseCase } from "../../../../Application/Use-Case/admin/UserMangament/EditUserActivateStatus.usecase";
 
 export class UserManagementController {

@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { RegisterStudentUseCase } from "../../../Application/Use-Case/Registeration/RegisterStudentUseCase.usecase";
 import { RegisterLandloardUseCase } from "../../../Application/Use-Case/Registeration/RegisterLandloardUseCase.usecase";
 import { LoginUseCase } from "../../../Application/Use-Case/Registeration/LoginUseCase.usecase";
-import { AuditLogActionType } from "../../../Domain/Enum/AuditLogAction.enum";
+import { AuditLogActionType } from "../../../Domain/Shared/Enum/AuditLogAction.enum";
 import { ReadUserRepositories } from "../../../Infrastructure/Repositories/Read/ReadUserRepositories";
 
 export class AuthController {
