@@ -10,6 +10,7 @@ import { ApartmentModel } from "../../Database/orm/TypeOrm/entity/Apartment.enti
 import { ApartmentDocumentMapper } from "./apartmentDocument.mapper";
 import { apartmentPhotoMapper } from "./apartmentPhoto.mapper";
 import { GoogleMapMapper } from "./gogleMap.mapper";
+import { LandlordMapper } from "./landloard.mapper";
 
 export class ApartmentMapper {
   public static toModel(apartment: ApartmentAggregateRoot): ApartmentModel {
@@ -144,3 +145,14 @@ export class ApartmentMapper {
   }
 }
 
+/**
+ * no id
+ * jameel missed description
+ * is fully
+ * add count 
+ * no create at,update at ,
+ * no google map locations
+ *
+ * one photo 
+ *
+ */

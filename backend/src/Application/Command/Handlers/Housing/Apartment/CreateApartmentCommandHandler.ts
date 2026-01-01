@@ -8,10 +8,8 @@ import { IFileStorageService } from "../../../../Interfaces/IFileStorage.interfa
 import { CreateApartmentCommand } from "../../../Commands/Apartment/CreateApartmentCommand";
 import { ICommandHandlers } from "../../../ICommandHandlers";
 import { IReadLandlordRepositories } from "../../../../../Domain/Modules/Housing/Repositories/Read/ReadLandlordRepositories.repositoreies";
-import { ApartmentDocumentEntity } from "../../../../../Domain/Modules/Housing/Entities/apartmentDocumentEntity.entity";
 import { GoogleMapLocationEntity } from "../../../../../Domain/Modules/Housing/Entities/googleMapLocationEntity.entity";
 import { ApartmentPhotoDocumentEntity } from "../../../../../Domain/Modules/Housing/Entities/phohtoDocumentEntity.entity";
-import { ApartmentDocumentType } from "../../../../../Domain/Shared/Enum/ApartmentDocument.enum";
 import { v4 as uuidv4 } from "uuid";
 export class CreateApartmentCommandHandler
   implements ICommandHandlers<CreateApartmentCommand>
@@ -50,23 +48,6 @@ export class CreateApartmentCommandHandler
         }
       }
 
-      const docEntities: ApartmentDocumentEntity[] = [];
-      if (command.apartmentDocument && command.apartmentDocument.length > 0) {
-        for (const file of command.apartmentDocument) {
-          const url = await this.fileService.upload(file);
-          const apartmentId = uuidv4();
-
-          // Create the Child Entity
-          docEntities.push(
-            new ApartmentDocumentEntity({
-              apartmentId,
-              documentUrl: url,
-              apartmentType: ApartmentDocumentType.ApartmentVerifiedFile,
-            })
-          );
-        }
-      }
-
       // 3. Create Value Objects
       const locationId = uuidv4();
       const location = new GoogleMapLocationEntity({
@@ -88,24 +69,14 @@ export class CreateApartmentCommandHandler
         numberOfBed: NumberOfBed.create(command.numberOfBed),
         numberOfRoom: NumberOfRoom.create(command.numberOfRoom),
 
-        apartmentDocument: docEntities,
         apartmentPhoto: photoEntities,
+        apartmentDocument: [],
         googleMapLocation: location,
         landlordId: landlord.getUserId(),
         isFully: false,
         isJoin: command.isJoin,
         Verified: false,
       });
-
-      // for photo
-      for (let i = 0; i < command.apartmentPhoto.length; i++) {
-        await this.fileService.upload(command.apartmentPhoto[i]);
-      }
-
-      // for apartment documents
-      for (let i = 0; i < command.apartmentDocument.length; i++) {
-        await this.fileService.upload(command.apartmentDocument[i]);
-      }
 
       await this.uow.startTransaction();
       await this.uow.writeApartmentRepo.InsertApartment(apartment);
@@ -122,8 +93,7 @@ export class CreateApartmentCommandHandler
         updateAt: command.updateAt,
         numberOfBed: NumberOfBed.create(command.numberOfBed).getValue(),
         numberOfRoom: NumberOfRoom.create(command.numberOfRoom).getValue(),
-
-        apartmentDocument: docEntities,
+        
         apartmentPhoto: photoEntities,
         googleMapLocation: location,
         landlordId: landlord.getUserId(),

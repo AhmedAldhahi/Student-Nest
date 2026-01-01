@@ -8,7 +8,6 @@ const ACCEPTED_IMAGE_TYPES = [
   "image/png",
   "image/webp",
 ];
-const ACCEPTED_DOC_TYPES = ["application/pdf", "image/jpeg", "image/png"];
 
 // --- 2. Helper Schema for Single File ---
 const multerFileSchema = z.object({
@@ -19,58 +18,67 @@ const multerFileSchema = z.object({
 });
 
 // --- 3. Main Request Schema ---
-export const createApartmentSchema = z.object({
-  body: z.object({
-    title: z.string().min(10, "Title must be at least 10 characters").max(100),
-    description: z
-      .string()
-      .min(20, "Description must be at least 20 characters"),
-    address: z.string().min(5, "Address is required"),
+export const createApartmentSchema = z
+  .object({
+    body: z.object({
+      title: z
+        .string()
+        .min(10, "Title must be at least 10 characters")
+        .max(100),
+      description: z
+        .string()
+        .min(20, "Description must be at least 20 characters"),
+      address: z.string().min(5, "Address is required"),
 
-    //  MUST USE COERCE for Form-Data Numbers
-    price: z
-      .string()
-      .min(1, "at least must be 1 jd")
-      .max(4, "at most must be 9999 jd"),
+      // ✅ FIX: Added .regex() to ensure only numbers are allowed
+      price: z
+        .string()
+        .min(1, "Price is required")
+        .max(4, "Price cannot be more than 4 digits (max 9999)")
+        .regex(/^\d+$/, "Price must be a whole number"),
 
-    numberOfBed: z.string().min(1).max(2),
-    numberOfRoom: z.string().min(1).max(2),
+      // ✅ FIX: Added .regex()
+      numberOfBed: z
+        .string()
+        .min(1, "Required")
+        .max(2, "Max 2 digits") // Allows "99" beds max
+        .regex(/^\d+$/, "Must be a number"),
 
-    propertyStatus: z.preprocess((val) => String(val) === "true", z.boolean()),
-    isJoin: z.preprocess((val) => String(val) === "true", z.boolean()),
+      numberOfRoom: z
+        .string()
+        .min(1, "Required")
+        .max(2, "Max 2 digits")
+        .regex(/^\d+$/, "Must be a number"),
 
-    //  Lat/Long Validation
-    googleMapLocationLat: z.coerce
-      .number()
-      .min(-90)
-      .max(90, "Invalid Latitude"),
-    googleMapLocationLong: z.coerce
-      .number()
-      .min(-180)
-      .max(180, "Invalid Longitude"),
-  }),
-
-  // --- 4. File Validation Section ---
-  // We validate 'files' separately because Multer puts them in req.files
-  files: z.object({
-    apartmentPhoto: z
-      .array(multerFileSchema)
-      .min(1, "At least one photo is required")
-      .max(6, "You can upload a maximum of 6 photos")
-      .refine(
-        (files) =>
-          files.every((file) => ACCEPTED_IMAGE_TYPES.includes(file.mimetype)),
-        "Only .jpg, .jpeg, .png, and .webp formats are supported for photos."
+      // Booleans logic (Correct)
+      propertyStatus: z.preprocess(
+        (val) => String(val) === "true",
+        z.boolean()
       ),
+      isJoin: z.preprocess((val) => String(val) === "true", z.boolean()),
 
-    apartmentDocument: z
-      .array(multerFileSchema)
-      .min(1, "Ownership document is required")
-      .max(2, "Max 2 documents allowed")
-      .refine(
-        (files) =>
-          files.every((file) => ACCEPTED_DOC_TYPES.includes(file.mimetype)),
-        "Only .pdf, .jpg, and .png formats are supported for documents."
-      ),
-  }),
-}).strict();
+      // Coercion logic (Correct for Map logic)
+      googleMapLocationLat: z.coerce
+        .number()
+        .min(-90)
+        .max(90, "Invalid Latitude"),
+      googleMapLocationLong: z.coerce
+        .number()
+        .min(-180)
+        .max(180, "Invalid Longitude"),
+    }),
+
+    // --- 4. File Validation Section ---
+    files: z.object({
+      apartmentPhoto: z
+        .array(multerFileSchema)
+        .min(1, "At least one photo is required")
+        .max(6, "You can upload a maximum of 6 photos")
+        .refine(
+          (files) =>
+            files.every((file) => ACCEPTED_IMAGE_TYPES.includes(file.mimetype)),
+          "Only .jpg, .jpeg, .png, and .webp formats are supported for photos."
+        ),
+    }),
+  })
+  .strict();

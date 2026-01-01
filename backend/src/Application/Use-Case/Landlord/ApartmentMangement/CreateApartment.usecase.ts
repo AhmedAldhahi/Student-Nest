@@ -1,6 +1,6 @@
 import { CreateApartmentCommand } from "../../../Command/Commands/Apartment/CreateApartmentCommand";
 import { CreateApartmentCommandHandler } from "../../../Command/Handlers/Housing/Apartment/CreateApartmentCommandHandler";
-import { ApartmentDataRequest } from "../../../DTO/apartment/addNewApartmentRequest.dto";
+import { ApartmentDataRequest } from "../../../DTO/landlord/addNewApartmentRequest.dto";
 
 export class CreateApartmentUseCase {
   constructor(private readonly commandHandler: CreateApartmentCommandHandler) {}

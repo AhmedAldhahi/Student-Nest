@@ -76,7 +76,7 @@ export class LandlordAggregateRoot extends AggregateRoot<string> {
       isJoin: apartmentInfo.isJoin,
       isFully: false, // maybe will delete it
       landlordId: this.userId,
-      apartmentDocument: apartmentInfo.apartmentDocument,
+      apartmentDocument: [],
       apartmentPhoto: apartmentInfo.apartmentPhoto,
       googleMapLocation: apartmentInfo.googleMapLocation,
       Verified: false,
