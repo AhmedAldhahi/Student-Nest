@@ -14,7 +14,6 @@ export const ApartmentSharedRouter = (
   router.get("/search", apartmentController.getApartmentsByQueries);
 
 
-  //todo: need to make landlord part
   router.get("/:id/documents", apartmentController.FindApartmentDocumentById);
 
   
