@@ -1,3 +1,5 @@
+import { deleteApartmentByIdCommand } from "../../Command/Commands/Apartment/DeleteApartmentByIdCommand";
+import { deleteApartmentByIdForLandlordCommandHandler } from "../../Command/Handlers/Housing/Apartment/DeleteApartmentForLandlordCommandHandler";
 import { GetAllApartmentByLandlordQueriesHandler } from "../../Queries/Handlers/Housing/Apartment/GetAllAartmentByLandlordQueriesHandler";
 import { GetAllApartmentByQueriesForLandlordQueriesHandler } from "../../Queries/Handlers/Housing/Apartment/GetAllApartmentByQueriesForLandlordQueriesHandler";
 import { GetAllApartmentForLandlord } from "../../Queries/Queries/Apartment/GetAllApartmemtForLandlord";
@@ -7,7 +9,8 @@ import { IApartmentStrategy } from "./IApartment.strategy";
 export class LandlordApartmentStrategy implements IApartmentStrategy {
   constructor(
     private readonly GetApartmentForLandlordQH: GetAllApartmentByLandlordQueriesHandler,
-    private readonly GetApartmentQueriesForLandlordQH: GetAllApartmentByQueriesForLandlordQueriesHandler
+    private readonly GetApartmentQueriesForLandlordQH: GetAllApartmentByQueriesForLandlordQueriesHandler,
+    private readonly DeleteApartmentByIdForLandlordCH: deleteApartmentByIdForLandlordCommandHandler
   ) {}
 
   public async GetApartmentDetailById(
@@ -47,7 +50,13 @@ export class LandlordApartmentStrategy implements IApartmentStrategy {
     }
   }
 
-  public async deleteApartments(userId: string): Promise<any> {
-    throw new Error("Method not implemented.");
+  public async deleteApartments(userId: string, id: string): Promise<any> {
+    try {
+      const command = new deleteApartmentByIdCommand(id,userId);
+      return await this.DeleteApartmentByIdForLandlordCH.handle(command);
+    } catch (error: any) {
+      console.error("fail to delete specifics  apartments !!");
+      throw error;
+    }
   }
 }

@@ -11,6 +11,35 @@ export class WriteApartmentsRepositories implements IWriteApartmentRepo {
     this.manager = manager;
   }
 
+  public async deleteApartmentByIdForLandlord(
+    id: string,
+    userId: string
+  ): Promise<void> {
+
+    console.log("--- DELETE DEBUG ---");
+    console.log(`Input Apartment ID: '${id}'`); // Single quotes reveal hidden spaces
+    console.log(`Input Landlord ID:  '${userId}'`);
+    console.log("--------------------");
+    try {
+      const result = await this.manager
+        .createQueryBuilder()
+        .delete()
+        .from(ApartmentModel)
+        .where("apartmentId = :id", { id })
+        .andWhere("landlordId =:userId", { userId })
+        .execute();
+
+      if (result.affected === 0) {
+        throw new Error(
+          "OPERATION_FAILED: Apartment not found or you don't own it."
+        );
+      }
+    } catch (error: any) {
+      console.error("fail to delete apartments !!", error);
+      throw error;
+    }
+  }
+
   public async InsertApartment(
     apartment: ApartmentAggregateRoot
   ): Promise<void> {

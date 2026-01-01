@@ -13,13 +13,13 @@ export class DeleteApartmentByIdUseCase {
 
       if (!user) throw new Error("no user been found !!");
 
-      await this.apartmentContext.DeleteApartment(id, user.getRole());
+      await this.apartmentContext.DeleteApartment(userId, user.getRole(), id);
 
       return {
         message: "apartment deleted successfully ",
       };
     } catch (error: any) {
-      console.error("fail tod delete apartment!!");
+      console.error("fail to delete apartment!!");
       throw error;
     }
   }

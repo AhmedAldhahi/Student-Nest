@@ -137,12 +137,30 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
     }
   }
 
-  findApartmentForLandlordById(
+  public async findApartmentForLandlordById(
     id: string,
     userId: string
   ): Promise<ApartmentAggregateRoot | null> {
-    throw new Error("Method not implemented.");
+    try {
+      const apartment = await AppDataSource.getInstance()
+        .getRepository(ApartmentModel)
+        .findOne({
+          where: { apartmentId: id, landlordId: userId },
+          relations: {
+            landlord: { user: true },
+            documents: true,
+            location: true,
+            photos: true,
+          },
+        });
+
+      return apartment ? ApartmentMapper.toEntity(apartment) : null;
+    } catch (error) {
+      console.error("Error finding landlord by ID:", error);
+      throw new Error("Error retrieving landlord data");
+    }
   }
+
   findApartmentDetailsByIdForLandlord(
     id: string,
     userId: string

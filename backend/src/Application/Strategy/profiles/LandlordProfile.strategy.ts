@@ -24,13 +24,13 @@ export class LandlordProfileStrategy implements IProfileStrategy {
     }
 
     const Queries = new GetUserProfileQueries(userId);
-    const landloard = await this.QueryHandler.handle(Queries);
+    const landlord = await this.QueryHandler.handle(Queries);
 
-    if (!landloard) throw new Error("no user found !!");
+    if (!landlord) throw new Error("no user found !!");
 
-    await this.cashService.set(cashKey, landloard, 36000);
+    await this.cashService.set(cashKey, landlord, 36000);
 
-    return landloard;
+    return landlord;
   }
 
   public async UpdateUserProfile(

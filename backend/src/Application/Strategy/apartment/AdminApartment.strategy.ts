@@ -67,9 +67,9 @@ export class AdminApartmentStrategy implements IApartmentStrategy {
     }
   }
 
-  public async deleteApartments(userId: string): Promise<any> {
+  public async deleteApartments(userId: string,id:string): Promise<any> {
     try {
-      const command = new deleteApartmentByIdCommand(userId);
+      const command = new deleteApartmentByIdCommand(id,userId);
       return await this.commandHandler.handle(command);
     } catch (error: any) {
       console.error("fail to delete apartments !!");

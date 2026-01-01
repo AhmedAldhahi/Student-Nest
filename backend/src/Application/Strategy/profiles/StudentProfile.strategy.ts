@@ -10,8 +10,6 @@ export class StudentProfileStrategy implements IProfileStrategy {
   constructor(
     private readonly QueryHandler: GetStudentQueriesHandlers,
     private readonly commandHandler: UpdateStudentCommandHandler,
-    // private readonly passwordService: IPasswordService,
-    // private readonly fileService: IFileStorageService,
     private readonly cashService: ICashMemoryService
   ) {}
 
