@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image, ActivityIndicator, Alert } from "react-native";
-import { Card, Chip, Button } from "react-native-paper";
+import { Card, Chip, Button, Searchbar } from "react-native-paper";
 import { useRoute } from "@react-navigation/native";
 import { useAuth } from "../../../../context/AuthContext";
-import { getAllApartments, verifyApartment } from "../../api/adminService";
+import { getAllApartments, verifyApartment, searchApartments } from "../../api/adminService";
 import { AdminApartment } from "./types";
 
 // Placeholder images for apartments without photos
@@ -19,10 +19,44 @@ export default function AdminApartmentsScreen() {
   const landlordId = (route.params as any)?.landlordId;
 
   const [apartments, setApartments] = useState<AdminApartment[]>([]);
+  const [allApartments, setAllApartments] = useState<AdminApartment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<"ALL" | "VERIFIED" | "UNVERIFIED">("ALL");
   const [verifying, setVerifying] = useState<number | null>(null); // track which apartment is being verified
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const onChangeSearch = (query: string) => {
+    setSearchQuery(query);
+  };
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (!searchQuery.trim()) {
+        setApartments(allApartments);
+      } else {
+        performSearch(searchQuery);
+      }
+    }, 700);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery, allApartments]);
+
+  const performSearch = async (query: string) => {
+    try {
+      setLoading(true);
+      setError(null);
+      if (!token) throw new Error("No token");
+
+      const data = await searchApartments(token, query);
+      setApartments(data);
+    } catch (err: any) {
+      console.error("Error searching apartments:", err);
+      setError(err.message || "Failed to search apartments");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchApartments();
@@ -37,6 +71,7 @@ export default function AdminApartmentsScreen() {
       }
       const data = await getAllApartments(token);
       setApartments(data);
+      setAllApartments(data);
     } catch (err: any) {
       console.error("Error fetching apartments:", err);
       setError(err.message || "Failed to fetch apartments");
@@ -89,14 +124,16 @@ export default function AdminApartmentsScreen() {
             try {
               setVerifying(apartmentId);
               await verifyApartment(token, apartmentId, shouldVerify);
-              // Update local state
-              setApartments((prev) =>
-                prev.map((apt) =>
+              // Update local state and cached state
+              const updateList = (list: AdminApartment[]) =>
+                list.map((apt) =>
                   apt.apartmentId === apartmentId
                     ? { ...apt, Verified: shouldVerify }
                     : apt
-                )
-              );
+                );
+
+              setApartments((prev) => updateList(prev));
+              setAllApartments((prev) => updateList(prev));
               Alert.alert("Success", `Apartment ${action}ed successfully`);
             } catch (err: any) {
               console.error(`Error ${action}ing apartment:`, err);
@@ -202,6 +239,13 @@ export default function AdminApartmentsScreen() {
         {landlordId ? `Apartments for ${landlordId}` : "All Apartments"}
       </Text>
 
+      <Searchbar
+        placeholder="Search apartments..."
+        onChangeText={onChangeSearch}
+        value={searchQuery}
+        style={styles.searchBar}
+      />
+
       {/* Filter chips */}
       <View style={styles.filterRow}>
         {["ALL", "VERIFIED", "UNVERIFIED"].map((type) => (
@@ -246,6 +290,7 @@ const styles = StyleSheet.create({
   centerContainer: { flex: 1, justifyContent: "center", alignItems: "center", padding: 20 },
   header: { fontSize: 22, fontWeight: "700", marginBottom: 12, color: "#333" },
   list: { paddingBottom: 80 },
+  searchBar: { marginBottom: 16, backgroundColor: "#fff", elevation: 2 },
   card: {
     backgroundColor: "#fff",
     borderRadius: 12,

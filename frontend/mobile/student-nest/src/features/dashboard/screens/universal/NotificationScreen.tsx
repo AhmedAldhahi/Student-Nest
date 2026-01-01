@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { View, StyleSheet, RefreshControl, TouchableOpacity, Image } from "react-native";
+import { View, StyleSheet, RefreshControl, TouchableOpacity, Image, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Card, Text, Chip, Avatar, ActivityIndicator } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { useAuth } from "../../../../context/AuthContext";
-import { getAllNotifications, updateNotificationStatus } from "../../api/adminService";
+import { getAllNotifications, updateNotificationStatus, deleteAllNotifications } from "../../api/adminService";
 
 // API Response Type
 type NotificationUser = {
@@ -96,6 +96,33 @@ export default function NotificationScreen() {
     if (filter === "read") return n.isRead;
     return true;
   });
+
+  const handleDeleteAll = () => {
+    Alert.alert(
+      "Delete All",
+      "Are you sure you want to delete all notifications? This action cannot be undone.",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            if (!token) return;
+            setLoading(true);
+            try {
+              await deleteAllNotifications(token);
+              setNotifications([]);
+              Alert.alert("Success", "All notifications deleted");
+            } catch (error) {
+              Alert.alert("Error", "Failed to delete notifications");
+            } finally {
+              setLoading(false);
+            }
+          },
+        },
+      ]
+    );
+  };
 
   // Get icon based on title keywords
   const getNotificationIcon = (title: string): { name: keyof typeof Ionicons.glyphMap; color: string } => {
@@ -214,11 +241,19 @@ export default function NotificationScreen() {
       <View style={styles.container}>
         {/* Header */}
         <View style={styles.headerContainer}>
-          <Text style={styles.header}>Notifications</Text>
-          {unreadCount > 0 && (
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>{unreadCount}</Text>
-            </View>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={styles.header}>Notifications</Text>
+            {unreadCount > 0 && (
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>{unreadCount}</Text>
+              </View>
+            )}
+          </View>
+          {notifications.length > 0 && (
+            <TouchableOpacity onPress={handleDeleteAll} style={styles.deleteAllButton}>
+              <Ionicons name="trash-outline" size={20} color="#e74c3c" />
+              <Text style={styles.deleteAllText}>Delete All</Text>
+            </TouchableOpacity>
           )}
         </View>
 
@@ -306,6 +341,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 16,
+    justifyContent: "space-between",
   },
   header: {
     fontSize: 26,
@@ -493,5 +529,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#999",
     marginTop: 12,
+  },
+  deleteAllButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    padding: 8,
+  },
+  deleteAllText: {
+    color: "#e74c3c",
+    fontWeight: "600",
+    fontSize: 14,
   },
 });

@@ -4,8 +4,8 @@ const API_URL = "https://studentnest.cloud/serverapi/api/v1";
 
 export const getAllLandlords = async (token: string) => {
     try {
-        console.log("Fetching Landlords from:", `${API_URL}/admin/users/landloard`);
-        const response = await fetch(`${API_URL}/admin/users/landloard`, {
+        console.log("Fetching Landlords from:", `${API_URL}/admin/users/landlord`);
+        const response = await fetch(`${API_URL}/admin/users/landlord`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -285,6 +285,41 @@ export const getAllApartments = async (token: string) => {
     }
 };
 
+export const searchApartments = async (token: string, query: string) => {
+    try {
+        const encodedQuery = encodeURIComponent(query);
+        console.log("Searching Apartments from:", `${API_URL}/apartments/search?q=${encodedQuery}`);
+        const response = await fetch(`${API_URL}/apartments/search?q=${encodedQuery}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+
+        const text = await response.text();
+        console.log("searchApartments Raw Response:", text);
+
+        let result;
+        try {
+            result = JSON.parse(text);
+        } catch (e) {
+            console.error("Failed to parse JSON:", text);
+            throw new Error(`Server returned non-JSON response: ${text.slice(0, 100)}...`);
+        }
+
+        if (!response.ok) {
+            console.error("searchApartments Error Response:", result);
+            throw new Error(result.message || `Failed to search apartments (${response.status})`);
+        }
+        return result;
+    } catch (error) {
+        console.error("searchApartments Error:", error);
+        throw error;
+    }
+};
+
 export const verifyApartment = async (token: string, apartmentId: number, isVerified: boolean) => {
     try {
         console.log(`Verifying apartment ${apartmentId} with status ${isVerified}`);
@@ -446,6 +481,46 @@ export const updateNotificationStatus = async (token: string, notifyId: number, 
         return result;
     } catch (error) {
         console.error("updateNotificationStatus Error:", error);
+        throw error;
+    }
+};
+
+export const deleteAllNotifications = async (token: string) => {
+    try {
+        console.log("Deleting All Notifications from:", `${API_URL}/admin/notifications`);
+        const response = await fetch(`${API_URL}/notifications`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+
+        const text = await response.text();
+        console.log("deleteAllNotifications Raw Response:", text.slice(0, 200));
+
+        let result;
+        try {
+            // Some delete endpoints return empty body 204
+            if (response.status === 204 || !text) {
+                return { success: true };
+            }
+            result = JSON.parse(text);
+        } catch (e) {
+            console.error("Failed to parse JSON:", text);
+            // If it's not JSON but successful status, treat as success
+            if (response.ok) return { success: true, message: text };
+            throw new Error(`Server returned non-JSON response: ${text.slice(0, 100)}...`);
+        }
+
+        if (!response.ok) {
+            console.error("deleteAllNotifications Error Response:", result);
+            throw new Error(result.message || `Failed to delete notifications (${response.status})`);
+        }
+        return result;
+    } catch (error) {
+        console.error("deleteAllNotifications Error:", error);
         throw error;
     }
 };
