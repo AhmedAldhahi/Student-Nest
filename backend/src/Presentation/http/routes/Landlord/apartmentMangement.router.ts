@@ -3,6 +3,9 @@ import { ApartmentController } from "../../controllers/Landlord/ApartmentMangeme
 import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 import { isLandlord } from "../../middlewares/auth/isLandloard.middleware";
 import multer from "multer";
+import { validate } from "uuid";
+import { validation } from "../../middlewares/validation.middleware";
+import { createApartmentSchema } from "../../validation/Landlord/apartment.validation.zod";
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -20,6 +23,7 @@ export const ApartmentRouter = (
     isAuth,
     isLandlord,
     apartmentUploads,
+    validation(createApartmentSchema),
     apartmentController.createApartment
   );
 
