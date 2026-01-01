@@ -59,7 +59,7 @@ export class AdminApartmentStrategy implements IApartmentStrategy {
     userId: string
   ): Promise<any> {
     try {
-      const queries = new GetAllApartmentByQueriesQueries(Queries);
+      const queries = new GetAllApartmentByQueriesQueries(Queries,userId);
       return await this.SearchForApartmentByQH.handle(queries);
     } catch (error: any) {
       console.error("fail to get apartments !!");

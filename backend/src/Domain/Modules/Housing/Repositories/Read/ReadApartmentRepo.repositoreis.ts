@@ -10,7 +10,7 @@ export interface IReadApartmentRepo {
     userId: string
   ): Promise<IApartmentSimpleDTO[] | null>;
 
-  findApartmentByQuery(prefix: string): Promise<IApartmentSimpleDTO[] | null>;
+  findApartmentByQuery(prefix: string,userId:string): Promise<IApartmentSimpleDTO[] | null>;
   findApartmentByQueryForLandlord(
     prefix: string,
     userId: string
