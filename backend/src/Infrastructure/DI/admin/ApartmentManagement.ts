@@ -3,6 +3,7 @@ import { EditApartmentDetailByIdCommandHandler } from "../../../Application/Comm
 import { EditApartmentStatusVerifiedCommandHandler } from "../../../Application/Command/Handlers/Housing/Apartment/EditApartmetVerficationStatusCommandHandler";
 import { UpdateApartmentDocumentFileCommandHandler } from "../../../Application/Command/Handlers/Housing/Apartment/updateApartmentDocumentCommandHandler";
 import { GetAllApartmentByLandlordQueriesHandler } from "../../../Application/Queries/Handlers/Housing/Apartment/GetAllAartmentByLandlordQueriesHandler";
+import { GetAllApartmentByQueriesForLandlordQueriesHandler } from "../../../Application/Queries/Handlers/Housing/Apartment/GetAllApartmentByQueriesForLandlordQueriesHandler";
 import { GetAllApartmentByQueryQueriesHandler } from "../../../Application/Queries/Handlers/Housing/Apartment/GetAllApartmentQueries.QueriesHandler";
 import { GetAllApartmentQueriesHandler } from "../../../Application/Queries/Handlers/Housing/Apartment/GetAllApartmentQueriesHandler";
 import { GetApartmentByIdQueriesHandler } from "../../../Application/Queries/Handlers/Housing/Apartment/GetApartmentByIdQueriesHandler";
@@ -45,6 +46,9 @@ export function GetAllApartment(): findAllApartmentUseCase {
     ReadApartmentRepo
   );
 
+  const GetAllApartmentPrefixQH =
+    new GetAllApartmentByQueriesForLandlordQueriesHandler(ReadApartmentRepo);
+
   const GetApartmentDocumentByIdQH = new GetApartmentDocumentByIdQueriesHandler(
     ReadApartmentDocumentRepo
   );
@@ -65,7 +69,8 @@ export function GetAllApartment(): findAllApartmentUseCase {
   );
 
   const landlordStrategy = new LandlordApartmentStrategy(
-    GetAllApartmentForLandlord
+    GetAllApartmentForLandlord,
+    GetAllApartmentPrefixQH
   );
 
   const apartmentContext = new ApartmentContext(
@@ -106,6 +111,9 @@ export function GetApartmentByQueries(): FindAllApartmentByQueryUseCase {
   const GetAllApartmentForLandlord =
     new GetAllApartmentByLandlordQueriesHandler(ReadApartmentRepo);
 
+  const GetAllApartmentPrefixQH =
+    new GetAllApartmentByQueriesForLandlordQueriesHandler(ReadApartmentRepo);
+
   const adminStrategy = new AdminApartmentStrategy(
     DeleteApartmentCH,
     queriesHandler,
@@ -114,7 +122,8 @@ export function GetApartmentByQueries(): FindAllApartmentByQueryUseCase {
     GetApartmentDetailByIdQH
   );
   const landlordStrategy = new LandlordApartmentStrategy(
-    GetAllApartmentForLandlord
+    GetAllApartmentForLandlord,
+    GetAllApartmentPrefixQH
   );
 
   const apartmentContext = new ApartmentContext(
@@ -169,6 +178,9 @@ export function DeleteApartmentById(): DeleteApartmentByIdUseCase {
   const GetAllApartmentForLandlord =
     new GetAllApartmentByLandlordQueriesHandler(ReadApartmentRepo);
 
+  const GetAllApartmentPrefixQH =
+    new GetAllApartmentByQueriesForLandlordQueriesHandler(ReadApartmentRepo);
+
   const adminDeleteApartmentStrategy = new AdminApartmentStrategy(
     commandHandler,
     queriesHandler,
@@ -178,7 +190,8 @@ export function DeleteApartmentById(): DeleteApartmentByIdUseCase {
   );
 
   const landlordDeleteApartmentStrategy = new LandlordApartmentStrategy(
-    GetAllApartmentForLandlord
+    GetAllApartmentForLandlord,
+    GetAllApartmentPrefixQH
   );
 
   const apartmentContext = new ApartmentContext(
@@ -219,6 +232,9 @@ export function FindApartmentDocumentByIdUseCase(): findApartmentDocumentByIdUse
     ReadApartmentRepo
   );
 
+  const GetAllApartmentPrefixQH =
+    new GetAllApartmentByQueriesForLandlordQueriesHandler(ReadApartmentRepo);
+
   const adminDeleteApartmentStrategy = new AdminApartmentStrategy(
     commandHandler,
     queriesHandler,
@@ -231,7 +247,8 @@ export function FindApartmentDocumentByIdUseCase(): findApartmentDocumentByIdUse
     new GetAllApartmentByLandlordQueriesHandler(ReadApartmentRepo);
 
   const landlordDeleteApartmentStrategy = new LandlordApartmentStrategy(
-    GetAllApartmentForLandlord
+    GetAllApartmentForLandlord,
+    GetAllApartmentPrefixQH
   );
 
   const apartmentContext = new ApartmentContext(
@@ -274,6 +291,9 @@ export function FindApartmentDetailByIdUseCase(): findApartmentByIdUseCase {
     ReadApartmentRepo
   );
 
+  const GetAllApartmentPrefixQH =
+    new GetAllApartmentByQueriesForLandlordQueriesHandler(ReadApartmentRepo);
+
   const adminDeleteApartmentStrategy = new AdminApartmentStrategy(
     commandHandler,
     queriesHandler,
@@ -286,7 +306,8 @@ export function FindApartmentDetailByIdUseCase(): findApartmentByIdUseCase {
     new GetAllApartmentByLandlordQueriesHandler(ReadApartmentRepo);
 
   const landlordDeleteApartmentStrategy = new LandlordApartmentStrategy(
-    GetAllApartmentForLandlord
+    GetAllApartmentForLandlord,
+    GetAllApartmentPrefixQH
   );
 
   const apartmentContext = new ApartmentContext(

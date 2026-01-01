@@ -63,12 +63,80 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
       throw new Error("Unable to retrieve apartments.");
     }
   }
-  findApartmentByQueryForLandlord(
+
+  public async findApartmentByQueryForLandlord(
     prefix: string,
     userId: string
   ): Promise<IApartmentSimpleDTO[] | null> {
-    throw new Error("Method not implemented.");
+    try {
+      const apartmentRepo =
+        AppDataSource.getInstance().getRepository(ApartmentModel);
+
+      const query = prefix.trim();
+
+      const searchFields: FindOptionsWhere<ApartmentModel>[] = [
+        { title: Like(`%${query}%`) },
+        { address: Like(`%${query}%`) },
+        { description: Like(`%${query}%`) },
+        { apartmentId: query },
+      ];
+
+      const whereCondition = searchFields.map((condition) => ({
+        ...condition,
+        landlord: { userId: userId }, // 👈 Restricts results to this user
+      }));
+
+      if (!query) {
+        // If query is empty, just return all apartments for this landlord
+        whereCondition.length = 0; // Clear search fields
+        whereCondition.push({ landlord: { userId: userId } });
+      }
+
+      const apartments = await apartmentRepo.find({
+        where: whereCondition,
+
+        select: {
+          apartmentId: true,
+          propertyStatus: true,
+          title: true,
+          description: true,
+          address: true,
+          isJoin: true,
+          createAt: true,
+          updateAt: true,
+          isFully: true,
+          price: true,
+          Verified: true,
+          numberOfBed: true,
+          numberOfRoom: true,
+
+          landlord: {
+            userId: true,
+            user: {
+              Name: true,
+            },
+          },
+        },
+
+        relations: {
+          landlord: {
+            user: true,
+          },
+          photos: true,
+        },
+      });
+
+      if (!apartments || apartments.length === 0) {
+        return [];
+      }
+
+      return apartments.map((orm) => ApartmentMapper.toResponsesSimple(orm));
+    } catch (error: any) {
+      console.error("Error searching apartment:", error);
+      throw new Error(`Unable to search apartments: ${error.message}`);
+    }
   }
+
   findApartmentForLandlordById(
     id: string,
     userId: string
