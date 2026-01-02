@@ -22,6 +22,7 @@ export const ApartmentRouter = (
   //   isAdmin,
   //   apartmentController.UpdateApartmentDetailsById
   // );
+  
 
   // //todo will be remove and move to landlord
   // router.patch(
