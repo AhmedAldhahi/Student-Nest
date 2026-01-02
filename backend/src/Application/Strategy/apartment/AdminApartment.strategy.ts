@@ -23,7 +23,7 @@ export class AdminApartmentStrategy implements IApartmentStrategy {
     id: string
   ): Promise<any> {
     try {
-      const queries = new GetApartmentByIdQueries(id);
+      const queries = new GetApartmentByIdQueries(id,userId);
       return await this.GetApartmentDetailByIdQH.handle(queries);
     } catch (error: any) {
       console.error("fail to get apartment by id, !!", error);

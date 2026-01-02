@@ -6,6 +6,7 @@ import { ApartmentAggregateRoot } from "../../AgregateRoot/apartmentEntity.entit
 
 export interface IReadApartmentRepo {
   findAllApartment(userId: string): Promise<IApartmentSimpleDTO[] | null>;
+  
   findAllApartmentForLandlord(
     userId: string
   ): Promise<IApartmentSimpleDTO[] | null>;

@@ -7,19 +7,19 @@ import { NumberOfRoom } from "../Value-Object/NumberOfRoom.vo";
 
 export interface ApartmentData {
   apartmentId: string;
-  propertyStatus: boolean;
+  isVisible: boolean;
   title: string;
   description: string;
   price: ApartmentPrice;
   address: string;
-  Verified: boolean;
+  IsVerified: boolean;
   numberOfRoom: NumberOfRoom;
   numberOfBed: NumberOfBed;
   isJoin: boolean;
   createAt: Date;
   updateAt: Date;
   landlordId: string; 
-  isFully: boolean;
+  isFullyBooked: boolean;
 
   apartmentDocument: ApartmentDocumentEntity[];
   apartmentPhoto: ApartmentPhotoDocumentEntity[];

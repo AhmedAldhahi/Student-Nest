@@ -20,7 +20,7 @@ export class ApartmentModel {
   apartmentId: string;
 
   @Column({ type: "boolean", nullable: false })
-  propertyStatus: boolean;
+  isVisible: boolean;
 
   @Column({ type: "varchar", nullable: false })
   title: string;
@@ -35,10 +35,10 @@ export class ApartmentModel {
   address: string;
 
   @Column({ type: "boolean", nullable: false, default: false })
-  Verified: boolean;
+  isVerified: boolean;
 
   @Column({ type: "boolean", nullable: false, default: false })
-  isFully: boolean;
+  isFullyBooked: boolean;
 
   @Column({ type: "varchar", nullable: false })
   numberOfRoom: string;

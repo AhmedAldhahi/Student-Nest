@@ -54,8 +54,8 @@ export class ApartmentController {
         apartmentDocument: [],
 
         // Parse Booleans ("true" -> true)
-        propertyStatus: req.body.propertyStatus === "true",
-        isJoin: req.body.isJoin === "true",
+        propertyStatus: req.body.propertyStatus,
+        isJoin: req.body.isJoin,
 
         // Files & ID
         landlord: landlordId,
@@ -64,7 +64,7 @@ export class ApartmentController {
         createAt: new Date(),
         updateAt: new Date(),
         apartmentId: 0,
-      };
+      }; 
 
       console.log("file : ", req.file);
       console.log("body : ", req.body);

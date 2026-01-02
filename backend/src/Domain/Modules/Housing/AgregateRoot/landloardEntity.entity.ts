@@ -39,52 +39,31 @@ export class LandlordAggregateRoot extends AggregateRoot<string> {
    * ==================================================================================
    */
 
-  public addNewApartment(apartmentInfo: ApartmentData) {
+  public addNewApartment(apartmentInfo: ApartmentAggregateRoot) {
     this.ensureIsLandlordVerified();
 
     if (
-      !apartmentInfo.apartmentDocument ||
-      apartmentInfo.apartmentDocument.length === 0
-    ) {
-      throw new Error("apartment document is require !!");
-    }
-
-    if (
-      !apartmentInfo.apartmentPhoto ||
-      apartmentInfo.apartmentPhoto.length === 0
+      !apartmentInfo.getApartmentPhotoDocument() ||
+      apartmentInfo.getApartmentPhotoDocument().length === 0
     ) {
       throw new Error("apartment photo is require !!");
     }
 
-    if (apartmentInfo.apartmentPhoto.length > 6) {
+    if (apartmentInfo.getApartmentPhotoDocument().length > 6) {
       throw new Error("max size of photo is 6 ");
     }
 
-    if (!apartmentInfo.googleMapLocation) {
+    if (!apartmentInfo.getGoogleMapLocation()) {
       throw new Error("apartment google map location is require ");
     }
+  }
 
-    const NewApartment = new ApartmentAggregateRoot({
-      apartmentId: apartmentInfo.apartmentId,
-      propertyStatus: true, // is for check if it full or not if not true, if yes false
-      title: apartmentInfo.title,
-      description: apartmentInfo.description,
-      price: apartmentInfo.price,
-      address: apartmentInfo.address,
-      numberOfRoom: apartmentInfo.numberOfRoom,
-      numberOfBed: apartmentInfo.numberOfBed,
-      isJoin: apartmentInfo.isJoin,
-      isFully: false, // maybe will delete it
-      landlordId: this.userId,
-      apartmentDocument: [],
-      apartmentPhoto: apartmentInfo.apartmentPhoto,
-      googleMapLocation: apartmentInfo.googleMapLocation,
-      Verified: false,
-      createAt: apartmentInfo.createAt,
-      updateAt: apartmentInfo.updateAt,
-    });
 
-    return NewApartment;
+  public AddApartmentDocumentFile(apartment: ApartmentAggregateRoot,apartmentDoc: ApartmentDocumentEntity) {
+    // make need validation
+    
+
+    apartment.AddApartmentDocument(apartmentDoc);
   }
 
   /**

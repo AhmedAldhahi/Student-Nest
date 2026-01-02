@@ -28,7 +28,7 @@ export class EditApartmentDetailByIdCommandHandler
 
       if (command.description) apartment.updateDescription(command.description);
 
-      if (command.isJoin) apartment.updateJoin(command.isJoin);
+      if (command.isJoin) apartment.updateIsJoin(command.isJoin);
 
       if (command.numberOfBed)
         apartment.updateNumberOfBed(NumberOfBed.create(command.numberOfBed));

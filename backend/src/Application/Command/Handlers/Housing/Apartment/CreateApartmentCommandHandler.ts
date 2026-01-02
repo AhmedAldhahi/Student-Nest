@@ -59,23 +59,22 @@ export class CreateApartmentCommandHandler
       const apartmentId = uuidv4();
       const apartment = new ApartmentAggregateRoot({
         apartmentId: apartmentId,
-        propertyStatus: command.propertyStatus,
-        price: ApartmentPrice.create(command.price),
+        isVisible: command.propertyStatus,
         title: command.title,
         description: command.description,
         address: command.address,
-        createAt: command.createAt,
-        updateAt: command.updateAt,
+        IsVerified: false,
+        isFullyBooked: false,
+        isJoin: command.isJoin,
         numberOfBed: NumberOfBed.create(command.numberOfBed),
         numberOfRoom: NumberOfRoom.create(command.numberOfRoom),
-
+        price: ApartmentPrice.create(command.price),
+        createAt: command.createAt,
+        updateAt: command.updateAt,
         apartmentPhoto: photoEntities,
         apartmentDocument: [],
         googleMapLocation: location,
         landlordId: landlord.getUserId(),
-        isFully: false,
-        isJoin: command.isJoin,
-        Verified: false,
       });
 
       await this.uow.startTransaction();
@@ -84,7 +83,7 @@ export class CreateApartmentCommandHandler
 
       return {
         apartmentId: apartmentId,
-        propertyStatus: command.propertyStatus,
+        isVisible: command.propertyStatus,
         price: ApartmentPrice.create(command.price).getValue(),
         title: command.title,
         description: command.description,
@@ -93,15 +92,15 @@ export class CreateApartmentCommandHandler
         updateAt: command.updateAt,
         numberOfBed: NumberOfBed.create(command.numberOfBed).getValue(),
         numberOfRoom: NumberOfRoom.create(command.numberOfRoom).getValue(),
-        
+
         apartmentPhoto: photoEntities,
         googleMapLocation: location,
         landlordId: landlord.getUserId(),
-        isFully: false,
+        isFullyBooked: false,
         isJoin: command.isJoin,
-        Verified: false,
+        IsVerified: false,
+        landlordName: user.getName()?.valueOf(),
       };
-      
     } catch (error: any) {
       await this.uow.rollbackTransaction();
       console.error("fail to create apartments !!");

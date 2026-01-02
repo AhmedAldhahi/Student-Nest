@@ -1,4 +1,5 @@
 import { IReadApartmentRepo } from "../../../../../Domain/Modules/Housing/Repositories/Read/ReadApartmentRepo.repositoreis";
+import { ApartmentDocumentType } from "../../../../../Domain/Shared/Enum/ApartmentDocument.enum";
 import { IUnitOfWork } from "../../../../../Domain/Shared/Repositories/UnitOfWorkRepositories.repositories";
 import { EditApartmentVerificationStatus } from "../../../Commands/Apartment/udateApartmentVerfiedSTatus.command";
 import { ICommandHandlers } from "../../../ICommandHandlers";
@@ -19,7 +20,17 @@ export class EditApartmentStatusVerifiedCommandHandler
       if (!apartment) throw new Error("no apartment found !!");
 
       if (command.Verified === true) {
+        if (
+          apartment.getApartmentDocument()[0].getApartmentType() !==
+          ApartmentDocumentType.ApartmentVerifiedFile
+        ) {
+          throw new Error(
+            "you cannot verified this apartment the landlord must  to send apartment document for you to able to verified apartments !!"
+          );
+        }
+
         apartment.markAsVerified();
+        apartment.markAsVisible();
       }
 
       if (command.Verified === false) {

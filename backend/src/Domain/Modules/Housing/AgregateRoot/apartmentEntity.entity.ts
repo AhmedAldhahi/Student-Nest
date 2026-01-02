@@ -9,7 +9,7 @@ import { AggregateRoot } from "../../../Shared/AgregateRoot/AggregateRoot";
 
 export class ApartmentAggregateRoot extends AggregateRoot<string> {
   private apartmentId: string;
-  private isVisible: boolean;
+  private isVisible: boolean = false;
   private title: string;
   private description: string;
   private price: ApartmentPrice;
@@ -18,7 +18,7 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
   private numberOfRoom: NumberOfRoom;
   private numberOfBed: NumberOfBed;
   private isJoin: boolean; // be Roommate with students
-  private isFullyBooked: boolean;
+  private isFullyBooked: boolean = false;
 
   private createAt: Date;
   private updateAt: Date;
@@ -31,7 +31,7 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
   constructor(data: ApartmentData) {
     super();
     this.apartmentId = data.apartmentId;
-    this.isVisible = data.propertyStatus;
+    this.isVisible = data.isVisible;
     this.title = data.title;
     this.description = data.description;
     this.price = data.price;
@@ -63,7 +63,7 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
     return this.apartmentId;
   }
 
-  public getPropertyStatus(): boolean {
+  public getIsVisible(): boolean {
     return this.isVisible;
   }
 
@@ -83,11 +83,11 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
     return this.isJoin;
   }
 
-  public getFully(): boolean {
+  public getIsFullyBooked(): boolean {
     return this.isFullyBooked;
   }
 
-  public getVerified(): boolean {
+  public getIsVerified(): boolean {
     return this.isVerified;
   }
 
@@ -184,16 +184,20 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
     this.isVerified = false;
   }
 
-  public markAsFul(): void {
+  public markAsVisible(): void {
+    this.isVisible = true;
+  }
+
+  public markAsNotVisible(): void {
+    this.isVisible = false;
+  }
+
+  public markAsFullyBooked(): void {
     this.isFullyBooked = true;
   }
 
-  public markAsNotFul(): void {
+  public markAsNotFullyBooked(): void {
     this.isFullyBooked = false;
-  }
-
-  public updateVerified(verified: boolean): void {
-    this.isVerified = verified;
   }
 
   public markAsJoin(): void {
@@ -204,24 +208,16 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
     this.isJoin = false;
   }
 
-  public updateFully(fully: boolean): void {
-    this.isFullyBooked = fully;
-  }
-
-  public updateJoin(isJoin: boolean): void {
-    this.isJoin = isJoin;
-  }
-
   public updateAddress(address: string): void {
     this.address = address;
   }
 
-  public updateDescription(desc: string): void {
-    this.description = desc;
+  public updateIsJoin(isJoin: boolean): void {
+    this.isJoin = isJoin;
   }
 
-  public updatePropertyStatus(status: boolean): void {
-    this.isVisible = status;
+  public updateDescription(desc: string): void {
+    this.description = desc;
   }
 
   public updateTitle(title: string): void {

@@ -10,7 +10,6 @@ import { ApartmentModel } from "../../Database/orm/TypeOrm/entity/Apartment.enti
 import { ApartmentDocumentMapper } from "./apartmentDocument.mapper";
 import { apartmentPhotoMapper } from "./apartmentPhoto.mapper";
 import { GoogleMapMapper } from "./gogleMap.mapper";
-import { LandlordMapper } from "./landloard.mapper";
 
 export class ApartmentMapper {
   public static toModel(apartment: ApartmentAggregateRoot): ApartmentModel {
@@ -18,18 +17,18 @@ export class ApartmentMapper {
     const validateData = this.modelValidation(apartment);
 
     (apartmentModel.apartmentId = apartment.getApartmentId()),
-      (apartmentModel.propertyStatus = apartment.getPropertyStatus()),
+      (apartmentModel.isVisible = apartment.getIsVisible()),
       (apartmentModel.title = apartment.getTitle()),
       (apartmentModel.description = apartment.getDescription()),
       (apartmentModel.address = apartment.getAddress()),
-      (apartmentModel.Verified = apartment.getVerified()),
+      (apartmentModel.isVerified = apartment.getIsVerified()),
       (apartmentModel.isJoin = apartment.getIsJoin()),
       (apartmentModel.createAt = apartment.getCreateAt()),
       (apartmentModel.updateAt = apartment.getUpdateAt()),
-      (apartmentModel.isFully = apartment.getFully()),
+      (apartmentModel.isFullyBooked = apartment.getIsFullyBooked()),
       // (apartmentModel.landlord = LandlordMapper.toOrm(apartment.getLandlord()));
-      apartmentModel.landlordId  =  apartment.getLandlord(),
-    apartmentModel.price = validateData.price;
+      (apartmentModel.landlordId = apartment.getLandlord()),
+      (apartmentModel.price = validateData.price);
     apartmentModel.numberOfBed = validateData.numberOfBed;
     apartmentModel.numberOfRoom = validateData.numberOfRoom;
 
@@ -64,12 +63,12 @@ export class ApartmentMapper {
   public static toEntity(model: ApartmentModel): ApartmentAggregateRoot {
     return new ApartmentAggregateRoot({
       apartmentId: model.apartmentId,
-      propertyStatus: model.propertyStatus,
+      isVisible: model.isVisible,
       title: model.title,
       description: model.description,
       address: model.address,
-      Verified: model.Verified,
-      isFully: model.isFully,
+      IsVerified: model.isVerified,
+      isFullyBooked: model.isFullyBooked,
       isJoin: model.isJoin,
       createAt: model.createAt,
       updateAt: model.updateAt,
@@ -92,40 +91,58 @@ export class ApartmentMapper {
         : [],
     });
   }
-  
 
   public static toResponsesSimple(model: ApartmentModel): IApartmentSimpleDTO {
     return {
       apartmentId: model.apartmentId,
-      propertyStatus: model.propertyStatus,
+      isVisible: model.isVisible,
       title: model.title,
       description: model.description,
       address: model.address,
-      Verified: model.Verified,
-      isFully: model.isFully,
+      isVerified: model.isVerified,
+      isFullyBooked: model.isFullyBooked,
       isJoin: model.isJoin,
       numberOfBed: model.numberOfBed,
       numberOfRoom: model.numberOfRoom,
       price: model.price,
-      
-      // need to add number of student
-
       landlordName: model.landlord.user.Name,
+      landlordId: model.landlordId,
       apartmentPhoto: model.photos
         ? model.photos.map((file) => apartmentPhotoMapper.toEntity(file))
         : [],
+      googleMapLocation: GoogleMapMapper.toEntity(model.location),
     };
   }
+
+  /**
+   * 
+   * @param model   apartmentId: string;
+     isVisible: boolean;
+     title: string;
+     description: string;
+     address: string;
+     isVerified: boolean;
+     isFullyBooked: boolean;
+     isJoin: boolean;
+     numberOfBed: string;
+     numberOfRoom: string;
+     price: string;
+     landlordId: string;
+     landlordName: string;
+     apartmentPhoto: ApartmentPhotoDocumentEntity[];
+     googleMapLocation: GoogleMapLocationEntity;
+   * @returns 
+   */
 
   public static toResponsesDetail(model: ApartmentModel): IApartmentDTO {
     return {
       apartmentId: model.apartmentId,
-      propertyStatus: model.propertyStatus,
+      isVisible: model.isVisible,
       title: model.title,
       description: model.description,
       address: model.address,
-      Verified: model.Verified,
-      isFully: model.isFully,
+      isVerified: model.isVerified,
+      isFullyBooked: model.isFullyBooked,
       isJoin: model.isJoin,
       numberOfBed: model.numberOfBed,
       numberOfRoom: model.numberOfRoom,
@@ -144,15 +161,3 @@ export class ApartmentMapper {
     };
   }
 }
-
-/**
- * no id
- * jameel missed description
- * is fully
- * add count 
- * no create at,update at ,
- * no google map locations
- *
- * one photo 
- *
- */

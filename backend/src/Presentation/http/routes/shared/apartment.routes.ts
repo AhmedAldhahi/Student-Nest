@@ -18,7 +18,6 @@ export const ApartmentSharedRouter = (
 
   
 
-  //todo: need to make landlord part
   router.get("/:id", apartmentController.getApartmentDetailById);
 
 

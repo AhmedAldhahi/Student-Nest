@@ -25,16 +25,16 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
         },
         select: {
           apartmentId: true,
-          propertyStatus: true,
+          isVisible: true,
           title: true,
           description: true,
           address: true,
           isJoin: true,
           createAt: true,
           updateAt: true,
-          isFully: true,
+          isFullyBooked: true,
           price: true,
-          Verified: true,
+          isVerified: true,
           numberOfBed: true,
           numberOfRoom: true,
 
@@ -50,6 +50,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
             user: true,
           },
           photos: true,
+          location: true,
         },
       });
 
@@ -97,16 +98,16 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
 
         select: {
           apartmentId: true,
-          propertyStatus: true,
+          isVisible: true,
           title: true,
           description: true,
           address: true,
           isJoin: true,
           createAt: true,
           updateAt: true,
-          isFully: true,
+          isFullyBooked: true,
           price: true,
-          Verified: true,
+          isVerified: true,
           numberOfBed: true,
           numberOfRoom: true,
 
@@ -161,11 +162,28 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
     }
   }
 
-  findApartmentDetailsByIdForLandlord(
+  public async findApartmentDetailsByIdForLandlord(
     id: string,
     userId: string
   ): Promise<IApartmentDTO | null> {
-    throw new Error("Method not implemented.");
+    try {
+      const apartment = await AppDataSource.getInstance()
+        .getRepository(ApartmentModel)
+        .findOne({
+          where: { apartmentId: id, landlordId: userId },
+          relations: {
+            landlord: { user: true },
+            documents: true,
+            location: true,
+            photos: true,
+          },
+        });
+
+      return apartment ? ApartmentMapper.toResponsesDetail(apartment) : null;
+    } catch (error) {
+      console.error("Error finding landlord by ID:", error);
+      throw new Error("Error retrieving landlord data");
+    }
   }
   public async findAllApartment(
     userId: string
@@ -178,16 +196,16 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
         // 1. SELECT: Here you pick the Columns
         select: {
           apartmentId: true,
-          propertyStatus: true,
+          isVisible: true,
           title: true,
           description: true,
           address: true,
           isJoin: true,
           createAt: true,
           updateAt: true,
-          isFully: true,
+          isFullyBooked: true,
           price: true,
-          Verified: true,
+          isVerified: true,
           numberOfBed: true,
           numberOfRoom: true,
 
@@ -204,6 +222,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
             user: true,
           },
           photos: true,
+          location: true,
         },
       });
 
@@ -243,16 +262,16 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
 
         select: {
           apartmentId: true,
-          propertyStatus: true,
+          isVisible: true,
           title: true,
           description: true,
           address: true,
           isJoin: true,
           createAt: true,
           updateAt: true,
-          isFully: true,
+          isFullyBooked: true,
           price: true,
-          Verified: true,
+          isVerified: true,
           numberOfBed: true,
           numberOfRoom: true,
 

@@ -17,6 +17,25 @@ const multerFileSchema = z.object({
   size: z.number().max(MAX_FILE_SIZE, "File size must be less than 5MB"),
 });
 
+const MulterFileSchema = z.file();
+
+MulterFileSchema.min(10_000);
+MulterFileSchema.max(1_000_00);
+MulterFileSchema.mime([
+  "image/png",
+  "image/jpeg",
+  "image/webp",
+  "application/pdf",
+]);
+
+/**
+ *  
+fileSchema.min(10_000); // minimum .size (bytes)
+fileSchema.max(1_000_000); // maximum .size (bytes)
+fileSchema.mime("image/png"); // MIME type
+fileSchema.mime(["image/png", "image/jpeg"]); // multiple MI
+ */
+
 // --- 3. Main Request Schema ---
 export const createApartmentSchema = z
   .object({
