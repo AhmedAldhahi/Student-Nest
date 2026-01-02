@@ -3,7 +3,6 @@ import { LandlordAggregateRoot } from "../../../Domain/Modules/Housing/AgregateR
 import { GovernmentID } from "../../../Domain/Shared/Value-Object/UserGovId.vo";
 import { VerificationDocument } from "../../../Domain/Shared/Value-Object/VerficationDocument.vo";
 import { LandlordModel } from "../../Database/orm/TypeOrm/entity/Landloard.entity";
-import { UserModel } from "../../Database/orm/TypeOrm/entity/User.entity";
 
 export class LandlordMapper {
   public static toOrm(landlord: LandlordAggregateRoot): LandlordModel {
@@ -43,19 +42,18 @@ export class LandlordMapper {
   }
 
   public static toResponse(landlordModel: LandlordModel): LandlordResponseDTO {
-    const userModel = new UserModel();
     return {
       user: {
-        userId: userModel.userId,
-        name: userModel.Name,
-        dateOfBirth: userModel.DateOfBirth,
-        email: userModel.Email,
-        role: userModel.Role,
-        phoneNumber: userModel.PhoneNumber,
-        address: userModel.Address,
-        photo: userModel.Photo,
-        createdAt: userModel.createAt,
-        emailVerified: userModel.emailVerfied,
+        userId: landlordModel.user.userId,
+        name: landlordModel.user.Name,
+        dateOfBirth: landlordModel.user.DateOfBirth,
+        email: landlordModel.user.Email,
+        role: landlordModel.user.Role,
+        phoneNumber: landlordModel.user.PhoneNumber,
+        address: landlordModel.user.Address,
+        photo: landlordModel.user.Photo,
+        createdAt: landlordModel.user.createAt,
+        emailVerified: landlordModel.user.emailVerfied,
       },
       cliQAccount: landlordModel.CliQAccount,
       landlordGovId: landlordModel.LandlordGovId,

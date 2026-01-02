@@ -65,7 +65,7 @@ export class deleteApartmentByIdCommandHandler
 
       // The code reaches here even if Cloudinary fails
       await this.uow.startTransaction();
-      await this.uow.writeApartmentRepo.deleteApartmentById(command.id);
+      await this.uow.writeApartmentRepo.deleteApartmentById(command.id,command.userId);
       await this.uow.commitTransaction();
     } catch (error: any) {
       // This catch block now only handles Database errors

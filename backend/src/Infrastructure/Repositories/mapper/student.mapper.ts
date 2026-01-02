@@ -7,7 +7,6 @@ import { StudentUniversity } from "../../../Domain/Modules/Student/Value-Object/
 import { GovernmentID } from "../../../Domain/Shared/Value-Object/UserGovId.vo";
 import { VerificationDocument } from "../../../Domain/Shared/Value-Object/VerficationDocument.vo";
 import { StudentModel } from "../../Database/orm/TypeOrm/entity/Student.entity";
-import { UserModel } from "../../Database/orm/TypeOrm/entity/User.entity";
 
 export class StudentMapper {
   public static toEntity(stdModel: StudentModel): StudentAggregateRoot {
@@ -26,19 +25,18 @@ export class StudentMapper {
   }
 
   public static toResponse(stdModel: StudentModel): StudentResponseDto {
-    const userModel = new UserModel();
     return {
       user: {
-        userId: userModel.userId,
-        name: userModel.Name,
-        dateOfBirth: userModel.DateOfBirth,
-        email: userModel.Email,
-        role: userModel.Role,
-        phoneNumber: userModel.PhoneNumber,
-        address: userModel.Address,
-        photo: userModel.Photo,
-        createdAt: userModel.createAt,
-        emailVerified: userModel.emailVerfied,
+        userId: stdModel.userId,
+        name: stdModel.user.Name,
+        dateOfBirth: stdModel.user.DateOfBirth,
+        email: stdModel.user.Email,
+        role: stdModel.user.Role,
+        phoneNumber: stdModel.user.PhoneNumber,
+        address: stdModel.user.Address,
+        photo: stdModel.user.Photo,
+        createdAt: stdModel.user.createAt,
+        emailVerified: stdModel.user.emailVerfied,
       },
       GraduationYear: stdModel.GraduationYear,
       Major: stdModel.Major,
