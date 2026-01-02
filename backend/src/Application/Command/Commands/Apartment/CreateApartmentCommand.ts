@@ -18,8 +18,8 @@ export class CreateApartmentCommand implements ICommand {
   public isFully: boolean;
 
   public apartmentPhoto: Express.Multer.File[];
-  public googleMapLocationLong: number;
-  public googleMapLocationLat: number;
+  public googleMapLocationLong: string;
+  public googleMapLocationLat: string;
   public apartmentDocument: Express.Multer.File[];
 
   public constructor(data: ApartmentDataRequest) {

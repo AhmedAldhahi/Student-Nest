@@ -6,11 +6,11 @@ export class GoogleMapLocationModel {
   @PrimaryColumn()
   googleMapLocationId: string;
 
-  @Column({ type: "decimal", precision: 11, scale: 8 })
-  longitude: number;
+  @Column({ type: "varchar", nullable: false })
+  longitude: string;
 
-  @Column({ type: "decimal", precision: 10, scale: 8 })
-  latitude: number;
+  @Column({ type: "varchar", nullable: false })
+  latitude: string;
 
   @OneToOne(() => ApartmentModel, (apartment) => apartment.location, {
     onDelete: "CASCADE", // If Apartment is deleted, delete this location

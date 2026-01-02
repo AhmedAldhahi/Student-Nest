@@ -18,10 +18,6 @@ export class ApartmentController {
       const landlordId = (req as any).user?.userId;
       if (!landlordId) return res.status(401).json({ error: "Unauthorized" });
 
-      // 2. FILE EXTRACTION (The Fix)
-      // When using upload.fields(), req.files is an object like:
-      // { "apartmentPhoto": [File, File], "apartmentDocument": [File] }
-
       let photos: Express.Multer.File[] = [];
 
       if (req.files) {
@@ -53,8 +49,8 @@ export class ApartmentController {
         numberOfBed: req.body.numberOfBed,
         numberOfRoom: req.body.numberOfRoom,
         price: req.body.price,
-        googleMapLocationLat: parseFloat(req.body.googleMapLocationLat),
-        googleMapLocationLong: parseFloat(req.body.googleMapLocationLong),
+        googleMapLocationLat: req.body.googleMapLocationLat,
+        googleMapLocationLong: req.body.googleMapLocationLong,
         apartmentDocument: [],
 
         // Parse Booleans ("true" -> true)

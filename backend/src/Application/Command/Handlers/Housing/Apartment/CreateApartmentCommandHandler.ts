@@ -101,6 +101,7 @@ export class CreateApartmentCommandHandler
         isJoin: command.isJoin,
         Verified: false,
       };
+      
     } catch (error: any) {
       await this.uow.rollbackTransaction();
       console.error("fail to create apartments !!");

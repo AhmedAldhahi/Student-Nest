@@ -58,14 +58,8 @@ export const createApartmentSchema = z
       isJoin: z.preprocess((val) => String(val) === "true", z.boolean()),
 
       // Coercion logic (Correct for Map logic)
-      googleMapLocationLat: z.coerce
-        .number()
-        .min(-90)
-        .max(90, "Invalid Latitude"),
-      googleMapLocationLong: z.coerce
-        .number()
-        .min(-180)
-        .max(180, "Invalid Longitude"),
+      googleMapLocationLat: z.string().min(1).max(24),
+      googleMapLocationLong: z.string().min(1).max(24),
     }),
 
     // --- 4. File Validation Section ---

@@ -164,6 +164,18 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
     this.apartmentPhotoDocument = photos;
   }
 
+  public AddApartmentDocument(apartmentDoc: ApartmentDocumentEntity): void {
+    if (!apartmentDoc) return;
+
+    // Safety check in case it wasn't initialized
+    if (!this.apartmentDocument) {
+      this.apartmentDocument = [];
+    }
+
+    this.apartmentDocument.push(apartmentDoc);
+    this.updateAt = new Date();
+  }
+
   public markAsVerified(): void {
     this.isVerified = true;
   }

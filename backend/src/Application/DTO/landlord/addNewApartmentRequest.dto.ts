@@ -14,6 +14,6 @@ export interface ApartmentDataRequest {
 
   apartmentDocument: Express.Multer.File[];
   apartmentPhoto: Express.Multer.File[];
-  googleMapLocationLong: number;
-  googleMapLocationLat: number;
+  googleMapLocationLong: string;
+  googleMapLocationLat: string;
 }
