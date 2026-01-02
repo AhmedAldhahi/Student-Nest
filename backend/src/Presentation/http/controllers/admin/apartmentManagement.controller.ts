@@ -61,6 +61,9 @@ export class ApartmentManagementController {
       const { id } = req.params;
       const { Verified } = req.body;
 
+      console.log("id", id);
+      console.log("verified : ", Verified);
+
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
@@ -88,7 +91,10 @@ export class ApartmentManagementController {
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
 
-      const result = await this.deleteApartmentById.execute(userId, apartmentId);
+      const result = await this.deleteApartmentById.execute(
+        userId,
+        apartmentId
+      );
       return res.status(200).json(result);
     } catch (error: any) {
       console.error("fail delete apartment,", error);

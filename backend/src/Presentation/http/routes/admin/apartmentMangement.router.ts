@@ -9,7 +9,7 @@ export const ApartmentRouter = (
   const router = Router();
 
   router.patch(
-    "/:apartmentId/verify",
+    "/:id/verify",
     validation(apartmentVerifiedZod),
     apartmentController.updateApartmentVerificationStatus
   );

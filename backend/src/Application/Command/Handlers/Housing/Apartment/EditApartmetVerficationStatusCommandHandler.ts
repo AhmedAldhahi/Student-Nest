@@ -11,38 +11,59 @@ export class EditApartmentStatusVerifiedCommandHandler
     private readonly uow: IUnitOfWork,
     private readonly IReadApartmentRepo: IReadApartmentRepo
   ) {}
+
   public async handle(command: EditApartmentVerificationStatus): Promise<any> {
     try {
       const apartment = await this.IReadApartmentRepo.findApartmentById(
         command.apartmentId
       );
 
-      if (!apartment) throw new Error("no apartment found !!");
+      if (!apartment) throw new Error("No apartment found !!");
 
+      // CASE: Admin wants to Mark as Verified (True)
       if (command.Verified === true) {
-        if (
-          apartment.getApartmentDocument()[0].getApartmentType() !==
-          ApartmentDocumentType.ApartmentVerifiedFile
-        ) {
+        
+        // 1. Get the documents
+        const documents = apartment.getApartmentDocument();
+
+        // 2. Safety Check: Are there any documents at all?
+        if (!documents || documents.length === 0) {
           throw new Error(
-            "you cannot verified this apartment the landlord must  to send apartment document for you to able to verified apartments !!"
+            "Cannot verify: The landlord has not uploaded any documents yet."
           );
         }
 
+        const hasVerificationDoc = documents.some(
+          (doc) => doc.getApartmentType() === ApartmentDocumentType.ApartmentVerifiedFile
+        );
+
+        if (!hasVerificationDoc) {
+           throw new Error(
+            "Cannot verify: The uploaded document is not a Verification File."
+           );
+        }
+
+        // 4. Apply Changes
         apartment.markAsVerified();
         apartment.markAsVisible();
       }
 
+      // CASE: Admin wants to Un-verify (False)
       if (command.Verified === false) {
         apartment.markAsNotVerified();
+        apartment.markAsNotVisible();
       }
 
       await this.uow.startTransaction();
       await this.uow.writeApartmentRepo.updateApartment(apartment);
       await this.uow.commitTransaction();
+      
+      return { message: "Apartment status updated successfully" };
+
     } catch (error: any) {
       await this.uow.rollbackTransaction();
-      console.error("fail to update apartment status !!");
+      console.error("Fail to update apartment status !!", error);
+      throw error; // Re-throw so the controller knows it failed
     } finally {
       await this.uow.releaseTransaction();
     }

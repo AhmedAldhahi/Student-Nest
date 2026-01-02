@@ -124,6 +124,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
             user: true,
           },
           photos: true,
+          location: true,
         },
       });
 
@@ -288,6 +289,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
             user: true,
           },
           photos: true,
+          location: true,
         },
       });
 
