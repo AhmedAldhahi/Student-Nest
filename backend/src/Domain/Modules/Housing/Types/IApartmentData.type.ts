@@ -19,7 +19,6 @@ export interface ApartmentData {
   createAt: Date;
   updateAt: Date;
   landlordId: string; 
-  isFullyBooked: boolean;
 
   apartmentDocument: ApartmentDocumentEntity[];
   apartmentPhoto: ApartmentPhotoDocumentEntity[];

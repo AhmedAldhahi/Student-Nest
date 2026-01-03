@@ -15,7 +15,6 @@ export class CreateApartmentCommand implements ICommand {
   public createAt: Date;
   public updateAt: Date;
   public landlord: string;
-  public isFully: boolean;
 
   public apartmentPhoto: Express.Multer.File[];
   public googleMapLocationLong: string;

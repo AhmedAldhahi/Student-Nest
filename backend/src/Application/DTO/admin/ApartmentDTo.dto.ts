@@ -9,7 +9,6 @@ export interface IApartmentDTO {
   description: string;
   address: string;
   isVerified: boolean;
-  isFullyBooked: boolean;
   isJoin: boolean;
   createAt: Date;
   updateAt: Date;
@@ -31,7 +30,6 @@ export interface IApartmentSimpleDTO {
   description: string;
   address: string;
   isVerified: boolean;
-  isFullyBooked: boolean;
   isJoin: boolean;
   numberOfBed: string;
   numberOfRoom: string;

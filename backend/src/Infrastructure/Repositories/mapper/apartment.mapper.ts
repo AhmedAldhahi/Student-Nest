@@ -25,7 +25,6 @@ export class ApartmentMapper {
       (apartmentModel.isJoin = apartment.getIsJoin()),
       (apartmentModel.createAt = apartment.getCreateAt()),
       (apartmentModel.updateAt = apartment.getUpdateAt()),
-      (apartmentModel.isFullyBooked = apartment.getIsFullyBooked()),
       // (apartmentModel.landlord = LandlordMapper.toOrm(apartment.getLandlord()));
       (apartmentModel.landlordId = apartment.getLandlord()),
       (apartmentModel.price = validateData.price);
@@ -68,7 +67,6 @@ export class ApartmentMapper {
       description: model.description,
       address: model.address,
       IsVerified: model.isVerified,
-      isFullyBooked: model.isFullyBooked,
       isJoin: model.isJoin,
       createAt: model.createAt,
       updateAt: model.updateAt,
@@ -100,7 +98,6 @@ export class ApartmentMapper {
       description: model.description,
       address: model.address,
       isVerified: model.isVerified,
-      isFullyBooked: model.isFullyBooked,
       isJoin: model.isJoin,
       numberOfBed: model.numberOfBed,
       numberOfRoom: model.numberOfRoom,
@@ -119,26 +116,6 @@ export class ApartmentMapper {
     };
   }
 
-  /**
-   * 
-   * @param model   apartmentId: string;
-     isVisible: boolean;
-     title: string;
-     description: string;
-     address: string;
-     isVerified: boolean;
-     isFullyBooked: boolean;
-     isJoin: boolean;
-     numberOfBed: string;
-     numberOfRoom: string;
-     price: string;
-     landlordId: string;
-     landlordName: string;
-     apartmentPhoto: ApartmentPhotoDocumentEntity[];
-     googleMapLocation: GoogleMapLocationEntity;
-   * @returns 
-   */
-
   public static toResponsesDetail(model: ApartmentModel): IApartmentDTO {
     return {
       apartmentId: model.apartmentId,
@@ -147,7 +124,6 @@ export class ApartmentMapper {
       description: model.description,
       address: model.address,
       isVerified: model.isVerified,
-      isFullyBooked: model.isFullyBooked,
       isJoin: model.isJoin,
       numberOfBed: model.numberOfBed,
       numberOfRoom: model.numberOfRoom,

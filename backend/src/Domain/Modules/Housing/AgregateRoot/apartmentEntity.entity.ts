@@ -18,7 +18,6 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
   private numberOfRoom: NumberOfRoom;
   private numberOfBed: NumberOfBed;
   private isJoin: boolean; // be Roommate with students
-  private isFullyBooked: boolean = false;
 
   private createAt: Date;
   private updateAt: Date;
@@ -82,9 +81,7 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
     return this.isJoin;
   }
 
-  public getIsFullyBooked(): boolean {
-    return this.isFullyBooked;
-  }
+
 
   public getIsVerified(): boolean {
     return this.isVerified;
@@ -191,13 +188,6 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
     this.isVisible = false;
   }
 
-  public markAsFullyBooked(): void {
-    this.isFullyBooked = true;
-  }
-
-  public markAsNotFullyBooked(): void {
-    this.isFullyBooked = false;
-  }
 
   public markAsJoin(): void {
     this.isJoin = true;
