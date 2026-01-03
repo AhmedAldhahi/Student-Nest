@@ -38,6 +38,7 @@ export class UpdateApartmentDocumentFileCommandHandler
         command.apartmentId,
         command.userId
       );
+
       if (!apartment) throw new Error("Apartment not found or does not belong to this landlord.");
 
       if (apartment.getIsVerified() === true) {
@@ -57,7 +58,7 @@ export class UpdateApartmentDocumentFileCommandHandler
 
       // --- CRITICAL FIX START ---
       // Old Code: const targetDocument = apartmentDocuments[0]; (BLINDLY PICKED FIRST)
-      // New Code: Find the specific document matching the ID from the URL
+
       const targetDocument = apartmentDocuments.find(
         (doc: any) => doc.getApartmentDocumentId() === command.documentId
       );
@@ -65,7 +66,6 @@ export class UpdateApartmentDocumentFileCommandHandler
       if (!targetDocument) {
         throw new Error(`Document with ID ${command.documentId} not found in this apartment.`);
       }
-      // --- CRITICAL FIX END ---
 
       // 5. Update File (If a new file was uploaded)
       if (command.documentUrl) {

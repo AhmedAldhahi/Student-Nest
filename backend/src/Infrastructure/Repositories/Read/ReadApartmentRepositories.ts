@@ -11,6 +11,7 @@ import {
 } from "../../../Application/DTO/admin/ApartmentDTo.dto";
 
 export class ReadApartmentRepositories implements IReadApartmentRepo {
+  
   public async findApartmentByIdForLandlord(
     id: string,
     userId: string

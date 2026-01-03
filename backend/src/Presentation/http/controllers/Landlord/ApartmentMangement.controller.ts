@@ -5,6 +5,7 @@ import { CreateApartmentUseCase } from "../../../../Application/Use-Case/Landlor
 import { AuditLogActionType } from "../../../../Domain/Shared/Enum/AuditLogAction.enum";
 import { AddApartmentDocumentUseCase } from "../../../../Application/Use-Case/Landlord/ApartmentMangement/AddApartmentDocument.usecase";
 import { UpdateApartmentDocumentUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/updateApartmentDocument.usecase";
+import { ApartmentDocumentType } from "../../../../Domain/Shared/Enum/ApartmentDocument.enum";
 
 export class ApartmentController {
   constructor(
@@ -91,108 +92,63 @@ export class ApartmentController {
     }
   };
 
-  public addApartmentDocumentForApartment = async (
-    req: Request,
-    res: Response
-  ) => {
-    try {
-      const userId = req.user.userId;
-      const { apartmentId } = req.params;
-      const file = req.file;
-
-      if (!userId)
-        return res.status(400).json({ error: "no user id been found !!" });
-
-      if (!file)
-        return res
-          .status(400)
-          .json({ error: "apartmentDocument file is required" });
-
-      const result = await this.AddApartmentDocumentUC.execute(userId, {
-        apartmentId: apartmentId,
-        apartmentDocumentUrl: file,
-      });
-      return res.status(200).json(result);
-    } catch (error: any) {
-      return res
-        .status(400)
-        .json({ error: error.message || "internal server error" });
-    }
-  };
-
-  //   public updateApartmentDocuments = async (
-  //   req: Request,
-  //   res: Response
-  // ) => {
-  //   try {
-  //     const userId = (req as any).user?.userId;
-  //     const { apartmentId, documentId } = req.params;
-  //     const file = req.file;
-  //     const { apartmentType } = req.body;
-
-  //     if (!userId) {
-  //       return res.status(401).json({ error: "Unauthorized" });
-  //     }
-
-  //     if (!apartmentId || !documentId) {
-  //       return res.status(400).json({ error: "Invalid route parameters" });
-  //     }
-
-  //     if (!file && !apartmentType) {
-  //       return res.status(400).json({
-  //         error: "At least one field (file or apartmentType) is required",
-  //       });
-  //     }
-
-  //     const result = await this.EditApartmentDocumentById.execute(
-  //       {
-  //         documentUrl: file,
-  //         apartmentType,
-  //       },
-  //       apartmentId,
-  //       documentId,
-  //       userId
-  //     );
-
-  //     return res.status(200).json(result);
-  //   } catch (error: any) {
-  //     console.error("Update Apartment Document Error:", error);
-  //     return res
-  //       .status(500)
-  //       .json({ error: error.message || "Internal Server Error" });
-  //   }
-  // };
-
-  public updateApartmentDocuments = async (req: Request, res: Response) => {
+ public updateApartmentDocuments = async (req: Request, res: Response) => {
     try {
       const userId = (req as any).user?.userId;
-
-      // FIX: Trim whitespace to ensure " " is treated as empty
+      
+      // Trim IDs to avoid "space" errors
       const apartmentId = req.params.apartmentId?.trim();
       const documentId = req.params.documentId?.trim();
-      const apartmentType = req.body;
-
+      
+      // ➤ FIX: Get the SPECIFIC field from the body, not the whole body object
+      const rawType = req.body.apartmentType; 
+      
       const file = req.file;
 
       // 1. Security & Basic Validation
       if (!userId) return res.status(401).json({ error: "Unauthorized" });
 
-      // FIX: logic now correctly catches empty strings or spaces
       if (!apartmentId || !documentId) {
         return res
           .status(400)
           .json({ error: "Missing or invalid apartmentId or documentId" });
       }
 
-      // ... rest of your code (Enum validation, etc) ...
+      // 2. Validate Enum (Only if user sent a type)
+      let apartmentType: ApartmentDocumentType | undefined = undefined;
 
+      if (rawType) {
+        // Check if the string matches your Enum values
+        const isValidType = Object.values(ApartmentDocumentType).includes(
+          rawType as ApartmentDocumentType
+        );
+
+        if (!isValidType) {
+          return res.status(400).json({
+            error: `Invalid apartmentType. Must be one of: ${Object.values(
+              ApartmentDocumentType
+            ).join(", ")}`,
+          });
+        }
+        // Safe to cast now that we validated it
+        apartmentType = rawType as ApartmentDocumentType;
+      }
+
+      // 3. Ensure we have something to update
+      if (!file && !apartmentType) {
+        return res.status(400).json({
+          error: "At least one field (file or apartmentType) is required for update",
+        });
+      }
+
+      // 4. Execute Use Case
       const result = await this.EditApartmentDocumentById.execute(
         {
           documentUrl: file,
-          apartmentType: apartmentType,
+          apartmentType: apartmentType, // This is now a STRING (or undefined), not an Object
         },
-        apartmentId, // Pass trimmed ID
-        documentId, // Pass trimmed ID
+        apartmentId,
+        documentId,
         userId
       );
 
@@ -200,7 +156,7 @@ export class ApartmentController {
     } catch (error: any) {
       console.error("Update Apartment Document Error:", error);
       return res
-        .status(400) // Change 500 to 400 if it's a validation/input error
+        .status(400)
         .json({ error: error.message || "Internal Server Error" });
     }
   };

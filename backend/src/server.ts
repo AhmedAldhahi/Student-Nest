@@ -73,6 +73,8 @@ export class Server {
       })
     );
 
+    
+
     this.app.options("*", cors());
 
     this.app.use(
@@ -148,6 +150,8 @@ export class Server {
     this.app.use("/api/v1/", ApartmentSharedRouter(adminApartmentController));
 
     /////////////////////End apartment section ///////////////////////////
+
+    
 
     this.startupDebug("Server configuration completed.");
   }

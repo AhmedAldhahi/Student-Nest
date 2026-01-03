@@ -23,7 +23,7 @@ export const ApartmentRouter = (
     isAuth,
     isLandlord,
     apartmentUploads,
-    //validationMedia(createApartmentSchema),
+    validationMedia(createApartmentSchema),
     apartmentController.createApartment
   );
 
@@ -32,7 +32,7 @@ export const ApartmentRouter = (
     isAuth,
     isLandlord,
     uploads.single("apartmentDocument"),
-    apartmentController.addApartmentDocumentForApartment
+    apartmentController.createApartment
   );
 
   router.patch(
