@@ -56,7 +56,7 @@ export class ApartmentManagementController {
     res: Response
   ) => {
     try {
-      const userId = req.user.uupdateApartmentDocumentsserId;
+      const userId = req.user.userId;
       const { id } = req.params;
       const { Verified } = req.body;
 
