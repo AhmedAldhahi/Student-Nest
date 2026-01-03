@@ -3,9 +3,12 @@ import { deleteApartmentByIdForLandlordCommandHandler } from "../../Command/Hand
 import { GetAllApartmentByLandlordQueriesHandler } from "../../Queries/Handlers/Housing/Apartment/GetAllAartmentByLandlordQueriesHandler";
 import { GetAllApartmentByQueriesForLandlordQueriesHandler } from "../../Queries/Handlers/Housing/Apartment/GetAllApartmentByQueriesForLandlordQueriesHandler";
 import { GetApartmentByIdForLandlordQueriesHandler } from "../../Queries/Handlers/Housing/Apartment/GetApartmentByIdForLandlordQueriesHandler";
+import { GetApartmentDocumentByIdQueriesHandler } from "../../Queries/Handlers/Housing/Apartment/GetApartmentDocumentById.QueriesHandler";
+import { GetApartmentDocumentByIdForLandlordQueriersHandler } from "../../Queries/Handlers/Housing/Apartment/GetApartmentDocumentByIdForLandlordQueriesHandler";
 import { GetAllApartmentForLandlord } from "../../Queries/Queries/Apartment/GetAllApartmemtForLandlord";
 import { GetApartmentByIdQueries } from "../../Queries/Queries/Apartment/GetApartmentById";
 import { GetAllApartmentByQueriesQueries } from "../../Queries/Queries/Apartment/GetApartmentByQueries";
+import { GetDocumentOfApartmentByIdQueries } from "../../Queries/Queries/Apartment/GetDocumentOfApartmntByIdQueries";
 import { IApartmentStrategy } from "./IApartment.strategy";
 
 export class LandlordApartmentStrategy implements IApartmentStrategy {
@@ -13,7 +16,8 @@ export class LandlordApartmentStrategy implements IApartmentStrategy {
     private readonly GetApartmentForLandlordQH: GetAllApartmentByLandlordQueriesHandler,
     private readonly GetApartmentQueriesForLandlordQH: GetAllApartmentByQueriesForLandlordQueriesHandler,
     private readonly DeleteApartmentByIdForLandlordCH: deleteApartmentByIdForLandlordCommandHandler,
-    private readonly GetApartmentDetailForLandlordQH: GetApartmentByIdForLandlordQueriesHandler
+    private readonly GetApartmentDetailForLandlordQH: GetApartmentByIdForLandlordQueriesHandler,
+    private readonly GetApartmentDocumentByIdForLandlordQH: GetApartmentDocumentByIdForLandlordQueriersHandler
   ) {}
 
   public async GetApartmentDetailById(
@@ -32,7 +36,15 @@ export class LandlordApartmentStrategy implements IApartmentStrategy {
   public async FindApartmentDocumentById(
     userId: string,
     id: string
-  ): Promise<any> {}
+  ): Promise<any> {
+    try {
+      const Queries = new GetDocumentOfApartmentByIdQueries(id, userId);
+      return await this.GetApartmentDocumentByIdForLandlordQH.handle(Queries);
+    } catch (error: any) {
+      console.error("fail to get apartment documents !!");
+      throw error;
+    }
+  }
 
   public async getAllApartment(userId: string): Promise<any> {
     try {
