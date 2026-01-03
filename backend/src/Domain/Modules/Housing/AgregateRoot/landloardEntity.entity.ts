@@ -58,10 +58,16 @@ export class LandlordAggregateRoot extends AggregateRoot<string> {
     }
   }
 
-
-  public AddApartmentDocumentFile(apartment: ApartmentAggregateRoot,apartmentDoc: ApartmentDocumentEntity) {
+  public AddApartmentDocumentFile(
+    apartment: ApartmentAggregateRoot,
+    apartmentDoc: ApartmentDocumentEntity
+  ) {
     // make need validation
-    
+    if (!apartmentDoc) {
+      console.log("no document to add ");
+      return;
+    }
+    this.ensureIsLandlordVerified();
 
     apartment.AddApartmentDocument(apartmentDoc);
   }

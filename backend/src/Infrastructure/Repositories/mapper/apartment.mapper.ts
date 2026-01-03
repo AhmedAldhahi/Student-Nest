@@ -110,6 +110,11 @@ export class ApartmentMapper {
       apartmentPhoto: model.photos
         ? model.photos.map((file) => apartmentPhotoMapper.toEntity(file))
         : [],
+
+      apartmentDocuments: model.documents
+        ? model.documents.map((file) => ApartmentDocumentMapper.toEntity(file))
+        : [],
+
       googleMapLocation: GoogleMapMapper.toEntity(model.location),
     };
   }

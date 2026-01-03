@@ -1,3 +1,4 @@
+import { promises } from "dns";
 import {
   IApartmentSimpleDTO,
   IApartmentDTO,
@@ -6,18 +7,26 @@ import { ApartmentAggregateRoot } from "../../AgregateRoot/apartmentEntity.entit
 
 export interface IReadApartmentRepo {
   findAllApartment(userId: string): Promise<IApartmentSimpleDTO[] | null>;
-  
+
   findAllApartmentForLandlord(
     userId: string
   ): Promise<IApartmentSimpleDTO[] | null>;
 
-  findApartmentByQuery(prefix: string,userId:string): Promise<IApartmentSimpleDTO[] | null>;
+  findApartmentByQuery(
+    prefix: string,
+    userId: string
+  ): Promise<IApartmentSimpleDTO[] | null>;
   findApartmentByQueryForLandlord(
     prefix: string,
     userId: string
   ): Promise<IApartmentSimpleDTO[] | null>;
 
   findApartmentById(id: string): Promise<ApartmentAggregateRoot | null>;
+  findApartmentByIdForLandlord(
+    id: string,
+    userId: string
+  ): Promise<ApartmentAggregateRoot | null>;
+
   findApartmentForLandlordById(
     id: string,
     userId: string
