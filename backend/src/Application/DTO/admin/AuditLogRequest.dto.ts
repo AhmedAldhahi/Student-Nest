@@ -1,4 +1,4 @@
-import { AuditLogActionType } from "../../Domain/Shared/Enum/AuditLogAction.enum";
+import { AuditLogActionType } from "../../../Domain/Shared/Enum/AuditLogAction.enum";
 
 export interface IAuditLogRequest {
   logId: string;

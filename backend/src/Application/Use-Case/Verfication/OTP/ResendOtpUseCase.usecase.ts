@@ -1,6 +1,6 @@
 import { IEmailService } from "../../../Interfaces/IEmail.interface";
-import { ResendOtpRequest } from "../../../DTO/password-recover/ResendOtpRequest.dto";
-import { ResendOtpRespone } from "../../../DTO/password-recover/ResendOtpRespone.dto";
+import { ResendOtpRequest } from "../../../DTO/shared/password-recover/ResendOtpRequest.dto";
+import { ResendOtpRespone } from "../../../DTO/shared/password-recover/ResendOtpRespone.dto";
 import { ResendOtpCommandHandler } from "../../../Command/Handlers/Identiy/ResendOtpCommandHandler";
 
 export class ResendOtpUseCase {

@@ -1,4 +1,4 @@
-import { LoginRequest } from "../../../DTO/registeration/LoginRequest.dto";
+import { LoginRequest } from "../../../DTO/shared/registeration/LoginRequest.dto";
 import { IQueries } from "../../IQueries";
 
 export class LoginUserQueries implements IQueries {

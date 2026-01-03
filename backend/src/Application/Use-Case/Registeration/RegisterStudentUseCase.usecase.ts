@@ -1,6 +1,6 @@
 import { CreateStudentCommandHandler } from "../../Command/Handlers/Student/CreateStudentCommandHandler";
-import { RegisterStudentRequest } from "../../DTO/registeration/RegisterStudentRequest.dto";
-import { RegisterStudentRespone } from "../../DTO/registeration/RegisterStudentRespone.dto";
+import { RegisterStudentRequest } from "../../DTO/shared/registeration/RegisterStudentRequest.dto";
+import { RegisterStudentRespone } from "../../DTO/shared/registeration/RegisterStudentRespone.dto";
 import { IEmailService } from "../../Interfaces/IEmail.interface";
 
 export class RegisterStudentUseCase {

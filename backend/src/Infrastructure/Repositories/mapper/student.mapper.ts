@@ -1,4 +1,4 @@
-import { StudentResponseDto } from "../../../Application/DTO/profile/StudentResponseDto";
+import { StudentResponseDto } from "../../../Application/DTO/shared/profile/StudentResponseDto";
 import { StudentAggregateRoot } from "../../../Domain/Modules/Student/AgregatesRoot/studentEntity.entity";
 import { StudentCard } from "../../../Domain/Modules/Student/Value-Object/StudentCard.vo";
 import { studentGraduateYear } from "../../../Domain/Modules/Student/Value-Object/StudentGraduateYear.vo";

@@ -1,4 +1,4 @@
-import { LandlordResponseDTO } from "../../../Application/DTO/profile/LandlordResponeDTO";
+import { LandlordResponseDTO } from "../../../Application/DTO/shared/profile/LandlordResponeDTO";
 import { LandlordAggregateRoot } from "../../../Domain/Modules/Housing/AgregateRoot/landloardEntity.entity";
 import { GovernmentID } from "../../../Domain/Shared/Value-Object/UserGovId.vo";
 import { VerificationDocument } from "../../../Domain/Shared/Value-Object/VerficationDocument.vo";

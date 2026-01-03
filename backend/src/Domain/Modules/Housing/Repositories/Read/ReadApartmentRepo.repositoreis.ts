@@ -1,4 +1,3 @@
-import { promises } from "dns";
 import {
   IApartmentSimpleDTO,
   IApartmentDTO,

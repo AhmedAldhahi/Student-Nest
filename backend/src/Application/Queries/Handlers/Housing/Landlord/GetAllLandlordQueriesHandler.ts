@@ -1,5 +1,5 @@
 import { IReadLandlordRepositories } from "../../../../../Domain/Modules/Housing/Repositories/Read/ReadLandlordRepositories.repositoreies";
-import { LandlordResponseDTO } from "../../../../DTO/profile/LandlordResponeDTO";
+import { LandlordResponseDTO } from "../../../../DTO/shared/profile/LandlordResponeDTO";
 import { IQueriesHandlers } from "../../../IQueriesHandlers";
 import { GetAllUser } from "../../../Queries/User/GetAllUser";
 

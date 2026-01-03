@@ -1,5 +1,5 @@
 import { IReadStudentRepositories } from "../../../../Domain/Modules/Student/Repositories/ReadStudentRepositories.repositories";
-import { StudentResponseDto } from "../../../DTO/profile/StudentResponseDto";
+import { StudentResponseDto } from "../../../DTO/shared/profile/StudentResponseDto";
 import { IQueriesHandlers } from "../../IQueriesHandlers";
 import { GetAllUser } from "../../Queries/User/GetAllUser";
 

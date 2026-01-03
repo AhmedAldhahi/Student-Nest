@@ -1,4 +1,4 @@
-import { UserRole } from "../../../Domain/Shared/Enum/UserRole.enum";
+import { UserRole } from "../../../../Domain/Shared/Enum/UserRole.enum";
 
 export interface RegisterStudentRequest {
   // require

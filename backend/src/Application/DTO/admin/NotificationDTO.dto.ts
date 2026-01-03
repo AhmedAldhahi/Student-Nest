@@ -1,4 +1,4 @@
-import { UserResponseDTO } from "../profile/ UserResponseDTO";
+import { UserResponseDTO } from "../shared/profile/ UserResponseDTO";
 
 export interface INotificationDTO {
   notifyId: number;

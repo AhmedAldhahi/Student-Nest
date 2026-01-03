@@ -1,9 +1,9 @@
-import { VerifiedOTpRequest } from "../../../DTO/Email-verfied/VerfiedOtpRequest.dto";
+import { VerifiedOTpRequest } from "../../../DTO/shared/Email-verfied/VerfiedOtpRequest.dto";
 import {
   ITokenPayload,
   ITokenService,
 } from "../../../Interfaces/IToken.interface";
-import { VerifiedOTpResponse } from "../../../DTO/Email-verfied/VerifiedOtpRespone.dto";
+import { VerifiedOTpResponse } from "../../../DTO/shared/Email-verfied/VerifiedOtpRespone.dto";
 import { VerifiedOtpCommandHandler } from "../../../Command/Handlers/Identiy/VerfiedOtpCommandHandler";
 
 export class VerifiedOtpUseCase {
