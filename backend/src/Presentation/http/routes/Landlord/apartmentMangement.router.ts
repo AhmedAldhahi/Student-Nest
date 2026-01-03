@@ -12,6 +12,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 const apartmentUploads = upload.fields([
   { name: "apartmentPhoto", maxCount: 6 }, // Multiple photos
 ]);
+
 export const ApartmentRouter = (
   apartmentController: ApartmentController
 ): Router => {
@@ -34,13 +35,13 @@ export const ApartmentRouter = (
     apartmentController.addApartmentDocumentForApartment
   );
 
-router.put(
-  "/:apartmentId/:documentId/documents",
-  isAuth,
-  isLandlord,
-  uploads.single("apartmentDocument"), 
-  apartmentController.updateApartmentDocuments
-);
+  router.patch(
+    "/:apartmentId/:documentId/documents",
+    isAuth,
+    isLandlord,
+    uploads.single("apartmentDocument"),
+    apartmentController.updateApartmentDocuments
+  );
 
   return router;
 };

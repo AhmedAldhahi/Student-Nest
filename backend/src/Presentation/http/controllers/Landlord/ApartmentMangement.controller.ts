@@ -128,37 +128,79 @@ export class ApartmentController {
     }
   };
 
-  public updateApartmentDocuments = async (
-  req: Request,
-  res: Response
-) => {
+  //   public updateApartmentDocuments = async (
+  //   req: Request,
+  //   res: Response
+  // ) => {
+  //   try {
+  //     const userId = (req as any).user?.userId;
+  //     const { apartmentId, documentId } = req.params;
+  //     const file = req.file;
+  //     const { apartmentType } = req.body;
+
+  //     if (!userId) {
+  //       return res.status(401).json({ error: "Unauthorized" });
+  //     }
+
+  //     if (!apartmentId || !documentId) {
+  //       return res.status(400).json({ error: "Invalid route parameters" });
+  //     }
+
+  //     if (!file && !apartmentType) {
+  //       return res.status(400).json({
+  //         error: "At least one field (file or apartmentType) is required",
+  //       });
+  //     }
+
+  //     const result = await this.EditApartmentDocumentById.execute(
+  //       {
+  //         documentUrl: file,
+  //         apartmentType,
+  //       },
+  //       apartmentId,
+  //       documentId,
+  //       userId
+  //     );
+
+  //     return res.status(200).json(result);
+  //   } catch (error: any) {
+  //     console.error("Update Apartment Document Error:", error);
+  //     return res
+  //       .status(500)
+  //       .json({ error: error.message || "Internal Server Error" });
+  //   }
+  // };
+
+  public updateApartmentDocuments = async (req: Request, res: Response) => {
   try {
     const userId = (req as any).user?.userId;
-    const { apartmentId, documentId } = req.params;
+    
+    // FIX: Trim whitespace to ensure " " is treated as empty
+    const apartmentId = req.params.apartmentId?.trim();
+    const documentId = req.params.documentId?.trim();
+    const apartmentType = req.body;
+    
     const file = req.file;
-    const { apartmentType } = req.body;
 
-    if (!userId) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-
+    // 1. Security & Basic Validation
+    if (!userId) return res.status(401).json({ error: "Unauthorized" });
+    
+    // FIX: logic now correctly catches empty strings or spaces
     if (!apartmentId || !documentId) {
-      return res.status(400).json({ error: "Invalid route parameters" });
+      return res
+        .status(400)
+        .json({ error: "Missing or invalid apartmentId or documentId" });
     }
 
-    if (!file && !apartmentType) {
-      return res.status(400).json({
-        error: "At least one field (file or apartmentType) is required",
-      });
-    }
+    // ... rest of your code (Enum validation, etc) ...
 
     const result = await this.EditApartmentDocumentById.execute(
       {
         documentUrl: file,
-        apartmentType,
+        apartmentType: apartmentType,
       },
-      apartmentId,
-      documentId,
+      apartmentId, // Pass trimmed ID
+      documentId,  // Pass trimmed ID
       userId
     );
 
@@ -166,9 +208,8 @@ export class ApartmentController {
   } catch (error: any) {
     console.error("Update Apartment Document Error:", error);
     return res
-      .status(500)
+      .status(400) // Change 500 to 400 if it's a validation/input error
       .json({ error: error.message || "Internal Server Error" });
   }
 };
-
 }

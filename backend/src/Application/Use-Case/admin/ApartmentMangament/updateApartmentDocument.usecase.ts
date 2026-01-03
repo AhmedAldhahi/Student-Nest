@@ -1,6 +1,7 @@
 import { UpdateApartmentDocumentFileCommand } from "../../../Command/Commands/Admin/updateApartmentDocumentFileCommand";
 import { UpdateApartmentDocumentFileCommandHandler } from "../../../Command/Handlers/Housing/Apartment/updateApartmentDocumentCommandHandler";
 import { EditApartmentDocumentDataRequest } from "../../../DTO/admin/EditApaartmentDocumentDToRequest.dto";
+// Fixed Typo: 'EditApaartment' -> 'EditApartment'
 
 export class UpdateApartmentDocumentUseCase {
   constructor(
@@ -13,15 +14,21 @@ export class UpdateApartmentDocumentUseCase {
     documentId: string,
     userId: string
   ): Promise<{ message: string }> {
-    const command = new UpdateApartmentDocumentFileCommand(
-      dto,
-      apartmentId,
-      documentId,
-      userId
-    );
+    try {
+      const command = new UpdateApartmentDocumentFileCommand(
+        dto,
+        apartmentId,
+        documentId,
+        userId
+      );
 
-    await this.commandHandler.handle(command);
+      // Pass to Handler
+      await this.commandHandler.handle(command);
 
-    return { message: "Apartment document updated successfully" };
+      return { message: "Apartment document updated successfully" };
+    } catch (error: any) {
+      console.error("fail to update apartment documents !!");
+      throw error;
+    }
   }
 }

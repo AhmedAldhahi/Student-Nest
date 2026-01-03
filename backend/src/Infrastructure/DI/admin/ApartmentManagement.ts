@@ -466,12 +466,25 @@ export function EditApartmentDocumentsUseCase(): UpdateApartmentDocumentUseCase 
   const ReadApartmentDocumentRepo = new ReadApartmentDocumentRepositories();
   const readApartmentRepo = new ReadApartmentRepositories();
   const fileService = new CloudinaryService();
+  const readUserRepo = new ReadUserRepositories();
+  const readLandlordRepo = new ReadLandlordRepositories();
+
   const commandHandler = new UpdateApartmentDocumentFileCommandHandler(
+    fileService,
     uow,
-    ReadApartmentDocumentRepo,
     readApartmentRepo,
-    fileService
+    readLandlordRepo,
+    readUserRepo,
+    ReadApartmentDocumentRepo
   );
+
+  // // REMOVED: 'first' (Syntax Error)
+  // private readonly fileService: IFileStorageService,
+  // private readonly uow: IUnitOfWork,
+  // private readonly readApartmentRepo: IReadApartmentRepo,
+  // private readonly readLandlordRepo: IReadLandlordRepositories,
+  // private readonly readUserRepo: IReadUserRepositories,
+  // private readonly readApartmentDocumentRepo: IReadApartmentDocumentRepo
 
   return new UpdateApartmentDocumentUseCase(commandHandler);
 }
