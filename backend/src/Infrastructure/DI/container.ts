@@ -50,7 +50,7 @@ import {
   findAllAuditLogUseCase,
   FindAuditLogByQueriesUseCase,
 } from "./admin/AuditLogManagement";
-import { createApartmentUseCase } from "./Landlord/ApartmentMangement";
+import { addApartmentDocumentUseCase, createApartmentUseCase } from "./Landlord/ApartmentMangement";
 
 export function buildDependencies() {
   return {
@@ -99,6 +99,7 @@ export function buildDependencies() {
       findAuditLogQueryUseCase: FindAuditLogByQueriesUseCase(),
 
       createApartmentsUseCase: createApartmentUseCase(),
+      addApartmentDocumentUseCase: addApartmentDocumentUseCase(),
     },
   };
 }

@@ -77,6 +77,8 @@ export class CreateApartmentCommandHandler
         landlordId: landlord.getUserId(),
       });
 
+      landlord.addNewApartment(apartment);
+
       await this.uow.startTransaction();
       await this.uow.writeApartmentRepo.InsertApartment(apartment);
       await this.uow.commitTransaction();

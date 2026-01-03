@@ -5,6 +5,7 @@ import { isLandlord } from "../../middlewares/auth/isLandloard.middleware";
 import multer from "multer";
 import { createApartmentSchema } from "../../validation/Landlord/apartment.validation.zod";
 import { validationMedia } from "../../middlewares/validation.media.middleware.zod";
+import uploads from "../../../../Shared/utils/uploader.multer";
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -25,5 +26,12 @@ export const ApartmentRouter = (
     apartmentController.createApartment
   );
 
+  router.post(
+    "/:apartmentId/document",
+    isAuth,
+    isLandlord,
+    uploads.single("apartmentDocument"),
+    apartmentController.addApartmentDocumentForApartment
+  );
   return router;
 };

@@ -11,6 +11,29 @@ import {
 } from "../../../Application/DTO/admin/ApartmentDTo.dto";
 
 export class ReadApartmentRepositories implements IReadApartmentRepo {
+  public async findApartmentByIdForLandlord(
+    id: string,
+    userId: string
+  ): Promise<ApartmentAggregateRoot | null> {
+    try {
+      const apartment = await AppDataSource.getInstance()
+        .getRepository(ApartmentModel)
+        .findOne({
+          where: { apartmentId: id, landlordId: userId },
+          relations: {
+            landlord: { user: true },
+            documents: true,
+            location: true,
+            photos: true,
+          },
+        });
+
+      return apartment ? ApartmentMapper.toEntity(apartment) : null;
+    } catch (error) {
+      console.error("Error finding landlord by ID:", error);
+      throw new Error("Error retrieving landlord data");
+    }
+  }
   public async findAllApartmentForLandlord(
     userId: string
   ): Promise<IApartmentSimpleDTO[] | null> {
@@ -51,6 +74,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
           },
           photos: true,
           location: true,
+          documents: true,
         },
       });
 
