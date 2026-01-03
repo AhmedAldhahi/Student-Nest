@@ -120,10 +120,7 @@ export class ApartmentController {
     }
   };
 
-    public updateApartmentDocuments = async (
-    req: Request,
-    res: Response
-  ) => {
+  public updateApartmentDocuments = async (req: Request, res: Response) => {
     try {
       const userId = (req as any).user?.userId;
       const { apartmentId, documentId } = req.params;
@@ -163,8 +160,6 @@ export class ApartmentController {
     }
   };
 
-  // public updateApartmentDocuments = async (req: Request, res: Response) => {
-  //   try {
   //     const userId = (req as any).user?.userId;
 
   //     const apartmentId = req.params.apartmentId?.trim();
