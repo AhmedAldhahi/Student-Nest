@@ -24,7 +24,6 @@ export class CreateApartmentCommand implements ICommand {
 
   public constructor(data: ApartmentDataRequest) {
     this.apartmentId = data.apartmentId;
-    this.propertyStatus = data.propertyStatus;
     this.description = data.description;
     this.title = data.title;
     this.price = data.price;

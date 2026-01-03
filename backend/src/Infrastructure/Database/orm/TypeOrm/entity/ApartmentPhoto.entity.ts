@@ -9,8 +9,6 @@ export class ApartmentPhotoModel {
   @Column({ type: "varchar", nullable: false })
   photoUrl: string;
 
-  @Column({ nullable: false })
-  apartmentsId: string;
 
   @ManyToOne(() => ApartmentModel, (apartment) => apartment.photos, {
     onDelete: "CASCADE", // If the apartment is deleted, delete the photos too

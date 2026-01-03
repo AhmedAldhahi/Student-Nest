@@ -23,7 +23,7 @@ export const ApartmentRouter = (
     isAuth,
     isLandlord,
     apartmentUploads,
-    validationMedia(createApartmentSchema),
+    //validationMedia(createApartmentSchema),
     apartmentController.createApartment
   );
 

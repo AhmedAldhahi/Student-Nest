@@ -19,7 +19,7 @@ export class ApartmentModel {
   @PrimaryColumn()
   apartmentId: string;
 
-  @Column({ type: "boolean", nullable: false })
+  @Column({ type: "boolean", nullable: false,default: false })
   isVisible: boolean;
 
   @Column({ type: "varchar", nullable: false })

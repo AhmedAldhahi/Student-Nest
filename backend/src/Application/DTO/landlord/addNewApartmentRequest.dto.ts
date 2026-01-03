@@ -1,6 +1,5 @@
 export interface ApartmentDataRequest {
   apartmentId: number;
-  propertyStatus: boolean;
   title: string;
   description: string;
   price: string;

@@ -36,7 +36,8 @@ export class CreateApartmentCommandHandler
       user.ensureAccountIsActive();
 
       const photoEntities: ApartmentPhotoDocumentEntity[] = [];
-
+      const apartmentId = uuidv4();
+      
       if (command.apartmentPhoto && command.apartmentPhoto.length > 0) {
         for (const file of command.apartmentPhoto) {
           const photoUrl = await this.fileService.upload(file);
@@ -56,10 +57,9 @@ export class CreateApartmentCommandHandler
         latitude: command.googleMapLocationLat,
       });
 
-      const apartmentId = uuidv4();
       const apartment = new ApartmentAggregateRoot({
         apartmentId: apartmentId,
-        isVisible: command.propertyStatus,
+        isVisible: false,
         title: command.title,
         description: command.description,
         address: command.address,
@@ -85,7 +85,7 @@ export class CreateApartmentCommandHandler
 
       return {
         apartmentId: apartmentId,
-        isVisible: command.propertyStatus,
+        isVisible: false,
         price: ApartmentPrice.create(command.price).getValue(),
         title: command.title,
         description: command.description,

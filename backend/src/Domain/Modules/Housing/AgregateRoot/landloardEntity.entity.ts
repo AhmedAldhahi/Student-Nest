@@ -11,7 +11,6 @@ import { AggregateRoot } from "../../../Shared/AgregateRoot/AggregateRoot";
 import { GovernmentID } from "../../../Shared/Value-Object/UserGovId.vo";
 import { VerificationDocument } from "../../../Shared/Value-Object/VerficationDocument.vo";
 import { ApartmentDocumentEntity } from "../Entities/apartmentDocumentEntity.entity";
-import { ApartmentData } from "../Types/IApartmentData.type";
 import { ILandlordData } from "../Types/ILandlordData.type";
 import { ApartmentAggregateRoot } from "./apartmentEntity.entity";
 
@@ -30,8 +29,6 @@ export class LandlordAggregateRoot extends AggregateRoot<string> {
     this.document = data.document;
     this.isVerifiedLandlord = data.isVerifiedLandlord ?? false;
   }
-
-  // behavior logic
 
   /**
    * ==================================================================================

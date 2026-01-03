@@ -31,7 +31,6 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
   constructor(data: ApartmentData) {
     super();
     this.apartmentId = data.apartmentId;
-    this.isVisible = data.isVisible;
     this.title = data.title;
     this.description = data.description;
     this.price = data.price;
