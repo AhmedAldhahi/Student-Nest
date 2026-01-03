@@ -33,5 +33,14 @@ export const ApartmentRouter = (
     uploads.single("apartmentDocument"),
     apartmentController.addApartmentDocumentForApartment
   );
+
+router.put(
+  "/:apartmentId/:documentId/documents",
+  isAuth,
+  isLandlord,
+  uploads.single("apartmentDocument"), 
+  apartmentController.updateApartmentDocuments
+);
+
   return router;
 };

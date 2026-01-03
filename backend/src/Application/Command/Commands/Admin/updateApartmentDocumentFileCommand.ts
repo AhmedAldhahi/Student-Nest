@@ -3,13 +3,22 @@ import { EditApartmentDocumentDataRequest } from "../../../DTO/admin/EditApaartm
 import { ICommand } from "../../ICommand";
 
 export class UpdateApartmentDocumentFileCommand implements ICommand {
-  public documentUrl?: string;
+  public documentUrl?: Express.Multer.File;
   public apartmentType?: ApartmentDocumentType;
-  public id: string;
+  public documentId: string;
+  public apartmentId: string;
+  public userId: string;
 
-  constructor(data: EditApartmentDocumentDataRequest, id: string) {
-    this.apartmentType = data.apartmentType;
+  constructor(
+    data: EditApartmentDocumentDataRequest,
+    apartmentId: string,
+    documentId: string,
+    userId: string
+  ) {
     this.documentUrl = data.documentUrl;
-    this.id = id;
+    this.apartmentType = data.apartmentType;
+    this.apartmentId = apartmentId;
+    this.documentId = documentId;
+    this.userId = userId;
   }
 }

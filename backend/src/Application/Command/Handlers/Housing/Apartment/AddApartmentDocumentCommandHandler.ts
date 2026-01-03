@@ -49,10 +49,12 @@ export class AddApartmentDocumentCommandHandler
       const document = await this.fileService.upload(command.apartmentDocument);
 
       const apartmentDocumentId = uuidv4();
+
       const apartmentDocuments = new ApartmentDocumentEntity({
-        apartmentId: apartmentDocumentId,
+        apartmentDocumentId: apartmentDocumentId,
         documentUrl: document,
         apartmentType: ApartmentDocumentType.ApartmentVerifiedFile,
+        apartmentsId: apartment.getApartmentId(),
       });
 
       landlord.AddApartmentDocumentFile(apartment, apartmentDocuments);

@@ -1,24 +1,31 @@
 import { ApartmentDocumentType } from "../../../Shared/Enum/ApartmentDocument.enum";
 
 export interface ApartmentDocumentData {
-  apartmentId: string;
+  apartmentDocumentId: string;
   apartmentType: ApartmentDocumentType; // enum
   documentUrl: string;
+  apartmentsId: string;
 }
 
 export class ApartmentDocumentEntity {
-  private apartmentId: string;
+  private apartmentDocumentId: string;
   private documentUrl: string;
   private apartmentType: ApartmentDocumentType;
+  private apartmentsId: string;
 
   constructor(data: ApartmentDocumentData) {
-    this.apartmentId = data.apartmentId;
+    this.apartmentDocumentId = data.apartmentDocumentId;
     this.documentUrl = data.documentUrl;
     this.apartmentType = data.apartmentType;
+    this.apartmentsId = data.apartmentsId;
   }
 
-  public getApartmentId(): string {
-    return this.apartmentId;
+  public getApartmentDocumentId(): string {
+    return this.apartmentDocumentId;
+  }
+
+  public getApartmentsId(): string {
+    return this.apartmentsId;
   }
 
   public UpdateApartmentType(type: ApartmentDocumentType): void {

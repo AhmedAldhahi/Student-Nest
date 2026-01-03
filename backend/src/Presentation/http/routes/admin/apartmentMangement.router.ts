@@ -24,13 +24,6 @@ export const ApartmentRouter = (
   // );
   
 
-  // //todo will be remove and move to landlord
-  // router.patch(
-  //   "/:id/documents",
-  //   isAuth,
-  //   isAdmin,
-  //   apartmentController.updateApartmentDocuments
-  // );
 
   return router;
 };

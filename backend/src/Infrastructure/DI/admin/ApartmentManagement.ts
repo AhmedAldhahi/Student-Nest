@@ -322,8 +322,6 @@ export function FindApartmentDocumentByIdUseCase(): findApartmentDocumentByIdUse
       fileService
     );
 
-
-
   const adminDeleteApartmentStrategy = new AdminApartmentStrategy(
     commandHandler,
     queriesHandler,
@@ -466,9 +464,13 @@ export function editApartmentDetailUseCase(): EditApartmentDetailUseCase {
 export function EditApartmentDocumentsUseCase(): UpdateApartmentDocumentUseCase {
   const uow = new UnitOfWork();
   const ReadApartmentDocumentRepo = new ReadApartmentDocumentRepositories();
+  const readApartmentRepo = new ReadApartmentRepositories();
+  const fileService = new CloudinaryService();
   const commandHandler = new UpdateApartmentDocumentFileCommandHandler(
     uow,
-    ReadApartmentDocumentRepo
+    ReadApartmentDocumentRepo,
+    readApartmentRepo,
+    fileService
   );
 
   return new UpdateApartmentDocumentUseCase(commandHandler);

@@ -9,17 +9,19 @@ export class UpdateApartmentDocumentUseCase {
 
   public async execute(
     dto: EditApartmentDocumentDataRequest,
-    id: string
+    apartmentId: string,
+    documentId: string,
+    userId: string
   ): Promise<{ message: string }> {
-    try {
-      const command = new UpdateApartmentDocumentFileCommand(dto, id);
-      await this.commandHandler.handle(command);
-      return {
-        message: "apartment document update scussfuly",
-      };
-    } catch (error: any) {
-      console.error("fail to update apartment document!!");
-      throw error;
-    }
+    const command = new UpdateApartmentDocumentFileCommand(
+      dto,
+      apartmentId,
+      documentId,
+      userId
+    );
+
+    await this.commandHandler.handle(command);
+
+    return { message: "Apartment document updated successfully" };
   }
 }

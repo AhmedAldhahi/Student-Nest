@@ -7,9 +7,10 @@ export class ApartmentDocumentMapper {
   ): ApartmentDocumentModel {
     const model = new ApartmentDocumentModel();
 
-    model.apartmentDocumentId = entity.getApartmentId();
+    model.apartmentDocumentId = entity.getApartmentDocumentId();
     model.apartmentType = entity.getApartmentType();
     model.documentUrl = entity.getDocumentUrl();
+    model.apartmentsId = entity.getApartmentsId();
     return model;
   }
 
@@ -17,9 +18,10 @@ export class ApartmentDocumentMapper {
     model: ApartmentDocumentModel
   ): ApartmentDocumentEntity {
     return new ApartmentDocumentEntity({
-      apartmentId: model.apartmentDocumentId,
+      apartmentDocumentId: model.apartmentDocumentId,
       apartmentType: model.apartmentType,
       documentUrl: model.documentUrl,
+      apartmentsId: model.apartmentsId,
     });
   }
 }

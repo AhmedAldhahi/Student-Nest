@@ -13,6 +13,9 @@ export class ApartmentDocumentModel {
   @Column({ type: "varchar", nullable: false })
   documentUrl: string;
 
+  @Column({ nullable: false })
+  apartmentsId: string;
+
   @ManyToOne(() => ApartmentModel, (apartment) => apartment.documents, {
     onDelete: "CASCADE", // If the apartment is deleted, delete the photos too
   })

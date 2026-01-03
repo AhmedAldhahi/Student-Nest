@@ -4,11 +4,13 @@ import { ApartmentDataRequest } from "../../../../Application/DTO/landlord/addNe
 import { CreateApartmentUseCase } from "../../../../Application/Use-Case/Landlord/ApartmentMangement/CreateApartment.usecase";
 import { AuditLogActionType } from "../../../../Domain/Shared/Enum/AuditLogAction.enum";
 import { AddApartmentDocumentUseCase } from "../../../../Application/Use-Case/Landlord/ApartmentMangement/AddApartmentDocument.usecase";
+import { UpdateApartmentDocumentUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/updateApartmentDocument.usecase";
 
 export class ApartmentController {
   constructor(
     private readonly createApartmentUseCase: CreateApartmentUseCase,
-    private readonly AddApartmentDocumentUC: AddApartmentDocumentUseCase
+    private readonly AddApartmentDocumentUC: AddApartmentDocumentUseCase,
+    private readonly EditApartmentDocumentById: UpdateApartmentDocumentUseCase
   ) {}
 
   public createApartment = async (
@@ -106,7 +108,6 @@ export class ApartmentController {
       const { apartmentId } = req.params;
       const file = req.file;
 
-
       if (!userId)
         return res.status(400).json({ error: "no user id been found !!" });
 
@@ -126,4 +127,48 @@ export class ApartmentController {
         .json({ error: error.message || "internal server error" });
     }
   };
+
+  public updateApartmentDocuments = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const userId = (req as any).user?.userId;
+    const { apartmentId, documentId } = req.params;
+    const file = req.file;
+    const { apartmentType } = req.body;
+
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    if (!apartmentId || !documentId) {
+      return res.status(400).json({ error: "Invalid route parameters" });
+    }
+
+    if (!file && !apartmentType) {
+      return res.status(400).json({
+        error: "At least one field (file or apartmentType) is required",
+      });
+    }
+
+    const result = await this.EditApartmentDocumentById.execute(
+      {
+        documentUrl: file,
+        apartmentType,
+      },
+      apartmentId,
+      documentId,
+      userId
+    );
+
+    return res.status(200).json(result);
+  } catch (error: any) {
+    console.error("Update Apartment Document Error:", error);
+    return res
+      .status(500)
+      .json({ error: error.message || "Internal Server Error" });
+  }
+};
+
 }

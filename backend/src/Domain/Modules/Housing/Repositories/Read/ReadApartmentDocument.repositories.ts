@@ -4,7 +4,7 @@ export interface IReadApartmentDocumentRepo {
   findApartmentDocumentById(
     id: string,
     userId: string
-  ): Promise<ApartmentDocumentEntity []| null>;
+  ): Promise<ApartmentDocumentEntity [] | null>;
   findApartmentDocumentByIdForLandlord(
     id: string,
     userId: string
