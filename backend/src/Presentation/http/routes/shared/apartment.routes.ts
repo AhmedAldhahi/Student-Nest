@@ -21,7 +21,6 @@ export const ApartmentSharedRouter = (
   router.get("/:id", apartmentController.getApartmentDetailById);
 
 
-  //todo: need to make landlord part
   router.delete(
     "/:apartmentId",
     isAdminOrLandlord,
