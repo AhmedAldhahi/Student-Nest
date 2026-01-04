@@ -149,10 +149,14 @@ export class Server {
 
     /////////////////////End apartment section ///////////////////////////
 
+
+    
+
     this.startupDebug("Server configuration completed.");
   }
 
   async start() {
+    
     await this.configure();
 
     this.app.listen(this.port, () => {

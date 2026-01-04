@@ -3,7 +3,10 @@ import { ApartmentController } from "../../controllers/Landlord/ApartmentMangeme
 import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 import { isLandlord } from "../../middlewares/auth/isLandloard.middleware";
 import multer from "multer";
-import { createApartmentSchema, UpdateApartmentSchema } from "../../validation/Landlord/apartment.validation.zod";
+import {
+  createApartmentSchema,
+  UpdateApartmentSchema,
+} from "../../validation/Landlord/apartment.validation.zod";
 import { validationMedia } from "../../middlewares/validation.media.middleware.zod";
 import uploads from "../../../../Shared/utils/uploader.multer";
 
@@ -35,16 +38,15 @@ export const ApartmentRouter = (
     apartmentController.addApartmentDocumentForApartment
   );
 
-  //debug need to fix 
   router.patch(
-    "/:apartmentId/:documentId/documents",
+    "/:apartmentId/documents",
     isAuth,
     isLandlord,
     uploads.single("apartmentDocument"),
     apartmentController.updateApartmentDocuments
   );
-
   
+
   router.patch(
     "/:id",
     isAuth,

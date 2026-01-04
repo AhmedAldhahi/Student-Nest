@@ -11,14 +11,13 @@ export class UpdateApartmentDocumentUseCase {
   public async execute(
     dto: EditApartmentDocumentDataRequest,
     apartmentId: string,
-    documentId: string,
+   
     userId: string
   ): Promise<{ message: string }> {
     try {
       const command = new UpdateApartmentDocumentFileCommand(
         dto,
         apartmentId,
-        documentId,
         userId
       );
 

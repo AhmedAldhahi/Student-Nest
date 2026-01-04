@@ -6,7 +6,6 @@ import { IReadUserRepositories } from "../../../../../Domain/Modules/Identity/Re
 import { IReadApartmentDocumentRepo } from "../../../../../Domain/Modules/Housing/Repositories/Read/ReadApartmentDocument.repositories";
 import { IUnitOfWork } from "../../../../../Domain/Shared/Repositories/UnitOfWorkRepositories.repositories";
 import { IFileStorageService } from "../../../../Interfaces/IFileStorage.interface";
-import { ApartmentDocumentType } from "../../../../../Domain/Shared/Enum/ApartmentDocument.enum";
 
 export class UpdateApartmentDocumentFileCommandHandler
   implements ICommandHandlers<UpdateApartmentDocumentFileCommand>
@@ -30,46 +29,48 @@ export class UpdateApartmentDocumentFileCommandHandler
       user.ensureAccountIsActive();
 
       // 2. Validate Landlord
-      const landlord = await this.readLandlordRepo.findLandlordById(command.userId);
+      const landlord = await this.readLandlordRepo.findLandlordById(
+        command.userId
+      );
       if (!landlord) throw new Error("Landlord profile not found.");
 
       // 3. Validate Apartment
-      const apartment = await this.readApartmentRepo.findApartmentByIdForLandlord(
-        command.apartmentId,
-        command.userId
-      );
-      if (!apartment) throw new Error("Apartment not found or does not belong to this landlord.");
+      const apartment =
+        await this.readApartmentRepo.findApartmentByIdForLandlord(
+          command.apartmentId,
+          command.userId
+        );
+      if (!apartment)
+        throw new Error(
+          "Apartment not found or does not belong to this landlord."
+        );
 
       if (apartment.getIsVerified() === true) {
-        throw new Error("Unable to update documents: Apartment is already verified.");
+        throw new Error(
+          "Unable to update documents: Apartment is already verified."
+        );
       }
 
-      // 4. Retrieve Documents (Returns an Array)
-      const apartmentDocuments = await this.readApartmentDocumentRepo.findApartmentDocumentByIdForLandlord(
-        command.apartmentId,
-        command.userId
-      );
+      // 4. Retrieve Document (Single Entity based on Apartment ID)
+      const apartmentDocument =
+        await this.readApartmentDocumentRepo.findApartmentDocumentByIdForLandlord(
+          command.apartmentId,
+          command.userId
+        );
 
-      // Guard: Check if array is valid
-      if (!apartmentDocuments || apartmentDocuments.length === 0) {
+      // Guard: Check if the document exists
+      if (!apartmentDocument) {
         throw new Error("No existing documents found for this apartment.");
       }
 
-      // --- CRITICAL FIX START ---
-      // Old Code: const targetDocument = apartmentDocuments[0]; (BLINDLY PICKED FIRST)
-      // New Code: Find the specific document matching the ID from the URL
-      const targetDocument = apartmentDocuments.find(
-        (doc: any) => doc.getApartmentDocumentId() === command.documentId
-      );
+      // --- CHANGE START ---
+      // We do NOT check command.documentId anymore.
+      // We do NOT use .find() because it is already a single object.
+      
+      const targetDocument = apartmentDocument; 
+      // --- CHANGE END ---
 
-      if (!targetDocument) {
-        throw new Error(`Document with ID ${command.documentId} not found in this apartment.`);
-      }
-      // --- CRITICAL FIX END ---
-
-      // 5. Update File (If a new file was uploaded)
       if (command.documentUrl) {
-        // Ensure the service call is safe
         const newFileUrl = await this.fileService.update(
           command.documentUrl,            // The new file object
           targetDocument.getDocumentUrl() // The old string URL
@@ -77,24 +78,22 @@ export class UpdateApartmentDocumentFileCommandHandler
         targetDocument.UpdateDocumentUrl(newFileUrl);
       }
 
-      // 6. Update Type (If provided)
       if (command.apartmentType) {
-        // Ensure we are checking against the correct Enum type
         targetDocument.UpdateApartmentType(command.apartmentType);
       }
 
       // 7. Save Changes
       await this.uow.startTransaction();
       try {
-        await this.uow.writeApartmentDocumentRepo.updateApartmentDocument(targetDocument);
+        await this.uow.writeApartmentDocumentRepo.updateApartmentDocument(
+          targetDocument
+        );
         await this.uow.commitTransaction();
       } catch (dbError) {
         await this.uow.rollbackTransaction();
         throw dbError;
       }
-
     } catch (error: any) {
-      // Log the specific error to your console so you can see WHY it failed
       console.error("COMMAND HANDLER ERROR:", error);
       throw error;
     } finally {

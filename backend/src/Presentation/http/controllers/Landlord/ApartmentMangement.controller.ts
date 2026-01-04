@@ -122,21 +122,61 @@ export class ApartmentController {
     }
   };
 
+  // public updateApartmentDocuments = async (req: Request, res: Response) => {
+  //   try {
+  //     const userId = (req as any).user?.userId;
+  //     const { apartmentId } = req.params;
+  //     const file = req.file;
+  //     const { apartmentType } = req.body;
+
+  //     if (!userId) {
+  //       return res
+  //         .status(401)
+  //         .json({ error: "Unauthorized no user id found !!" });
+  //     }
+
+  //     if (!apartmentId) {
+  //       return res.status(400).json({ error: "Invalid route parameters" });
+  //     }
+
+  //     const result = await this.EditApartmentDocumentById.execute(
+  //       {
+  //         documentUrl: file,
+  //         apartmentType,
+  //       },
+  //       apartmentId,
+
+  //       userId
+  //     );
+
+  //     return res.status(200).json(result);
+  //   } catch (error: any) {
+  //     console.error("Update Apartment Document Error:", error);
+  //     return res
+  //       .status(500)
+  //       .json({ error: error.message || "Internal Server Error" });
+  //   }
+  // };
+
   public updateApartmentDocuments = async (req: Request, res: Response) => {
     try {
-      const userId = (req as any).user?.userId;
-      const { apartmentId, documentId } = req.params;
+      const userId = req.user.userId;
+      const { apartmentId } = req.params; // DocumentId removed as per previous fix
       const file = req.file;
       const { apartmentType } = req.body;
 
       if (!userId) {
+        console.warn(" Unauthorized: Missing User ID");
         return res
           .status(401)
-          .json({ error: "Unauthorized no user id found !!" });
+          .json({ error: "Unauthorized: No user ID found." });
       }
 
-      if (!apartmentId || !documentId) {
-        return res.status(400).json({ error: "Invalid route parameters" });
+      if (!apartmentId) {
+        console.warn("Bad Request: Missing Apartment ID");
+        return res
+          .status(400)
+          .json({ error: "Invalid route parameters: Missing apartmentId." });
       }
 
       const result = await this.EditApartmentDocumentById.execute(
@@ -145,16 +185,20 @@ export class ApartmentController {
           apartmentType,
         },
         apartmentId,
-        documentId,
         userId
       );
 
+      console.log(" Success. Sending response.");
       return res.status(200).json(result);
     } catch (error: any) {
-      console.error("Update Apartment Document Error:", error);
-      return res
-        .status(500)
-        .json({ error: error.message || "Internal Server Error" });
+      if (error?.stack) {
+      }
+
+      // Return the actual error message to the client (if available) for debugging
+      return res.status(500).json({
+        error: error?.message || "Internal Server Error",
+        details: error, // Sending the object might help you see it in Postman too
+      });
     }
   };
 
