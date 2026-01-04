@@ -16,7 +16,7 @@ export class ApartmentDocumentMapper {
 
   public static toEntity(
     model: ApartmentDocumentModel
-  ): ApartmentDocumentEntity {
+  ): ApartmentDocumentEntity | null {
     return new ApartmentDocumentEntity({
       apartmentDocumentId: model.apartmentDocumentId,
       apartmentType: model.apartmentType,

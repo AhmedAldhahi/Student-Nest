@@ -28,21 +28,12 @@ export class deleteApartmentByIdForLandlordCommandHandler
       const photos = apartment.getApartmentPhotoDocument();
 
       if (files) {
-        for (let i: number = 0; i < files.length; i++) {
-          try {
-            await this.fileService.deleteImageFromCloudinary(
-              files[i].getDocumentUrl()
-            );
-          } catch (error: any) {
-            // CHANGE: Just log the error, do NOT throw it.
-            // This ensures the loop finishes and we move on to DB deletion.
-            console.error(
-              `Failed to delete image: ${files[
-                i
-              ].getDocumentUrl()}. Proceeding anyway...`,
-              error.message
-            );
-          }
+        try {
+          await this.fileService.deleteImageFromCloudinary(
+            files.getDocumentUrl()
+          );
+        } catch (error: any) {
+          console.error("fail to delete from cloudinary Service", error);
         }
       }
 

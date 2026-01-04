@@ -22,25 +22,21 @@ export class EditApartmentStatusVerifiedCommandHandler
 
       // CASE: Admin wants to Mark as Verified (True)
       if (command.Verified === true) {
-        
         // 1. Get the documents
         const documents = apartment.getApartmentDocument();
 
-        // 2. Safety Check: Are there any documents at all?
-        if (!documents || documents.length === 0) {
+        if (!documents) {
           throw new Error(
-            "Cannot verify: The landlord has not uploaded any documents yet."
+            "Cannot verify: The landlord has not uploaded any documents yet"
           );
         }
 
-        const hasVerificationDoc = documents.some(
-          (doc) => doc.getApartmentType() === ApartmentDocumentType.ApartmentVerifiedFile
-        );
+        const hasVerificationDoc = documents.getApartmentType();
 
         if (!hasVerificationDoc) {
-           throw new Error(
+          throw new Error(
             "Cannot verify: The uploaded document is not a Verification File."
-           );
+          );
         }
 
         // 4. Apply Changes
@@ -48,7 +44,6 @@ export class EditApartmentStatusVerifiedCommandHandler
         apartment.markAsVisible();
       }
 
-      // CASE: Admin wants to Un-verify (False)
       if (command.Verified === false) {
         apartment.markAsNotVerified();
         apartment.markAsNotVisible();
@@ -57,9 +52,8 @@ export class EditApartmentStatusVerifiedCommandHandler
       await this.uow.startTransaction();
       await this.uow.writeApartmentRepo.updateApartment(apartment);
       await this.uow.commitTransaction();
-      
-      return { message: "Apartment status updated successfully" };
 
+      return { message: "Apartment status updated successfully" };
     } catch (error: any) {
       await this.uow.rollbackTransaction();
       console.error("Fail to update apartment status !!", error);

@@ -19,7 +19,7 @@ export class ApartmentModel {
   @PrimaryColumn()
   apartmentId: string;
 
-  @Column({ type: "boolean", nullable: false,default: false })
+  @Column({ type: "boolean", nullable: false, default: false })
   isVisible: boolean;
 
   @Column({ type: "varchar", nullable: false })
@@ -36,8 +36,6 @@ export class ApartmentModel {
 
   @Column({ type: "boolean", nullable: false, default: false })
   isVerified: boolean;
-
-  
 
   @Column({ type: "varchar", nullable: false })
   numberOfRoom: string;
@@ -63,10 +61,12 @@ export class ApartmentModel {
   @JoinColumn({ name: "landlordId" })
   landlord: LandlordModel;
 
-  @OneToMany(() => ApartmentDocumentModel, (doc) => doc.apartment, {
+  @OneToOne(() => ApartmentDocumentModel, (doc) => doc.apartment, {
     cascade: true,
+    nullable: true,
   })
-  documents: ApartmentDocumentModel[];
+
+  documents: ApartmentDocumentModel | null;
 
   @OneToMany(() => ApartmentPhotoModel, (doc) => doc.apartment, {
     cascade: true,

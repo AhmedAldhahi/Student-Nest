@@ -23,7 +23,7 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
   private updateAt: Date;
   private landlord: string;
 
-  private apartmentDocument: ApartmentDocumentEntity[];
+  private apartmentDocument: ApartmentDocumentEntity | null;
   private googleMapLocation: GoogleMapLocationEntity;
   private apartmentPhotoDocument: ApartmentPhotoDocumentEntity[];
 
@@ -80,8 +80,6 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
     this.updateAt = new Date();
   }
 
-
-  
   /**
    * ==================================================================================
    *                              Getter Methods
@@ -132,8 +130,8 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
     return this.landlord;
   }
 
-  public getApartmentDocument(): ApartmentDocumentEntity[] {
-    return this.apartmentDocument;
+  public getApartmentDocument(): ApartmentDocumentEntity | null {
+    return this.apartmentDocument ?? null;
   }
 
   public getGoogleMapLocation(): GoogleMapLocationEntity {
@@ -198,10 +196,10 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
 
     // Safety check in case it wasn't initialized
     if (!this.apartmentDocument) {
-      this.apartmentDocument = [];
+      throw new Error("no apartment document been added !!");
     }
 
-    this.apartmentDocument.push(apartmentDoc);
+    this.apartmentDocument = apartmentDoc;
     this.updateAt = new Date();
   }
 

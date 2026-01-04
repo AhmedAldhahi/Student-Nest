@@ -20,7 +20,7 @@ export interface ApartmentData {
   updateAt: Date;
   landlordId: string; 
 
-  apartmentDocument: ApartmentDocumentEntity[];
+  apartmentDocument: ApartmentDocumentEntity | null;
   apartmentPhoto: ApartmentPhotoDocumentEntity[];
   googleMapLocation: GoogleMapLocationEntity;
 } 

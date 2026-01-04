@@ -37,7 +37,7 @@ export class CreateApartmentCommandHandler
 
       const photoEntities: ApartmentPhotoDocumentEntity[] = [];
       const apartmentId = uuidv4();
-      
+
       if (command.apartmentPhoto && command.apartmentPhoto.length > 0) {
         for (const file of command.apartmentPhoto) {
           const photoUrl = await this.fileService.upload(file);
@@ -71,7 +71,7 @@ export class CreateApartmentCommandHandler
         createAt: command.createAt,
         updateAt: command.updateAt,
         apartmentPhoto: photoEntities,
-        apartmentDocument: [],
+        apartmentDocument: null,
         googleMapLocation: location,
         landlordId: landlord.getUserId(),
       });

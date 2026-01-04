@@ -38,9 +38,9 @@ export class ApartmentMapper {
         .getApartmentPhotoDocument()
         .map((file) => apartmentPhotoMapper.toModel(file)));
 
-    apartmentModel.documents = apartment
-      .getApartmentDocument()
-      .map((doc) => ApartmentDocumentMapper.toModel(doc));
+    const apartmentDoc = apartment.getApartmentDocument();
+
+    if (!apartmentDoc) apartmentModel.documents = null;
 
     return apartmentModel;
   }
@@ -49,6 +49,8 @@ export class ApartmentMapper {
     const price = apartment.getApartmentPrice();
     const numberOfBed = apartment.getNumberOfBed();
     const numberOfRoom = apartment.getNumberOfRoom();
+
+    const document = apartment.getApartmentDocument();
 
     if (!price) throw new Error("Cannot save apartment, price is require !! ");
     if (!numberOfBed)
@@ -81,8 +83,8 @@ export class ApartmentMapper {
       googleMapLocation: GoogleMapMapper.toEntity(model.location),
 
       apartmentDocument: model.documents
-        ? model.documents.map((doc) => ApartmentDocumentMapper.toEntity(doc))
-        : [],
+        ? ApartmentDocumentMapper.toEntity(model.documents)
+        : null,
 
       apartmentPhoto: model.photos
         ? model.photos.map((file) => apartmentPhotoMapper.toEntity(file))
@@ -109,8 +111,8 @@ export class ApartmentMapper {
         : [],
 
       apartmentDocuments: model.documents
-        ? model.documents.map((file) => ApartmentDocumentMapper.toEntity(file))
-        : [],
+        ? ApartmentDocumentMapper.toEntity(model.documents)
+        : null,
 
       googleMapLocation: GoogleMapMapper.toEntity(model.location),
     };
@@ -132,12 +134,13 @@ export class ApartmentMapper {
       updateAt: model.updateAt,
       googleMapLocation: GoogleMapMapper.toEntity(model.location),
       landlordName: model.landlord.user.Name,
+      
+      apartmentDocument: model.documents
+        ? ApartmentDocumentMapper.toEntity(model.documents)
+        : null,
 
       apartmentPhoto: model.photos
         ? model.photos.map((file) => apartmentPhotoMapper.toEntity(file))
-        : [],
-      apartmentDocument: model.documents
-        ? model.documents.map((doc) => ApartmentDocumentMapper.toEntity(doc))
         : [],
     };
   }

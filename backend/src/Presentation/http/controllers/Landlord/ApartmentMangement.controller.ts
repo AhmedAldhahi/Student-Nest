@@ -200,7 +200,7 @@ export class ApartmentController {
         price: req.body.price,
         numberOfBed: req.body.numberOfBed,
         numberOfRoom: req.body.numberOfRoom,
-        isJoin: req.body.isJoin,
+        isJoin: req.body.isJoin === "true",
 
         photos: files || [],
       };
