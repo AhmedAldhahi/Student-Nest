@@ -53,9 +53,44 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
 
   /**
    * ==================================================================================
+   *                              Behavior sections
+   * ==================================================================================
+   */
+
+  public ValidatePhotoSize(): void {
+    if (this.getNumberOfPhotos() > 6)
+      throw new Error("the size limit is 6 for photo ");
+  }
+
+  public addPhoto(photo: ApartmentPhotoDocumentEntity): void {
+    if (!photo) throw new Error("No photo provided to add.");
+
+    if (this.apartmentPhotoDocument.length >= 6) {
+      throw new Error("Cannot add photo. The limit is 6 photos per apartment.");
+    }
+
+    this.apartmentPhotoDocument.push(photo);
+    this.updateAt = new Date();
+  }
+
+  public removePhoto(photoId: string): void {
+    this.apartmentPhotoDocument = this.apartmentPhotoDocument.filter(
+      (p) => p.getPhotoId() !== photoId
+    );
+    this.updateAt = new Date();
+  }
+
+
+  
+  /**
+   * ==================================================================================
    *                              Getter Methods
    * ==================================================================================
    */
+
+  public getNumberOfPhotos(): number {
+    return this.apartmentPhotoDocument.length;
+  }
 
   public getApartmentId(): string {
     return this.apartmentId;
@@ -80,8 +115,6 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
   public getIsJoin(): boolean {
     return this.isJoin;
   }
-
-
 
   public getIsVerified(): boolean {
     return this.isVerified;
@@ -187,7 +220,6 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
   public markAsNotVisible(): void {
     this.isVisible = false;
   }
-
 
   public markAsJoin(): void {
     this.isJoin = true;

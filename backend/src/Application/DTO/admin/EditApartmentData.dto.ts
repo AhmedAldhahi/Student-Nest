@@ -1,4 +1,3 @@
-import { ApartmentPhotoDocumentEntity } from "../../../Domain/Modules/Housing/Entities/phohtoDocumentEntity.entity";
 
 export interface EditApartmentDataRequest {
   title?: string;
@@ -8,5 +7,5 @@ export interface EditApartmentDataRequest {
   numberOfRoom?: string;
   isJoin?: boolean;
   price?: string;
-  photos?: ApartmentPhotoDocumentEntity[];
-}
+  photos?: Express.Multer.File[];
+  }

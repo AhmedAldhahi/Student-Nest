@@ -1,6 +1,7 @@
 import { deleteApartmentByIdCommandHandler } from "../../../Application/Command/Handlers/Housing/Apartment/DeleteApartmentByIdCommandHandler";
 import { deleteApartmentByIdForLandlordCommandHandler } from "../../../Application/Command/Handlers/Housing/Apartment/DeleteApartmentForLandlordCommandHandler";
 import { EditApartmentDetailByIdCommandHandler } from "../../../Application/Command/Handlers/Housing/Apartment/EditApartmentDetailByIdCommandHandler";
+import { EditApartmentDetailForLandlordCommandHandler } from "../../../Application/Command/Handlers/Housing/Apartment/EditApartmentDetailForLandlordCommandHandler";
 import { EditApartmentStatusVerifiedCommandHandler } from "../../../Application/Command/Handlers/Housing/Apartment/EditApartmetVerficationStatusCommandHandler";
 import { UpdateApartmentDocumentFileCommandHandler } from "../../../Application/Command/Handlers/Housing/Apartment/updateApartmentDocumentCommandHandler";
 import { GetAllApartmentByLandlordQueriesHandler } from "../../../Application/Queries/Handlers/Housing/Apartment/GetAllAartmentByLandlordQueriesHandler";
@@ -451,10 +452,14 @@ export function editApartmentDetailUseCase(): EditApartmentDetailUseCase {
   const ReadApartmentRepo = new ReadApartmentRepositories();
   const uow = new UnitOfWork();
   const fileService = new CloudinaryService();
+  const readUserRepo = new ReadUserRepositories();
+  const readLandlordRepo = new ReadLandlordRepositories();
 
-  const commandHandler = new EditApartmentDetailByIdCommandHandler(
-    ReadApartmentRepo,
+  const commandHandler = new EditApartmentDetailForLandlordCommandHandler(
     uow,
+    ReadApartmentRepo,
+    readUserRepo,
+    readLandlordRepo,
     fileService
   );
 
