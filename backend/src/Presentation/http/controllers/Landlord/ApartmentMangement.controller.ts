@@ -1,16 +1,18 @@
-// Controllers/Housing/ApartmentController.ts
 import { Request, Response } from "express";
 import { ApartmentDataRequest } from "../../../../Application/DTO/landlord/addNewApartmentRequest.dto";
 import { CreateApartmentUseCase } from "../../../../Application/Use-Case/Landlord/ApartmentMangement/CreateApartment.usecase";
 import { AuditLogActionType } from "../../../../Domain/Shared/Enum/AuditLogAction.enum";
 import { AddApartmentDocumentUseCase } from "../../../../Application/Use-Case/Landlord/ApartmentMangement/AddApartmentDocument.usecase";
 import { UpdateApartmentDocumentUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/updateApartmentDocument.usecase";
+import { EditApartmentDetailUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/EditApartmentDetail.usecase";
+import { EditApartmentDataRequest } from "../../../../Application/DTO/admin/EditApartmentData.dto";
 
 export class ApartmentController {
   constructor(
     private readonly createApartmentUseCase: CreateApartmentUseCase,
     private readonly AddApartmentDocumentUC: AddApartmentDocumentUseCase,
-    private readonly EditApartmentDocumentById: UpdateApartmentDocumentUseCase
+    private readonly EditApartmentDocumentById: UpdateApartmentDocumentUseCase,
+    private readonly EditApartmentDetailsById: EditApartmentDetailUseCase
   ) {}
 
   public createApartment = async (
@@ -128,17 +130,13 @@ export class ApartmentController {
       const { apartmentType } = req.body;
 
       if (!userId) {
-        return res.status(401).json({ error: "Unauthorized" });
+        return res
+          .status(401)
+          .json({ error: "Unauthorized no user id found !!" });
       }
 
       if (!apartmentId || !documentId) {
         return res.status(400).json({ error: "Invalid route parameters" });
-      }
-
-      if (!file && !apartmentType) {
-        return res.status(400).json({
-          error: "At least one field (file or apartmentType) is required",
-        });
       }
 
       const result = await this.EditApartmentDocumentById.execute(
@@ -160,41 +158,67 @@ export class ApartmentController {
     }
   };
 
-  //     const userId = (req as any).user?.userId;
+  public UpdateApartmentDetailsById = async (req: Request, res: Response) => {
+    try {
+      // 1. Extract IDs
+      const userId = (req as any).user?.userId;
+      const { id } = req.params; // Apartment ID
 
-  //     const apartmentId = req.params.apartmentId?.trim();
-  //     const documentId = req.params.documentId?.trim();
-  //     const apartmentType = req.body;
+      if (!userId) {
+        return res.status(401).json({ error: "Unauthorized: No user found." });
+      }
 
-  //     const file = req.file;
+      // 2. Extract Files (Ensure 'uploads.array' is used in Router)
+      const files = req.files as Express.Multer.File[] | undefined;
 
-  //     // 1. Security & Basic Validation
-  //     if (!userId) return res.status(401).json({ error: "Unauthorized" });
+      // 3. Helper Functions for Parsing
+      const parseNumber = (val: any) => (val ? Number(val) : undefined);
+      const parseBoolean = (val: any) => {
+        if (val === "true") return true;
+        if (val === "false") return false;
+        return undefined;
+      };
 
-  //     if (!apartmentId || !documentId) {
-  //       return res
-  //         .status(400)
-  //         .json({ error: "Missing or invalid apartmentId or documentId" });
-  //     }
+      // 4. Handle deletedPhotoIds (Ensure it's an array of strings)
+      let parsedDeletedIds: string[] = [];
+      if (req.body.deletedPhotoIds) {
+        if (Array.isArray(req.body.deletedPhotoIds)) {
+          parsedDeletedIds = req.body.deletedPhotoIds;
+        } else {
+          // Wrap single string ID in an array
+          parsedDeletedIds = [req.body.deletedPhotoIds];
+        }
+      }
 
-  //     // ... rest of your code (Enum validation, etc) ...
+      // 5. Construct the DTO (Only the data fields)
+      const dto: EditApartmentDataRequest = {
+        title: req.body.title,
+        description: req.body.description,
+        address: req.body.address,
 
-  //     const result = await this.EditApartmentDocumentById.execute(
-  //       {
-  //         documentUrl: file,
-  //         apartmentType: apartmentType,
-  //       },
-  //       apartmentId, // Pass trimmed ID
-  //       documentId, // Pass trimmed ID
-  //       userId
-  //     );
+        // Parse numbers & booleans
+        price: req.body.price,
+        numberOfBed: req.body.numberOfBed,
+        numberOfRoom: req.body.numberOfRoom,
+        isJoin: req.body.isJoin,
 
-  //     return res.status(200).json(result);
-  //   } catch (error: any) {
-  //     console.error("Update Apartment Document Error:", error);
-  //     return res
-  //       .status(400) // Change 500 to 400 if it's a validation/input error
-  //       .json({ error: error.message || "Internal Server Error" });
-  //   }
-  // };
+        photos: files || [],
+      };
+
+      console.log(dto);
+
+      const result = await this.EditApartmentDetailsById.execute(
+        dto, // Argument 1: The Data
+        id, // Argument 2: Apartment ID
+        userId // Argument 3: User ID
+      );
+
+      return res.status(200).json(result);
+    } catch (error: any) {
+      console.error("Controller Error:", error);
+      return res
+        .status(400)
+        .json({ error: error.message || "Internal Server Error" });
+    }
+  };
 }

@@ -14,10 +14,9 @@ export class ApartmentManagementController {
     private readonly editApartmentVerificationStatus: EditApartmentStatusVerifiedUseCase,
     private readonly deleteApartmentById: DeleteApartmentByIdUseCase,
     private readonly getApartmentDocumentById: findApartmentDocumentByIdUseCase,
-    private readonly GetApartmentDetailById: findApartmentByIdUseCase,
-    private readonly EditApartmentDetailsById: EditApartmentDetailUseCase,
+    private readonly GetApartmentDetailById: findApartmentByIdUseCase
   ) {}
-
+  
   public getAllApartments = async (req: Request, res: Response) => {
     try {
       const userId = req.user?.userId;
@@ -136,27 +135,4 @@ export class ApartmentManagementController {
         .json({ error: error.message || "internal server error" });
     }
   };
-
-  public UpdateApartmentDetailsById = async (req: Request, res: Response) => {
-    try {
-      const userId = req.user?.userId;
-      const dto = req.body;
-      const { id } = req.params;
-
-      console.log(dto);
-
-      if (!userId)
-        return res.status(400).json({ error: "no user id found !!" });
-
-      const result = await this.EditApartmentDetailsById.execute(dto, id);
-
-      return res.status(200).json(result);
-    } catch (error: any) {
-      return res
-        .status(400)
-        .json({ error: error.message || "internal server error" });
-    }
-  };
-
- 
 }

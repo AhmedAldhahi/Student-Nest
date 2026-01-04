@@ -76,14 +76,14 @@ export const buildControllers = () => {
     useCases.editStatusApartmentVerifiedUseCase,
     useCases.deleteApartmentByIdUseCase,
     useCases.findApartmentDocumentById,
-    useCases.findApartmentDetailById,
-    useCases.editApartmentUseCase
+    useCases.findApartmentDetailById
   );
 
   const LandlordApartmentController = new ApartmentController(
     useCases.createApartmentsUseCase,
     useCases.addApartmentDocumentUseCase,
-    useCases.editApartmentDocumentUseCase
+    useCases.editApartmentDocumentUseCase,
+    useCases.editApartmentUseCase
   );
 
   return {

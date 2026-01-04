@@ -15,14 +15,7 @@ export const ApartmentRouter = (
   );
 
 
-  // //todo: will be removed and move to landlord
-  // router.patch(
-  //   "/:id",
-  //   isAuth,
-  //   isAdmin,
-  //   apartmentController.UpdateApartmentDetailsById
-  // );
-  
+
 
 
   return router;
