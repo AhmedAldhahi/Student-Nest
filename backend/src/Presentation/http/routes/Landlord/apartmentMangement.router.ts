@@ -45,14 +45,13 @@ export const ApartmentRouter = (
     uploads.single("apartmentDocument"),
     apartmentController.updateApartmentDocuments
   );
-  
 
   router.patch(
     "/:id",
     isAuth,
     isLandlord,
     uploads.array("apartmentPhoto", 6),
-    //validationMedia(UpdateApartmentSchema),
+    validationMedia(UpdateApartmentSchema),
     apartmentController.UpdateApartmentDetailsById
   );
 
