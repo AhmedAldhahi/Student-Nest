@@ -1,6 +1,5 @@
 import { deleteApartmentByIdCommandHandler } from "../../../Application/Command/Handlers/Housing/Apartment/DeleteApartmentByIdCommandHandler";
 import { deleteApartmentByIdForLandlordCommandHandler } from "../../../Application/Command/Handlers/Housing/Apartment/DeleteApartmentForLandlordCommandHandler";
-import { EditApartmentDetailByIdCommandHandler } from "../../../Application/Command/Handlers/Housing/Apartment/EditApartmentDetailByIdCommandHandler";
 import { EditApartmentDetailForLandlordCommandHandler } from "../../../Application/Command/Handlers/Housing/Apartment/EditApartmentDetailForLandlordCommandHandler";
 import { EditApartmentStatusVerifiedCommandHandler } from "../../../Application/Command/Handlers/Housing/Apartment/EditApartmetVerficationStatusCommandHandler";
 import { UpdateApartmentDocumentFileCommandHandler } from "../../../Application/Command/Handlers/Housing/Apartment/updateApartmentDocumentCommandHandler";
