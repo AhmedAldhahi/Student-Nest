@@ -40,7 +40,7 @@ export class AddApartmentDocumentCommandHandler
         );
       if (!apartment) throw new Error("apartment not found ");
 
-      const documentUrl = await this.fileService.upload(
+        const documentUrl = await this.fileService.upload(
         command.apartmentDocument
       );
 

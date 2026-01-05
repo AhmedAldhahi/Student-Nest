@@ -10,7 +10,7 @@ export class ApartmentDocumentMapper {
     model.apartmentDocumentId = entity.getApartmentDocumentId();
     model.apartmentType = entity.getApartmentType();
     model.documentUrl = entity.getDocumentUrl();
-    model.apartmentsId = entity.getApartmentsId();
+    model.apartmentId = entity.getApartmentsId();
     return model;
   }
 
@@ -21,7 +21,7 @@ export class ApartmentDocumentMapper {
       apartmentDocumentId: model.apartmentDocumentId,
       apartmentType: model.apartmentType,
       documentUrl: model.documentUrl,
-      apartmentsId: model.apartmentsId,
+      apartmentsId: model.apartmentId,
     });
   }
 }
