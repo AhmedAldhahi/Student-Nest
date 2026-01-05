@@ -45,6 +45,7 @@ export class LeaseModel {
   @CreateDateColumn({ name: "createAt" })
   createAt: Date;
 
+  // --- STUDENT (Correct) ---
   @ManyToOne(() => StudentModel, (student) => student.leases, {
     nullable: true,
     onDelete: "SET NULL",
@@ -52,7 +53,7 @@ export class LeaseModel {
   @JoinColumn({ name: "studentId" })
   student: StudentModel;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true }) 
   studentId: string;
 
   @ManyToOne(() => LandlordModel, (landlord) => landlord.leases, {
@@ -62,7 +63,7 @@ export class LeaseModel {
   @JoinColumn({ name: "landlordId" })
   landlord: LandlordModel;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true }) 
   landlordId: string;
 
   @ManyToOne(() => ApartmentModel, {
