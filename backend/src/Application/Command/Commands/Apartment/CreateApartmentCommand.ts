@@ -36,6 +36,5 @@ export class CreateApartmentCommand implements ICommand {
     this.googleMapLocationLat = data.googleMapLocationLat;
     this.googleMapLocationLong = data.googleMapLocationLong;
     this.apartmentPhoto = data.apartmentPhoto;
-    this.apartmentDocument = data.apartmentDocument;
   }
 }
