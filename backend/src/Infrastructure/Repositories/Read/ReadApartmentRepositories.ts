@@ -189,11 +189,11 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
     id: string,
     userId: string
   ): Promise<IApartmentDTO | null> {
-    try {
+     try {
       const apartment = await AppDataSource.getInstance()
         .getRepository(ApartmentModel)
         .findOne({
-          where: { apartmentId: id, landlordId: userId },
+          where: { apartmentId: id ,landlordId:userId},
           relations: {
             landlord: { user: true },
             documents: true,

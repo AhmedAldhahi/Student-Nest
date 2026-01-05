@@ -3,7 +3,6 @@ import { deleteApartmentByIdForLandlordCommandHandler } from "../../Command/Hand
 import { GetAllApartmentByLandlordQueriesHandler } from "../../Queries/Handlers/Housing/Apartment/GetAllAartmentByLandlordQueriesHandler";
 import { GetAllApartmentByQueriesForLandlordQueriesHandler } from "../../Queries/Handlers/Housing/Apartment/GetAllApartmentByQueriesForLandlordQueriesHandler";
 import { GetApartmentByIdForLandlordQueriesHandler } from "../../Queries/Handlers/Housing/Apartment/GetApartmentByIdForLandlordQueriesHandler";
-import { GetApartmentDocumentByIdQueriesHandler } from "../../Queries/Handlers/Housing/Apartment/GetApartmentDocumentById.QueriesHandler";
 import { GetApartmentDocumentByIdForLandlordQueriersHandler } from "../../Queries/Handlers/Housing/Apartment/GetApartmentDocumentByIdForLandlordQueriesHandler";
 import { GetAllApartmentForLandlord } from "../../Queries/Queries/Apartment/GetAllApartmemtForLandlord";
 import { GetApartmentByIdQueries } from "../../Queries/Queries/Apartment/GetApartmentById";
