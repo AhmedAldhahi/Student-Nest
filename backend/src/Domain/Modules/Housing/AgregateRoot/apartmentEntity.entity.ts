@@ -194,11 +194,6 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
   public AddApartmentDocument(apartmentDoc: ApartmentDocumentEntity): void {
     if (!apartmentDoc) return;
 
-    // Safety check in case it wasn't initialized
-    if (!this.apartmentDocument) {
-      throw new Error("no apartment document been added !!");
-    }
-
     this.apartmentDocument = apartmentDoc;
     this.updateAt = new Date();
   }
