@@ -1,13 +1,10 @@
-import { LandlordAggregateRoot } from "../../Housing/AgregateRoot/landloardEntity.entity";
 import { MonthlyRent } from "../../Housing/Value-Object/MonthlyRent.vo";
-import { ApartmentAggregateRoot } from "../../Housing/AgregateRoot/apartmentEntity.entity";
-import { StudentAggregateRoot } from "../../Student/AgregatesRoot/studentEntity.entity";
 import { LeaseEndDate } from "../Value-Object/LeaseEndDate.vo";
 import { LeaseStartDate } from "../Value-Object/LeaseStartDate.vo";
 import { LeaseTerm } from "../Value-Object/LeaseTerm.vo";
 
 export interface ILeaseData {
-  leaseId: number;
+  leaseId: string;
   houseRule: string;
   isLandlordSigned: boolean;
   isStudentSigned: boolean;
@@ -18,17 +15,14 @@ export interface ILeaseData {
   monthlyRent: MonthlyRent;
   leaseTerm: LeaseTerm;
 
-  apartment: ApartmentAggregateRoot;
-  student: StudentAggregateRoot;
-  landlord: LandlordAggregateRoot;
+  apartmentId: string;
+  studentId: string;
+  landlordId: string;
   createAt: Date;
-
-  // apartment fk need to add
-  //apartment: ApartmentEntity;
 }
 
 export class LeaseAggregateRoot {
-  private leaseId: number;
+  private leaseId: string;
   private isLandlordSigned: boolean;
   private isStudentSigned: boolean;
   private houseRule: string;
@@ -38,9 +32,9 @@ export class LeaseAggregateRoot {
   private monthlyRent: MonthlyRent;
   private leaseTerm: LeaseTerm;
 
-  private apartment: ApartmentAggregateRoot;
-  private student: StudentAggregateRoot;
-  private landlord: LandlordAggregateRoot;
+  private apartmentId: string;
+  private studentId: string;
+  private landlordId: string;
 
   private createAt: Date;
   private activateStatus: boolean = true;
@@ -55,9 +49,9 @@ export class LeaseAggregateRoot {
     this.leaseEndData = data.leaseEndData;
     this.monthlyRent = data.monthlyRent;
     this.leaseTerm = data.leaseTerm;
-    this.student = data.student;
-    this.landlord = data.landlord;
-    this.apartment = data.apartment;
+    this.studentId = data.studentId;
+    this.landlordId = data.landlordId;
+    this.apartmentId = data.apartmentId;
     this.createAt = data.createAt;
   }
 
@@ -97,11 +91,7 @@ export class LeaseAggregateRoot {
     return this.monthlyRent.getValue() ?? undefined;
   }
 
-  public setLeaseId(id: number): void {
-    this.leaseId = id;
-  }
-
-  public getLeaseId(): number {
+  public getLeaseId(): string {
     return this.leaseId;
   }
 
@@ -173,15 +163,15 @@ export class LeaseAggregateRoot {
     return this.includeUtilities;
   }
 
-  public getLandlord(): LandlordAggregateRoot {
-    return this.landlord;
+  public getLandlord(): string {
+    return this.landlordId;
   }
 
-  public getStudent(): StudentAggregateRoot {
-    return this.student;
+  public getStudent(): string {
+    return this.studentId;
   }
 
-  public getApartment(): ApartmentAggregateRoot {
-    return this.apartment;
+  public getApartment(): string {
+    return this.apartmentId;
   }
 }

@@ -33,16 +33,19 @@ export class EditApartmentDetailForLandlordCommandHandler
       const user = await this.readUserRepo.findById(command.userId);
       if (!user) throw new Error("User not found !!");
 
-      const landlord = await this.readLandlordRepo.findLandlordById(command.userId);
-      
+      const landlord = await this.readLandlordRepo.findLandlordById(
+        command.userId
+      );
+
       user.ensureAccountIsActive();
 
       if (!landlord) throw new Error("Landlord account not found !!");
 
-      const apartment = await this.readApartmentRepo.findApartmentByIdForLandlord(
-        command.id,
-        command.userId
-      );
+      const apartment =
+        await this.readApartmentRepo.findApartmentByIdForLandlord(
+          command.id,
+          command.userId
+        );
 
       if (!apartment) throw new Error("Apartment not found !!");
 
@@ -50,7 +53,7 @@ export class EditApartmentDetailForLandlordCommandHandler
       // 2. Update Scalar Fields
       // ---------------------------------------------------------
       // TODO: need to fix price when it have student must throw error
-      
+
       if (command.address) apartment.updateAddress(command.address);
       if (command.description) apartment.updateDescription(command.description);
       // Explicit check for undefined so false values are not ignored
@@ -65,53 +68,23 @@ export class EditApartmentDetailForLandlordCommandHandler
       }
       if (command.price) {
         apartment.changeApartmentPricing(ApartmentPrice.create(command.price));
+      } 
+
+      if (command.photos) {
+        const newPhoto = command.photos;
+
+        if (newPhoto.length > 0 && newPhoto.length < 7) {
+        }
       }
 
-      // ---------------------------------------------------------
-      // 3. Photo Handling (Upload Strategy)
-      // ---------------------------------------------------------
-      const newFiles = command.photos || [];
+      //todo: fix the photo issue
 
-      // Only enter photo logic if new files are actually provided
-      if (newFiles.length > 0) {
-        const currentPhotos = apartment.getApartmentPhotoDocument();
 
-        // A. Validation
-        if (newFiles.length > 6) {
-          throw new Error(`Limit exceeded: Max 6 photos allowed.`);
-        }
-        if (newFiles.length < 1) {
-          throw new Error(`Constraint violation: Must have at least one photo.`);
-        }
 
-        // B. Prepare Old Photos for Deletion (But don't delete yet!)
-        oldPhotosUrlsToDelete = currentPhotos.map(p => p.getPhotoUrl());
 
-        // C. Upload New Photos to Cloudinary
-        const newPhotoEntities: ApartmentPhotoDocumentEntity[] = [];
 
-        for (const file of newFiles) {
-          const photoUrl = await this.fileService.upload(file);
-          
-          newPhotoEntities.push(
-            new ApartmentPhotoDocumentEntity({
-              photoId: uuidv4(),
-              photoUrl: photoUrl,
-            })
-          );
-        }
-
-        // D. Update Entity
-        // NOTE: Ensure your Apartment Entity has a method to replace the photo list
-        // e.g., public updatePhotos(photos: ApartmentPhotoDocumentEntity[])
-        apartment.replacePhotos(newPhotoEntities); 
-      }
-
-      // ---------------------------------------------------------
-      // 4. Persistence (Transaction)
-      // ---------------------------------------------------------
       await this.uow.startTransaction();
-      
+
       try {
         await this.uow.writeApartmentRepo.updateApartment(apartment);
         await this.uow.commitTransaction();
@@ -121,23 +94,6 @@ export class EditApartmentDetailForLandlordCommandHandler
         throw errorDB;
       }
 
-      // ---------------------------------------------------------
-      // 5. Post-Commit Cleanup (Safe Side Effects)
-      // ---------------------------------------------------------
-      // Only now, after the DB is safely updated, do we delete the old images
-      if (oldPhotosUrlsToDelete.length > 0) {
-        // We use Promise.allSettled so one failure doesn't crash the response
-        Promise.allSettled(
-          oldPhotosUrlsToDelete.map(url => this.fileService.deleteImageFromCloudinary(url))
-        ).then(results => {
-             // Optional: Log failures if needed
-             console.log("Cleanup complete");
-        });
-      }
-
-      // ---------------------------------------------------------
-      // 6. Return Response
-      // ---------------------------------------------------------
       return {
         apartmentId: apartment.getApartmentId(),
         isVisible: apartment.getIsVisible(),
@@ -156,12 +112,9 @@ export class EditApartmentDetailForLandlordCommandHandler
         IsVerified: apartment.getIsVerified(),
         landlordName: user.getName()?.valueOf(),
       };
-
     } catch (error: any) {
       console.error("Fail to update apartment details !!", error);
-      // If we failed BEFORE DB commit, the transaction rollback handles data.
-      // Ideally, you might want to delete the *NEW* photos from Cloudinary here 
-      // if the process failed, to avoid orphaned files, but that is an optimization.
+
       throw error;
     } finally {
       await this.uow.releaseTransaction();

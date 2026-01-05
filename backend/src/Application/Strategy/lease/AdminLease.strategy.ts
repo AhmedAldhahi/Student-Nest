@@ -21,7 +21,7 @@ export class AdminLeaseStrategy implements ILeaseStrategy {
 
   public async SearchForLeases(Query: string, userId: string): Promise<any> {
     try {
-      const query = new GetLeaseByQueryQueries(Query);
+      const query = new GetLeaseByQueryQueries(Query,userId);
       return await this.getLeaseByQuery.handle(query);
     } catch (error: any) {
       console.error("fail to get leases !!");

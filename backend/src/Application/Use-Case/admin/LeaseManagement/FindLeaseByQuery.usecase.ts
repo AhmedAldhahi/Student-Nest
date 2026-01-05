@@ -1,5 +1,4 @@
 import { IReadUserRepositories } from "../../../../Domain/Modules/Identity/Repositories/ReadUserRepositories.repositories";
-import { GetLeaseByQueryQueries } from "../../../Queries/Queries/Lease/GetLeaseByQuery.Queries";
 import { LeaseContext } from "../../../Strategy/lease/LeaseContext";
 
 export class FindLeasesByIdUseCase {
@@ -13,8 +12,6 @@ export class FindLeasesByIdUseCase {
       const user = await this.readUserRepo.findById(userId);
 
       if (!user) throw new Error("no user been found !!");
-
-      const Queries = new GetLeaseByQueryQueries(query);
 
       return await this.context.executeFindByQuery(
         query,

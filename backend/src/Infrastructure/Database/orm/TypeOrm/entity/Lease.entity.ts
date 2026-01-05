@@ -2,9 +2,9 @@ import {
   Entity,
   Column,
   JoinColumn,
-  PrimaryGeneratedColumn,
   ManyToOne,
   CreateDateColumn,
+  PrimaryColumn,
 } from "typeorm";
 import { LandlordModel } from "./Landloard.entity";
 import { StudentModel } from "./Student.entity";
@@ -12,8 +12,8 @@ import { ApartmentModel } from "./Apartment.entity";
 
 @Entity("leases")
 export class LeaseModel {
-  @PrimaryGeneratedColumn()
-  leaseId: number;
+  @PrimaryColumn()
+  leaseId: string;
 
   @Column({ type: "varchar", nullable: false, length: 10 })
   leaseStartDate: string;
@@ -49,9 +49,11 @@ export class LeaseModel {
     nullable: true,
     onDelete: "SET NULL",
   })
-
   @JoinColumn({ name: "studentId" })
   student: StudentModel;
+
+  @Column({ nullable: false })
+  studentId: string;
 
   @ManyToOne(() => LandlordModel, (landlord) => landlord.leases, {
     nullable: true,
@@ -60,16 +62,16 @@ export class LeaseModel {
   @JoinColumn({ name: "landlordId" })
   landlord: LandlordModel;
 
+  @Column({ nullable: false })
+  landlordId: string;
+
   @ManyToOne(() => ApartmentModel, {
     nullable: false,
     onDelete: "CASCADE",
   })
-  
   @JoinColumn({ name: "apartmentId" })
   apartment: ApartmentModel;
-}
 
-/**
- *
- * * apartment
- */
+  @Column({ nullable: false })
+  apartmentId: string;
+}

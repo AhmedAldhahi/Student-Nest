@@ -14,11 +14,9 @@ export class LeaseRequestMapper {
     const dataValidation = this.toModelValidation(entity);
 
     leaseRequestModel.createAt = entity.getCreateAt();
-    leaseRequestModel.landlord = LandlordMapper.toOrm(entity.getLandlord());
-    leaseRequestModel.student = StudentMapper.toModel(entity.getStudent());
-    leaseRequestModel.apartment = ApartmentMapper.toModel(
-      entity.getApartment()
-    );
+    leaseRequestModel.landlordId = entity.getLandlord();
+    leaseRequestModel.studentId = entity.getStudent();
+    leaseRequestModel.apartmentId = entity.getApartment();
 
     leaseRequestModel.leaseRequestId = entity.getRequestLeaseId();
     leaseRequestModel.rentTerm = dataValidation.rentTerm;
@@ -49,9 +47,9 @@ export class LeaseRequestMapper {
       rentTerm: new RentTerm(model.rentTerm),
       requestStatus: model.requestStatus,
       createAt: model.createAt,
-      studentName: StudentMapper.toEntity(model.student),
-      landlordName: LandlordMapper.toEntity(model.landlord),
-      apartment: ApartmentMapper.toEntity(model.apartment),
+      studentName: model.student.user.Name,
+      landlordName: model.landlord.user.Name,
+      apartment: model.apartment.title,
     });
   }
 

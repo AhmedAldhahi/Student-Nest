@@ -2,9 +2,6 @@ import { ILeaseEntityDTO } from "../../../Application/DTO/admin/LeaseDTO.dto";
 import { LeaseAggregateRoot } from "../../../Domain/Modules/Leases/AgregateRoot/leaseEntity.entity";
 import { MonthlyRent } from "../../../Domain/Modules/Housing/Value-Object/MonthlyRent.vo";
 import { LeaseModel } from "../../Database/orm/TypeOrm/entity/Lease.entity";
-import { ApartmentMapper } from "./apartment.mapper";
-import { LandlordMapper } from "./landloard.mapper";
-import { StudentMapper } from "./student.mapper";
 import { LeaseEndDate } from "../../../Domain/Modules/Leases/Value-Object/LeaseEndDate.vo";
 import { LeaseStartDate } from "../../../Domain/Modules/Leases/Value-Object/LeaseStartDate.vo";
 import { LeaseTerm } from "../../../Domain/Modules/Leases/Value-Object/LeaseTerm.vo";
@@ -24,9 +21,9 @@ export class LeaseMapper {
       leaseEndData: lastD,
       monthlyRent: new MonthlyRent(model.monthlyRent),
       leaseTerm: new LeaseTerm(model.leaseTerm),
-      student: StudentMapper.toEntity(model.student),
-      landlord: LandlordMapper.toEntity(model.landlord),
-      apartment: ApartmentMapper.toEntity(model.apartment),
+      studentId: model.studentId,
+      landlordId: model.landlordId,
+      apartmentId: model.landlordId,
       includeUtilities: model.includeUtilities ?? undefined, // optional
       createAt: model.createAt,
     });
@@ -66,9 +63,9 @@ export class LeaseMapper {
     leaseModel.monthlyRent = dataValidation.monthlyRent;
     leaseModel.leaseTerm = dataValidation.leaseTerm;
     leaseModel.includeUtilities = utilities ?? null;
-    leaseModel.student = StudentMapper.toModel(entity.getStudent());
-    leaseModel.landlord = LandlordMapper.toOrm(entity.getLandlord());
-    leaseModel.apartment = ApartmentMapper.toModel(entity.getApartment());
+    leaseModel.studentId = entity.getStudent(),
+    leaseModel.landlordId = entity.getLandlord(),
+    leaseModel.apartmentId = entity.getApartment();
     leaseModel.createAt = entity.getCreateAt();
 
     return leaseModel;

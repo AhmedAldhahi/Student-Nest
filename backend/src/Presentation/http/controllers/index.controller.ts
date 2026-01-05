@@ -10,6 +10,7 @@ import { VerificationController } from "./Verification.controller";
 import { AuditLogController } from "./admin/auditLogManagement.controller";
 import { LeaseManagementController } from "./admin/leaseManagement.controller";
 import { ApartmentController } from "./Landlord/ApartmentMangement.controller";
+import { LeaseManagement } from "./Landlord/LeaseMangement.controller";
 
 export const buildControllers = () => {
   const { useCases } = buildDependencies();
@@ -86,6 +87,11 @@ export const buildControllers = () => {
     useCases.editApartmentUseCase
   );
 
+  const LandlordLeaseController = new LeaseManagement(
+    useCases.SearchForSingleApartmentUseCase,
+    useCases.getAllLeaseForSingleApartmentUseCAse
+  );
+
   return {
     authController,
     verificationController,
@@ -98,5 +104,6 @@ export const buildControllers = () => {
     adminApartmentController,
     adminAuditLogController,
     LandlordApartmentController,
+    LandlordLeaseController,
   };
 };

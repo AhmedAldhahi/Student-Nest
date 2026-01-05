@@ -64,6 +64,9 @@ export class LeaseContext {
       }
 
       return await strategy.SearchForLeases(query, userId);
-    } catch (error: any) {}
+    } catch (error: any) {
+      console.error("fail to search all leases !!");
+      throw error;
+    }
   }
 }

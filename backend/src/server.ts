@@ -101,6 +101,7 @@ export class Server {
       adminAuditLogController,
       adminNotificationController,
       LandlordApartmentController,
+      LandlordLeaseController,
     } = buildControllers();
 
     this.app.use(
@@ -114,7 +115,7 @@ export class Server {
 
     this.app.use(
       "/api/v1/landlord",
-      LandlordIndexRouter(LandlordApartmentController)
+      LandlordIndexRouter(LandlordApartmentController, LandlordLeaseController)
     );
 
     this.app.use(
@@ -149,14 +150,10 @@ export class Server {
 
     /////////////////////End apartment section ///////////////////////////
 
-
-    
-
     this.startupDebug("Server configuration completed.");
   }
 
   async start() {
-    
     await this.configure();
 
     this.app.listen(this.port, () => {

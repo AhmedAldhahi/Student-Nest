@@ -65,25 +65,18 @@ export class ReadLeaseRequestRepositories
   ): Promise<ILeaseRequestDTO[]> {
     try {
       const query = Queries.trim();
-      const numericId = Number(query);
-
-      // Check if it is a valid number and strictly not NaN
-      const isNumeric = !Number.isNaN(numericId) && query !== "";
+      const searchPattern = Like(`%${query}%`);
 
       let whereCondition: FindOptionsWhere<LeaseRequestModel>[];
-
-      if (isNumeric) {
-        whereCondition = [{ leaseRequestId: numericId }];
-      } else {
-        whereCondition = [
-          // Search in Landlord Name
-          { landlord: { user: { Name: Like(`%${query}%`) } } },
-          // Search in Student Name
-          { student: { user: { Name: Like(`%${query}%`) } } },
-          // Search in Apartment Title
-          { apartment: { title: Like(`%${query}%`) } },
-        ];
-      }
+      whereCondition = [
+        { leaseRequestId: searchPattern },
+        // Search in Landlord Name
+        { landlord: { user: { Name: Like(`%${query}%`) } } },
+        // Search in Student Name
+        { student: { user: { Name: Like(`%${query}%`) } } },
+        // Search in Apartment Title
+        { apartment: { title: Like(`%${query}%`) } },
+      ];
 
       const leaseRequests = await AppDataSource.getInstance()
         .getRepository(LeaseRequestModel)

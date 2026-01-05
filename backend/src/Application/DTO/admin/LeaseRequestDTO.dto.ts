@@ -1,6 +1,6 @@
 
 export interface ILeaseRequestDTO {
-  requestLeaseId: number;
+  requestLeaseId: string;
   requestMessage: string;
   startDate: string;
   rentTerm: string;

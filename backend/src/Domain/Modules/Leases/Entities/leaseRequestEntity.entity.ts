@@ -6,30 +6,30 @@ import { LeaseStartDate } from "../Value-Object/LeaseStartDate.vo";
 import { RentTerm } from "../Value-Object/RentTerm.vo";
 
 export interface ILeaseRequestDate {
-  requestLeaseId: number;
+  requestLeaseId: string;
   requestMessage: string;
   startDate: LeaseStartDate;
   rentTerm: RentTerm;
   requestStatus: LeaseRequestStatus;
   createAt: Date;
-  studentName: StudentAggregateRoot;
-  landlordName: LandlordAggregateRoot;
+  studentName: string;
+  landlordName: string;
 
   // apartment fk need to add
-  apartment: ApartmentAggregateRoot;
+  apartment: string;
 }
 
 export class LeaseRequestEntity {
-  private requestLeaseId: number;
+  private requestLeaseId: string;
   private requestMessage: string;
   private startDate: LeaseStartDate;
   private rentTerm: RentTerm;
   private requestStatus: LeaseRequestStatus;
   private createAt: Date;
 
-  private studentName: StudentAggregateRoot;
-  private landlordName: LandlordAggregateRoot;
-  private apartment: ApartmentAggregateRoot;
+  private studentName: string;
+  private landlordName: string;
+  private apartment: string;
 
   constructor(data: ILeaseRequestDate) {
     this.requestLeaseId = data.requestLeaseId;
@@ -42,11 +42,7 @@ export class LeaseRequestEntity {
     this.studentName = data.studentName;
   }
 
-  public setRequestLeaseId(id: number): void {
-    this.requestLeaseId = id;
-  }
-
-  public getRequestLeaseId(): number {
+  public getRequestLeaseId(): string {
     return this.requestLeaseId;
   }
 
@@ -98,23 +94,15 @@ export class LeaseRequestEntity {
     return this.createAt;
   }
 
-  public setLandlord(landlord: LandlordAggregateRoot): void {
-    this.landlordName = landlord;
-  }
-
-  public getLandlord(): LandlordAggregateRoot {
+  public getLandlord(): string {
     return this.landlordName;
   }
 
-  public setStudent(student: StudentAggregateRoot): void {
-    this.studentName = student;
-  }
-
-  public getStudent(): StudentAggregateRoot {
+  public getStudent(): string {
     return this.studentName;
   }
 
-  public getApartment(): ApartmentAggregateRoot {
+  public getApartment(): string {
     return this.apartment;
   }
 }
