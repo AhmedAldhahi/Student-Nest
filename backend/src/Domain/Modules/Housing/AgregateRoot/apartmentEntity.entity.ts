@@ -74,6 +74,16 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
     this.updateAt = new Date();
   }
 
+  public replacePhotos(newPhotos: ApartmentPhotoDocumentEntity[]): void {
+    if (newPhotos.length === 0)
+      throw new Error("Apartment must have at least one photo.");
+    if (newPhotos.length > 6)
+      throw new Error("Apartment cannot have more than 6 photos.");
+
+    this.apartmentPhotoDocument = newPhotos;
+    this.updateAt = new Date();
+  }
+
   public removePhoto(photoId: string): void {
     this.apartmentPhotoDocument = this.apartmentPhotoDocument.filter(
       (p) => p.getPhotoId() !== photoId

@@ -23,112 +23,145 @@ export class EditApartmentDetailForLandlordCommandHandler
   ) {}
 
   public async handle(command: EditApartmentDetailByIdCommand): Promise<any> {
-    try {
-      const user = await this.readUserRepo.findById(command.userId);
-      if (!user) throw new Error("no user been found !!");
+    // We declare this outside to use it in the finally/success blocks
+    let oldPhotosUrlsToDelete: string[] = [];
 
-      const landlord = await this.readLandlordRepo.findLandlordById(
+    try {
+      // ---------------------------------------------------------
+      // 1. Validation & Retrieval
+      // ---------------------------------------------------------
+      const user = await this.readUserRepo.findById(command.userId);
+      if (!user) throw new Error("User not found !!");
+
+      const landlord = await this.readLandlordRepo.findLandlordById(command.userId);
+      
+      user.ensureAccountIsActive();
+
+      if (!landlord) throw new Error("Landlord account not found !!");
+
+      const apartment = await this.readApartmentRepo.findApartmentByIdForLandlord(
+        command.id,
         command.userId
       );
 
-      user.ensureAccountIsActive();
+      if (!apartment) throw new Error("Apartment not found !!");
 
-      if (!landlord) throw new Error("no landlord been found !!");
-
-      const apartment =
-        await this.readApartmentRepo.findApartmentByIdForLandlord(
-          command.id,
-          command.userId
-        );
-
-      if (!apartment) throw new Error("no apartment been found !!");
-
-      //TODO: need to fix price when it have student must throw error
-
+      // ---------------------------------------------------------
+      // 2. Update Scalar Fields
+      // ---------------------------------------------------------
+      // TODO: need to fix price when it have student must throw error
+      
       if (command.address) apartment.updateAddress(command.address);
-
       if (command.description) apartment.updateDescription(command.description);
-
-      if (command.isJoin) apartment.updateIsJoin(command.isJoin);
-
-      if (command.numberOfBed)
-        apartment.updateNumberOfBed(NumberOfBed.create(command.numberOfBed));
-      if (command.numberOfRoom)
-        apartment.updateNumberOfRoom(NumberOfRoom.create(command.numberOfRoom));
-
+      // Explicit check for undefined so false values are not ignored
+      if (command.isJoin !== undefined) apartment.updateIsJoin(command.isJoin);
       if (command.title) apartment.updateTitle(command.title);
 
-      if (command.price)
+      if (command.numberOfBed) {
+        apartment.updateNumberOfBed(NumberOfBed.create(command.numberOfBed));
+      }
+      if (command.numberOfRoom) {
+        apartment.updateNumberOfRoom(NumberOfRoom.create(command.numberOfRoom));
+      }
+      if (command.price) {
         apartment.changeApartmentPricing(ApartmentPrice.create(command.price));
+      }
 
-      const currentPhotos = apartment.getApartmentPhotoDocument();
-
-      // Step B: Prepare a list that we will modify
-      const updatedPhotoList = [...currentPhotos];
-
-      // Step C: Upload and APPEND new photos
+      // ---------------------------------------------------------
+      // 3. Photo Handling (Upload Strategy)
+      // ---------------------------------------------------------
       const newFiles = command.photos || [];
 
+      // Only enter photo logic if new files are actually provided
       if (newFiles.length > 0) {
+        const currentPhotos = apartment.getApartmentPhotoDocument();
+
+        // A. Validation
+        if (newFiles.length > 6) {
+          throw new Error(`Limit exceeded: Max 6 photos allowed.`);
+        }
+        if (newFiles.length < 1) {
+          throw new Error(`Constraint violation: Must have at least one photo.`);
+        }
+
+        // B. Prepare Old Photos for Deletion (But don't delete yet!)
+        oldPhotosUrlsToDelete = currentPhotos.map(p => p.getPhotoUrl());
+
+        // C. Upload New Photos to Cloudinary
+        const newPhotoEntities: ApartmentPhotoDocumentEntity[] = [];
+
         for (const file of newFiles) {
           const photoUrl = await this.fileService.upload(file);
-          const photoId = uuidv4();
-
-          const newPhotoEntity = new ApartmentPhotoDocumentEntity({
-            photoId: photoId,
-            photoUrl: photoUrl,
-          });
-
-          //  JUST PUSH (Add to the end)
-          updatedPhotoList.push(newPhotoEntity);
+          
+          newPhotoEntities.push(
+            new ApartmentPhotoDocumentEntity({
+              photoId: uuidv4(),
+              photoUrl: photoUrl,
+            })
+          );
         }
+
+        // D. Update Entity
+        // NOTE: Ensure your Apartment Entity has a method to replace the photo list
+        // e.g., public updatePhotos(photos: ApartmentPhotoDocumentEntity[])
+        apartment.updatePhotos(newPhotoEntities); 
       }
 
-      // Step D: Validate Total Count
-      if (updatedPhotoList.length > 6) {
-        throw new Error(
-          `Limit exceeded: You have ${currentPhotos.length} existing + ${newFiles.length} new = ${updatedPhotoList.length}. Max is 6.`
-        );
-      }
-
-      if (updatedPhotoList.length < 1) {
-        throw new Error(
-          "Limited exceeded: You must have at lease one photo !!"
-        );
-      }
-
+      // ---------------------------------------------------------
+      // 4. Persistence (Transaction)
+      // ---------------------------------------------------------
       await this.uow.startTransaction();
+      
       try {
         await this.uow.writeApartmentRepo.updateApartment(apartment);
         await this.uow.commitTransaction();
-
-        return {
-          apartmentId: apartment.getApartmentId(),
-          isVisible: apartment.getIsVisible(),
-          price: apartment.getApartmentPrice(),
-          title: apartment.getTitle(),
-          description: apartment.getDescription(),
-          address: apartment.getAddress(),
-          createAt: apartment.getCreateAt(),
-          updateAt: apartment.getUpdateAt(),
-          numberOfBed: apartment.getNumberOfBed(),
-          numberOfRoom: apartment.getNumberOfRoom(),
-
-          apartmentPhoto: apartment.getApartmentPhotoDocument(),
-          googleMapLocation: apartment.getGoogleMapLocation(),
-          landlordId: apartment.getLandlord(),
-          isJoin: apartment.getIsJoin(),
-          IsVerified: apartment.getIsVerified(),
-          landlordName: user.getName()?.valueOf(),
-        };
       } catch (errorDB: any) {
         await this.uow.rollbackTransaction();
-        console.error("Database Error during transaction");
+        console.error("Database Error during transaction", errorDB);
         throw errorDB;
       }
+
+      // ---------------------------------------------------------
+      // 5. Post-Commit Cleanup (Safe Side Effects)
+      // ---------------------------------------------------------
+      // Only now, after the DB is safely updated, do we delete the old images
+      if (oldPhotosUrlsToDelete.length > 0) {
+        // We use Promise.allSettled so one failure doesn't crash the response
+        Promise.allSettled(
+          oldPhotosUrlsToDelete.map(url => this.fileService.deleteImageFromCloudinary(url))
+        ).then(results => {
+             // Optional: Log failures if needed
+             console.log("Cleanup complete");
+        });
+      }
+
+      // ---------------------------------------------------------
+      // 6. Return Response
+      // ---------------------------------------------------------
+      return {
+        apartmentId: apartment.getApartmentId(),
+        isVisible: apartment.getIsVisible(),
+        price: apartment.getApartmentPrice(),
+        title: apartment.getTitle(),
+        description: apartment.getDescription(),
+        address: apartment.getAddress(),
+        createAt: apartment.getCreateAt(),
+        updateAt: apartment.getUpdateAt(),
+        numberOfBed: apartment.getNumberOfBed(),
+        numberOfRoom: apartment.getNumberOfRoom(),
+        apartmentPhoto: apartment.getApartmentPhotoDocument(),
+        googleMapLocation: apartment.getGoogleMapLocation(),
+        landlordId: apartment.getLandlord(),
+        isJoin: apartment.getIsJoin(),
+        IsVerified: apartment.getIsVerified(),
+        landlordName: user.getName()?.valueOf(),
+      };
+
     } catch (error: any) {
-      await this.uow.rollbackTransaction();
-      console.error("fail to update apartment details !!", error);
+      console.error("Fail to update apartment details !!", error);
+      // If we failed BEFORE DB commit, the transaction rollback handles data.
+      // Ideally, you might want to delete the *NEW* photos from Cloudinary here 
+      // if the process failed, to avoid orphaned files, but that is an optimization.
       throw error;
     } finally {
       await this.uow.releaseTransaction();
