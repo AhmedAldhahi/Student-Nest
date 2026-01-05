@@ -8,6 +8,7 @@ import { IFileStorageService } from "../../../../Interfaces/IFileStorage.interfa
 import { AddApartmentDocumentCommand } from "../../../Commands/Apartment/AddApartmentDocumentCommand";
 import { ICommandHandlers } from "../../../ICommandHandlers";
 import { v4 as uuidv4 } from "uuid";
+
 export class AddApartmentDocumentCommandHandler
   implements ICommandHandlers<AddApartmentDocumentCommand>
 {
@@ -21,18 +22,14 @@ export class AddApartmentDocumentCommandHandler
 
   public async handle(command: AddApartmentDocumentCommand): Promise<any> {
     try {
+      // 1. Validation
       const user = await this.readUserRepo.findById(command.userId);
-      if (!user) {
-        throw new Error("user not found ");
-      }
+      if (!user) throw new Error("user not found ");
 
       const landlord = await this.readLandlordRepo.findLandlordById(
         command.userId
       );
-
-      if (!landlord) {
-        throw new Error("landlord not found ");
-      }
+      if (!landlord) throw new Error("landlord not found ");
 
       user.ensureAccountIsActive();
 
@@ -41,30 +38,41 @@ export class AddApartmentDocumentCommandHandler
           command.apartmentId,
           command.userId
         );
+      if (!apartment) throw new Error("apartment not found ");
 
-      if (!apartment) {
-        throw new Error("apartment not found ");
+      const documentUrl = await this.fileService.upload(
+        command.apartmentDocument
+      );
+
+      // CRITICAL FIX: Check if upload failed (returned null/undefined)
+      if (!documentUrl) {
+        console.error(
+          " Upload failed: Service returned null. Check .env keys."
+        );
+        throw new Error("Failed to upload document: No URL returned.");
       }
 
-      const document = await this.fileService.upload(command.apartmentDocument);
-
+      // 3. Create Entity (Now in the correct scope)
       const apartmentDocumentId = uuidv4();
 
       const apartmentDocuments = new ApartmentDocumentEntity({
         apartmentDocumentId: apartmentDocumentId,
-        documentUrl: document,
+        documentUrl: documentUrl,
         apartmentType: ApartmentDocumentType.ApartmentVerifiedFile,
-        apartmentsId: apartment.getApartmentId(),
+        apartmentsId: apartment.getApartmentId(), // Ensure this matches your DB column
       });
 
       landlord.AddApartmentDocumentFile(apartment, apartmentDocuments);
 
+      // 5. Save to DB
       await this.uow.startTransaction();
       await this.uow.writeApartmentRepo.updateApartment(apartment);
       await this.uow.commitTransaction();
+
+      return { message: "Document added successfully", url: documentUrl };
     } catch (error: any) {
       await this.uow.rollbackTransaction();
-      console.error("fail to add apartment documents !!");
+      console.error("fail to add apartment documents !!", error);
       throw error;
     } finally {
       await this.uow.releaseTransaction();

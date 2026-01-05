@@ -1,3 +1,5 @@
+// src/Infrastructure/Database/orm/TypeOrm/entity/ApartmentDocument.entity.ts
+
 import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from "typeorm";
 import { ApartmentDocumentType } from "../../../../../Domain/Shared/Enum/ApartmentDocument.enum";
 import { ApartmentModel } from "./Apartment.entity";
@@ -14,12 +16,11 @@ export class ApartmentDocumentModel {
   documentUrl: string;
 
   @Column({ nullable: false })
-  apartmentsId: string;
+  apartmentId: string; 
 
   @OneToOne(() => ApartmentModel, (apartment) => apartment.documents, {
     onDelete: "CASCADE", 
   })
-  @JoinColumn({ name: "apartmentId" }) // Maps this to the 'apartmentId' column belo
+  @JoinColumn({ name: "apartmentId" }) 
   apartment: ApartmentModel;
-  
 }

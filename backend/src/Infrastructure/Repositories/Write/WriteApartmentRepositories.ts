@@ -15,11 +15,6 @@ export class WriteApartmentsRepositories implements IWriteApartmentRepo {
     id: string,
     userId: string
   ): Promise<void> {
-
-    console.log("--- DELETE DEBUG ---");
-    console.log(`Input Apartment ID: '${id}'`); // Single quotes reveal hidden spaces
-    console.log(`Input Landlord ID:  '${userId}'`);
-    console.log("--------------------");
     try {
       const result = await this.manager
         .createQueryBuilder()

@@ -80,6 +80,13 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
     this.updateAt = new Date();
   }
 
+  public AddApartmentDocument(apartmentDoc: ApartmentDocumentEntity): void {
+    if (!apartmentDoc) return;
+
+    this.apartmentDocument = apartmentDoc;
+    this.updateAt = new Date();
+  }
+
   /**
    * ==================================================================================
    *                              Getter Methods
@@ -189,13 +196,6 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
 
   public updateApartmentPhotos(photos: ApartmentPhotoDocumentEntity[]): void {
     this.apartmentPhotoDocument = photos;
-  }
-
-  public AddApartmentDocument(apartmentDoc: ApartmentDocumentEntity): void {
-    if (!apartmentDoc) return;
-
-    this.apartmentDocument = apartmentDoc;
-    this.updateAt = new Date();
   }
 
   public markAsVerified(): void {
