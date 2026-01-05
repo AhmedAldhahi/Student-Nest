@@ -104,7 +104,7 @@ export class EditApartmentDetailForLandlordCommandHandler
         // D. Update Entity
         // NOTE: Ensure your Apartment Entity has a method to replace the photo list
         // e.g., public updatePhotos(photos: ApartmentPhotoDocumentEntity[])
-        apartment.updatePhotos(newPhotoEntities); 
+        apartment.replacePhotos(newPhotoEntities); 
       }
 
       // ---------------------------------------------------------
