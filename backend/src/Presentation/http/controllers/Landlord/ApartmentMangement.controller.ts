@@ -122,42 +122,6 @@ export class ApartmentController {
     }
   };
 
-  // public updateApartmentDocuments = async (req: Request, res: Response) => {
-  //   try {
-  //     const userId = (req as any).user?.userId;
-  //     const { apartmentId } = req.params;
-  //     const file = req.file;
-  //     const { apartmentType } = req.body;
-
-  //     if (!userId) {
-  //       return res
-  //         .status(401)
-  //         .json({ error: "Unauthorized no user id found !!" });
-  //     }
-
-  //     if (!apartmentId) {
-  //       return res.status(400).json({ error: "Invalid route parameters" });
-  //     }
-
-  //     const result = await this.EditApartmentDocumentById.execute(
-  //       {
-  //         documentUrl: file,
-  //         apartmentType,
-  //       },
-  //       apartmentId,
-
-  //       userId
-  //     );
-
-  //     return res.status(200).json(result);
-  //   } catch (error: any) {
-  //     console.error("Update Apartment Document Error:", error);
-  //     return res
-  //       .status(500)
-  //       .json({ error: error.message || "Internal Server Error" });
-  //   }
-  // };
-
   public updateApartmentDocuments = async (req: Request, res: Response) => {
     try {
       const userId = req.user.userId;
@@ -215,26 +179,16 @@ export class ApartmentController {
       // 2. Extract Files (Ensure 'uploads.array' is used in Router)
       const files = req.files as Express.Multer.File[] | undefined;
 
-      // 3. Helper Functions for Parsing
-      const parseNumber = (val: any) => (val ? Number(val) : undefined);
-      const parseBoolean = (val: any) => {
-        if (val === "true") return true;
-        if (val === "false") return false;
-        return undefined;
-      };
-
       // 4. Handle deletedPhotoIds (Ensure it's an array of strings)
       let parsedDeletedIds: string[] = [];
       if (req.body.deletedPhotoIds) {
         if (Array.isArray(req.body.deletedPhotoIds)) {
           parsedDeletedIds = req.body.deletedPhotoIds;
         } else {
-          // Wrap single string ID in an array
           parsedDeletedIds = [req.body.deletedPhotoIds];
         }
       }
 
-      // 5. Construct the DTO (Only the data fields)
       const dto: EditApartmentDataRequest = {
         title: req.body.title,
         description: req.body.description,
@@ -252,9 +206,9 @@ export class ApartmentController {
       console.log(dto);
 
       const result = await this.EditApartmentDetailsById.execute(
-        dto, // Argument 1: The Data
-        id, // Argument 2: Apartment ID
-        userId // Argument 3: User ID
+        dto,
+        id,
+        userId
       );
 
       return res.status(200).json(result);

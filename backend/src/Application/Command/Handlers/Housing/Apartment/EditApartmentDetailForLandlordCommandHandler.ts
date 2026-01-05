@@ -90,6 +90,26 @@ export class EditApartmentDetailForLandlordCommandHandler
       try {
         await this.uow.writeApartmentRepo.updateApartment(apartment);
         await this.uow.commitTransaction();
+
+        return {
+          apartmentId: apartment.getApartmentId(),
+          isVisible: apartment.getIsVisible(),
+          price: apartment.getApartmentPrice(),
+          title: apartment.getTitle(),
+          description: apartment.getDescription(),
+          address: apartment.getAddress(),
+          createAt: apartment.getCreateAt(),
+          updateAt: apartment.getUpdateAt(),
+          numberOfBed: apartment.getNumberOfBed(),
+          numberOfRoom: apartment.getNumberOfRoom(),
+
+          apartmentPhoto: apartment.getApartmentPhotoDocument(),
+          googleMapLocation: apartment.getGoogleMapLocation(),
+          landlordId: apartment.getLandlord(),
+          isJoin: apartment.getIsJoin(),
+          IsVerified: apartment.getIsVerified(),
+          landlordName: user.getName()?.valueOf(),
+        };
       } catch (errorDB: any) {
         await this.uow.rollbackTransaction();
         console.error("Database Error during transaction");

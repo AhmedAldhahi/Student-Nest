@@ -7,13 +7,14 @@ export class EditApartmentDetailUseCase {
     private readonly commandHandler: EditApartmentDetailForLandlordCommandHandler
   ) {}
 
-  public async execute(dto: EditApartmentDataRequest, id: string,userId:string) {
+  public async execute(
+    dto: EditApartmentDataRequest,
+    id: string,
+    userId: string
+  ) {
     try {
-      const command = new EditApartmentDetailByIdCommand(dto,id,userId);
-      await this.commandHandler.handle(command);
-      return {
-        message: "apartment updated ",
-      };
+      const command = new EditApartmentDetailByIdCommand(dto, id, userId);
+      return await this.commandHandler.handle(command);
     } catch (error: any) {
       console.error("fail to update apartment data !!");
       throw error;

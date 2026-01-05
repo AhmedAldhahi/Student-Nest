@@ -50,7 +50,7 @@ export const ApartmentRouter = (
     "/:id",
     isAuth,
     isLandlord,
-    uploads.array("apartmentPhoto", 6),
+    apartmentUploads,
     validationMedia(UpdateApartmentSchema),
     apartmentController.UpdateApartmentDetailsById
   );

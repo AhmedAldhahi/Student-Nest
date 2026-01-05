@@ -16,6 +16,7 @@ export class GetApartmentDocumentByIdQueriesHandler
         command.apartmentDocumentId,
         command.userId
       );
+      
     } catch (error: any) {
       console.error("fail to get apartment document by id !!");
       throw error;
