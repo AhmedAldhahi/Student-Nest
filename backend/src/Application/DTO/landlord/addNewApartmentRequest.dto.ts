@@ -7,11 +7,12 @@ export interface ApartmentDataRequest {
   numberOfRoom: string;
   numberOfBed: string;
   isJoin: boolean;
+
   createAt: Date;
   updateAt: Date;
   landlord: string; // replace with id
 
-  apartmentDocument: Express.Multer.File[];
+  apartmentDocument: Express.Multer.File | null;
   apartmentPhoto: Express.Multer.File[];
   googleMapLocationLong: string;
   googleMapLocationLat: string;

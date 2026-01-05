@@ -19,7 +19,7 @@ export class CreateApartmentCommand implements ICommand {
   public apartmentPhoto: Express.Multer.File[];
   public googleMapLocationLong: string;
   public googleMapLocationLat: string;
-  public apartmentDocument: Express.Multer.File[];
+  public apartmentDocument: Express.Multer.File;
 
   public constructor(data: ApartmentDataRequest) {
     this.apartmentId = data.apartmentId;

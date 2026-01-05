@@ -40,11 +40,13 @@ export class UpdateApartmentDocumentFileCommandHandler
           command.apartmentId,
           command.userId
         );
+
       if (!apartment)
         throw new Error(
           "Apartment not found or does not belong to this landlord."
         );
 
+        console.log(apartment.getIsVerified());
       if (apartment.getIsVerified() === true) {
         throw new Error(
           "Unable to update documents: Apartment is already verified."

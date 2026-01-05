@@ -62,28 +62,39 @@ export class EditApartmentDetailForLandlordCommandHandler
         apartment.changeApartmentPricing(ApartmentPrice.create(command.price));
 
       const currentPhotos = apartment.getApartmentPhotoDocument();
-      let createdPhotos = command.photos || [];
 
-      const finalCount = currentPhotos.length + createdPhotos.length;
+      // Step B: Prepare a list that we will modify
+      const updatedPhotoList = [...currentPhotos];
 
-      if (finalCount > 6)
-        throw new Error("Limited exceed, you can not have more that 6 photo");
+      // Step C: Upload and APPEND new photos
+      const newFiles = command.photos || [];
 
-      if (finalCount < 1)
-        throw new Error("Limited Exceed , you can not have less than 1");
-
-      if (createdPhotos.length > 0) {
-        for (const file of createdPhotos) {
+      if (newFiles.length > 0) {
+        for (const file of newFiles) {
           const photoUrl = await this.fileService.upload(file);
           const photoId = uuidv4();
 
-          const newPhoto = new ApartmentPhotoDocumentEntity({
+          const newPhotoEntity = new ApartmentPhotoDocumentEntity({
             photoId: photoId,
             photoUrl: photoUrl,
           });
 
-          apartment.addPhoto(newPhoto);
+          //  JUST PUSH (Add to the end)
+          updatedPhotoList.push(newPhotoEntity);
         }
+      }
+
+      // Step D: Validate Total Count
+      if (updatedPhotoList.length > 6) {
+        throw new Error(
+          `Limit exceeded: You have ${currentPhotos.length} existing + ${newFiles.length} new = ${updatedPhotoList.length}. Max is 6.`
+        );
+      }
+
+      if (updatedPhotoList.length < 1) {
+        throw new Error(
+          "Limited exceeded: You must have at lease one photo !!"
+        );
       }
 
       await this.uow.startTransaction();

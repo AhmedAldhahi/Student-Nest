@@ -39,6 +39,7 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
     this.isJoin = data.isJoin;
     this.createAt = data.createAt;
     this.updateAt = data.updateAt;
+    this.isVerified = data.IsVerified;
 
     this.landlord = data.landlordId;
     this.apartmentDocument = data.apartmentDocument;
@@ -85,6 +86,20 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
 
     this.apartmentDocument = apartmentDoc;
     this.updateAt = new Date();
+  }
+
+  public updateApartmentDocument(apartmentDoc: ApartmentDocumentEntity): void {
+    if (this.getIsVerified() === true) {
+      throw new Error(
+        "cannot update apartment document for apartment that been verified "
+      );
+    }
+
+    if (!apartmentDoc) {
+      throw new Error("no apartment document been uploaded !!");
+    }
+
+    this.apartmentDocument = apartmentDoc;
   }
 
   /**

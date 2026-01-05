@@ -44,8 +44,6 @@ export class ApartmentController {
           .json({ error: "At least one apartment photo is required!" });
       }
 
-      // 4. PREPARE DTO (Parsing Strings -> Types)
-      // Multer sends body fields as strings, so we parse them.
       const dto: ApartmentDataRequest = {
         title: req.body.title,
         description: req.body.description,
@@ -55,8 +53,8 @@ export class ApartmentController {
         price: req.body.price,
         googleMapLocationLat: req.body.googleMapLocationLat,
         googleMapLocationLong: req.body.googleMapLocationLong,
-        apartmentDocument: [],
-        isJoin: req.body.isJoin === "true",
+        apartmentDocument: null,
+        isJoin: Boolean(req.body.isJoin),
         landlord: landlordId,
         apartmentPhoto: photos, // Pass the extracted array
         createAt: new Date(),
@@ -64,13 +62,8 @@ export class ApartmentController {
         apartmentId: 0,
       };
 
-      console.log("file : ", req.file);
-      console.log("body : ", req.body);
-
-      // 5. EXECUTE USE CASE
       const result = await this.createApartmentUseCase.execute(dto);
 
-      // 6. AUDIT LOG
       req.audit = {
         actionType: AuditLogActionType.POST,
         description: "Landlord listed a new apartment",
@@ -158,7 +151,6 @@ export class ApartmentController {
       if (error?.stack) {
       }
 
-      // Return the actual error message to the client (if available) for debugging
       return res.status(500).json({
         error: error?.message || "Internal Server Error",
         details: error, // Sending the object might help you see it in Postman too
@@ -193,17 +185,12 @@ export class ApartmentController {
         title: req.body.title,
         description: req.body.description,
         address: req.body.address,
-
-        // Parse numbers & booleans
         price: req.body.price,
         numberOfBed: req.body.numberOfBed,
         numberOfRoom: req.body.numberOfRoom,
-        isJoin: req.body.isJoin === "true",
-
+        isJoin: Boolean(req.body.isJoin),
         photos: files || [],
       };
-
-      console.log(dto);
 
       const result = await this.EditApartmentDetailsById.execute(
         dto,

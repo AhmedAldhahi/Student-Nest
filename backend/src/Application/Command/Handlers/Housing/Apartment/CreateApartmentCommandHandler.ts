@@ -11,6 +11,7 @@ import { IReadLandlordRepositories } from "../../../../../Domain/Modules/Housing
 import { GoogleMapLocationEntity } from "../../../../../Domain/Modules/Housing/Entities/googleMapLocationEntity.entity";
 import { ApartmentPhotoDocumentEntity } from "../../../../../Domain/Modules/Housing/Entities/phohtoDocumentEntity.entity";
 import { v4 as uuidv4 } from "uuid";
+
 export class CreateApartmentCommandHandler
   implements ICommandHandlers<CreateApartmentCommand>
 {
@@ -24,17 +25,16 @@ export class CreateApartmentCommandHandler
   public async handle(command: CreateApartmentCommand) {
     try {
       const user = await this.readUserRepo.findById(command.landlord);
-
       if (!user) throw new Error("no user been found !!");
 
       const landlord = await this.readLandlordRepo.findLandlordById(
         command.landlord
       );
-
       if (!landlord) throw new Error("no user been found !!");
 
       user.ensureAccountIsActive();
 
+      // 1. Upload Photos
       const photoEntities: ApartmentPhotoDocumentEntity[] = [];
       const apartmentId = uuidv4();
 
@@ -42,14 +42,13 @@ export class CreateApartmentCommandHandler
         for (const file of command.apartmentPhoto) {
           const photoUrl = await this.fileService.upload(file);
           const photoId = uuidv4();
-          // Create the Child Entity
           photoEntities.push(
             new ApartmentPhotoDocumentEntity({ photoId, photoUrl })
           );
         }
       }
 
-      // 3. Create Value Objects
+      // 2. Create Location Value Object
       const locationId = uuidv4();
       const location = new GoogleMapLocationEntity({
         placeId: locationId,
@@ -57,13 +56,17 @@ export class CreateApartmentCommandHandler
         latitude: command.googleMapLocationLat,
       });
 
+      // 3. Create Apartment Aggregate
       const apartment = new ApartmentAggregateRoot({
         apartmentId: apartmentId,
         isVisible: false,
         title: command.title,
         description: command.description,
         address: command.address,
-        IsVerified: false,
+        
+        // ✅ FIX: Use 'isVerified' (lowercase 'i')
+        IsVerified: false, 
+        
         isJoin: command.isJoin,
         numberOfBed: NumberOfBed.create(command.numberOfBed),
         numberOfRoom: NumberOfRoom.create(command.numberOfRoom),
@@ -78,6 +81,7 @@ export class CreateApartmentCommandHandler
 
       landlord.addNewApartment(apartment);
 
+      // 4. Save to Database
       await this.uow.startTransaction();
       await this.uow.writeApartmentRepo.InsertApartment(apartment);
       await this.uow.commitTransaction();
@@ -93,17 +97,21 @@ export class CreateApartmentCommandHandler
         updateAt: command.updateAt,
         numberOfBed: NumberOfBed.create(command.numberOfBed).getValue(),
         numberOfRoom: NumberOfRoom.create(command.numberOfRoom).getValue(),
-
         apartmentPhoto: photoEntities,
         googleMapLocation: location,
         landlordId: landlord.getUserId(),
         isJoin: command.isJoin,
-        IsVerified: false,
+        
+        // ✅ Optional: Fix response key too if needed
+        isVerified: false, 
+        
         landlordName: user.getName()?.valueOf(),
       };
     } catch (error: any) {
+      // ✅ FIX: Log the ACTUAL error so we can debug
+      console.error("🔥 CRASH: Fail to create apartment:", error);
+      
       await this.uow.rollbackTransaction();
-      console.error("fail to create apartments !!");
       throw error;
     } finally {
       await this.uow.releaseTransaction();

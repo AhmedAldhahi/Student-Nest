@@ -1,5 +1,4 @@
 import { IReadApartmentRepo } from "../../../../../Domain/Modules/Housing/Repositories/Read/ReadApartmentRepo.repositoreis";
-import { ApartmentDocumentType } from "../../../../../Domain/Shared/Enum/ApartmentDocument.enum";
 import { IUnitOfWork } from "../../../../../Domain/Shared/Repositories/UnitOfWorkRepositories.repositories";
 import { EditApartmentVerificationStatus } from "../../../Commands/Apartment/udateApartmentVerfiedSTatus.command";
 import { ICommandHandlers } from "../../../ICommandHandlers";

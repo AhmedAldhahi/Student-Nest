@@ -69,6 +69,20 @@ export class LandlordAggregateRoot extends AggregateRoot<string> {
     apartment.AddApartmentDocument(apartmentDoc);
   }
 
+  public UpdateApartmentDocumentFile(
+    apartment: ApartmentAggregateRoot,
+    apartmentDoc: ApartmentDocumentEntity
+  ) {
+    // make need validation
+    if (!apartmentDoc) {
+      console.log("no document to add ");
+      return;
+    }
+    this.ensureIsLandlordVerified();
+
+    apartment.updateApartmentDocument(apartmentDoc);
+  }
+
   /**
    * ==================================================================================
    *                              Update Methods sections
