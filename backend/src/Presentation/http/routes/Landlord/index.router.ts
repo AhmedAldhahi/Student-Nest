@@ -12,7 +12,6 @@ export const LandlordIndexRouter = (
 ): Router => {
   const router = Router();
 
-  // admin section
 
   router.use(
     "/apartments",

@@ -6,11 +6,18 @@ import { LeaseManagement } from "../../controllers/Landlord/LeaseMangement.contr
 export const LeaseRouter = (LeastController: LeaseManagement): Router => {
   const router = Router();
 
-  router.post(
-    "/",
+  router.get(
+    "/:apartmentId",
     isAuth,
     isLandlord,
     LeastController.getAllLeaseForSingleApartment
+  );
+
+  router.get(
+    "/:apartmentId/search",
+    isAuth,
+    isLandlord,
+    LeastController.SearchAllLeasesForSingleApartment
   );
 
   return router;
