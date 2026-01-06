@@ -37,6 +37,5 @@ export interface IApartmentSimpleDTO {
   landlordId: string;
   landlordName: string;
   apartmentPhoto: ApartmentPhotoDocumentEntity[];
-  googleMapLocation: GoogleMapLocationEntity;
   apartmentDocuments: ApartmentDocumentEntity | null;
 }

@@ -84,7 +84,8 @@ export const buildControllers = () => {
     useCases.createApartmentsUseCase,
     useCases.addApartmentDocumentUseCase,
     useCases.editApartmentDocumentUseCase,
-    useCases.editApartmentUseCase
+    useCases.editApartmentUseCase,
+    useCases.getApartmentBeenBookedUseCase
   );
 
   const LandlordLeaseController = new LeaseManagement(

@@ -1,4 +1,4 @@
-import { FindOptionsWhere, Like } from "typeorm";
+import { FindOptionsWhere, In, Like } from "typeorm";
 
 import { IReadApartmentRepo } from "../../../Domain/Modules/Housing/Repositories/Read/ReadApartmentRepo.repositoreis";
 import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
@@ -10,7 +10,52 @@ import {
   IApartmentDTO,
 } from "../../../Application/DTO/admin/ApartmentDTo.dto";
 
+
 export class ReadApartmentRepositories implements IReadApartmentRepo {
+
+  public async findAllApartmentBasedArray(
+    ids: string[],
+    userId: string
+  ): Promise<IApartmentSimpleDTO[] | null> {
+    try {
+      if (!ids || ids.length === 0) {
+        return [];
+      }
+      const apartmentModels = await AppDataSource.getInstance()
+        .getRepository(ApartmentModel)
+        .find({
+          where: {
+            apartmentId: In(ids),
+            landlord: { userId: userId },
+            
+          },
+          relations: {
+            photos: true,
+            landlord: { user: true },
+            location: true,
+          },
+        });
+
+      if (!apartmentModels || apartmentModels.length === 0) {
+        return [];
+      }
+
+      return apartmentModels.map((model) =>
+        ApartmentMapper.toResponsesSimple(model)
+      );
+    } catch (error) {
+      console.error("Failed to find apartments by ID array:", error);
+      throw error;
+    }
+  }
+
+  public async SearchForApartmentBasedArray(
+    ids: string[],
+    queries: string
+  ): Promise<ApartmentAggregateRoot[] | null> {
+    throw new Error("Method not implemented.");
+  }
+
   public async findApartmentByIdForLandlord(
     id: string,
     userId: string
@@ -189,11 +234,11 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
     id: string,
     userId: string
   ): Promise<IApartmentDTO | null> {
-     try {
+    try {
       const apartment = await AppDataSource.getInstance()
         .getRepository(ApartmentModel)
         .findOne({
-          where: { apartmentId: id ,landlordId:userId},
+          where: { apartmentId: id, landlordId: userId },
           relations: {
             landlord: { user: true },
             documents: true,

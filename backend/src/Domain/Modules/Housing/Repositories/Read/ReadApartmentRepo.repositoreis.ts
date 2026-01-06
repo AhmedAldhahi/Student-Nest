@@ -36,4 +36,15 @@ export interface IReadApartmentRepo {
     id: string,
     userId: string
   ): Promise<IApartmentDTO | null>;
+
+  findAllApartmentBasedArray(
+    ids: string[],
+    userId:string
+  ): Promise<IApartmentSimpleDTO[] | null>;
+
+  SearchForApartmentBasedArray(
+    ids: string[],
+    queries: string,
+    userId:string
+  ): Promise<ApartmentAggregateRoot[] | null>;
 }

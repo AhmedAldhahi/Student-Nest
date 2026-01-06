@@ -26,7 +26,7 @@ export const ApartmentRouter = (
     isAuth,
     isLandlord,
     apartmentUploads,
-   // validationMedia(createApartmentSchema),
+    // validationMedia(createApartmentSchema),
     apartmentController.createApartment
   );
 
@@ -53,6 +53,13 @@ export const ApartmentRouter = (
     apartmentUploads,
     validationMedia(UpdateApartmentSchema),
     apartmentController.UpdateApartmentDetailsById
+  );
+
+  router.get(
+    "/booked",
+    isAuth,
+    isLandlord,
+    apartmentController.GetBookedApartment
   );
 
   return router;

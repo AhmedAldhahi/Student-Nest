@@ -13,4 +13,5 @@ export interface ILeaseEntityDTO {
   landlordName: string;
   studentName: string;
   apartmentTitle: string;
+  apartmentId:string;
 }

@@ -45,6 +45,7 @@ export class LeaseMapper {
       studentName: model.student.user.Name,
       landlordName: model.landlord.user.Name,
       apartmentTitle: model.apartment.title,
+      apartmentId: model.apartment.apartmentId,
     };
   }
 

@@ -26,6 +26,7 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
             leaseTerm: true,
             includeUtilities: true,
             createAt: true,
+            apartmentId: true,
             landlord: {
               userId: true,
               user: {
@@ -104,6 +105,7 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
             leaseTerm: true,
             includeUtilities: true,
             createAt: true,
+            apartmentId: true,
             landlord: {
               userId: true,
               user: { Name: true },
@@ -160,6 +162,7 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
             leaseTerm: true,
             includeUtilities: true,
             createAt: true,
+            apartmentId: true,
             landlord: {
               userId: true,
               user: { Name: true },
@@ -230,6 +233,7 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
             leaseTerm: true,
             includeUtilities: true,
             createAt: true,
+            apartmentId: true,
             landlord: {
               userId: true,
               user: { Name: true },
@@ -287,6 +291,7 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
             leaseTerm: true,
             includeUtilities: true,
             createAt: true,
+            apartmentId: true,
             landlord: {
               userId: true,
               user: {
@@ -343,6 +348,7 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
             leaseTerm: true,
             includeUtilities: true,
             createAt: true,
+            apartmentId: true,
             landlord: {
               userId: true,
               user: {

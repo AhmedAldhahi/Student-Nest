@@ -50,8 +50,15 @@ import {
   findAllAuditLogUseCase,
   FindAuditLogByQueriesUseCase,
 } from "./admin/AuditLogManagement";
-import { addApartmentDocumentUseCase, createApartmentUseCase } from "./Landlord/ApartmentMangement";
-import { GetForAllLeaseForSingleApartmentUC, SearchForAllLeaseForSingleApartmentUC } from "./Landlord/LeaseMangement";
+import {
+  addApartmentDocumentUseCase,
+  createApartmentUseCase,
+  GetAllBookedApartment,
+} from "./Landlord/ApartmentMangement";
+import {
+  GetForAllLeaseForSingleApartmentUC,
+  SearchForAllLeaseForSingleApartmentUC,
+} from "./Landlord/LeaseMangement";
 
 export function buildDependencies() {
   return {
@@ -102,8 +109,11 @@ export function buildDependencies() {
       createApartmentsUseCase: createApartmentUseCase(),
       addApartmentDocumentUseCase: addApartmentDocumentUseCase(),
 
-      getAllLeaseForSingleApartmentUseCAse: GetForAllLeaseForSingleApartmentUC(),
+      getAllLeaseForSingleApartmentUseCAse:
+        GetForAllLeaseForSingleApartmentUC(),
       SearchForSingleApartmentUseCase: SearchForAllLeaseForSingleApartmentUC(),
+
+      getApartmentBeenBookedUseCase: GetAllBookedApartment(),
     },
   };
 }

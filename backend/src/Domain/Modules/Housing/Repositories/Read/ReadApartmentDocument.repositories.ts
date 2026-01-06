@@ -11,4 +11,7 @@ export interface IReadApartmentDocumentRepo {
   ): Promise<ApartmentDocumentEntity | null>;
 
   findAllApartmentDocument(): Promise<ApartmentDocumentEntity[] | null>;
+
+
 }
+

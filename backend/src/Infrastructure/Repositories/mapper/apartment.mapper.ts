@@ -25,10 +25,10 @@ export class ApartmentMapper {
     apartmentModel.isJoin = apartment.getIsJoin();
     apartmentModel.createAt = apartment.getCreateAt();
     apartmentModel.updateAt = apartment.getUpdateAt();
-    
+
     // Relationship: Landlord
     apartmentModel.landlordId = apartment.getLandlord();
-    
+
     // Value Objects extraction
     apartmentModel.price = validateData.price;
     apartmentModel.numberOfBed = validateData.numberOfBed;
@@ -48,7 +48,6 @@ export class ApartmentMapper {
     const apartmentDoc = apartment.getApartmentDocument();
 
     if (apartmentDoc) {
-      // ✅ FIX: Assign the mapped document to the model
       apartmentModel.documents = ApartmentDocumentMapper.toModel(apartmentDoc);
     } else {
       apartmentModel.documents = null;
@@ -115,10 +114,9 @@ export class ApartmentMapper {
       numberOfBed: model.numberOfBed,
       numberOfRoom: model.numberOfRoom,
       price: model.price,
-      // Optional chaining used to prevent crashes if relations are missing
       landlordName: model.landlord?.user?.Name,
       landlordId: model.landlordId,
-      
+
       apartmentPhoto: model.photos
         ? model.photos.map((file) => apartmentPhotoMapper.toEntity(file))
         : [],
@@ -127,7 +125,7 @@ export class ApartmentMapper {
         ? ApartmentDocumentMapper.toEntity(model.documents)
         : null,
 
-      googleMapLocation: GoogleMapMapper.toEntity(model.location),
+     
     };
   }
 
@@ -148,7 +146,7 @@ export class ApartmentMapper {
       googleMapLocation: GoogleMapMapper.toEntity(model.location),
       // Optional chaining
       landlordName: model.landlord?.user?.Name,
-      
+
       apartmentDocument: model.documents
         ? ApartmentDocumentMapper.toEntity(model.documents)
         : null,

@@ -6,13 +6,15 @@ import { AddApartmentDocumentUseCase } from "../../../../Application/Use-Case/La
 import { UpdateApartmentDocumentUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/updateApartmentDocument.usecase";
 import { EditApartmentDetailUseCase } from "../../../../Application/Use-Case/admin/ApartmentMangament/EditApartmentDetail.usecase";
 import { EditApartmentDataRequest } from "../../../../Application/DTO/admin/EditApartmentData.dto";
+import { GetBookedApartmentUseCase } from "../../../../Application/Use-Case/Landlord/ApartmentMangement/getBookedApartment.usecase";
 
 export class ApartmentController {
   constructor(
     private readonly createApartmentUseCase: CreateApartmentUseCase,
     private readonly AddApartmentDocumentUC: AddApartmentDocumentUseCase,
     private readonly EditApartmentDocumentById: UpdateApartmentDocumentUseCase,
-    private readonly EditApartmentDetailsById: EditApartmentDetailUseCase
+    private readonly EditApartmentDetailsById: EditApartmentDetailUseCase,
+    private readonly GetApartmentBeenBookedUC: GetBookedApartmentUseCase
   ) {}
 
   public createApartment = async (
@@ -204,6 +206,22 @@ export class ApartmentController {
       return res
         .status(400)
         .json({ error: error.message || "Internal Server Error" });
+    }
+  };
+
+  public GetBookedApartment = async (req: Request, res: Response) => {
+    try {
+      const userId = req.user.userId;
+
+      if (!userId)
+        return res.status(400).json({ error: "no user id been found !!" });
+
+      const result = await this.GetApartmentBeenBookedUC.execute(userId);
+      return res.status(200).json(result);
+    } catch (error: any) {
+      return res
+        .status(400)
+        .json({ error: error.message || "internal server error" });
     }
   };
 }

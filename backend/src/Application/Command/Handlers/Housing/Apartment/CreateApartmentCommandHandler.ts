@@ -64,7 +64,6 @@ export class CreateApartmentCommandHandler
         description: command.description,
         address: command.address,
         
-        // ✅ FIX: Use 'isVerified' (lowercase 'i')
         IsVerified: false, 
         
         isJoin: command.isJoin,
@@ -102,13 +101,11 @@ export class CreateApartmentCommandHandler
         landlordId: landlord.getUserId(),
         isJoin: command.isJoin,
         
-        // ✅ Optional: Fix response key too if needed
         isVerified: false, 
         
         landlordName: user.getName()?.valueOf(),
       };
     } catch (error: any) {
-      // ✅ FIX: Log the ACTUAL error so we can debug
       console.error("🔥 CRASH: Fail to create apartment:", error);
       
       await this.uow.rollbackTransaction();

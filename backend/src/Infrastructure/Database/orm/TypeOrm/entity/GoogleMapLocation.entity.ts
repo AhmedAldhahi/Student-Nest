@@ -15,6 +15,6 @@ export class GoogleMapLocationModel {
   @OneToOne(() => ApartmentModel, (apartment) => apartment.location, {
     onDelete: "CASCADE", // If Apartment is deleted, delete this location
   })
-  @JoinColumn({ name: "apartmentId" }) // Creates 'apartmentId' column in this table
+  @JoinColumn({ name: "apartmentId", referencedColumnName: "apartmentId" }) // Creates 'apartmentId' column in this table
   apartment: ApartmentModel;
 }

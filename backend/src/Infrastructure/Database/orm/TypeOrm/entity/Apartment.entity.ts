@@ -65,7 +65,6 @@ export class ApartmentModel {
     cascade: true,
     nullable: true,
   })
-
   documents: ApartmentDocumentModel | null;
 
   @OneToMany(() => ApartmentPhotoModel, (doc) => doc.apartment, {
@@ -74,7 +73,8 @@ export class ApartmentModel {
   photos: ApartmentPhotoModel[];
 
   @OneToOne(() => GoogleMapLocationModel, (loc) => loc.apartment, {
-    cascade: true, // Allows saving Apartment + Location in one go
+    cascade: true,
+    nullable: true,
   })
   location: GoogleMapLocationModel;
 
