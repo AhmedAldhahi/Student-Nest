@@ -18,5 +18,19 @@ export const LeastRequestRouter = (
     leastRequestController.UpdateLeastRequestStatus
   );
 
+  router.get(
+    "/:apartmentId",
+    isAuth,
+    isLandlord,
+    leastRequestController.getAllLeasesRequestForSingleApartment
+  );
+
+  router.get(
+    "/:apartmentId/search",
+    isAuth,
+    isLandlord,
+    leastRequestController.searchForLeasesRequestForSingleApartment
+  );
+
   return router;
 };

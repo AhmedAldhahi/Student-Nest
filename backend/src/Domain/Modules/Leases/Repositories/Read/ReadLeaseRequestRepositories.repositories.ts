@@ -18,4 +18,15 @@ export interface IReadLeaseRequestRepositories {
     userId: string,
     id: string
   ): Promise<LeaseRequestEntity | null>;
+
+  findAllLeaseRequestForLandlordForSingleApartment(
+    userId: string,
+    apartmentId:string,
+  ): Promise<ILeaseRequestDTO[] | null>;
+
+  SearchForLeaseRequestForLandlordForSingleApartment(
+    userId: string,
+    apartmentId:string,
+    queries: string
+  ): Promise<ILeaseRequestDTO[] | null>;
 }

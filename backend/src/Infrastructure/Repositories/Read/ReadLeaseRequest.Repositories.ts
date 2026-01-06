@@ -9,6 +9,145 @@ import { LeaseRequestEntity } from "../../../Domain/Modules/Leases/Entities/leas
 export class ReadLeaseRequestRepositories
   implements IReadLeaseRequestRepositories
 {
+  public async findAllLeaseRequestForLandlordForSingleApartment(
+    userId: string,
+    apartmentId: string
+  ): Promise<ILeaseRequestDTO[] | null> {
+    try {
+      const leaseRequests = await AppDataSource.getInstance()
+        .getRepository(LeaseRequestModel)
+        .find({
+          // Filter by BOTH Landlord AND Apartment
+          where: {
+            landlord: { userId: userId },
+            apartment: { apartmentId: apartmentId },
+          },
+          select: {
+            leaseRequestId: true,
+            requestMessage: true,
+            startDate: true,
+            rentTerm: true,
+            requestStatus: true,
+            createAt: true,
+            landlord: {
+              userId: true,
+              user: { Name: true },
+            },
+            student: {
+              userId: true,
+              Major: true,
+              user: {
+                Name: true,
+                userId: true,
+              },
+            },
+            apartment: {
+              title: true,
+              price: true,
+              apartmentId: true,
+            },
+          },
+          relations: {
+            student: { user: true },
+            landlord: { user: true },
+            apartment: true,
+          },
+          order: {
+            createAt: "DESC",
+          },
+        });
+
+      if (!leaseRequests || leaseRequests.length === 0) return [];
+
+      return leaseRequests.map((orm) => LeaseRequestMapper.toResponse(orm));
+    } catch (error: any) {
+      console.error(
+        "Error fetching lease requests for single apartment:",
+        error
+      );
+      throw error;
+    }
+  }
+
+  public async SearchForLeaseRequestForLandlordForSingleApartment(
+    userId: string,
+    apartmentId: string,
+    queries: string
+  ): Promise<ILeaseRequestDTO[] | null> {
+    try {
+      const queryCleaned = queries.trim();
+      const searchPattern = Like(`%${queryCleaned}%`);
+
+      const whereCondition: FindOptionsWhere<LeaseRequestModel>[] = [
+        {
+          leaseRequestId: searchPattern,
+          landlord: { userId: userId },
+          apartment: { apartmentId: apartmentId },
+        },
+        {
+          student: { user: { Name: searchPattern } },
+          landlord: { userId: userId },
+          apartment: { apartmentId: apartmentId },
+        },
+        {
+          requestMessage: searchPattern,
+          landlord: { userId: userId },
+          apartment: { apartmentId: apartmentId },
+        },
+      ];
+
+      const leaseRequests = await AppDataSource.getInstance()
+        .getRepository(LeaseRequestModel)
+        .find({
+          where: whereCondition,
+          select: {
+            leaseRequestId: true,
+            requestMessage: true,
+            startDate: true,
+            rentTerm: true,
+            requestStatus: true,
+            createAt: true,
+            landlord: {
+              userId: true,
+              user: { Name: true },
+            },
+            student: {
+              userId: true,
+              Major: true,
+              user: {
+                Name: true,
+                userId: true,
+                Photo: true,
+              },
+            },
+            apartment: {
+              title: true,
+              price: true,
+              apartmentId: true,
+            },
+          },
+          relations: {
+            student: { user: true },
+            landlord: { user: true },
+            apartment: true,
+          },
+          order: {
+            createAt: "DESC",
+          },
+        });
+
+      if (!leaseRequests || leaseRequests.length === 0) return [];
+
+      return leaseRequests.map((orm) => LeaseRequestMapper.toResponse(orm));
+    } catch (error: any) {
+      console.error(
+        "Error searching lease requests for single apartment:",
+        error
+      );
+      throw error;
+    }
+  }
+
   public async findLeaseRequestByIdForLandlord(
     userId: string,
     id: string

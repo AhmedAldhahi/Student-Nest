@@ -59,7 +59,11 @@ import {
   GetForAllLeaseForSingleApartmentUC,
   SearchForAllLeaseForSingleApartmentUC,
 } from "./Landlord/LeaseMangement";
-import { updateLeastRequestUC } from "./Landlord/LeastRequestMangement";
+import {
+  getAllLeasesRequestForLandlordForSingleApartmentUC,
+  SearchForLeasesRequestForLandlordForSingleApartmentUC,
+  updateLeastRequestUC,
+} from "./Landlord/LeastRequestMangement";
 
 export function buildDependencies() {
   return {
@@ -116,6 +120,10 @@ export function buildDependencies() {
 
       getApartmentBeenBookedUseCase: GetAllBookedApartment(),
       updateLeastRequestUseCase: updateLeastRequestUC(),
+      GetAllLeasesRequestForSingleApartmentUC:
+        getAllLeasesRequestForLandlordForSingleApartmentUC(),
+      SearchForAllLeaseRequestForSingleApartmentUC:
+        SearchForLeasesRequestForLandlordForSingleApartmentUC(),
     },
   };
 }

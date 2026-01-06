@@ -96,7 +96,9 @@ export const buildControllers = () => {
   );
 
   const LandlordLeaseRequestController = new LeastRequestController(
-    useCases.updateLeastRequestUseCase
+    useCases.updateLeastRequestUseCase,
+    useCases.GetAllLeasesRequestForSingleApartmentUC,
+    useCases.SearchForAllLeaseRequestForSingleApartmentUC
   );
 
   return {
