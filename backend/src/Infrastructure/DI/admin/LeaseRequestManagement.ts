@@ -1,6 +1,7 @@
 import { GetAllLeasesRequestQueriesHandler } from "../../../Application/Queries/Handlers/Leases/LeaseRequest/GetAllLeaseRequesForLandlordQueriesHandler";
 import { GetAllLeaseRequestQueriesHandler } from "../../../Application/Queries/Handlers/Leases/LeaseRequest/GetAllLeaseRequestQueriesHandler";
 import { GetLeaseRequestByQueryQueriesHandler } from "../../../Application/Queries/Handlers/Leases/LeaseRequest/GetLeaseRequestByQueryQueriesHandler";
+import { SearchForLeaseRequestForLandlordQueriesHandler } from "../../../Application/Queries/Handlers/Leases/LeaseRequest/SearchForLeaseRequestForLandlord";
 import { AdminLeaseRequestStrategy } from "../../../Application/Strategy/leaseRequest/AdminLeaseRequest.strategy";
 import { LandlordLeaseRequestStrategy } from "../../../Application/Strategy/leaseRequest/LandlordLeaseRequest.strategy";
 import { LeaseRequestContext } from "../../../Application/Strategy/leaseRequest/LeaseRequestContext";
@@ -27,13 +28,20 @@ export function GetAllLeaseRequest(): GetAllLeaseRequestUseCase {
     readLeaseRequestRepo
   );
 
+  const searchForLeaseRequestQH =
+    new SearchForLeaseRequestForLandlordQueriesHandler(
+      readUserRepo,
+      readLeaseRequestRepo
+    );
+
   const adminStrategy = new AdminLeaseRequestStrategy(
     queriesHandler,
     FindSearchQH
   );
 
   const landlordStrategy = new LandlordLeaseRequestStrategy(
-    GetAllLeaseRequestForLandlordQH
+    GetAllLeaseRequestForLandlordQH,
+    searchForLeaseRequestQH
   );
   const studentStrategy = new StudentLeaseRequestStrategy();
 
@@ -64,6 +72,12 @@ export function GetLeaseRequestByQuery(): GetLeaseRequestByQueryUseCase {
     readLeaseRequest
   );
 
+  const searchForLeaseRequestQH =
+    new SearchForLeaseRequestForLandlordQueriesHandler(
+      readUserRepo,
+      readLeaseRequest
+    );
+
   // strategy
 
   const adminStrategy = new AdminLeaseRequestStrategy(
@@ -72,7 +86,8 @@ export function GetLeaseRequestByQuery(): GetLeaseRequestByQueryUseCase {
   );
 
   const landlordStrategy = new LandlordLeaseRequestStrategy(
-    GetAllLeaseRequestForLandlordQH
+    GetAllLeaseRequestForLandlordQH,
+    searchForLeaseRequestQH
   );
 
   const StudentLeaseRequest = new StudentLeaseRequestStrategy();

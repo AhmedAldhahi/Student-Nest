@@ -2,7 +2,9 @@ import { IQueries } from "../../IQueries";
 
 export class GetLeaseRequestByQuery implements IQueries {
   public Query: string;
-  constructor(Query: string) {
+  public userId: string;
+  constructor(Query: string, userId: string) {
     this.Query = Query;
+    this.userId = userId;
   }
 }

@@ -10,9 +10,8 @@ export class ReadLeaseRequestRepositories
 {
   public async findAllLeaseRequestForLandlord(
     userId: string
-  ): Promise<ILeaseRequestDTO[] | null> { 
-
-    console.log("user id : ",userId);
+  ): Promise<ILeaseRequestDTO[] | null> {
+    console.log("user id : ", userId);
 
     const leaseRequest = await AppDataSource.getInstance()
       .getRepository(LeaseRequestModel)
@@ -69,7 +68,81 @@ export class ReadLeaseRequestRepositories
     userId: string,
     queries: string
   ): Promise<ILeaseRequestDTO[] | null> {
-    throw new Error("Method not implemented.");
+    try {
+      const queryCleaned = queries.trim();
+      const searchPattern = Like(`%${queryCleaned}%`);
+
+      // In TypeORM, an Array [] means OR.
+      // To do (LandlordID = X) AND (Condition Y), we must put LandlordID in every object.
+      const whereCondition: FindOptionsWhere<LeaseRequestModel>[] = [
+        // 1. Match Request ID AND specific Landlord
+        {
+          leaseRequestId: searchPattern,
+          landlord: { userId: userId },
+        },
+        // 2. Match Student Name AND specific Landlord
+        {
+          student: { user: { Name: searchPattern } },
+          landlord: { userId: userId },
+        },
+        // 3. Match Apartment Title AND specific Landlord
+        {
+          apartment: { title: searchPattern },
+          landlord: { userId: userId },
+        },
+      ];
+
+      const leaseRequests = await AppDataSource.getInstance()
+        .getRepository(LeaseRequestModel)
+        .find({
+          where: whereCondition, // <--- Fixed: Passed array directly, removed extra {}
+          select: {
+            leaseRequestId: true,
+            requestMessage: true,
+            startDate: true,
+            rentTerm: true,
+            requestStatus: true,
+            createAt: true,
+            landlord: {
+              userId: true,
+              user: {
+                Name: true,
+              },
+            },
+            student: {
+              userId: true,
+              Major: true, // Ensure this exists in your StudentModel
+              user: {
+                Name: true,
+                userId: true,
+                Photo: true, // Often helpful for UI
+              },
+            },
+            apartment: {
+              title: true,
+              price: true,
+              apartmentId: true,
+            },
+          },
+          relations: {
+            student: { user: true },
+            landlord: { user: true }, // Required for the 'where' clause check
+            apartment: true,
+          },
+          order: {
+            createAt: "DESC", // Good practice to show newest results first
+          },
+        });
+
+      if (leaseRequests.length === 0) return [];
+
+      return leaseRequests.map((orm) => {
+        return LeaseRequestMapper.toResponse(orm);
+      });
+    } catch (error: any) {
+      console.error("fail to get lease request by query", error);
+      throw error;
+    }
   }
 
   public async findAllLeaseRequest(): Promise<ILeaseRequestDTO[] | null> {
