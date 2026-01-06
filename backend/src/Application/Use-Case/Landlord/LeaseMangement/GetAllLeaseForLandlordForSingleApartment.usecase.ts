@@ -8,7 +8,7 @@ export class GetAllLeaseForLandlordForSingleApartmentUseCase {
 
   public async execute(userId: string, apartmentId: string) {
     try {
-      const queries = new GetAllLeaseForApartmentQueries(userId, apartmentId);
+      const queries = new GetAllLeaseForApartmentQueries(userId,apartmentId);
       return await this.queriesHandler.handle(queries);
     } catch (error: any) {
       console.error("fail to get leases for single apartments !!");

@@ -6,6 +6,6 @@ export class GetAllLeaseForApartmentQueries implements IQueries {
 
   constructor(userId: string, apartmentId: string) {
     this.userId = userId;
-    this, (apartmentId = apartmentId);
+    this.apartmentId = apartmentId;
   }
 }

@@ -137,6 +137,119 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
     }
   }
 
+  // public async findAllLeaseForLandlordForSingleApartment(
+  //   userId: string,
+  //   apartmentId: string
+  // ): Promise<ILeaseEntityDTO[] | null> {
+  //   try {
+  //     const leasesModel = await AppDataSource.getInstance()
+  //       .getRepository(LeaseModel)
+  //       .find({
+  //         where: {
+  //         landlordId: userId,
+  //           apartmentId: apartmentId,
+  //         },
+  //         select: {
+  //           leaseId: true,
+  //           LeaseActivationStatus: true,
+  //           isLandlordSigned: true,
+  //           isStudentSigned: true,
+  //           houseRule: true,
+  //           leaseStartDate: true,
+  //           leaseEndDate: true,
+  //           monthlyRent: true,
+  //           leaseTerm: true,
+  //           includeUtilities: true,
+  //           createAt: true,
+  //           apartmentId: true,
+  //           landlord: {
+  //             userId: true,
+  //             user: { Name: true },
+  //           },
+  //           student: {
+  //             userId: true,
+  //             user: { Name: true },
+  //           },
+  //           apartment: {
+  //             apartmentId: true,
+  //             title: true,
+  //           },
+  //         },
+  //         relations: {
+  //           student: { user: true },
+  //           landlord: { user: true },
+  //           apartment: true,
+  //         },
+  //       });
+
+  //     if (!leasesModel || leasesModel.length === 0) return [];
+
+  //     return leasesModel.map((orm) => LeaseMapper.toResponse(orm));
+  //   } catch (error: any) {
+  //     console.error("fail to get leases for single apartment", error);
+  //     throw error;
+  //   }
+  // }
+
+  // public async findAllLeaseForLandlordForSingleApartment(
+  //   userId: string,
+  //   apartmentId: string
+  // ): Promise<ILeaseEntityDTO[] | null> {
+  //   try {
+  //     if (!userId || !apartmentId) return [];
+
+  //     const leasesModel = await AppDataSource.getInstance()
+  //       .getRepository(LeaseModel)
+  //       .find({
+  //         // 👇👇👇 FIX: Use direct column names (apartmentId) NOT nested objects
+  //         where: {
+  //           landlordId: userId,
+  //           apartmentId: apartmentId,
+  //         },
+  //         select: {
+  //           leaseId: true,
+  //           LeaseActivationStatus: true,
+  //           isLandlordSigned: true,
+  //           isStudentSigned: true,
+  //           houseRule: true,
+  //           leaseStartDate: true,
+  //           leaseEndDate: true,
+  //           monthlyRent: true,
+  //           leaseTerm: true,
+  //           includeUtilities: true,
+  //           createAt: true,
+  //           apartmentId: true, // Select this column
+  //           landlord: {
+  //             userId: true,
+  //             user: { Name: true },
+  //           },
+  //           student: {
+  //             userId: true,
+  //             user: { Name: true },
+  //           },
+  //           apartment: {
+  //             apartmentId: true,
+  //             title: true,
+  //           },
+  //         },
+  //         relations: {
+  //           student: { user: true },
+  //           landlord: { user: true },
+  //           apartment: true,
+  //         },
+  //       });
+
+  //     if (!leasesModel || leasesModel.length === 0) return [];
+
+  //     return leasesModel.map((orm) => LeaseMapper.toResponse(orm));
+  //   } catch (error: any) {
+  //     console.error("fail to get leases for single apartment", error);
+  //     throw error;
+  //   }
+  // }
+
+  // ... other methods ...
+
   public async findAllLeaseForLandlordForSingleApartment(
     userId: string,
     apartmentId: string
@@ -145,36 +258,10 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
       const leasesModel = await AppDataSource.getInstance()
         .getRepository(LeaseModel)
         .find({
-          // Filter by both Landlord ID and Apartment ID
           where: {
-            landlord: { userId: userId },
-            apartment: { apartmentId: apartmentId },
-          },
-          select: {
-            leaseId: true,
-            LeaseActivationStatus: true,
-            isLandlordSigned: true,
-            isStudentSigned: true,
-            houseRule: true,
-            leaseStartDate: true,
-            leaseEndDate: true,
-            monthlyRent: true,
-            leaseTerm: true,
-            includeUtilities: true,
-            createAt: true,
-            apartmentId: true,
-            landlord: {
-              userId: true,
-              user: { Name: true },
-            },
-            student: {
-              userId: true,
-              user: { Name: true },
-            },
-            apartment: {
-              apartmentId: true,
-              title: true,
-            },
+            // We use explicit columns to be safe
+            landlordId: userId,
+            apartmentId: apartmentId,
           },
           relations: {
             student: { user: true },
