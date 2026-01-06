@@ -102,6 +102,7 @@ export class Server {
       adminNotificationController,
       LandlordApartmentController,
       LandlordLeaseController,
+      LandlordLeaseRequestController,
     } = buildControllers();
 
     this.app.use(
@@ -115,7 +116,11 @@ export class Server {
 
     this.app.use(
       "/api/v1/landlord",
-      LandlordIndexRouter(LandlordApartmentController, LandlordLeaseController)
+      LandlordIndexRouter(
+        LandlordApartmentController,
+        LandlordLeaseController,
+        LandlordLeaseRequestController
+      )
     );
 
     this.app.use(

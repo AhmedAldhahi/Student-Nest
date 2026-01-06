@@ -35,8 +35,10 @@ export class LeaseRequestModel {
     nullable: false,
     onDelete: "CASCADE",
   })
+
   @JoinColumn({ name: "studentId" })
   student: StudentModel;
+
 
   @Column({ nullable: false })
   studentId: string;
@@ -45,6 +47,7 @@ export class LeaseRequestModel {
     nullable: false,
     onDelete: "CASCADE",
   })
+
   @JoinColumn({ name: "landlordId" })
   landlord: LandlordModel;
 
@@ -55,6 +58,7 @@ export class LeaseRequestModel {
     nullable: false,
     onDelete: "CASCADE",
   })
+  
   @JoinColumn({ name: "apartmentId" })
   apartment: ApartmentModel;
 

@@ -1,15 +1,8 @@
-/**
- * Represents the required data for creating a LandlordEntity.
- *
- * @interface ILandlordData
- * @property {UserEntity} user - The user aggregate associated with the landlord.
- * @property {string} cliQAccount - The landlord's CliQ account identifier.
- * @property {GovernmentID} landlordGovId - Value object representing the landlord's government ID.
- */
-
 import { AggregateRoot } from "../../../Shared/AgregateRoot/AggregateRoot";
+import { LeaseRequestStatus } from "../../../Shared/Enum/LeaseRequestStatus.enum";
 import { GovernmentID } from "../../../Shared/Value-Object/UserGovId.vo";
 import { VerificationDocument } from "../../../Shared/Value-Object/VerficationDocument.vo";
+import { LeaseRequestEntity } from "../../Leases/Entities/leaseRequestEntity.entity";
 import { ApartmentDocumentEntity } from "../Entities/apartmentDocumentEntity.entity";
 import { ILandlordData } from "../Types/ILandlordData.type";
 import { ApartmentAggregateRoot } from "./apartmentEntity.entity";
@@ -81,6 +74,21 @@ export class LandlordAggregateRoot extends AggregateRoot<string> {
     this.ensureIsLandlordVerified();
 
     apartment.updateApartmentDocument(apartmentDoc);
+  }
+
+  public updateLeaseRequestStatus(
+    leaseRequest: LeaseRequestEntity,
+    status: LeaseRequestStatus
+  ) {
+    this.ensureIsLandlordVerified();
+
+    if (status === LeaseRequestStatus.Accept) {
+      leaseRequest.accept();
+    }
+
+    if (status === LeaseRequestStatus.Reject) {
+      leaseRequest.reject();
+    }
   }
 
   /**

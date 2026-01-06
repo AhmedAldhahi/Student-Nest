@@ -5,13 +5,15 @@ import { isLandlord } from "../../middlewares/auth/isLandloard.middleware";
 import { ApartmentRouter } from "./apartmentMangement.router";
 import { LeaseManagement } from "../../controllers/Landlord/LeaseMangement.controller";
 import { LeaseRouter } from "./leaseMangement.router";
+import { LeastRequestController } from "../../controllers/Landlord/LeastRequestMangement.controller";
+import { LeastRequestRouter } from "./leastRequestMangement.router";
 
 export const LandlordIndexRouter = (
   apartmentController: ApartmentController,
-  leaseController: LeaseManagement
+  leaseController: LeaseManagement,
+  leastRequestController: LeastRequestController
 ): Router => {
   const router = Router();
-
 
   router.use(
     "/apartments",
@@ -21,6 +23,13 @@ export const LandlordIndexRouter = (
   );
 
   router.use("/leases", isAuth, isLandlord, LeaseRouter(leaseController));
+
+  router.use(
+    "/leases-request",
+    isAuth,
+    isLandlord,
+    LeastRequestRouter(leastRequestController)
+  );
 
   return router;
 };

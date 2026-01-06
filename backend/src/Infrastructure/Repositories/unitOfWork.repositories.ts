@@ -1,27 +1,28 @@
 import { QueryRunner } from "typeorm";
 import { IUnitOfWork } from "../../Domain/Shared/Repositories/UnitOfWorkRepositories.repositories";
 import { AppDataSource } from "../Database/orm/TypeOrm/data-source";
-import { IWriteUserRepositories } from "../../Domain/Modules/Identity/Repositories/WriteUserRepositories.repositories";
-import { WriteUserRepositories } from "./Write/WriteUserRepositories";
-import { WriteStudentRepositories } from "./Write/WriteStudentRepositories";
-import { WriteLandlordRepositories } from "./Write/WriteLandlordRepositories";
-import { IWriteNotificationRepo } from "../../Domain/Shared/Repositories/IWriteNotficationRepositories.repositores";
-import { WriteNotificationRepositories } from "./Write/WriteNotificationRepositories";
-import { IWriteApartmentRepo } from "../../Domain/Modules/Housing/Repositories/Write/IWriteApartmentRepositories.repositories";
-import { WriteApartmentsRepositories } from "./Write/WriteApartmentRepositories";
-import { IWriteApartmentDocumentRepo } from "../../Domain/Modules/Housing/Repositories/Write/IWriteApartmentDocumentRepositoires.repositories";
-import { WriteApartmentDocumentRepositories } from "./Write/WriteApartmentDocumentRepositories";
+
+import { IWriteLeaseRequestRepo } from "../../Domain/Modules/Leases/Repositories/Write/WriteLeaseRequestRepositories.repostitores";
+import { WriteLeastRequestRepositories } from "./Write/WriteLeaseRequestRepo.repostiories"; 
 import { IWriteAuditLogRepositories } from "../../Domain/Modules/adminstration/Entities/IWriteAuditLogRepo.repositories";
-import { WriteAuditLogRepositories } from "./Write/WriteAuditLog.repositories";
-import { IWriteStudentRepositories } from "../../Domain/Modules/Student/Repositories/WriteStudentRepositories.repositories";
+import { IWriteApartmentDocumentRepo } from "../../Domain/Modules/Housing/Repositories/Write/IWriteApartmentDocumentRepositoires.repositories";
+import { IWriteApartmentRepo } from "../../Domain/Modules/Housing/Repositories/Write/IWriteApartmentRepositories.repositories";
 import { IWriteLandlordRepositories } from "../../Domain/Modules/Housing/Repositories/Write/WriteLandlordRepositories.repositories";
+import { IWriteUserRepositories } from "../../Domain/Modules/Identity/Repositories/WriteUserRepositories.repositories";
+import { IWriteStudentRepositories } from "../../Domain/Modules/Student/Repositories/WriteStudentRepositories.repositories";
+import { IWriteNotificationRepo } from "../../Domain/Shared/Repositories/IWriteNotficationRepositories.repositores";
+import { WriteApartmentDocumentRepositories } from "./Write/WriteApartmentDocumentRepositories";
+import { WriteApartmentsRepositories } from "./Write/WriteApartmentRepositories";
+import { WriteAuditLogRepositories } from "./Write/WriteAuditLog.repositories";
+import { WriteLandlordRepositories } from "./Write/WriteLandlordRepositories";
+import { WriteNotificationRepositories } from "./Write/WriteNotificationRepositories";
+import { WriteStudentRepositories } from "./Write/WriteStudentRepositories";
+import { WriteUserRepositories } from "./Write/WriteUserRepositories";
 
 export class UnitOfWork implements IUnitOfWork {
-  
-
   private queryRunner: QueryRunner | null = null;
 
-  // CQRS
+  // CQRS Repositories
   public writeUserRepo!: IWriteUserRepositories;
   public writeStudentRepo!: IWriteStudentRepositories;
   public writeLandlordRepo!: IWriteLandlordRepositories;
@@ -29,6 +30,8 @@ export class UnitOfWork implements IUnitOfWork {
   public writeApartmentRepo!: IWriteApartmentRepo;
   public writeApartmentDocumentRepo!: IWriteApartmentDocumentRepo;
   public writeAuditLogRepo!: IWriteAuditLogRepositories;
+  
+  public writeLeaseRequestRepo!: IWriteLeaseRequestRepo; 
 
   async startTransaction(): Promise<void> {
     this.queryRunner = AppDataSource.getInstance().createQueryRunner();
@@ -37,21 +40,20 @@ export class UnitOfWork implements IUnitOfWork {
 
     const manager = this.queryRunner.manager;
 
-    // CQRS
+    // Initialize all repositories
     this.writeUserRepo = new WriteUserRepositories(manager);
     this.writeStudentRepo = new WriteStudentRepositories(manager);
     this.writeLandlordRepo = new WriteLandlordRepositories(manager);
     this.writeNotificationRepo = new WriteNotificationRepositories(manager);
     this.writeApartmentRepo = new WriteApartmentsRepositories(manager);
-    this.writeApartmentDocumentRepo = new WriteApartmentDocumentRepositories(
-      manager
-    );
+    this.writeApartmentDocumentRepo = new WriteApartmentDocumentRepositories(manager);
     this.writeAuditLogRepo = new WriteAuditLogRepositories(manager);
+    
+    this.writeLeaseRequestRepo = new WriteLeastRequestRepositories(manager);
   }
 
   async commitTransaction(): Promise<void> {
     if (!this.queryRunner) return;
-
     try {
       await this.queryRunner.commitTransaction();
     } catch (err) {
@@ -64,13 +66,11 @@ export class UnitOfWork implements IUnitOfWork {
 
   async rollbackTransaction(): Promise<void> {
     if (!this.queryRunner) return;
-
     try {
       if (this.queryRunner.isTransactionActive) {
         await this.queryRunner.rollbackTransaction();
       }
     } finally {
-      // This ensures release happens even after rollback
       await this.releaseTransaction();
     }
   }

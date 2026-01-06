@@ -2,11 +2,7 @@ import { ILeaseRequestDTO } from "../../../Application/DTO/admin/LeaseRequestDTO
 import { LeaseRequestEntity } from "../../../Domain/Modules/Leases/Entities/leaseRequestEntity.entity";
 import { LeaseStartDate } from "../../../Domain/Modules/Leases/Value-Object/LeaseStartDate.vo";
 import { RentTerm } from "../../../Domain/Modules/Leases/Value-Object/RentTerm.vo";
-
 import { LeaseRequestModel } from "../../Database/orm/TypeOrm/entity/LeaseRequest";
-import { ApartmentMapper } from "./apartment.mapper";
-import { LandlordMapper } from "./landloard.mapper";
-import { StudentMapper } from "./student.mapper";
 
 export class LeaseRequestMapper {
   public static toModel(entity: LeaseRequestEntity): LeaseRequestModel {
@@ -47,9 +43,9 @@ export class LeaseRequestMapper {
       rentTerm: new RentTerm(model.rentTerm),
       requestStatus: model.requestStatus,
       createAt: model.createAt,
-      studentName: model.student.user.Name,
-      landlordName: model.landlord.user.Name,
-      apartment: model.apartment.title,
+      studentId: model.studentId,
+      landlordId: model.landlordId,
+      apartmentId: model.apartmentId,
     });
   }
 

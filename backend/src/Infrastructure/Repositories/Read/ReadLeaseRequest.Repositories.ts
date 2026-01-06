@@ -4,10 +4,69 @@ import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { LeaseRequestModel } from "../../Database/orm/TypeOrm/entity/LeaseRequest";
 import { LeaseRequestMapper } from "../mapper/leaseRequest.mapper";
 import { IReadLeaseRequestRepositories } from "../../../Domain/Modules/Leases/Repositories/Read/ReadLeaseRequestRepositories.repositories";
+import { LeaseRequestEntity } from "../../../Domain/Modules/Leases/Entities/leaseRequestEntity.entity";
 
 export class ReadLeaseRequestRepositories
   implements IReadLeaseRequestRepositories
 {
+  public async findLeaseRequestByIdForLandlord(
+    userId: string,
+    id: string
+  ): Promise<LeaseRequestEntity | null> {
+    try {
+      const leaseRequest = await AppDataSource.getInstance()
+        .getRepository(LeaseRequestModel)
+        .findOne({
+          where: {
+            leaseRequestId: id,
+            landlord: { userId: userId },
+          },
+          select: {
+            leaseRequestId: true,
+            requestMessage: true,
+            startDate: true,
+            rentTerm: true,
+            requestStatus: true,
+            createAt: true,
+            landlord: {
+              userId: true,
+              user: {
+                Name: true,
+              },
+            },
+            student: {
+              userId: true,
+              Major: true,
+              user: {
+                Name: true,
+                userId: true,
+              },
+            },
+            apartment: {
+              title: true,
+              price: true,
+              apartmentId: true,
+            },
+          },
+          relations: {
+            student: { user: true },
+            landlord: { user: true },
+            apartment: true,
+          },
+        });
+
+      if (!leaseRequest) return null;
+
+      return LeaseRequestMapper.toEntity(leaseRequest);
+    } catch (error: any) {
+      console.error(
+        "Error fetching specific lease request for landlord:",
+        error
+      );
+      throw error;
+    }
+  }
+
   public async findAllLeaseRequestForLandlord(
     userId: string
   ): Promise<ILeaseRequestDTO[] | null> {

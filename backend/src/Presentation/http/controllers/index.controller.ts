@@ -11,6 +11,8 @@ import { AuditLogController } from "./admin/auditLogManagement.controller";
 import { LeaseManagementController } from "./admin/leaseManagement.controller";
 import { ApartmentController } from "./Landlord/ApartmentMangement.controller";
 import { LeaseManagement } from "./Landlord/LeaseMangement.controller";
+import { LeaseRequestContext } from "../../../Application/Strategy/leaseRequest/LeaseRequestContext";
+import { LeastRequestController } from "./Landlord/LeastRequestMangement.controller";
 
 export const buildControllers = () => {
   const { useCases } = buildDependencies();
@@ -93,6 +95,10 @@ export const buildControllers = () => {
     useCases.getAllLeaseForSingleApartmentUseCAse
   );
 
+  const LandlordLeaseRequestController = new LeastRequestController(
+    useCases.updateLeastRequestUseCase
+  );
+
   return {
     authController,
     verificationController,
@@ -106,5 +112,6 @@ export const buildControllers = () => {
     adminAuditLogController,
     LandlordApartmentController,
     LandlordLeaseController,
+    LandlordLeaseRequestController,
   };
 };

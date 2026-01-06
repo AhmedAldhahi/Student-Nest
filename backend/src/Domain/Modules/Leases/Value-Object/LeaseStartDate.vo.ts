@@ -8,29 +8,6 @@ export class LeaseStartDate {
       this.value = undefined;
       return; // Stop here if empty
     }
-
-    // --- STRUCTURAL VALIDATION (Always Run: DB & User) ---
-
-    // 1. Basic Format
-    if (value.length !== 10) {
-      throw new Error("Invalid date length; it must be exactly 10 characters.");
-    }
-
-    if (!this.isValidDateFormat(value)) {
-      throw new Error("Invalid date format. The correct format is DD-MM-YYYY.");
-    }
-
-    // 2. Extract Parts
-    const chunkDay = value.substring(0, 2);
-    const chunkMonth = value.substring(3, 5);
-    const chunkYear = value.substring(6, 10);
-
-    // 3. Calendar Validity (e.g. Feb 30 check)
-    this.validateMonth(chunkMonth);
-    this.validateDays(chunkDay, chunkMonth, chunkYear);
-
-    // Valid structurally? Good. We stop here.
-    // We DO NOT check "7 days rule" here to allow loading old leases from DB.
   }
 
   // --- STATIC FACTORY (Strict Creation for New Input) ---
