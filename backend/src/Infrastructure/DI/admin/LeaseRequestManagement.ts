@@ -1,3 +1,4 @@
+import { GetAllLeasesRequestQueriesHandler } from "../../../Application/Queries/Handlers/Leases/LeaseRequest/GetAllLeaseRequesForLandlordQueriesHandler";
 import { GetAllLeaseRequestQueriesHandler } from "../../../Application/Queries/Handlers/Leases/LeaseRequest/GetAllLeaseRequestQueriesHandler";
 import { GetLeaseRequestByQueryQueriesHandler } from "../../../Application/Queries/Handlers/Leases/LeaseRequest/GetLeaseRequestByQueryQueriesHandler";
 import { AdminLeaseRequestStrategy } from "../../../Application/Strategy/leaseRequest/AdminLeaseRequest.strategy";
@@ -21,12 +22,19 @@ export function GetAllLeaseRequest(): GetAllLeaseRequestUseCase {
     readLeaseRequestRepo
   );
 
+  const GetAllLeaseRequestForLandlordQH = new GetAllLeasesRequestQueriesHandler(
+    readUserRepo,
+    readLeaseRequestRepo
+  );
+
   const adminStrategy = new AdminLeaseRequestStrategy(
     queriesHandler,
     FindSearchQH
   );
 
-  const landlordStrategy = new LandlordLeaseRequestStrategy();
+  const landlordStrategy = new LandlordLeaseRequestStrategy(
+    GetAllLeaseRequestForLandlordQH
+  );
   const studentStrategy = new StudentLeaseRequestStrategy();
 
   const leaseRequestContext = new LeaseRequestContext(
@@ -51,6 +59,11 @@ export function GetLeaseRequestByQuery(): GetLeaseRequestByQueryUseCase {
     readLeaseRequest
   );
 
+  const GetAllLeaseRequestForLandlordQH = new GetAllLeasesRequestQueriesHandler(
+    readUserRepo,
+    readLeaseRequest
+  );
+
   // strategy
 
   const adminStrategy = new AdminLeaseRequestStrategy(
@@ -58,7 +71,9 @@ export function GetLeaseRequestByQuery(): GetLeaseRequestByQueryUseCase {
     FindSearchQH
   );
 
-  const landlordStrategy = new LandlordLeaseRequestStrategy();
+  const landlordStrategy = new LandlordLeaseRequestStrategy(
+    GetAllLeaseRequestForLandlordQH
+  );
 
   const StudentLeaseRequest = new StudentLeaseRequestStrategy();
 

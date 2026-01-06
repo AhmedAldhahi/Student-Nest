@@ -8,6 +8,70 @@ import { IReadLeaseRequestRepositories } from "../../../Domain/Modules/Leases/Re
 export class ReadLeaseRequestRepositories
   implements IReadLeaseRequestRepositories
 {
+  public async findAllLeaseRequestForLandlord(
+    userId: string
+  ): Promise<ILeaseRequestDTO[] | null> { 
+
+    console.log("user id : ",userId);
+
+    const leaseRequest = await AppDataSource.getInstance()
+      .getRepository(LeaseRequestModel)
+      .find({
+        where: { landlordId: userId },
+        select: {
+          leaseRequestId: true,
+          requestMessage: true,
+          startDate: true,
+          rentTerm: true,
+          requestStatus: true,
+          createAt: true,
+
+          landlord: {
+            userId: true,
+            user: {
+              Name: true,
+            },
+          },
+          student: {
+            userId: true,
+            Major: true,
+            user: {
+              Name: true,
+              userId: true,
+            },
+          },
+
+          apartment: {
+            title: true,
+            price: true,
+            apartmentId: true,
+          },
+        },
+        relations: {
+          student: { user: true },
+          landlord: { user: true },
+          apartment: true,
+        },
+      });
+
+    if (!leaseRequest || leaseRequest.length === 0) return [];
+
+    return leaseRequest.map((orm) => {
+      return LeaseRequestMapper.toResponse(orm);
+    });
+  }
+  catch(error: any) {
+    console.error("Error fetching lease requests:", error);
+    throw error;
+  }
+
+  public async SearchForLeaseRequestForLandlord(
+    userId: string,
+    queries: string
+  ): Promise<ILeaseRequestDTO[] | null> {
+    throw new Error("Method not implemented.");
+  }
+
   public async findAllLeaseRequest(): Promise<ILeaseRequestDTO[] | null> {
     try {
       const leaseRequest = await AppDataSource.getInstance()
