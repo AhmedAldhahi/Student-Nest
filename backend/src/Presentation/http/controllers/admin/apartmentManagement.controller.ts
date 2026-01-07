@@ -33,7 +33,7 @@ export class ApartmentManagementController {
 
   public getApartmentsByQueries = async (req: Request, res: Response) => {
     try {
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
       console.log("user id : ", userId);
       const query = (req.query.q as string) || "";
       if (!userId)
@@ -53,7 +53,7 @@ export class ApartmentManagementController {
     res: Response
   ) => {
     try {
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
       const { id } = req.params;
       const { Verified } = req.body;
 
@@ -79,7 +79,7 @@ export class ApartmentManagementController {
 
   public DeleteApartmentById = async (req: Request, res: Response) => {
     try {
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
       const { apartmentId } = req.params;
 
       console.log(`user id : ${userId}  and the id : ${apartmentId}`);
@@ -102,7 +102,7 @@ export class ApartmentManagementController {
 
   public FindApartmentDocumentById = async (req: Request, res: Response) => {
     try {
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
       const { id } = req.params;
 
       if (!userId)
@@ -120,7 +120,7 @@ export class ApartmentManagementController {
   public getApartmentDetailById = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
 
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });

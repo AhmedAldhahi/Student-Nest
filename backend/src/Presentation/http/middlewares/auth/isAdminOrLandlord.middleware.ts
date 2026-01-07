@@ -9,7 +9,7 @@ export const isAdminOrLandlord = async (
   next: NextFunction
 ) => {
   try {
-    const userId = req.user.userId;
+    const userId = req.user?.userId;
 
     if (!userId)
       return res

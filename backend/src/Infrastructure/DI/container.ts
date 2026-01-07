@@ -1,9 +1,4 @@
-import {
-  makeRegisterLandlordUseCase,
-  makeLoginUseCase,
-  makeRegisterStudentUseCase,
-} from "./auth.DI";
-import { getUserProfileData, updateUserProfile } from "./profile.DI";
+import { getUserProfileData, updateUserProfile } from "./shared/profile.DI";
 
 import {
   makeVerifiedEmailOTP,
@@ -11,7 +6,7 @@ import {
   makeUpdateForgetPass,
   makeResendForgetPassword,
   makeVerifiedForgetPasswordOTP,
-} from "./verification.DI";
+} from "./shared/verification.DI";
 
 import {
   deleteLandlordById,
@@ -33,7 +28,7 @@ import {
   DeleteSpecificNotifications,
   GetAllNotification,
   updateNotificationStatus,
-} from "./NotificationManagement";
+} from "./shared/NotificationManagement";
 
 import {
   DeleteApartmentById,
@@ -64,6 +59,16 @@ import {
   SearchForLeasesRequestForLandlordForSingleApartmentUC,
   updateLeastRequestUC,
 } from "./Landlord/LeastRequestMangement";
+import {
+  makeLoginUseCase,
+  makeRegisterLandlordUseCase,
+  makeRegisterStudentUseCase,
+} from "./shared/auth.DI";
+import { GetAllPaymentScheduleForSingleLeaseQueries } from "../../Application/Queries/Queries/Payment/getAllPaymentSchduleForSingleLease";
+import {
+  GetAllPaymentScheduleForSingleLeaseUC,
+  GetReceiptForPaymentUC,
+} from "./Landlord/PaymentMangement";
 
 export function buildDependencies() {
   return {
@@ -124,6 +129,11 @@ export function buildDependencies() {
         getAllLeasesRequestForLandlordForSingleApartmentUC(),
       SearchForAllLeaseRequestForSingleApartmentUC:
         SearchForLeasesRequestForLandlordForSingleApartmentUC(),
+
+      GetAllPaymentScheduleForSingleLeaseUseCase:
+        GetAllPaymentScheduleForSingleLeaseUC(),
+
+      GetReceiptForSinglePaymentUseCase: GetReceiptForPaymentUC(),
     },
   };
 }

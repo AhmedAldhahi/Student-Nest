@@ -4,8 +4,64 @@ import { LeaseModel } from "../../Database/orm/TypeOrm/entity/Lease.entity";
 import { LeaseMapper } from "../mapper/lease.mapper";
 import { ILeaseEntityDTO } from "../../../Application/DTO/admin/LeaseDTO.dto";
 import { IReadLeaseRepositories } from "../../../Domain/Modules/Leases/Repositories/Read/ReadLeaseRepositories.repositories";
+import { LeaseAggregateRoot } from "../../../Domain/Modules/Leases/AgregateRoot/leaseEntity.entity";
 
 export class ReadLeaseRepositories implements IReadLeaseRepositories {
+  public async findLeaseForLandlordById(
+    userId: string,
+    id: string
+  ): Promise<ILeaseEntityDTO | null> {
+    try {
+      const leaseModel = await AppDataSource.getInstance()
+        .getRepository(LeaseModel)
+        .findOne({
+          where: { landlordId: userId, leaseId: id },
+          relations: {
+            landlord: { user: true },
+            student: { user: true },
+            apartment: true,
+          },
+        });
+
+      if (!leaseModel) return null;
+
+      return LeaseMapper.toResponse(leaseModel);
+    } catch (error: any) {
+      console.error("fail to get leases !!");
+      throw error;
+    }
+  }
+
+  public async findLeaseForLandlordForSingleApartmentById(
+    userId: string,
+    apartmentId: string,
+    leaseId: string
+  ): Promise<LeaseAggregateRoot | null> {
+    try {
+      const leaseModel = await AppDataSource.getInstance()
+        .getRepository(LeaseModel)
+        .findOne({
+          where: {
+            landlordId: userId,
+            apartmentId: apartmentId,
+            leaseId: leaseId,
+          },
+          relations: {
+            landlord: { user: true },
+            student: { user: true },
+            apartment: true,
+          },
+        });
+
+      if (!leaseModel) return null;
+
+      return LeaseMapper.toEntity(leaseModel);
+    } catch (error: any) {
+      console.error("fail to fetch lease !!", error);
+      throw error;
+    }
+  }
+
   public async findAllLeaseForLandlord(
     userId: string
   ): Promise<ILeaseEntityDTO[] | null> {
@@ -136,119 +192,6 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
       throw error;
     }
   }
-
-  // public async findAllLeaseForLandlordForSingleApartment(
-  //   userId: string,
-  //   apartmentId: string
-  // ): Promise<ILeaseEntityDTO[] | null> {
-  //   try {
-  //     const leasesModel = await AppDataSource.getInstance()
-  //       .getRepository(LeaseModel)
-  //       .find({
-  //         where: {
-  //         landlordId: userId,
-  //           apartmentId: apartmentId,
-  //         },
-  //         select: {
-  //           leaseId: true,
-  //           LeaseActivationStatus: true,
-  //           isLandlordSigned: true,
-  //           isStudentSigned: true,
-  //           houseRule: true,
-  //           leaseStartDate: true,
-  //           leaseEndDate: true,
-  //           monthlyRent: true,
-  //           leaseTerm: true,
-  //           includeUtilities: true,
-  //           createAt: true,
-  //           apartmentId: true,
-  //           landlord: {
-  //             userId: true,
-  //             user: { Name: true },
-  //           },
-  //           student: {
-  //             userId: true,
-  //             user: { Name: true },
-  //           },
-  //           apartment: {
-  //             apartmentId: true,
-  //             title: true,
-  //           },
-  //         },
-  //         relations: {
-  //           student: { user: true },
-  //           landlord: { user: true },
-  //           apartment: true,
-  //         },
-  //       });
-
-  //     if (!leasesModel || leasesModel.length === 0) return [];
-
-  //     return leasesModel.map((orm) => LeaseMapper.toResponse(orm));
-  //   } catch (error: any) {
-  //     console.error("fail to get leases for single apartment", error);
-  //     throw error;
-  //   }
-  // }
-
-  // public async findAllLeaseForLandlordForSingleApartment(
-  //   userId: string,
-  //   apartmentId: string
-  // ): Promise<ILeaseEntityDTO[] | null> {
-  //   try {
-  //     if (!userId || !apartmentId) return [];
-
-  //     const leasesModel = await AppDataSource.getInstance()
-  //       .getRepository(LeaseModel)
-  //       .find({
-  //         // 👇👇👇 FIX: Use direct column names (apartmentId) NOT nested objects
-  //         where: {
-  //           landlordId: userId,
-  //           apartmentId: apartmentId,
-  //         },
-  //         select: {
-  //           leaseId: true,
-  //           LeaseActivationStatus: true,
-  //           isLandlordSigned: true,
-  //           isStudentSigned: true,
-  //           houseRule: true,
-  //           leaseStartDate: true,
-  //           leaseEndDate: true,
-  //           monthlyRent: true,
-  //           leaseTerm: true,
-  //           includeUtilities: true,
-  //           createAt: true,
-  //           apartmentId: true, // Select this column
-  //           landlord: {
-  //             userId: true,
-  //             user: { Name: true },
-  //           },
-  //           student: {
-  //             userId: true,
-  //             user: { Name: true },
-  //           },
-  //           apartment: {
-  //             apartmentId: true,
-  //             title: true,
-  //           },
-  //         },
-  //         relations: {
-  //           student: { user: true },
-  //           landlord: { user: true },
-  //           apartment: true,
-  //         },
-  //       });
-
-  //     if (!leasesModel || leasesModel.length === 0) return [];
-
-  //     return leasesModel.map((orm) => LeaseMapper.toResponse(orm));
-  //   } catch (error: any) {
-  //     console.error("fail to get leases for single apartment", error);
-  //     throw error;
-  //   }
-  // }
-
-  // ... other methods ...
 
   public async findAllLeaseForLandlordForSingleApartment(
     userId: string,

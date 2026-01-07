@@ -12,7 +12,7 @@ export class LeastRequestController {
 
   public UpdateLeastRequestStatus = async (req: Request, res: Response) => {
     try {
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
       const { leastRequestId } = req.params;
       const dto = req.body;
 
@@ -38,7 +38,7 @@ export class LeastRequestController {
     res: Response
   ) => {
     try {
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
       const { apartmentId } = req.params;
       if (!userId)
         return res.status(400).json({ error: "no user id been found !!" });
@@ -60,7 +60,7 @@ export class LeastRequestController {
     res: Response
   ) => {
     try {
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
       const { apartmentId } = req.params;
       const query = (req.query.q as string) || "";
       if (!userId)

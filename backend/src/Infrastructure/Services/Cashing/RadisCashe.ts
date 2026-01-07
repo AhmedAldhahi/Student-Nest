@@ -1,5 +1,5 @@
 import Redis from "ioredis";
-import { ICashMemoryService } from "../../Application/Interfaces/ICash.interface";
+import { ICashMemoryService } from "../../../Application/Interfaces/ICash.interface";
 
 export class RedisCashService implements ICashMemoryService {
   private readonly client: Redis;

@@ -1,25 +1,11 @@
 import { MonthlyRent } from "../../Housing/Value-Object/MonthlyRent.vo";
+import { PaymentAggregateRoot } from "../../Payment/AgregateRoot/Payment.AgregateRoot";
+import { PaymentAmount } from "../../Payment/Value-Object/PaymentAmount.vo";
+import { ILeaseData } from "../types/LeaseData";
 import { LeaseEndDate } from "../Value-Object/LeaseEndDate.vo";
 import { LeaseStartDate } from "../Value-Object/LeaseStartDate.vo";
 import { LeaseTerm } from "../Value-Object/LeaseTerm.vo";
-
-export interface ILeaseData {
-  leaseId: string;
-  houseRule: string;
-  isLandlordSigned: boolean;
-  isStudentSigned: boolean;
-  ActivationStatus: boolean;
-  includeUtilities?: string;
-  leaseStartData: LeaseStartDate;
-  leaseEndData: LeaseEndDate;
-  monthlyRent: MonthlyRent;
-  leaseTerm: LeaseTerm;
-
-  apartmentId: string;
-  studentId: string;
-  landlordId: string;
-  createAt: Date;
-}
+import { v4 as uuidv4 } from "uuid";
 
 export class LeaseAggregateRoot {
   private leaseId: string;
@@ -38,6 +24,7 @@ export class LeaseAggregateRoot {
 
   private createAt: Date;
   private activateStatus: boolean = true;
+  private paymentSchedule: PaymentAggregateRoot[] | null;
 
   constructor(data: ILeaseData) {
     this.leaseId = data.leaseId;
@@ -53,19 +40,14 @@ export class LeaseAggregateRoot {
     this.landlordId = data.landlordId;
     this.apartmentId = data.apartmentId;
     this.createAt = data.createAt;
+    this.paymentSchedule = data.paymentSchedule;
   }
 
-  public getCreateAt(): Date {
-    return this.createAt;
-  }
-
-  public updateStatus(status: boolean) {
-    this.activateStatus = status;
-  }
-
-  public getStatus(): boolean {
-    return this.activateStatus;
-  }
+  /**
+   * ==================================================================================
+   *                              Behavior Methods
+   * ==================================================================================
+   */
 
   public ActivateStatus(): void {
     this.activateStatus = true;
@@ -79,36 +61,16 @@ export class LeaseAggregateRoot {
     this.leaseTerm = term;
   }
 
-  public getLeaseTerm(): string | undefined {
-    return this.leaseTerm.getValue() ?? undefined;
-  }
-
   public updateMonthRent(rent: MonthlyRent): void {
     this.monthlyRent = rent;
-  }
-
-  public getMonthlyRent(): string | undefined {
-    return this.monthlyRent.getValue() ?? undefined;
-  }
-
-  public getLeaseId(): string {
-    return this.leaseId;
   }
 
   public updateLeaseStartDate(date: LeaseStartDate): void {
     this.leaseStartData = date;
   }
 
-  public getLeaseStartDate(): string | undefined {
-    return this.leaseStartData.getValue() ?? undefined;
-  }
-
   public updateLeaseEndDate(date: LeaseEndDate): void {
     this.leaseEndData = date;
-  }
-
-  public getLeaseEndDate(): string | undefined {
-    return this.leaseEndData.getValue() ?? undefined;
   }
 
   public markAsActivated(): void {
@@ -119,20 +81,12 @@ export class LeaseAggregateRoot {
     this.activateStatus = false;
   }
 
-  public getActivated(): boolean {
-    return this.activateStatus;
-  }
-
   public markLandlordAsSigned(): void {
     this.isLandlordSigned = true;
   }
 
   public resetLandlordSigned(): void {
     this.isLandlordSigned = false;
-  }
-
-  public getIsLandlordSigned(): boolean {
-    return this.isLandlordSigned;
   }
 
   public markStudentLandlordSigned(): void {
@@ -143,20 +97,94 @@ export class LeaseAggregateRoot {
     this.isStudentSigned = false;
   }
 
-  public getIsStudentSigned(): boolean {
-    return this.isStudentSigned;
+  public updateHouseRule(rule: string): void {
+    this.houseRule = rule;
   }
 
-  public updateHouseRule(rule: string) {
-    this.houseRule = rule;
+  public updateIncludeUtilities(util: string): void {
+    this.includeUtilities = util;
+  }
+
+  public generatePaymentSchedule(): void {
+    const schedules: PaymentAggregateRoot[] = [];
+
+    const currentDueDate = new Date(
+      this.leaseStartData.getYear(),
+      this.leaseStartData.getMonth() - 1,
+      this.leaseStartData.getDays()
+    );
+
+    const endDate = new Date(
+      this.leaseEndData.getYear(),
+      this.leaseEndData.getMonth() - 1,
+      this.leaseEndData.getDays()
+    );
+
+    const rentValue = this.monthlyRent.getValue();
+    if (!rentValue) throw new Error("Monthly rent is missing");
+
+    while (currentDueDate < endDate) {
+      const newPayment = PaymentAggregateRoot.create({
+        paymentId: uuidv4(),
+        paymentStatus: false,
+        amount: PaymentAmount.create(rentValue),
+        dueDate: currentDueDate.toISOString().split("T")[0],
+        leaseId: this.leaseId,
+        paymentReceipt: [],
+      });
+
+      schedules.push(newPayment);
+
+      currentDueDate.setMonth(currentDueDate.getMonth() + 1);
+    }
+
+    this.paymentSchedule = schedules;
+  }
+
+  /**
+   * ==================================================================================
+   *                              Getter Methods
+   * ==================================================================================
+   */
+
+  public getCreateAt(): Date {
+    return this.createAt;
+  }
+
+  public getStatus(): boolean {
+    return this.activateStatus;
+  }
+
+  public getLeaseTerm(): string | undefined {
+    return this.leaseTerm.getValue() ?? undefined;
+  }
+
+  public getMonthlyRent(): string | undefined {
+    return this.monthlyRent.getValue() ?? undefined;
+  }
+
+  public getLeaseId(): string {
+    return this.leaseId;
+  }
+
+  public getLeaseEndDate(): string | undefined {
+    return this.leaseEndData.getValue() ?? undefined;
+  }
+
+  public getIsLandlordSigned(): boolean {
+    return this.isLandlordSigned;
   }
 
   public getHouseRule(): string {
     return this.houseRule;
   }
 
-  public updateIncludeUtilities(util: string) {
-    this.includeUtilities = util;
+  public getLeaseStartDate(): string | undefined {
+    return this.leaseStartData.getValue() ?? undefined;
+  }
+
+  public getActivated(): boolean {
+    return this.activateStatus;
   }
 
   public getIncludeUtilities(): string | undefined {
@@ -173,5 +201,13 @@ export class LeaseAggregateRoot {
 
   public getApartment(): string {
     return this.apartmentId;
+  }
+
+  public getIsStudentSigned(): boolean {
+    return this.isStudentSigned;
+  }
+
+  public getPaymentSchedule() {
+    return this.paymentSchedule;
   }
 }

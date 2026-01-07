@@ -16,7 +16,7 @@ export class NotificationController {
 
   public getAllNotification = async (req: Request, res: Response) => {
     try {
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
       console.log(userId);
 
       if (!userId)
@@ -62,7 +62,7 @@ export class NotificationController {
 
   public deleteNotificationById = async (req: Request, res: Response) => {
     try {
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
 
       if (!userId)
         return res.status(400).json({ error: "no user Id found !!" });
@@ -83,7 +83,7 @@ export class NotificationController {
 
   public deleteAllNotification = async (req: Request, res: Response) => {
     try {
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
 
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
@@ -99,7 +99,7 @@ export class NotificationController {
 
   public deleteSpecificNotifications = async (req: Request, res: Response) => {
     try {
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
       const body = req.body;
 
       if (!userId)

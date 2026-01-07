@@ -13,6 +13,7 @@ import { ApartmentController } from "./Landlord/ApartmentMangement.controller";
 import { LeaseManagement } from "./Landlord/LeaseMangement.controller";
 import { LeaseRequestContext } from "../../../Application/Strategy/leaseRequest/LeaseRequestContext";
 import { LeastRequestController } from "./Landlord/LeastRequestMangement.controller";
+import { PaymentController } from "./Landlord/PaymentMangement.controller";
 
 export const buildControllers = () => {
   const { useCases } = buildDependencies();
@@ -101,6 +102,11 @@ export const buildControllers = () => {
     useCases.SearchForAllLeaseRequestForSingleApartmentUC
   );
 
+  const landlordPayment = new PaymentController(
+    useCases.GetAllPaymentScheduleForSingleLeaseUseCase,
+    useCases.GetReceiptForSinglePaymentUseCase
+  );
+
   return {
     authController,
     verificationController,
@@ -115,5 +121,6 @@ export const buildControllers = () => {
     LandlordApartmentController,
     LandlordLeaseController,
     LandlordLeaseRequestController,
+    landlordPayment,
   };
 };

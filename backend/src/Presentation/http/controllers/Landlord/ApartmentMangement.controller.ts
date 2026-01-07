@@ -93,7 +93,7 @@ export class ApartmentController {
     res: Response
   ) => {
     try {
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
       const { apartmentId } = req.params;
       const file = req.file;
 
@@ -119,7 +119,7 @@ export class ApartmentController {
 
   public updateApartmentDocuments = async (req: Request, res: Response) => {
     try {
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
       const { apartmentId } = req.params; // DocumentId removed as per previous fix
       const file = req.file;
       const { apartmentType } = req.body;
@@ -211,7 +211,7 @@ export class ApartmentController {
 
   public GetBookedApartment = async (req: Request, res: Response) => {
     try {
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
 
       if (!userId)
         return res.status(400).json({ error: "no user id been found !!" });

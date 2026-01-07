@@ -12,7 +12,7 @@ export class LeaseManagement {
     res: Response
   ) => {
     try {
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
       const { apartmentId } = req.params;
       const query = (req.query.q as string) || "";
 
@@ -38,7 +38,7 @@ export class LeaseManagement {
     res: Response
   ) => {
     try {
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
       const { apartmentId } = req.params;
 
       if (!userId)

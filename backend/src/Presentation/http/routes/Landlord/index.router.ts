@@ -7,11 +7,14 @@ import { LeaseManagement } from "../../controllers/Landlord/LeaseMangement.contr
 import { LeaseRouter } from "./leaseMangement.router";
 import { LeastRequestController } from "../../controllers/Landlord/LeastRequestMangement.controller";
 import { LeastRequestRouter } from "./leastRequestMangement.router";
+import { PaymentRouter } from "./paymentMangement.router";
+import { PaymentController } from "../../controllers/Landlord/PaymentMangement.controller";
 
 export const LandlordIndexRouter = (
   apartmentController: ApartmentController,
   leaseController: LeaseManagement,
-  leastRequestController: LeastRequestController
+  leastRequestController: LeastRequestController,
+  paymentController: PaymentController
 ): Router => {
   const router = Router();
 
@@ -24,12 +27,9 @@ export const LandlordIndexRouter = (
 
   router.use("/leases", isAuth, isLandlord, LeaseRouter(leaseController));
 
-  router.use(
-    "/leases-request",
-    isAuth,
-    isLandlord,
-    LeastRequestRouter(leastRequestController)
-  );
+  router.use("/leases-request", LeastRequestRouter(leastRequestController));
+
+  router.use("/payment",  PaymentRouter(paymentController));
 
   return router;
 };

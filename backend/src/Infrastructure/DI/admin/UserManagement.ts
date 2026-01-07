@@ -12,7 +12,7 @@ import { EditLandlordVerificationStatusUseCase } from "../../../Application/Use-
 import { EditUserActivateStatsUseCase } from "../../../Application/Use-Case/admin/UserMangament/EditUserActivateStatus.usecase";
 import { FindUserByQueryUseCase } from "../../../Application/Use-Case/admin/UserMangament/FindUserByQuery.usecase";
 import { GetAllUserUseCase } from "../../../Application/Use-Case/admin/UserMangament/GetAllUser.usecase";
-import { RedisCashService } from "../../Cashing/RadisCashe";
+import { RedisCashService } from "../../Services/Cashing/RadisCashe";
 import { ReadLandlordRepositories } from "../../Repositories/Read/ReadLandlordRepositories";
 import { ReadStudentRepositories } from "../../Repositories/Read/ReadStudentRepositories";
 import { ReadUserRepositories } from "../../Repositories/Read/ReadUserRepositories";

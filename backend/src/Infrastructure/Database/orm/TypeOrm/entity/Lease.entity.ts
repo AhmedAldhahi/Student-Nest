@@ -5,10 +5,12 @@ import {
   ManyToOne,
   CreateDateColumn,
   PrimaryColumn,
+  OneToMany,
 } from "typeorm";
 import { LandlordModel } from "./Landloard.entity";
 import { StudentModel } from "./Student.entity";
 import { ApartmentModel } from "./Apartment.entity";
+import { PaymentScheduleModel } from "./PaymentSchedual.entity";
 
 @Entity("leases")
 export class LeaseModel {
@@ -53,7 +55,7 @@ export class LeaseModel {
   @JoinColumn({ name: "studentId" })
   student: StudentModel;
 
-  @Column({ nullable: true }) 
+  @Column({ nullable: true })
   studentId: string;
 
   @ManyToOne(() => LandlordModel, (landlord) => landlord.leases, {
@@ -63,7 +65,7 @@ export class LeaseModel {
   @JoinColumn({ name: "landlordId" })
   landlord: LandlordModel;
 
-  @Column({ nullable: true }) 
+  @Column({ nullable: true })
   landlordId: string;
 
   @ManyToOne(() => ApartmentModel, {
@@ -75,4 +77,9 @@ export class LeaseModel {
 
   @Column({ nullable: false })
   apartmentId: string;
+
+  @OneToMany(() => PaymentScheduleModel, (payment) => payment.lease, {
+    cascade: true, 
+  })
+  payments: PaymentScheduleModel[];
 }

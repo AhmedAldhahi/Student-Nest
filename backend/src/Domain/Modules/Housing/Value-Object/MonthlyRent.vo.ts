@@ -1,8 +1,6 @@
 export class MonthlyRent {
   // Public constructor allows Mappers to reconstitute data without validation
-  constructor(private value?: string | undefined) {
-    if (!value) this.value = undefined;
-  }
+  constructor(private value: string) {}
 
   public static create(value: string): MonthlyRent {
     // 1. Check if exists
@@ -31,7 +29,7 @@ export class MonthlyRent {
     return new MonthlyRent(trimmed);
   }
 
-  public getValue(): string | undefined {
-    return this.value ?? undefined;
+  public getValue(): string {
+    return this.value;
   }
 }

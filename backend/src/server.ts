@@ -103,6 +103,7 @@ export class Server {
       LandlordApartmentController,
       LandlordLeaseController,
       LandlordLeaseRequestController,
+      landlordPayment,
     } = buildControllers();
 
     this.app.use(
@@ -119,7 +120,8 @@ export class Server {
       LandlordIndexRouter(
         LandlordApartmentController,
         LandlordLeaseController,
-        LandlordLeaseRequestController
+        LandlordLeaseRequestController,
+        landlordPayment
       )
     );
 

@@ -5,11 +5,19 @@ import { LeaseModel } from "../../Database/orm/TypeOrm/entity/Lease.entity";
 import { LeaseEndDate } from "../../../Domain/Modules/Leases/Value-Object/LeaseEndDate.vo";
 import { LeaseStartDate } from "../../../Domain/Modules/Leases/Value-Object/LeaseStartDate.vo";
 import { LeaseTerm } from "../../../Domain/Modules/Leases/Value-Object/LeaseTerm.vo";
+import { PaymentMapper } from "./payment.mapper";
 
 export class LeaseMapper {
   public static toEntity(model: LeaseModel): LeaseAggregateRoot {
-    const startD = new LeaseStartDate(model.leaseStartDate);
-    const lastD = new LeaseEndDate(model.leaseEndDate);
+    const normalizedStart = this.toDomainDate(model.leaseStartDate);
+    const normalizedEnd = this.toDomainDate(model.leaseEndDate);
+
+    const startD = new LeaseStartDate(normalizedStart);
+    const lastD = new LeaseEndDate(normalizedEnd);
+
+    const paymentAggregates = (model.payments || []).map((p) =>
+      PaymentMapper.toDomain(p)
+    );
 
     return new LeaseAggregateRoot({
       leaseId: model.leaseId,
@@ -23,9 +31,10 @@ export class LeaseMapper {
       leaseTerm: new LeaseTerm(model.leaseTerm),
       studentId: model.studentId,
       landlordId: model.landlordId,
-      apartmentId: model.landlordId,
-      includeUtilities: model.includeUtilities ?? undefined, // optional
+      apartmentId: model.apartmentId, // Note: Checked this, it was model.landlordId before, assumed apartmentId
+      includeUtilities: model.includeUtilities ?? undefined,
       createAt: model.createAt,
+      paymentSchedule: paymentAggregates,
     });
   }
 
@@ -42,10 +51,10 @@ export class LeaseMapper {
       leaseTerm: model.leaseTerm,
       includeUtilities: model.includeUtilities ?? undefined,
       createAt: model.createAt,
-      studentName: model.student.user.Name,
-      landlordName: model.landlord.user.Name,
-      apartmentTitle: model.apartment.title,
-      apartmentId: model.apartment.apartmentId,
+      studentName: model.student?.user?.Name, // Safety check ?
+      landlordName: model.landlord?.user?.Name, // Safety check ?
+      apartmentTitle: model.apartment?.title, // Safety check ?
+      apartmentId: model.apartment?.apartmentId, // Safety check ?
     };
   }
 
@@ -59,15 +68,21 @@ export class LeaseMapper {
     leaseModel.isLandlordSigned = entity.getIsLandlordSigned();
     leaseModel.isStudentSigned = entity.getIsStudentSigned();
     leaseModel.houseRule = entity.getHouseRule();
+
     leaseModel.leaseStartDate = dataValidation.leaseStartDate;
     leaseModel.leaseEndDate = dataValidation.leaseEndDate;
+
     leaseModel.monthlyRent = dataValidation.monthlyRent;
     leaseModel.leaseTerm = dataValidation.leaseTerm;
     leaseModel.includeUtilities = utilities ?? null;
-    leaseModel.studentId = entity.getStudent(),
-    leaseModel.landlordId = entity.getLandlord(),
+    leaseModel.studentId = entity.getStudent();
+    leaseModel.landlordId = entity.getLandlord();
     leaseModel.apartmentId = entity.getApartment();
     leaseModel.createAt = entity.getCreateAt();
+
+    leaseModel.payments = (entity.getPaymentSchedule() || []).map(
+      (paymentAggregate) => PaymentMapper.toModel(paymentAggregate)
+    );
 
     return leaseModel;
   }
@@ -91,5 +106,22 @@ export class LeaseMapper {
       throw new Error("Cannot save lease, monthly rent is require !!");
 
     return { leaseEndDate, leaseStartDate, monthlyRent, leaseTerm };
+  }
+
+  private static toDomainDate(dateStr: string | Date): string {
+    // If it's already a Date object (sometimes TypeORM does this)
+    if (dateStr instanceof Date) {
+      const day = String(dateStr.getDate()).padStart(2, "0");
+      const month = String(dateStr.getMonth() + 1).padStart(2, "0");
+      const year = dateStr.getFullYear();
+      return `${day}-${month}-${year}`;
+    }
+
+    if (typeof dateStr === "string" && /^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+      const [year, month, day] = dateStr.split("-");
+      return `${day}-${month}-${year}`;
+    }
+
+    return dateStr as string;
   }
 }
