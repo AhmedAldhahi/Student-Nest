@@ -13,12 +13,10 @@ import { UnitOfWork } from "../../Repositories/unitOfWork.repositories";
 
 export function GetAllPaymentScheduleForSingleLeaseUC(): GetAllPaymentScheduleForSingleLeaseUseCase {
   const readUserRepo = new ReadUserRepositories();
-  const readLeaseRepo = new ReadLeaseRepositories();
   const readPaymentRepo = new ReadPaymentScheduleRepositories();
 
   const QH = new GetAllPaymentScheduleForSingleLeasesQueriesHandler(
     readUserRepo,
-    readLeaseRepo,
     readPaymentRepo
   );
 

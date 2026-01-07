@@ -16,7 +16,7 @@ export const PaymentRouter = (paymentController: PaymentController): Router => {
   );
 
   router.get(
-    "/:apartmentId/:leaseId",
+    "/:leaseId",
     isAuth,
     isLandlord,
     paymentController.getAllPaymentForSingleLeases

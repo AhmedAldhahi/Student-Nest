@@ -12,22 +12,14 @@ export class PaymentController {
   public getAllPaymentForSingleLeases = async (req: Request, res: Response) => {
     try {
       const userId = req.user?.userId;
-      const { apartmentId } = req.params;
       const { leaseId } = req.params;
 
       if (!userId)
         return res.status(400).json({ error: "no user id been found !!" });
 
-      if (!userId || !apartmentId || !leaseId) {
-        return res.status(400).json({
-          error: "Missing required parameters",
-        });
-      }
-
       const result = await this.GetAllPaymentForSingleLeases.execute(
         userId,
-        leaseId,
-        apartmentId
+        leaseId
       );
 
       return res.status(200).json(result);

@@ -6,12 +6,11 @@ export class GetAllPaymentScheduleForSingleLeaseUseCase {
     private readonly QH: GetAllPaymentScheduleForSingleLeasesQueriesHandler
   ) {}
 
-  public async execute(userId: string, leaseId: string, apartmentId: string) {
+  public async execute(userId: string, leaseId: string) {
     try {
       const queries = new GetAllPaymentScheduleForSingleLeaseQueries(
         userId,
-        leaseId,
-        apartmentId
+        leaseId
       );
 
       return await this.QH.handle(queries);
