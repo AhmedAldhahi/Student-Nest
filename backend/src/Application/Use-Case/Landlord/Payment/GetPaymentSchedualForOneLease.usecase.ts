@@ -14,7 +14,6 @@ export class GetAllPaymentScheduleForSingleLeaseUseCase {
         apartmentId
       );
 
-
       return await this.QH.handle(queries);
     } catch (error: any) {
       console.error("fail to get payment schedule !!");

@@ -104,7 +104,8 @@ export const buildControllers = () => {
 
   const landlordPayment = new PaymentController(
     useCases.GetAllPaymentScheduleForSingleLeaseUseCase,
-    useCases.GetReceiptForSinglePaymentUseCase
+    useCases.GetReceiptForSinglePaymentUseCase,
+    useCases.EditPaymentStatusUseCase
   );
 
   return {

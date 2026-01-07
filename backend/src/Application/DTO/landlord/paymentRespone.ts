@@ -1,6 +1,8 @@
+import { PaymentStatus } from "../../../Domain/Shared/Enum/PaymentStatus.enum";
+
 export interface PaymentsResponse {
   paymentId: string;
-  paymentStatus: boolean;
+  paymentStatus: PaymentStatus;
   amount: string;
   dueDate: string;
   leaseId: string;

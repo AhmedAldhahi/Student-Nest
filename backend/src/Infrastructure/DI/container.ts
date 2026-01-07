@@ -66,6 +66,7 @@ import {
 } from "./shared/auth.DI";
 import { GetAllPaymentScheduleForSingleLeaseQueries } from "../../Application/Queries/Queries/Payment/getAllPaymentSchduleForSingleLease";
 import {
+  EditPaymentStatusUC,
   GetAllPaymentScheduleForSingleLeaseUC,
   GetReceiptForPaymentUC,
 } from "./Landlord/PaymentMangement";
@@ -134,6 +135,7 @@ export function buildDependencies() {
         GetAllPaymentScheduleForSingleLeaseUC(),
 
       GetReceiptForSinglePaymentUseCase: GetReceiptForPaymentUC(),
+      EditPaymentStatusUseCase: EditPaymentStatusUC(),
     },
   };
 }

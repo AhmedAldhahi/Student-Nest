@@ -1,3 +1,4 @@
+import { PaymentStatus } from "../../../Shared/Enum/PaymentStatus.enum";
 import { MonthlyRent } from "../../Housing/Value-Object/MonthlyRent.vo";
 import { PaymentAggregateRoot } from "../../Payment/AgregateRoot/Payment.AgregateRoot";
 import { PaymentAmount } from "../../Payment/Value-Object/PaymentAmount.vo";
@@ -126,7 +127,7 @@ export class LeaseAggregateRoot {
     while (currentDueDate < endDate) {
       const newPayment = PaymentAggregateRoot.create({
         paymentId: uuidv4(),
-        paymentStatus: false,
+        paymentStatus: PaymentStatus.UnPaid,
         amount: PaymentAmount.create(rentValue),
         dueDate: currentDueDate.toISOString().split("T")[0],
         leaseId: this.leaseId,

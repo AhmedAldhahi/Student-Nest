@@ -1,14 +1,22 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+} from "typeorm";
 import { LeaseModel } from "./Lease.entity";
 import { ReceiptModel } from "./Receipt.entity";
+import { PaymentStatus } from "../../../../../Domain/Shared/Enum/PaymentStatus.enum";
 
 @Entity("PaymentSchedule")
 export class PaymentScheduleModel {
   @PrimaryColumn()
   scheduleId: string;
 
-  @Column({ type: "boolean", default: false })
-  paymentStatus: boolean;
+  @Column({ type: "enum", enum: PaymentStatus, default: PaymentStatus.UnPaid })
+  paymentStatus: PaymentStatus;
 
   @Column({ type: "varchar", nullable: false })
   amount: string;

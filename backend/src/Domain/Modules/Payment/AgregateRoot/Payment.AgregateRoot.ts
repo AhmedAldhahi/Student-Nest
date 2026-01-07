@@ -1,11 +1,12 @@
 import { AggregateRoot } from "../../../Shared/AgregateRoot/AggregateRoot";
+import { PaymentStatus } from "../../../Shared/Enum/PaymentStatus.enum";
 import { ReceiptEntity } from "../Entities/ReceiptEntities.entity";
 import { PaymentData } from "../Types/PaymentData";
 import { PaymentAmount } from "../Value-Object/PaymentAmount.vo";
 
 export class PaymentAggregateRoot extends AggregateRoot<string> {
   private paymentId: string;
-  private paymentStatus: boolean = false;
+  private paymentStatus: PaymentStatus = PaymentStatus.Pending;
   private amount: PaymentAmount;
   private dueDate: string;
   private leaseId: string;
@@ -34,15 +35,15 @@ export class PaymentAggregateRoot extends AggregateRoot<string> {
    */
 
   public acceptPayment(): void {
-    this.paymentStatus = true;
+    this.paymentStatus = PaymentStatus.Accept;
   }
 
   public rejectPayment(): void {
-    this.paymentStatus = false;
+    this.paymentStatus = PaymentStatus.Reject;
   }
 
   public addReceipt(receipt: ReceiptEntity) {
-    if (this.getPaymentStatus() === true) {
+    if (this.getPaymentStatus() === PaymentStatus.Accept) {
       throw new Error("Cannot upload receipt for an already accepted payment.");
     }
 
@@ -63,7 +64,7 @@ export class PaymentAggregateRoot extends AggregateRoot<string> {
     return this.paymentReceipt;
   }
 
-  public getPaymentStatus(): boolean {
+  public getPaymentStatus(): PaymentStatus {
     return this.paymentStatus;
   }
 

@@ -1,10 +1,12 @@
 import { GetAllPaymentScheduleForSingleLeaseUseCase } from "../../../../Application/Use-Case/Landlord/Payment/GetPaymentSchedualForOneLease.usecase";
 import { Request, Response } from "express";
 import { GetReceiptForOnePaymentUseCase } from "../../../../Application/Use-Case/Landlord/Payment/GetReceiptForOnePayment.usecase";
+import { EditPaymentStatusUseCase } from "../../../../Application/Use-Case/Landlord/Payment/EditPaymentStatus.usecase";
 export class PaymentController {
   constructor(
     private readonly GetAllPaymentForSingleLeases: GetAllPaymentScheduleForSingleLeaseUseCase,
-    private readonly GetReceiptForSinglePayment: GetReceiptForOnePaymentUseCase
+    private readonly GetReceiptForSinglePayment: GetReceiptForOnePaymentUseCase,
+    private readonly EditPaymentStatusUC: EditPaymentStatusUseCase
   ) {}
 
   public getAllPaymentForSingleLeases = async (req: Request, res: Response) => {
@@ -55,6 +57,31 @@ export class PaymentController {
       return res
         .status(400)
         .json({ error: error.message || "internal server error" });
+    }
+  };
+
+  public editPaymentStatus = async (req: Request, res: Response) => {
+    try {
+      const userId = req.user?.userId;
+      const { leaseId } = req.params;
+      const { paymentId } = req.params;
+      const dto = req.body.status;
+
+      if (!userId)
+        return res.status(400).json({ error: "no user id been found !!" });
+
+      const result = await this.EditPaymentStatusUC.execute(
+        userId,
+        leaseId,
+        paymentId,
+        dto
+      );
+
+      return res.status(200).json(result);
+    } catch (error: any) {
+      return res
+        .status(200)
+        .json({ error: error.message || "internal server Error" });
     }
   };
 }

@@ -3,7 +3,7 @@ import { IUnitOfWork } from "../../Domain/Shared/Repositories/UnitOfWorkReposito
 import { AppDataSource } from "../Database/orm/TypeOrm/data-source";
 
 import { IWriteLeaseRequestRepo } from "../../Domain/Modules/Leases/Repositories/Write/WriteLeaseRequestRepositories.repostitores";
-import { WriteLeastRequestRepositories } from "./Write/WriteLeaseRequestRepo.repostiories"; 
+import { WriteLeastRequestRepositories } from "./Write/WriteLeaseRequestRepo.repostiories";
 import { IWriteAuditLogRepositories } from "../../Domain/Modules/adminstration/Entities/IWriteAuditLogRepo.repositories";
 import { IWriteApartmentDocumentRepo } from "../../Domain/Modules/Housing/Repositories/Write/IWriteApartmentDocumentRepositoires.repositories";
 import { IWriteApartmentRepo } from "../../Domain/Modules/Housing/Repositories/Write/IWriteApartmentRepositories.repositories";
@@ -18,6 +18,8 @@ import { WriteLandlordRepositories } from "./Write/WriteLandlordRepositories";
 import { WriteNotificationRepositories } from "./Write/WriteNotificationRepositories";
 import { WriteStudentRepositories } from "./Write/WriteStudentRepositories";
 import { WriteUserRepositories } from "./Write/WriteUserRepositories";
+import { IWritePaymentScheduleRepo } from "../../Domain/Modules/Payment/Repositories/WritePaymentSchedualRepositories";
+import { WritePaymentScheduleRepositories } from "./Write/WritePaymentSchedulRepositories";
 
 export class UnitOfWork implements IUnitOfWork {
   private queryRunner: QueryRunner | null = null;
@@ -30,8 +32,8 @@ export class UnitOfWork implements IUnitOfWork {
   public writeApartmentRepo!: IWriteApartmentRepo;
   public writeApartmentDocumentRepo!: IWriteApartmentDocumentRepo;
   public writeAuditLogRepo!: IWriteAuditLogRepositories;
-  
-  public writeLeaseRequestRepo!: IWriteLeaseRequestRepo; 
+  public writeLeaseRequestRepo!: IWriteLeaseRequestRepo;
+  public writePaymentScheduleRepo!: IWritePaymentScheduleRepo;
 
   async startTransaction(): Promise<void> {
     this.queryRunner = AppDataSource.getInstance().createQueryRunner();
@@ -46,9 +48,13 @@ export class UnitOfWork implements IUnitOfWork {
     this.writeLandlordRepo = new WriteLandlordRepositories(manager);
     this.writeNotificationRepo = new WriteNotificationRepositories(manager);
     this.writeApartmentRepo = new WriteApartmentsRepositories(manager);
-    this.writeApartmentDocumentRepo = new WriteApartmentDocumentRepositories(manager);
+    this.writeApartmentDocumentRepo = new WriteApartmentDocumentRepositories(
+      manager
+    );
     this.writeAuditLogRepo = new WriteAuditLogRepositories(manager);
-    
+    this.writePaymentScheduleRepo = new WritePaymentScheduleRepositories(
+      manager
+    );
     this.writeLeaseRequestRepo = new WriteLeastRequestRepositories(manager);
   }
 

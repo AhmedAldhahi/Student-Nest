@@ -1,8 +1,10 @@
 import { AggregateRoot } from "../../../Shared/AgregateRoot/AggregateRoot";
 import { LeaseRequestStatus } from "../../../Shared/Enum/LeaseRequestStatus.enum";
+import { PaymentStatus } from "../../../Shared/Enum/PaymentStatus.enum";
 import { GovernmentID } from "../../../Shared/Value-Object/UserGovId.vo";
 import { VerificationDocument } from "../../../Shared/Value-Object/VerficationDocument.vo";
 import { LeaseRequestEntity } from "../../Leases/Entities/leaseRequestEntity.entity";
+import { PaymentAggregateRoot } from "../../Payment/AgregateRoot/Payment.AgregateRoot";
 import { ApartmentDocumentEntity } from "../Entities/apartmentDocumentEntity.entity";
 import { ILandlordData } from "../Types/ILandlordData.type";
 import { ApartmentAggregateRoot } from "./apartmentEntity.entity";
@@ -88,6 +90,25 @@ export class LandlordAggregateRoot extends AggregateRoot<string> {
 
     if (status === LeaseRequestStatus.Reject) {
       leaseRequest.reject();
+    }
+  }
+
+  public updatePaymentScheduleStatus(
+    paymentSchedule: PaymentAggregateRoot,
+    status: PaymentStatus
+  ) {
+    if (paymentSchedule.getPaymentStatus() === PaymentStatus.Accept) {
+      throw new Error(
+        "cannot update payment verified status, that been accepted !!"
+      );
+    }
+
+    if (status === PaymentStatus.Accept) {
+      paymentSchedule.acceptPayment();
+    }
+
+    if (status === PaymentStatus.Reject) {
+      paymentSchedule.rejectPayment();
     }
   }
 
