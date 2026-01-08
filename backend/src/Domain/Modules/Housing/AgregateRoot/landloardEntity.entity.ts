@@ -102,9 +102,9 @@ export class LandlordAggregateRoot extends AggregateRoot<string> {
   ): void {
     // 1. Validation: Prevent changing a payment that is already "Paid/Accepted"
 
-    // if (paymentSchedule.getPaymentStatus() === PaymentStatus.Paid) {
-    //   throw new Error("Accepted payment cannot be modified.");
-    // }
+    if (paymentSchedule.getPaymentStatus() === PaymentStatus.Paid) {
+      throw new Error("Accepted payment cannot be modified.");
+    }
 
     switch (status) {
       case VerifiedLandlordStatus.Accept:
