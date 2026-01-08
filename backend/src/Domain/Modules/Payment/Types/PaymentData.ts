@@ -8,5 +8,5 @@ export interface PaymentData {
   amount: PaymentAmount;
   dueDate: string;
   leaseId: string;
-  paymentReceipt?: ReceiptEntity[];
+  paymentReceipt: ReceiptEntity | null;
 }

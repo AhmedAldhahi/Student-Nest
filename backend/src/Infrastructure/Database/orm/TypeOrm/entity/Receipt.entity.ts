@@ -4,6 +4,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryColumn,
 } from "typeorm";
 import { PaymentScheduleModel } from "./PaymentSchedual.entity";
@@ -30,9 +31,9 @@ export class ReceiptModel {
   @Column({ nullable: false })
   scheduleId: string;
 
-  @ManyToOne(() => PaymentScheduleModel, (payment) => payment.receipts, {
+  @OneToOne(() => PaymentScheduleModel, (payment) => payment.receipt, {
     onDelete: "CASCADE",
   })
-  @JoinColumn({ name: "scheduleId" })
+  @JoinColumn({ name: "scheduleId" }) 
   payment: PaymentScheduleModel;
 }

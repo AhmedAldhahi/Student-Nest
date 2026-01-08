@@ -7,17 +7,15 @@ export class PaymentMapper {
   public static toDomain(model: PaymentScheduleModel): PaymentAggregateRoot {
     const amountVO = PaymentAmount.create(model.amount);
 
-    const receiptEntities = (model.receipts || []).map((receiptModel) =>
-      ReceiptMapper.toDomain(receiptModel)
-    );
-
     return new PaymentAggregateRoot({
       paymentId: model.scheduleId,
       paymentStatus: model.paymentStatus,
       amount: amountVO,
       dueDate: model.dueDate.toString(),
       leaseId: model.leaseId,
-      paymentReceipt: receiptEntities,
+      paymentReceipt: model.receipt
+        ? ReceiptMapper.toDomain(model.receipt)
+        : null,
     });
   }
 
@@ -30,9 +28,8 @@ export class PaymentMapper {
     model.dueDate = domain.getDueDate();
     model.leaseId = domain.getLeaseId();
 
-    model.receipts = domain
-      .getReceipt()
-      .map((receiptEntity) => ReceiptMapper.toModel(receiptEntity));
+    const receiptEntity = domain.getReceipt();
+    model.receipt = receiptEntity ? ReceiptMapper.toModel(receiptEntity) : null;
 
     return model;
   }
@@ -44,6 +41,7 @@ export class PaymentMapper {
       amount: model.amount,
       dueDate: model.dueDate,
       leaseId: model.leaseId,
+      verifiedByLandlord: model.receipt?.verifiedByLandlord,
     };
   }
 }

@@ -131,7 +131,7 @@ export class LeaseAggregateRoot {
         amount: PaymentAmount.create(rentValue),
         dueDate: currentDueDate.toISOString().split("T")[0],
         leaseId: this.leaseId,
-        paymentReceipt: [],
+        paymentReceipt: null,
       });
 
       schedules.push(newPayment);

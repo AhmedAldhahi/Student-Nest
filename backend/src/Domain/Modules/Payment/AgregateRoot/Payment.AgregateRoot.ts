@@ -10,7 +10,7 @@ export class PaymentAggregateRoot extends AggregateRoot<string> {
   private amount: PaymentAmount;
   private dueDate: string;
   private leaseId: string;
-  private paymentReceipt: ReceiptEntity[];
+  private paymentReceipt: ReceiptEntity | null;
 
   constructor(Data: PaymentData) {
     super();
@@ -19,7 +19,7 @@ export class PaymentAggregateRoot extends AggregateRoot<string> {
     this.amount = Data.amount;
     this.dueDate = Data.dueDate;
     this.leaseId = Data.leaseId;
-    this.paymentReceipt = Data.paymentReceipt || [];
+    this.paymentReceipt = Data.paymentReceipt;
   }
 
   // factory method
@@ -47,7 +47,7 @@ export class PaymentAggregateRoot extends AggregateRoot<string> {
       throw new Error("Cannot upload receipt for an already accepted payment.");
     }
 
-    this.paymentReceipt.push(receipt);
+    this.paymentReceipt = receipt;
   }
 
   /**

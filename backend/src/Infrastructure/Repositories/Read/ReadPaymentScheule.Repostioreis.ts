@@ -30,7 +30,7 @@ export class ReadPaymentScheduleRepositories
             scheduleId: In(paymentIds),
           },
           relations: {
-            receipts: true,
+            receipt: true,
             lease: true,
           },
           order: {
@@ -68,7 +68,7 @@ export class ReadPaymentScheduleRepositories
             },
           },
           relations: {
-            receipts: true,
+            receipt: true,
             lease: true,
           },
         });
@@ -97,7 +97,7 @@ export class ReadPaymentScheduleRepositories
             },
           },
           relations: {
-            receipts: true,
+            receipt: true,
             lease: true,
           },
           order: {

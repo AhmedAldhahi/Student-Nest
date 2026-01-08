@@ -4,6 +4,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryColumn,
 } from "typeorm";
 import { LeaseModel } from "./Lease.entity";
@@ -34,9 +35,10 @@ export class PaymentScheduleModel {
   @JoinColumn({ name: "leaseId" })
   lease: LeaseModel;
 
-  @OneToMany(() => ReceiptModel, (receipt) => receipt.payment, {
+  @OneToOne(() => ReceiptModel, (receipt) => receipt.payment, {
     cascade: true,
     eager: true,
+    nullable: true, 
   })
-  receipts: ReceiptModel[];
+  receipt: ReceiptModel | null;
 }
