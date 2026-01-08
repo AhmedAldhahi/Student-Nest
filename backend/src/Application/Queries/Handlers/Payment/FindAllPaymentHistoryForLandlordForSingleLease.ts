@@ -2,14 +2,14 @@ import { IReadUserRepositories } from "../../../../Domain/Modules/Identity/Repos
 import { IReadPaymentScheduleRepo } from "../../../../Domain/Modules/Payment/Repositories/ReadPaymentSchedualRepo.repostiores";
 import { IQueriesHandlers } from "../../IQueriesHandlers";
 import { FindAllPaymentHistoryForLeaseThatPaidQueries } from "../../Queries/Payment/FindAllPaymentHistoryForLeaseThatPaidForLandlord";
-import { PaymentStatus } from "../../../../Domain/Shared/Enum/PaymentStatus.enum"; 
+import { PaymentStatus } from "../../../../Domain/Shared/Enum/PaymentStatus.enum";
 
 export class FindAllPaymentHistoryForLandlordQueriesHandler
   implements IQueriesHandlers<FindAllPaymentHistoryForLeaseThatPaidQueries>
 {
   constructor(
     private readonly readUserRepo: IReadUserRepositories,
-    private readonly readPaymentRepo: IReadPaymentScheduleRepo,
+    private readonly readPaymentRepo: IReadPaymentScheduleRepo
   ) {}
 
   public async handle(
@@ -33,7 +33,7 @@ export class FindAllPaymentHistoryForLandlordQueriesHandler
       }
 
       const paidPaymentIds = allPayments
-        .filter((p) => p.paymentStatus === PaymentStatus.Accept) 
+        .filter((p) => p.paymentStatus === PaymentStatus.Paid)
         .map((p) => p.paymentId);
 
       if (paidPaymentIds.length === 0) {
@@ -47,7 +47,6 @@ export class FindAllPaymentHistoryForLandlordQueriesHandler
       );
 
       return result;
-
     } catch (error: any) {
       console.error("Error fetching payment history:", error);
       throw new Error(error.message || "Failed to fetch payment history.");

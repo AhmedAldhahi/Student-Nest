@@ -1,6 +1,8 @@
+import { VerifiedLandlordStatus } from "../../../Shared/Enum/VerfiedLandlordStatus.enum";
+
 export interface ReceiptData {
   receiptId: string;
-  verifiedByLandlord: boolean;
+  verifiedByLandlord: VerifiedLandlordStatus;
   ReceiptUrl: string;
   createAt: Date;
   scheduleId: string;

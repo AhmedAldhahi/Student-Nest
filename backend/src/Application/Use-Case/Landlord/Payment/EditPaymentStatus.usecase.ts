@@ -1,4 +1,5 @@
 import { PaymentStatus } from "../../../../Domain/Shared/Enum/PaymentStatus.enum";
+import { VerifiedLandlordStatus } from "../../../../Domain/Shared/Enum/VerfiedLandlordStatus.enum";
 import { EditStatusOfPaymentCommand } from "../../../Command/Commands/Payment/EditStatusOfPaymentCommand";
 import { EditStatusOfPaymentCommandHandler } from "../../../Command/Handlers/Payment/EditStatusOfPaymentCommandHandler";
 
@@ -9,7 +10,7 @@ export class EditPaymentStatusUseCase {
     userId: string,
     leaseId: string,
     paymentId: string,
-    status: PaymentStatus
+    status: VerifiedLandlordStatus
   ) {
     try {
       const command = new EditStatusOfPaymentCommand(

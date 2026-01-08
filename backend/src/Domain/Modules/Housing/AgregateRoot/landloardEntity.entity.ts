@@ -1,10 +1,12 @@
 import { AggregateRoot } from "../../../Shared/AgregateRoot/AggregateRoot";
 import { LeaseRequestStatus } from "../../../Shared/Enum/LeaseRequestStatus.enum";
 import { PaymentStatus } from "../../../Shared/Enum/PaymentStatus.enum";
+import { VerifiedLandlordStatus } from "../../../Shared/Enum/VerfiedLandlordStatus.enum";
 import { GovernmentID } from "../../../Shared/Value-Object/UserGovId.vo";
 import { VerificationDocument } from "../../../Shared/Value-Object/VerficationDocument.vo";
 import { LeaseRequestEntity } from "../../Leases/Entities/leaseRequestEntity.entity";
 import { PaymentAggregateRoot } from "../../Payment/AgregateRoot/Payment.AgregateRoot";
+import { ReceiptEntity } from "../../Payment/Entities/ReceiptEntities.entity";
 import { ApartmentDocumentEntity } from "../Entities/apartmentDocumentEntity.entity";
 import { ILandlordData } from "../Types/ILandlordData.type";
 import { ApartmentAggregateRoot } from "./apartmentEntity.entity";
@@ -95,20 +97,33 @@ export class LandlordAggregateRoot extends AggregateRoot<string> {
 
   public updatePaymentScheduleStatus(
     paymentSchedule: PaymentAggregateRoot,
-    status: PaymentStatus
-  ) {
-    if (paymentSchedule.getPaymentStatus() === PaymentStatus.Accept) {
-      throw new Error(
-        "cannot update payment verified status, that been accepted !!"
-      );
+    receipt: ReceiptEntity,
+    status: VerifiedLandlordStatus
+  ): void {
+    // 1. Validation: Prevent changing a payment that is already "Paid/Accepted"
+
+    if (paymentSchedule.getPaymentStatus() === PaymentStatus.Paid) {
+      throw new Error("Accepted payment cannot be modified.");
     }
 
-    if (status === PaymentStatus.Accept) {
-      paymentSchedule.acceptPayment();
-    }
+    switch (status) {
+      case VerifiedLandlordStatus.Accept:
+        receipt.markAsVerified();
 
-    if (status === PaymentStatus.Reject) {
-      paymentSchedule.rejectPayment();
+        paymentSchedule.acceptPayment();
+        break;
+
+      case VerifiedLandlordStatus.Reject:
+        receipt.markAsNotVerified();
+
+        paymentSchedule.rejectPayment();
+        break;
+
+      case VerifiedLandlordStatus.Pending:
+        break;
+
+      default:
+        throw new Error("Invalid verification status provided.");
     }
   }
 

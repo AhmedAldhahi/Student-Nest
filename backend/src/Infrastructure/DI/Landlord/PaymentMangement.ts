@@ -48,13 +48,15 @@ export function EditPaymentStatusUC(): EditPaymentStatusUseCase {
   const readLandlordRepo = new ReadLandlordRepositories();
   const readLeaseRepo = new ReadLeaseRepositories();
   const readPaymentRepo = new ReadPaymentScheduleRepositories();
+  const readReceiptRepo = new ReadPaymentReceiptRepositories();
 
   const CH = new EditStatusOfPaymentCommandHandler(
     uow,
     readUserRepo,
     readLandlordRepo,
     readPaymentRepo,
-    readLeaseRepo
+    readLeaseRepo,
+    readReceiptRepo
   );
 
   return new EditPaymentStatusUseCase(CH);

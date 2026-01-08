@@ -16,7 +16,7 @@ export class WritePaymentScheduleRepositories
       await this.manger.save(repo);
     } catch (error: any) {
       console.error("Error updating payment schedule:", error);
-      throw new Error("Failed to update payment status.");
+      throw new Error("Failed to update payment .");
     }
   }
 }

@@ -7,6 +7,7 @@ import { IWriteAuditLogRepositories } from "../../Modules/adminstration/Entities
 import { IWriteLandlordRepositories } from "../../Modules/Housing/Repositories/Write/WriteLandlordRepositories.repositories";
 import { IWriteLeaseRequestRepo } from "../../Modules/Leases/Repositories/Write/WriteLeaseRequestRepositories.repostitores";
 import { IWritePaymentScheduleRepo } from "../../Modules/Payment/Repositories/WritePaymentSchedualRepositories";
+import { IWriteReceiptRepo } from "../../Modules/Payment/Repositories/writeReceiptRepo.Repositories";
 
 export interface IUnitOfWork {
   // cqrs
@@ -19,6 +20,7 @@ export interface IUnitOfWork {
   writeAuditLogRepo: IWriteAuditLogRepositories;
   writeLeaseRequestRepo: IWriteLeaseRequestRepo;
   writePaymentScheduleRepo: IWritePaymentScheduleRepo;
+  writePaymentReceiptRepo: IWriteReceiptRepo;
 
   startTransaction(): Promise<void>;
 

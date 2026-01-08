@@ -20,6 +20,8 @@ import { WriteStudentRepositories } from "./Write/WriteStudentRepositories";
 import { WriteUserRepositories } from "./Write/WriteUserRepositories";
 import { IWritePaymentScheduleRepo } from "../../Domain/Modules/Payment/Repositories/WritePaymentSchedualRepositories";
 import { WritePaymentScheduleRepositories } from "./Write/WritePaymentSchedulRepositories";
+import { IWriteReceiptRepo } from "../../Domain/Modules/Payment/Repositories/writeReceiptRepo.Repositories";
+import { PaymentReceiptRepositories } from "./Write/WritePaymentRecipt.repositories";
 
 export class UnitOfWork implements IUnitOfWork {
   private queryRunner: QueryRunner | null = null;
@@ -34,6 +36,7 @@ export class UnitOfWork implements IUnitOfWork {
   public writeAuditLogRepo!: IWriteAuditLogRepositories;
   public writeLeaseRequestRepo!: IWriteLeaseRequestRepo;
   public writePaymentScheduleRepo!: IWritePaymentScheduleRepo;
+  public writePaymentReceiptRepo!: IWriteReceiptRepo;
 
   async startTransaction(): Promise<void> {
     this.queryRunner = AppDataSource.getInstance().createQueryRunner();
@@ -56,6 +59,7 @@ export class UnitOfWork implements IUnitOfWork {
       manager
     );
     this.writeLeaseRequestRepo = new WriteLeastRequestRepositories(manager);
+    this.writePaymentReceiptRepo = new PaymentReceiptRepositories(manager);
   }
 
   async commitTransaction(): Promise<void> {

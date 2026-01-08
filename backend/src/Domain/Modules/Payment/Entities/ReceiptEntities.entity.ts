@@ -1,8 +1,10 @@
+import { VerifiedLandlordStatus } from "../../../Shared/Enum/VerfiedLandlordStatus.enum";
 import { ReceiptData } from "../Types/ReceipData";
 
 export class ReceiptEntity {
   private receiptId: string;
-  private verifiedByLandlord: boolean;
+  private verifiedByLandlord: VerifiedLandlordStatus =
+    VerifiedLandlordStatus.Pending;
   private ReceiptUrl: string;
   private createAt: Date;
   private scheduleId: string;
@@ -22,7 +24,12 @@ export class ReceiptEntity {
    */
 
   public markAsVerified(): void {
-    this.verifiedByLandlord = true;
+    this.verifiedByLandlord = VerifiedLandlordStatus.Accept;
+    this.createAt = new Date();
+  }
+
+  public markAsNotVerified(): void {
+    this.verifiedByLandlord = VerifiedLandlordStatus.Reject;
     this.createAt = new Date();
   }
 
@@ -48,8 +55,6 @@ export class ReceiptEntity {
   public getVerifiedByLandlord() {
     return this.verifiedByLandlord;
   }
-
-
 
   public getReceiptUrl(): string {
     return this.ReceiptUrl;

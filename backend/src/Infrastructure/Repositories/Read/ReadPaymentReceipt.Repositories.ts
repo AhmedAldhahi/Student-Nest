@@ -5,6 +5,41 @@ import { ReceiptModel } from "../../Database/orm/TypeOrm/entity/Receipt.entity";
 import { ReceiptMapper } from "../mapper/receipt.mapper";
 
 export class ReadPaymentReceiptRepositories implements IReadReceiptPaymentRepo {
+  
+  public async findAllReceiptForPaymentScheduleForOneReceiptById(
+    userId: string,
+    receiptId: string
+  ): Promise<ReceiptEntity[] | null> {
+    try {
+      const receiptModels = await AppDataSource.getInstance()
+        .getRepository(ReceiptModel)
+        .find({
+          where: {
+            receiptId: receiptId,
+            payment: {
+              lease: {
+                landlordId: userId,
+              },
+            },
+          },
+          relations: {
+            payment: {
+              lease: true,
+            },
+          },
+        });
+
+      if (!receiptModels || receiptModels.length === 0) {
+        return [];
+      }
+
+      return receiptModels.map((orm) => ReceiptMapper.toDomain(orm));
+    } catch (error: any) {
+      console.error("Failed to find specific receipt:", error);
+      throw new Error("Unable to retrieve receipt.");
+    }
+  }
+
   public async findAllReceiptForPaymentScheduleById(
     userId: string,
     paymentId: string

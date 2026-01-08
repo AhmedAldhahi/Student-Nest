@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { PaymentStatus } from "../../../../Domain/Shared/Enum/PaymentStatus.enum";
+import { VerifiedLandlordStatus } from "../../../../Domain/Shared/Enum/VerfiedLandlordStatus.enum";
 
 export const UpdatePaymentStatus = z
   .object({
-    status: z.enum(PaymentStatus),
+    status: z.enum(VerifiedLandlordStatus),
   })
   .strict();

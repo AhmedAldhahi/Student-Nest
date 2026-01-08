@@ -1,17 +1,17 @@
-import { PaymentStatus } from "../../../../Domain/Shared/Enum/PaymentStatus.enum";
+import { VerifiedLandlordStatus } from "../../../../Domain/Shared/Enum/VerfiedLandlordStatus.enum";
 import { ICommand } from "../../ICommand";
 
 export class EditStatusOfPaymentCommand implements ICommand {
   public userId: string;
   public leaseId: string;
   public paymentId: string;
-  public status: PaymentStatus;
+  public status: VerifiedLandlordStatus;
 
   constructor(
     userId: string,
     leaseId: string,
     paymentId: string,
-    status: PaymentStatus
+    status: VerifiedLandlordStatus
   ) {
     this.userId = userId;
     this.leaseId = leaseId;

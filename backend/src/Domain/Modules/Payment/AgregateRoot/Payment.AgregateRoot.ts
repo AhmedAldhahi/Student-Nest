@@ -6,7 +6,7 @@ import { PaymentAmount } from "../Value-Object/PaymentAmount.vo";
 
 export class PaymentAggregateRoot extends AggregateRoot<string> {
   private paymentId: string;
-  private paymentStatus: PaymentStatus = PaymentStatus.Pending;
+  private paymentStatus: PaymentStatus = PaymentStatus.UnPaid;
   private amount: PaymentAmount;
   private dueDate: string;
   private leaseId: string;
@@ -35,15 +35,15 @@ export class PaymentAggregateRoot extends AggregateRoot<string> {
    */
 
   public acceptPayment(): void {
-    this.paymentStatus = PaymentStatus.Accept;
+    this.paymentStatus = PaymentStatus.Paid;
   }
 
   public rejectPayment(): void {
-    this.paymentStatus = PaymentStatus.Reject;
+    this.paymentStatus = PaymentStatus.UnPaid;
   }
 
   public addReceipt(receipt: ReceiptEntity) {
-    if (this.getPaymentStatus() === PaymentStatus.Accept) {
+    if (this.getPaymentStatus() === PaymentStatus.Paid) {
       throw new Error("Cannot upload receipt for an already accepted payment.");
     }
 
