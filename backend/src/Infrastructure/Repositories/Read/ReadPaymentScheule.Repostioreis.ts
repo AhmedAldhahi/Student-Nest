@@ -4,6 +4,7 @@ import { IReadPaymentScheduleRepo } from "../../../Domain/Modules/Payment/Reposi
 import { PaymentMapper } from "../mapper/payment.mapper";
 import { PaymentsResponse } from "../../../Application/DTO/landlord/paymentRespone";
 import { PaymentAggregateRoot } from "../../../Domain/Modules/Payment/AgregateRoot/Payment.AgregateRoot";
+import { In } from "typeorm";
 
 export class ReadPaymentScheduleRepositories
   implements IReadPaymentScheduleRepo
@@ -11,9 +12,43 @@ export class ReadPaymentScheduleRepositories
   public async FindAllPaymentAsArray(
     userId: string,
     leaseId: string,
-    paymentId: string[]
+    paymentIds: string[] // Changed name slightly for clarity, matches interface logic
   ): Promise<PaymentsResponse[] | null> {
-    throw new Error("Method not implemented.");
+    try {
+      if (!paymentIds || paymentIds.length === 0) {
+        return [];
+      }
+
+      const paymentModels = await AppDataSource.getInstance()
+        .getRepository(PaymentScheduleModel)
+        .find({
+          where: {
+            leaseId: leaseId,
+            lease: {
+              landlordId: userId,
+            },
+            scheduleId: In(paymentIds),
+          },
+          relations: {
+            receipts: true,
+            lease: true,
+          },
+          order: {
+            dueDate: "ASC",
+          },
+        });
+
+      if (!paymentModels || paymentModels.length === 0) {
+        return [];
+      }
+
+      return paymentModels.map((orm) => {
+        return PaymentMapper.toResponse(orm);
+      });
+    } catch (error: any) {
+      console.error("Failed to find batch payment schedules:", error);
+      throw new Error("Unable to retrieve specific payment schedules.");
+    }
   }
 
   public async FindPaymentScheduleById(

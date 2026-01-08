@@ -67,9 +67,11 @@ import {
 import { GetAllPaymentScheduleForSingleLeaseQueries } from "../../Application/Queries/Queries/Payment/getAllPaymentSchduleForSingleLease";
 import {
   EditPaymentStatusUC,
+  GetAllPaidPaymentUc,
   GetAllPaymentScheduleForSingleLeaseUC,
   GetReceiptForPaymentUC,
 } from "./Landlord/PaymentMangement";
+import { GetPaymentThatPaidUseCase } from "../../Application/Use-Case/Landlord/Payment/GetPaymentThatPaid.usecase";
 
 export function buildDependencies() {
   return {
@@ -136,6 +138,8 @@ export function buildDependencies() {
 
       GetReceiptForSinglePaymentUseCase: GetReceiptForPaymentUC(),
       EditPaymentStatusUseCase: EditPaymentStatusUC(),
+
+      GetPaymentThatPaidUseCase: GetAllPaidPaymentUc(),
     },
   };
 }

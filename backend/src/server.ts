@@ -17,6 +17,7 @@ import { ApartmentSharedRouter } from "./Presentation/http/routes/shared/apartme
 import { AdminIndexRouter } from "./Presentation/http/routes/admin/index.router";
 import { SharedIndexRouter } from "./Presentation/http/routes/shared/index.router";
 import { LandlordIndexRouter } from "./Presentation/http/routes/Landlord/index.router";
+import { PaymentController } from "./Presentation/http/controllers/Landlord/PaymentMangement.controller";
 export class Server {
   public app = express();
   public port = parseInt(process.env.PORT || "4000", 10);
@@ -131,7 +132,8 @@ export class Server {
         adminApartmentController,
         adminLeaseRequestManagementController,
         adminLeaseManagementController,
-        adminNotificationController
+        adminNotificationController,
+        landlordPayment
       )
     );
 

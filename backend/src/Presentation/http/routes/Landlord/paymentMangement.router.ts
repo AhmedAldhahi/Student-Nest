@@ -30,5 +30,12 @@ export const PaymentRouter = (paymentController: PaymentController): Router => {
     paymentController.editPaymentStatus
   );
 
+  router.get(
+    "lease/:leaseId/history",
+    isAuth,
+    isLandlord,
+    paymentController.GetPaidPaymentSchedule
+  );
+
   return router;
 };

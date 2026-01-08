@@ -1,8 +1,13 @@
 import { EditStatusOfPaymentCommandHandler } from "../../../Application/Command/Handlers/Payment/EditStatusOfPaymentCommandHandler";
+import { FindAllPaymentHistoryForLandlordQueriesHandler } from "../../../Application/Queries/Handlers/Payment/FindAllPaymentHistoryForLandlordForSingleLease";
 import { GetAllPaymentScheduleForSingleLeasesQueriesHandler } from "../../../Application/Queries/Handlers/Payment/GetAllPaymentScheduleForSingleLeasesQueriesHandler";
 import { GetReceiptForSinglePaymentQueriesHandler } from "../../../Application/Queries/Handlers/Payment/GetReceiptForSinglePaymentQueriesHandler";
+import { LandlordPaymentStrategy } from "../../../Application/Strategy/Payment/LandlordPayment.strategy";
+import { PaymentContext } from "../../../Application/Strategy/Payment/PaymentContext";
+import { StudentPaymentStrategy } from "../../../Application/Strategy/Payment/StudentPayment.strategy";
 import { EditPaymentStatusUseCase } from "../../../Application/Use-Case/Landlord/Payment/EditPaymentStatus.usecase";
 import { GetAllPaymentScheduleForSingleLeaseUseCase } from "../../../Application/Use-Case/Landlord/Payment/GetPaymentSchedualForOneLease.usecase";
+import { GetPaymentThatPaidUseCase } from "../../../Application/Use-Case/Landlord/Payment/GetPaymentThatPaid.usecase";
 import { GetReceiptForOnePaymentUseCase } from "../../../Application/Use-Case/Landlord/Payment/GetReceiptForOnePayment.usecase";
 import { ReadLandlordRepositories } from "../../Repositories/Read/ReadLandlordRepositories";
 import { ReadLeaseRepositories } from "../../Repositories/Read/ReadLeaseRepositories";
@@ -53,4 +58,24 @@ export function EditPaymentStatusUC(): EditPaymentStatusUseCase {
   );
 
   return new EditPaymentStatusUseCase(CH);
+}
+
+export function GetAllPaidPaymentUc(): GetPaymentThatPaidUseCase {
+  const readUserRepo = new ReadUserRepositories();
+  const paymentRepo = new ReadPaymentScheduleRepositories();
+
+  const GetPaidPaymentForLandlordQH =
+    new FindAllPaymentHistoryForLandlordQueriesHandler(
+      readUserRepo,
+      paymentRepo
+    );
+
+  const LandlordStrategy = new LandlordPaymentStrategy(
+    GetPaidPaymentForLandlordQH
+  );
+  const StudentStrategy = new StudentPaymentStrategy();
+
+  const paymentContext = new PaymentContext(LandlordStrategy, StudentStrategy);
+
+  return new GetPaymentThatPaidUseCase(paymentContext, readUserRepo);
 }
