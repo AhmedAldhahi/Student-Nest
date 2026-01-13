@@ -26,21 +26,12 @@ export class deleteApartmentByIdCommandHandler
       const photos = apartment.getApartmentPhotoDocument();
 
       if (files) {
-        for (let i: number = 0; i < files.length; i++) {
-          try {
-            await this.fileService.deleteImageFromCloudinary(
-              files[i].getDocumentUrl()
-            );
-          } catch (error: any) {
-            // CHANGE: Just log the error, do NOT throw it.
-            // This ensures the loop finishes and we move on to DB deletion.
-            console.error(
-              `Failed to delete image: ${files[
-                i
-              ].getDocumentUrl()}. Proceeding anyway...`,
-              error.message
-            );
-          }
+        try {
+          await this.fileService.deleteImageFromCloudinary(
+            files.getDocumentUrl()
+          );
+        } catch (imageError: any) {
+          console.error("file service cloudinary fails ,", imageError);
         }
       }
 
@@ -65,7 +56,10 @@ export class deleteApartmentByIdCommandHandler
 
       // The code reaches here even if Cloudinary fails
       await this.uow.startTransaction();
-      await this.uow.writeApartmentRepo.deleteApartmentById(command.id);
+      await this.uow.writeApartmentRepo.deleteApartmentById(
+        command.id,
+        command.userId
+      );
       await this.uow.commitTransaction();
     } catch (error: any) {
       // This catch block now only handles Database errors

@@ -10,6 +10,10 @@ import { VerificationController } from "./Verification.controller";
 import { AuditLogController } from "./admin/auditLogManagement.controller";
 import { LeaseManagementController } from "./admin/leaseManagement.controller";
 import { ApartmentController } from "./Landlord/ApartmentMangement.controller";
+import { LeaseManagement } from "./Landlord/LeaseMangement.controller";
+import { LeaseRequestContext } from "../../../Application/Strategy/leaseRequest/LeaseRequestContext";
+import { LeastRequestController } from "./Landlord/LeastRequestMangement.controller";
+import { PaymentController } from "./Landlord/PaymentMangement.controller";
 
 export const buildControllers = () => {
   const { useCases } = buildDependencies();
@@ -76,13 +80,33 @@ export const buildControllers = () => {
     useCases.editStatusApartmentVerifiedUseCase,
     useCases.deleteApartmentByIdUseCase,
     useCases.findApartmentDocumentById,
-    useCases.findApartmentDetailById,
-    useCases.editApartmentUseCase,
-    useCases.editApartmentDocumentUseCase
+    useCases.findApartmentDetailById
   );
 
   const LandlordApartmentController = new ApartmentController(
-    useCases.createApartmentsUseCase
+    useCases.createApartmentsUseCase,
+    useCases.addApartmentDocumentUseCase,
+    useCases.editApartmentDocumentUseCase,
+    useCases.editApartmentUseCase,
+    useCases.getApartmentBeenBookedUseCase
+  );
+
+  const LandlordLeaseController = new LeaseManagement(
+    useCases.SearchForSingleApartmentUseCase,
+    useCases.getAllLeaseForSingleApartmentUseCAse
+  );
+
+  const LandlordLeaseRequestController = new LeastRequestController(
+    useCases.updateLeastRequestUseCase,
+    useCases.GetAllLeasesRequestForSingleApartmentUC,
+    useCases.SearchForAllLeaseRequestForSingleApartmentUC
+  );
+
+  const landlordPayment = new PaymentController(
+    useCases.GetAllPaymentScheduleForSingleLeaseUseCase,
+    useCases.GetReceiptForSinglePaymentUseCase,
+    useCases.EditPaymentStatusUseCase,
+    useCases.GetPaymentThatPaidUseCase
   );
 
   return {
@@ -97,5 +121,8 @@ export const buildControllers = () => {
     adminApartmentController,
     adminAuditLogController,
     LandlordApartmentController,
+    LandlordLeaseController,
+    LandlordLeaseRequestController,
+    landlordPayment,
   };
 };

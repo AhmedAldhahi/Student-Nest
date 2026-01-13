@@ -26,7 +26,7 @@ export class AuditLogController {
 
   public GetAuditLogQuery = async (req: Request, res: Response) => {
     try {
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
       const query = (req.query.q as string) || "";
 
       if (!userId)

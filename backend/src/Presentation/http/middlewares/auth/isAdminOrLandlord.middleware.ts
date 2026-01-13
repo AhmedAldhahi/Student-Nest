@@ -9,7 +9,7 @@ export const isAdminOrLandlord = async (
   next: NextFunction
 ) => {
   try {
-    const userId = req.user.userId;
+    const userId = req.user?.userId;
 
     if (!userId)
       return res
@@ -20,7 +20,7 @@ export const isAdminOrLandlord = async (
       .getRepository(UserModel)
       .findOne({ where: { userId: userId } });
 
-    if (user?.Role !== (UserRole.admin || UserRole.landlord))
+    if (user?.Role === UserRole.student)
       return res
         .status(400)
         .json({ error: "Forbidden  you do not have landlord privilege" });

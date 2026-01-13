@@ -9,27 +9,14 @@ export const ApartmentRouter = (
   const router = Router();
 
   router.patch(
-    "/:apartmentId/verify",
+    "/:id/verify",
     validation(apartmentVerifiedZod),
     apartmentController.updateApartmentVerificationStatus
   );
 
 
-  // //todo: will be removed and move to landlord
-  // router.patch(
-  //   "/:id",
-  //   isAuth,
-  //   isAdmin,
-  //   apartmentController.UpdateApartmentDetailsById
-  // );
 
-  // //todo will be remove and move to landlord
-  // router.patch(
-  //   "/:id/documents",
-  //   isAuth,
-  //   isAdmin,
-  //   apartmentController.updateApartmentDocuments
-  // );
+
 
   return router;
 };

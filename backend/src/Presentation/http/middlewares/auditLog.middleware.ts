@@ -59,7 +59,7 @@ export const auditMiddleware = (
         ...req.audit,
 
         // User Info
-        performedByUserId: req.user?.id ?? null,
+        performedByUserId: req.user?.userId ?? null,
 
         // Network Info
         ipAddress: ip,

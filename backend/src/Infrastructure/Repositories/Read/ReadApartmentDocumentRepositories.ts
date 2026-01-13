@@ -7,26 +7,58 @@ import { ApartmentDocumentMapper } from "../mapper/apartmentDocument.mapper";
 export class ReadApartmentDocumentRepositories
   implements IReadApartmentDocumentRepo
 {
+  
   public async findApartmentDocumentById(
-    id: string
+    apartmentId: string,
+    userId: string
   ): Promise<ApartmentDocumentEntity | null> {
     try {
-      const apartmentDocument = await AppDataSource.getInstance()
+      const document = await AppDataSource.getInstance()
         .getRepository(ApartmentDocumentModel)
         .findOne({
-          where: { apartmentDocumentId: id },
+          where: {
+            apartment: { apartmentId: apartmentId },
+          },
           relations: { apartment: true },
         });
 
-      return apartmentDocument
-        ? ApartmentDocumentMapper.toEntity(apartmentDocument)
-        : null;
+      // Check if document exists before mapping
+      if (!document) return null;
+
+      return ApartmentDocumentMapper.toEntity(document);
     } catch (error: any) {
-      console.error("fail to get apartment document !!");
+      console.error("Fail to get apartment documents !!", error);
       throw error;
     }
   }
-  findAllApartmentDocument(): Promise<ApartmentDocumentEntity[] | null> {
+
+  public async findApartmentDocumentByIdForLandlord(
+    apartmentId: string,
+    userId: string
+  ): Promise<ApartmentDocumentEntity | null> {
+    try {
+      const document = await AppDataSource.getInstance()
+        .getRepository(ApartmentDocumentModel)
+        .findOne({
+          where: {
+            apartment: {
+              apartmentId: apartmentId,
+              landlordId: userId,
+            },
+          },
+          relations: { apartment: true },
+        });
+
+      return document ? ApartmentDocumentMapper.toEntity(document) : null;
+    } catch (error: any) {
+      console.error("Fail to get apartment documents !!", error);
+      throw error;
+    }
+  }
+
+  public async findAllApartmentDocument(): Promise<
+    ApartmentDocumentEntity[] | null
+  > {
     throw new Error("Method not implemented.");
   }
 }

@@ -1,4 +1,4 @@
-import { ApartmentDataRequest } from "../../../DTO/apartment/addNewApartmentRequest.dto";
+import { ApartmentDataRequest } from "../../../DTO/landlord/addNewApartmentRequest.dto";
 import { ICommand } from "../../ICommand";
 
 export class CreateApartmentCommand implements ICommand {
@@ -15,16 +15,14 @@ export class CreateApartmentCommand implements ICommand {
   public createAt: Date;
   public updateAt: Date;
   public landlord: string;
-  public isFully: boolean;
 
-  public apartmentDocument: Express.Multer.File[];
   public apartmentPhoto: Express.Multer.File[];
-  public googleMapLocationLong: number;
-  public googleMapLocationLat: number;
+  public googleMapLocationLong: string;
+  public googleMapLocationLat: string;
+  public apartmentDocument: Express.Multer.File;
 
   public constructor(data: ApartmentDataRequest) {
     this.apartmentId = data.apartmentId;
-    this.propertyStatus = data.propertyStatus;
     this.description = data.description;
     this.title = data.title;
     this.price = data.price;
@@ -38,6 +36,5 @@ export class CreateApartmentCommand implements ICommand {
     this.googleMapLocationLat = data.googleMapLocationLat;
     this.googleMapLocationLong = data.googleMapLocationLong;
     this.apartmentPhoto = data.apartmentPhoto;
-    this.apartmentDocument = data.apartmentDocument;
   }
 }

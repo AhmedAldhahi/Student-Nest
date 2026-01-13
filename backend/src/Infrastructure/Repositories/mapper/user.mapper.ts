@@ -1,4 +1,4 @@
-import { UserResponseDTO } from "../../../Application/DTO/profile/ UserResponseDTO";
+import { UserResponseDTO } from "../../../Application/DTO/shared/profile/ UserResponseDTO";
 import { UserEntity } from "../../../Domain/Modules/Identity/Entities/userEntity.entity";
 import { OTP } from "../../../Domain/Shared/Value-Object/OTP.vo";
 import { UserDateOfBirth } from "../../../Domain/Shared/Value-Object/UserDateOfBirth.vo";

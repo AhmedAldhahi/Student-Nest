@@ -23,7 +23,7 @@ export class AdminApartmentStrategy implements IApartmentStrategy {
     id: string
   ): Promise<any> {
     try {
-      const queries = new GetApartmentByIdQueries(id);
+      const queries = new GetApartmentByIdQueries(id,userId);
       return await this.GetApartmentDetailByIdQH.handle(queries);
     } catch (error: any) {
       console.error("fail to get apartment by id, !!", error);
@@ -36,7 +36,7 @@ export class AdminApartmentStrategy implements IApartmentStrategy {
     id: string
   ): Promise<any> {
     try {
-      const queries = new GetDocumentOfApartmentByIdQueries(id);
+      const queries = new GetDocumentOfApartmentByIdQueries(id,userId);
       return await this.GetApartmentDocumentByIdQH.handle(queries);
     } catch (error: any) {
       console.error("fail to get apartment documents", error);
@@ -59,7 +59,7 @@ export class AdminApartmentStrategy implements IApartmentStrategy {
     userId: string
   ): Promise<any> {
     try {
-      const queries = new GetAllApartmentByQueriesQueries(Queries);
+      const queries = new GetAllApartmentByQueriesQueries(Queries,userId);
       return await this.SearchForApartmentByQH.handle(queries);
     } catch (error: any) {
       console.error("fail to get apartments !!");
@@ -67,9 +67,9 @@ export class AdminApartmentStrategy implements IApartmentStrategy {
     }
   }
 
-  public async deleteApartments(userId: string): Promise<any> {
+  public async deleteApartments(userId: string,id:string): Promise<any> {
     try {
-      const command = new deleteApartmentByIdCommand(userId);
+      const command = new deleteApartmentByIdCommand(id,userId);
       return await this.commandHandler.handle(command);
     } catch (error: any) {
       console.error("fail to delete apartments !!");

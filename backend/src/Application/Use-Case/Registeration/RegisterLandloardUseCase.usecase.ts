@@ -1,7 +1,7 @@
 import { IEmailService } from "../../Interfaces/IEmail.interface";
 import { CreateLandlordCommandHandler } from "../../Command/Handlers/Housing/Landlord/CreateLandlordCommandHandler";
-import { RegisterLandloardRequest } from "../../DTO/registeration/RegisterLandlordRequest.dto";
-import { RegisterLandloardRespone } from "../../DTO/registeration/RegisterLandloardRespone.dto";
+import { RegisterLandloardRequest } from "../../DTO/shared/registeration/RegisterLandlordRequest.dto";
+import { RegisterLandloardRespone } from "../../DTO/shared/registeration/RegisterLandloardRespone.dto";
 
 export class RegisterLandloardUseCase {
   constructor(

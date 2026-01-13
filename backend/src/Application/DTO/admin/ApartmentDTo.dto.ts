@@ -4,12 +4,11 @@ import { ApartmentPhotoDocumentEntity } from "../../../Domain/Modules/Housing/En
 
 export interface IApartmentDTO {
   apartmentId: string;
-  propertyStatus: boolean;
+  isVisible: boolean;
   title: string;
   description: string;
   address: string;
-  Verified: boolean;
-  isFully: boolean;
+  isVerified: boolean;
   isJoin: boolean;
   createAt: Date;
   updateAt: Date;
@@ -20,22 +19,23 @@ export interface IApartmentDTO {
 
   landlordName: string;
   googleMapLocation: GoogleMapLocationEntity;
-  apartmentDocument: ApartmentDocumentEntity[];
+  apartmentDocument: ApartmentDocumentEntity | null;
   apartmentPhoto: ApartmentPhotoDocumentEntity[];
 }
 
 export interface IApartmentSimpleDTO {
   apartmentId: string;
-  propertyStatus: boolean;
+  isVisible: boolean;
   title: string;
   description: string;
   address: string;
-  Verified: boolean;
-  isFully: boolean;
+  isVerified: boolean;
   isJoin: boolean;
   numberOfBed: string;
   numberOfRoom: string;
   price: string;
+  landlordId: string;
   landlordName: string;
   apartmentPhoto: ApartmentPhotoDocumentEntity[];
+  apartmentDocuments: ApartmentDocumentEntity | null;
 }

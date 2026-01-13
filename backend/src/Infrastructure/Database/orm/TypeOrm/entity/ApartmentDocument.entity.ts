@@ -1,4 +1,6 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+// src/Infrastructure/Database/orm/TypeOrm/entity/ApartmentDocument.entity.ts
+
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from "typeorm";
 import { ApartmentDocumentType } from "../../../../../Domain/Shared/Enum/ApartmentDocument.enum";
 import { ApartmentModel } from "./Apartment.entity";
 
@@ -13,9 +15,12 @@ export class ApartmentDocumentModel {
   @Column({ type: "varchar", nullable: false })
   documentUrl: string;
 
-  @ManyToOne(() => ApartmentModel, (apartment) => apartment.documents, {
-    onDelete: "CASCADE", // If the apartment is deleted, delete the photos too
+  @Column({ nullable: false })
+  apartmentId: string; 
+
+  @OneToOne(() => ApartmentModel, (apartment) => apartment.documents, {
+    onDelete: "CASCADE", 
   })
-  @JoinColumn({ name: "apartmentId" }) // Maps this to the 'apartmentId' column below
+  @JoinColumn({ name: "apartmentId" }) 
   apartment: ApartmentModel;
 }

@@ -2,18 +2,20 @@ import {
   Entity,
   Column,
   JoinColumn,
-  PrimaryGeneratedColumn,
   ManyToOne,
   CreateDateColumn,
+  PrimaryColumn,
+  OneToMany,
 } from "typeorm";
 import { LandlordModel } from "./Landloard.entity";
 import { StudentModel } from "./Student.entity";
 import { ApartmentModel } from "./Apartment.entity";
+import { PaymentScheduleModel } from "./PaymentSchedual.entity";
 
 @Entity("leases")
 export class LeaseModel {
-  @PrimaryGeneratedColumn()
-  leaseId: number;
+  @PrimaryColumn()
+  leaseId: string;
 
   @Column({ type: "varchar", nullable: false, length: 10 })
   leaseStartDate: string;
@@ -45,13 +47,16 @@ export class LeaseModel {
   @CreateDateColumn({ name: "createAt" })
   createAt: Date;
 
+  // --- STUDENT (Correct) ---
   @ManyToOne(() => StudentModel, (student) => student.leases, {
     nullable: true,
     onDelete: "SET NULL",
   })
-
   @JoinColumn({ name: "studentId" })
   student: StudentModel;
+
+  @Column({ nullable: true })
+  studentId: string;
 
   @ManyToOne(() => LandlordModel, (landlord) => landlord.leases, {
     nullable: true,
@@ -60,16 +65,21 @@ export class LeaseModel {
   @JoinColumn({ name: "landlordId" })
   landlord: LandlordModel;
 
+  @Column({ nullable: true })
+  landlordId: string;
+
   @ManyToOne(() => ApartmentModel, {
     nullable: false,
     onDelete: "CASCADE",
   })
-  
   @JoinColumn({ name: "apartmentId" })
   apartment: ApartmentModel;
-}
 
-/**
- *
- * * apartment
- */
+  @Column({ nullable: false })
+  apartmentId: string;
+
+  @OneToMany(() => PaymentScheduleModel, (payment) => payment.lease, {
+    cascade: true, 
+  })
+  payments: PaymentScheduleModel[];
+}

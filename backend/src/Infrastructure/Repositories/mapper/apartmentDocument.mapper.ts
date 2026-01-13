@@ -7,19 +7,21 @@ export class ApartmentDocumentMapper {
   ): ApartmentDocumentModel {
     const model = new ApartmentDocumentModel();
 
-    model.apartmentDocumentId = entity.getApartmentId();
+    model.apartmentDocumentId = entity.getApartmentDocumentId();
     model.apartmentType = entity.getApartmentType();
     model.documentUrl = entity.getDocumentUrl();
+    model.apartmentId = entity.getApartmentsId();
     return model;
   }
 
   public static toEntity(
     model: ApartmentDocumentModel
-  ): ApartmentDocumentEntity {
+  ): ApartmentDocumentEntity | null {
     return new ApartmentDocumentEntity({
-      apartmentId: model.apartmentDocumentId,
+      apartmentDocumentId: model.apartmentDocumentId,
       apartmentType: model.apartmentType,
       documentUrl: model.documentUrl,
+      apartmentsId: model.apartmentId,
     });
   }
 }

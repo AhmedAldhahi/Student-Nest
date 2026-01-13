@@ -19,8 +19,8 @@ export class ApartmentModel {
   @PrimaryColumn()
   apartmentId: string;
 
-  @Column({ type: "boolean", nullable: false })
-  propertyStatus: boolean;
+  @Column({ type: "boolean", nullable: false, default: false })
+  isVisible: boolean;
 
   @Column({ type: "varchar", nullable: false })
   title: string;
@@ -35,10 +35,7 @@ export class ApartmentModel {
   address: string;
 
   @Column({ type: "boolean", nullable: false, default: false })
-  Verified: boolean;
-
-  @Column({ type: "boolean", nullable: false, default: false })
-  isFully: boolean;
+  isVerified: boolean;
 
   @Column({ type: "varchar", nullable: false })
   numberOfRoom: string;
@@ -64,10 +61,11 @@ export class ApartmentModel {
   @JoinColumn({ name: "landlordId" })
   landlord: LandlordModel;
 
-  @OneToMany(() => ApartmentDocumentModel, (doc) => doc.apartment, {
+  @OneToOne(() => ApartmentDocumentModel, (doc) => doc.apartment, {
     cascade: true,
+    nullable: true,
   })
-  documents: ApartmentDocumentModel[];
+  documents: ApartmentDocumentModel | null;
 
   @OneToMany(() => ApartmentPhotoModel, (doc) => doc.apartment, {
     cascade: true,
@@ -75,7 +73,8 @@ export class ApartmentModel {
   photos: ApartmentPhotoModel[];
 
   @OneToOne(() => GoogleMapLocationModel, (loc) => loc.apartment, {
-    cascade: true, // Allows saving Apartment + Location in one go
+    cascade: true,
+    nullable: true,
   })
   location: GoogleMapLocationModel;
 

@@ -9,12 +9,13 @@ export const isLandlord = async (
   next: NextFunction
 ) => {
   try {
-    const userId = req.user.userId;
+    const userId = req.user?.userId;
 
     if (!userId)
       return res
         .status(400)
         .json({ error: "Unauthorized: No user ID found in payload." });
+
 
     const user = await AppDataSource.getInstance()
       .getRepository(UserModel)
@@ -26,7 +27,8 @@ export const isLandlord = async (
         .json({ error: "Forbidden  you do not have landlord privilege" });
 
     return next();
-  } catch (error: any) {
-    return res.status(500).json({ error: "Internal Server Error" });
+  } catch (error: any) { 
+    console.log(error);
+    return res.status(500).json({ error: "Internal Server Error " });
   }
 };

@@ -16,32 +16,42 @@ export class ApartmentMapper {
     const apartmentModel = new ApartmentModel();
     const validateData = this.modelValidation(apartment);
 
-    (apartmentModel.apartmentId = apartment.getApartmentId()),
-      (apartmentModel.propertyStatus = apartment.getPropertyStatus()),
-      (apartmentModel.title = apartment.getTitle()),
-      (apartmentModel.description = apartment.getDescription()),
-      (apartmentModel.address = apartment.getAddress()),
-      (apartmentModel.Verified = apartment.getVerified()),
-      (apartmentModel.isJoin = apartment.getIsJoin()),
-      (apartmentModel.createAt = apartment.getCreateAt()),
-      (apartmentModel.updateAt = apartment.getUpdateAt()),
-      (apartmentModel.isFully = apartment.getFully()),
-      // (apartmentModel.landlord = LandlordMapper.toOrm(apartment.getLandlord()));
-      apartmentModel.landlordId  =  apartment.getLandlord(),
+    apartmentModel.apartmentId = apartment.getApartmentId();
+    apartmentModel.isVisible = apartment.getIsVisible();
+    apartmentModel.title = apartment.getTitle();
+    apartmentModel.description = apartment.getDescription();
+    apartmentModel.address = apartment.getAddress();
+    apartmentModel.isVerified = apartment.getIsVerified();
+    apartmentModel.isJoin = apartment.getIsJoin();
+    apartmentModel.createAt = apartment.getCreateAt();
+    apartmentModel.updateAt = apartment.getUpdateAt();
+
+    // Relationship: Landlord
+    apartmentModel.landlordId = apartment.getLandlord();
+
+    // Value Objects extraction
     apartmentModel.price = validateData.price;
     apartmentModel.numberOfBed = validateData.numberOfBed;
     apartmentModel.numberOfRoom = validateData.numberOfRoom;
 
-    (apartmentModel.location = GoogleMapMapper.toModel(
+    // Relationship: Location
+    apartmentModel.location = GoogleMapMapper.toModel(
       apartment.getGoogleMapLocation()
-    )),
-      (apartmentModel.photos = apartment
-        .getApartmentPhotoDocument()
-        .map((file) => apartmentPhotoMapper.toModel(file)));
+    );
 
-    apartmentModel.documents = apartment
-      .getApartmentDocument()
-      .map((doc) => ApartmentDocumentMapper.toModel(doc));
+    // Relationship: Photos (One-to-Many)
+    apartmentModel.photos = apartment
+      .getApartmentPhotoDocument()
+      .map((file) => apartmentPhotoMapper.toModel(file));
+
+    // Relationship: Document (One-to-One)
+    const apartmentDoc = apartment.getApartmentDocument();
+
+    if (apartmentDoc) {
+      apartmentModel.documents = ApartmentDocumentMapper.toModel(apartmentDoc);
+    } else {
+      apartmentModel.documents = null;
+    }
 
     return apartmentModel;
   }
@@ -51,11 +61,11 @@ export class ApartmentMapper {
     const numberOfBed = apartment.getNumberOfBed();
     const numberOfRoom = apartment.getNumberOfRoom();
 
-    if (!price) throw new Error("Cannot save apartment, price is require !! ");
+    if (!price) throw new Error("Cannot save apartment, price is required !! ");
     if (!numberOfBed)
-      throw new Error("Cannot save apartment, number of bed is require !!");
+      throw new Error("Cannot save apartment, number of bed is required !!");
     if (!numberOfRoom)
-      throw new Error("Cannot save apartment , number of room is require !!");
+      throw new Error("Cannot save apartment , number of room is required !!");
 
     return { price, numberOfBed, numberOfRoom };
   }
@@ -63,12 +73,11 @@ export class ApartmentMapper {
   public static toEntity(model: ApartmentModel): ApartmentAggregateRoot {
     return new ApartmentAggregateRoot({
       apartmentId: model.apartmentId,
-      propertyStatus: model.propertyStatus,
+      isVisible: model.isVisible,
       title: model.title,
       description: model.description,
       address: model.address,
-      Verified: model.Verified,
-      isFully: model.isFully,
+      IsVerified: model.isVerified,
       isJoin: model.isJoin,
       createAt: model.createAt,
       updateAt: model.updateAt,
@@ -82,49 +91,52 @@ export class ApartmentMapper {
       landlordId: model.landlordId,
       googleMapLocation: GoogleMapMapper.toEntity(model.location),
 
+      // Mapping Single Document back to Entity
       apartmentDocument: model.documents
-        ? model.documents.map((doc) => ApartmentDocumentMapper.toEntity(doc))
-        : [],
+        ? ApartmentDocumentMapper.toEntity(model.documents)
+        : null,
 
       apartmentPhoto: model.photos
         ? model.photos.map((file) => apartmentPhotoMapper.toEntity(file))
         : [],
     });
   }
-  
 
   public static toResponsesSimple(model: ApartmentModel): IApartmentSimpleDTO {
     return {
       apartmentId: model.apartmentId,
-      propertyStatus: model.propertyStatus,
+      isVisible: model.isVisible,
       title: model.title,
       description: model.description,
       address: model.address,
-      Verified: model.Verified,
-      isFully: model.isFully,
+      isVerified: model.isVerified,
       isJoin: model.isJoin,
       numberOfBed: model.numberOfBed,
       numberOfRoom: model.numberOfRoom,
       price: model.price,
-      
-      // need to add number of student
+      landlordName: model.landlord?.user?.Name,
+      landlordId: model.landlordId,
 
-      landlordName: model.landlord.user.Name,
       apartmentPhoto: model.photos
         ? model.photos.map((file) => apartmentPhotoMapper.toEntity(file))
         : [],
+
+      apartmentDocuments: model.documents
+        ? ApartmentDocumentMapper.toEntity(model.documents)
+        : null,
+
+     
     };
   }
 
   public static toResponsesDetail(model: ApartmentModel): IApartmentDTO {
     return {
       apartmentId: model.apartmentId,
-      propertyStatus: model.propertyStatus,
+      isVisible: model.isVisible,
       title: model.title,
       description: model.description,
       address: model.address,
-      Verified: model.Verified,
-      isFully: model.isFully,
+      isVerified: model.isVerified,
       isJoin: model.isJoin,
       numberOfBed: model.numberOfBed,
       numberOfRoom: model.numberOfRoom,
@@ -132,15 +144,16 @@ export class ApartmentMapper {
       createAt: model.createAt,
       updateAt: model.updateAt,
       googleMapLocation: GoogleMapMapper.toEntity(model.location),
-      landlordName: model.landlord.user.Name,
+      // Optional chaining
+      landlordName: model.landlord?.user?.Name,
+
+      apartmentDocument: model.documents
+        ? ApartmentDocumentMapper.toEntity(model.documents)
+        : null,
 
       apartmentPhoto: model.photos
         ? model.photos.map((file) => apartmentPhotoMapper.toEntity(file))
         : [],
-      apartmentDocument: model.documents
-        ? model.documents.map((doc) => ApartmentDocumentMapper.toEntity(doc))
-        : [],
     };
   }
 }
-

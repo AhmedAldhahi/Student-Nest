@@ -5,6 +5,9 @@ import { IWriteApartmentRepo } from "../../Modules/Housing/Repositories/Write/IW
 import { IWriteApartmentDocumentRepo } from "../../Modules/Housing/Repositories/Write/IWriteApartmentDocumentRepositoires.repositories";
 import { IWriteAuditLogRepositories } from "../../Modules/adminstration/Entities/IWriteAuditLogRepo.repositories";
 import { IWriteLandlordRepositories } from "../../Modules/Housing/Repositories/Write/WriteLandlordRepositories.repositories";
+import { IWriteLeaseRequestRepo } from "../../Modules/Leases/Repositories/Write/WriteLeaseRequestRepositories.repostitores";
+import { IWritePaymentScheduleRepo } from "../../Modules/Payment/Repositories/WritePaymentSchedualRepositories";
+import { IWriteReceiptRepo } from "../../Modules/Payment/Repositories/writeReceiptRepo.Repositories";
 
 export interface IUnitOfWork {
   // cqrs
@@ -14,8 +17,10 @@ export interface IUnitOfWork {
   writeNotificationRepo: IWriteNotificationRepo;
   writeApartmentRepo: IWriteApartmentRepo;
   writeApartmentDocumentRepo: IWriteApartmentDocumentRepo;
-  //writeApartmentPhoto: IWriteApartmentPhoto;
   writeAuditLogRepo: IWriteAuditLogRepositories;
+  writeLeaseRequestRepo: IWriteLeaseRequestRepo;
+  writePaymentScheduleRepo: IWritePaymentScheduleRepo;
+  writePaymentReceiptRepo: IWriteReceiptRepo;
 
   startTransaction(): Promise<void>;
 

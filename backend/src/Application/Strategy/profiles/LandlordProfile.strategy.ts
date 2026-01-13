@@ -1,4 +1,3 @@
-import { LandlordUpdateProfileRequest } from "../../DTO/profile/LandlordRequest.updateProfile.profile.dto";
 import { ICashMemoryService } from "../../Interfaces/ICash.interface";
 import { GetUserProfileQueries } from "../../Queries/Queries/User/GetUserProfileQueries";
 import {UpdateLandlordCommandHandler} from "../../Command/Handlers/Housing/Landlord/UpdateLandlordCommandHandler"
@@ -6,6 +5,7 @@ import {GetLandlordProfileQueriesHandlers} from "../../Queries/Handlers/Housing/
 
 import { IProfileStrategy } from "./IprofileStrategy.strategy";
 import { UpdateLandlordCommand } from "../../Command/Commands/Landlord/UpdateLandlordCommand";
+import { LandlordUpdateProfileRequest } from "../../DTO/shared/profile/LandlordRequest.updateProfile.profile.dto";
 
 export class LandlordProfileStrategy implements IProfileStrategy {
   constructor(
@@ -24,13 +24,13 @@ export class LandlordProfileStrategy implements IProfileStrategy {
     }
 
     const Queries = new GetUserProfileQueries(userId);
-    const landloard = await this.QueryHandler.handle(Queries);
+    const landlord = await this.QueryHandler.handle(Queries);
 
-    if (!landloard) throw new Error("no user found !!");
+    if (!landlord) throw new Error("no user found !!");
 
-    await this.cashService.set(cashKey, landloard, 36000);
+    await this.cashService.set(cashKey, landlord, 36000);
 
-    return landloard;
+    return landlord;
   }
 
   public async UpdateUserProfile(

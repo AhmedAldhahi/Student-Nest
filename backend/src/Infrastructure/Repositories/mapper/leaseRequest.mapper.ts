@@ -2,11 +2,7 @@ import { ILeaseRequestDTO } from "../../../Application/DTO/admin/LeaseRequestDTO
 import { LeaseRequestEntity } from "../../../Domain/Modules/Leases/Entities/leaseRequestEntity.entity";
 import { LeaseStartDate } from "../../../Domain/Modules/Leases/Value-Object/LeaseStartDate.vo";
 import { RentTerm } from "../../../Domain/Modules/Leases/Value-Object/RentTerm.vo";
-
 import { LeaseRequestModel } from "../../Database/orm/TypeOrm/entity/LeaseRequest";
-import { ApartmentMapper } from "./apartment.mapper";
-import { LandlordMapper } from "./landloard.mapper";
-import { StudentMapper } from "./student.mapper";
 
 export class LeaseRequestMapper {
   public static toModel(entity: LeaseRequestEntity): LeaseRequestModel {
@@ -14,11 +10,9 @@ export class LeaseRequestMapper {
     const dataValidation = this.toModelValidation(entity);
 
     leaseRequestModel.createAt = entity.getCreateAt();
-    leaseRequestModel.landlord = LandlordMapper.toOrm(entity.getLandlord());
-    leaseRequestModel.student = StudentMapper.toModel(entity.getStudent());
-    leaseRequestModel.apartment = ApartmentMapper.toModel(
-      entity.getApartment()
-    );
+    leaseRequestModel.landlordId = entity.getLandlord();
+    leaseRequestModel.studentId = entity.getStudent();
+    leaseRequestModel.apartmentId = entity.getApartment();
 
     leaseRequestModel.leaseRequestId = entity.getRequestLeaseId();
     leaseRequestModel.rentTerm = dataValidation.rentTerm;
@@ -49,9 +43,9 @@ export class LeaseRequestMapper {
       rentTerm: new RentTerm(model.rentTerm),
       requestStatus: model.requestStatus,
       createAt: model.createAt,
-      studentName: StudentMapper.toEntity(model.student),
-      landlordName: LandlordMapper.toEntity(model.landlord),
-      apartment: ApartmentMapper.toEntity(model.apartment),
+      studentId: model.studentId,
+      landlordId: model.landlordId,
+      apartmentId: model.apartmentId,
     });
   }
 

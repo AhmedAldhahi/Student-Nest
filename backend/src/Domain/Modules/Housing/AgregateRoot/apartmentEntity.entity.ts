@@ -9,7 +9,7 @@ import { AggregateRoot } from "../../../Shared/AgregateRoot/AggregateRoot";
 
 export class ApartmentAggregateRoot extends AggregateRoot<string> {
   private apartmentId: string;
-  private isVisible: boolean;
+  private isVisible: boolean = false;
   private title: string;
   private description: string;
   private price: ApartmentPrice;
@@ -18,20 +18,18 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
   private numberOfRoom: NumberOfRoom;
   private numberOfBed: NumberOfBed;
   private isJoin: boolean; // be Roommate with students
-  private isFullyBooked: boolean;
 
   private createAt: Date;
   private updateAt: Date;
   private landlord: string;
 
-  private apartmentDocument: ApartmentDocumentEntity[];
+  private apartmentDocument: ApartmentDocumentEntity | null;
   private googleMapLocation: GoogleMapLocationEntity;
   private apartmentPhotoDocument: ApartmentPhotoDocumentEntity[];
 
   constructor(data: ApartmentData) {
     super();
     this.apartmentId = data.apartmentId;
-    this.isVisible = data.propertyStatus;
     this.title = data.title;
     this.description = data.description;
     this.price = data.price;
@@ -41,6 +39,7 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
     this.isJoin = data.isJoin;
     this.createAt = data.createAt;
     this.updateAt = data.updateAt;
+    this.isVerified = data.IsVerified;
 
     this.landlord = data.landlordId;
     this.apartmentDocument = data.apartmentDocument;
@@ -55,15 +54,80 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
 
   /**
    * ==================================================================================
+   *                              Behavior sections
+   * ==================================================================================
+   */
+
+  public ValidatePhotoSize(): void {
+    if (this.getNumberOfPhotos() > 6)
+      throw new Error("the size limit is 6 for photo ");
+  }
+
+  public addPhoto(photo: ApartmentPhotoDocumentEntity): void {
+    if (!photo) throw new Error("No photo provided to add.");
+
+    if (this.apartmentPhotoDocument.length >= 6) {
+      throw new Error("Cannot add photo. The limit is 6 photos per apartment.");
+    }
+
+    this.apartmentPhotoDocument.push(photo);
+    this.updateAt = new Date();
+  }
+
+  public replacePhotos(newPhotos: ApartmentPhotoDocumentEntity[]): void {
+    if (newPhotos.length === 0)
+      throw new Error("Apartment must have at least one photo.");
+    if (newPhotos.length > 6)
+      throw new Error("Apartment cannot have more than 6 photos.");
+
+    this.apartmentPhotoDocument = newPhotos;
+    this.updateAt = new Date();
+  }
+
+  public removePhoto(photoId: string): void {
+    this.apartmentPhotoDocument = this.apartmentPhotoDocument.filter(
+      (p) => p.getPhotoId() !== photoId
+    );
+    this.updateAt = new Date();
+  }
+
+  public AddApartmentDocument(apartmentDoc: ApartmentDocumentEntity): void {
+    if (!apartmentDoc) return;
+
+    this.apartmentDocument = apartmentDoc;
+    this.updateAt = new Date();
+  }
+
+  public updateApartmentDocument(apartmentDoc: ApartmentDocumentEntity): void {
+    if (this.getIsVerified() === true) {
+      throw new Error(
+        "cannot update apartment document for apartment that been verified "
+      );
+    }
+
+    if (!apartmentDoc) {
+      throw new Error("no apartment document been uploaded !!");
+    }
+
+    this.apartmentDocument = apartmentDoc;
+  }
+
+
+  /**
+   * ==================================================================================
    *                              Getter Methods
    * ==================================================================================
    */
+
+  public getNumberOfPhotos(): number {
+    return this.apartmentPhotoDocument.length;
+  }
 
   public getApartmentId(): string {
     return this.apartmentId;
   }
 
-  public getPropertyStatus(): boolean {
+  public getIsVisible(): boolean {
     return this.isVisible;
   }
 
@@ -83,11 +147,7 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
     return this.isJoin;
   }
 
-  public getFully(): boolean {
-    return this.isFullyBooked;
-  }
-
-  public getVerified(): boolean {
+  public getIsVerified(): boolean {
     return this.isVerified;
   }
 
@@ -103,8 +163,8 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
     return this.landlord;
   }
 
-  public getApartmentDocument(): ApartmentDocumentEntity[] {
-    return this.apartmentDocument;
+  public getApartmentDocument(): ApartmentDocumentEntity | null {
+    return this.apartmentDocument ?? null;
   }
 
   public getGoogleMapLocation(): GoogleMapLocationEntity {
@@ -172,16 +232,12 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
     this.isVerified = false;
   }
 
-  public markAsFul(): void {
-    this.isFullyBooked = true;
+  public markAsVisible(): void {
+    this.isVisible = true;
   }
 
-  public markAsNotFul(): void {
-    this.isFullyBooked = false;
-  }
-
-  public updateVerified(verified: boolean): void {
-    this.isVerified = verified;
+  public markAsNotVisible(): void {
+    this.isVisible = false;
   }
 
   public markAsJoin(): void {
@@ -192,24 +248,16 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
     this.isJoin = false;
   }
 
-  public updateFully(fully: boolean): void {
-    this.isFullyBooked = fully;
-  }
-
-  public updateJoin(isJoin: boolean): void {
-    this.isJoin = isJoin;
-  }
-
   public updateAddress(address: string): void {
     this.address = address;
   }
 
-  public updateDescription(desc: string): void {
-    this.description = desc;
+  public updateIsJoin(isJoin: boolean): void {
+    this.isJoin = isJoin;
   }
 
-  public updatePropertyStatus(status: boolean): void {
-    this.isVisible = status;
+  public updateDescription(desc: string): void {
+    this.description = desc;
   }
 
   public updateTitle(title: string): void {

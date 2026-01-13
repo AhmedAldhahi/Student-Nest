@@ -2,17 +2,22 @@ import { ILeaseEntityDTO } from "../../../Application/DTO/admin/LeaseDTO.dto";
 import { LeaseAggregateRoot } from "../../../Domain/Modules/Leases/AgregateRoot/leaseEntity.entity";
 import { MonthlyRent } from "../../../Domain/Modules/Housing/Value-Object/MonthlyRent.vo";
 import { LeaseModel } from "../../Database/orm/TypeOrm/entity/Lease.entity";
-import { ApartmentMapper } from "./apartment.mapper";
-import { LandlordMapper } from "./landloard.mapper";
-import { StudentMapper } from "./student.mapper";
 import { LeaseEndDate } from "../../../Domain/Modules/Leases/Value-Object/LeaseEndDate.vo";
 import { LeaseStartDate } from "../../../Domain/Modules/Leases/Value-Object/LeaseStartDate.vo";
 import { LeaseTerm } from "../../../Domain/Modules/Leases/Value-Object/LeaseTerm.vo";
+import { PaymentMapper } from "./payment.mapper";
 
 export class LeaseMapper {
   public static toEntity(model: LeaseModel): LeaseAggregateRoot {
-    const startD = new LeaseStartDate(model.leaseStartDate);
-    const lastD = new LeaseEndDate(model.leaseEndDate);
+    const normalizedStart = this.toDomainDate(model.leaseStartDate);
+    const normalizedEnd = this.toDomainDate(model.leaseEndDate);
+
+    const startD = new LeaseStartDate(normalizedStart);
+    const lastD = new LeaseEndDate(normalizedEnd);
+
+    const paymentAggregates = (model.payments || []).map((p) =>
+      PaymentMapper.toDomain(p)
+    );
 
     return new LeaseAggregateRoot({
       leaseId: model.leaseId,
@@ -24,11 +29,12 @@ export class LeaseMapper {
       leaseEndData: lastD,
       monthlyRent: new MonthlyRent(model.monthlyRent),
       leaseTerm: new LeaseTerm(model.leaseTerm),
-      student: StudentMapper.toEntity(model.student),
-      landlord: LandlordMapper.toEntity(model.landlord),
-      apartment: ApartmentMapper.toEntity(model.apartment),
-      includeUtilities: model.includeUtilities ?? undefined, // optional
+      studentId: model.studentId,
+      landlordId: model.landlordId,
+      apartmentId: model.apartmentId, // Note: Checked this, it was model.landlordId before, assumed apartmentId
+      includeUtilities: model.includeUtilities ?? undefined,
       createAt: model.createAt,
+      paymentSchedule: paymentAggregates,
     });
   }
 
@@ -45,9 +51,10 @@ export class LeaseMapper {
       leaseTerm: model.leaseTerm,
       includeUtilities: model.includeUtilities ?? undefined,
       createAt: model.createAt,
-      studentName: model.student.user.Name,
-      landlordName: model.landlord.user.Name,
-      apartmentTitle: model.apartment.title,
+      studentName: model.student?.user?.Name, // Safety check ?
+      landlordName: model.landlord?.user?.Name, // Safety check ?
+      apartmentTitle: model.apartment?.title, // Safety check ?
+      apartmentId: model.apartment?.apartmentId, // Safety check ?
     };
   }
 
@@ -61,15 +68,21 @@ export class LeaseMapper {
     leaseModel.isLandlordSigned = entity.getIsLandlordSigned();
     leaseModel.isStudentSigned = entity.getIsStudentSigned();
     leaseModel.houseRule = entity.getHouseRule();
+
     leaseModel.leaseStartDate = dataValidation.leaseStartDate;
     leaseModel.leaseEndDate = dataValidation.leaseEndDate;
+
     leaseModel.monthlyRent = dataValidation.monthlyRent;
     leaseModel.leaseTerm = dataValidation.leaseTerm;
     leaseModel.includeUtilities = utilities ?? null;
-    leaseModel.student = StudentMapper.toModel(entity.getStudent());
-    leaseModel.landlord = LandlordMapper.toOrm(entity.getLandlord());
-    leaseModel.apartment = ApartmentMapper.toModel(entity.getApartment());
+    leaseModel.studentId = entity.getStudent();
+    leaseModel.landlordId = entity.getLandlord();
+    leaseModel.apartmentId = entity.getApartment();
     leaseModel.createAt = entity.getCreateAt();
+
+    leaseModel.payments = (entity.getPaymentSchedule() || []).map(
+      (paymentAggregate) => PaymentMapper.toModel(paymentAggregate)
+    );
 
     return leaseModel;
   }
@@ -93,5 +106,22 @@ export class LeaseMapper {
       throw new Error("Cannot save lease, monthly rent is require !!");
 
     return { leaseEndDate, leaseStartDate, monthlyRent, leaseTerm };
+  }
+
+  private static toDomainDate(dateStr: string | Date): string {
+    // If it's already a Date object (sometimes TypeORM does this)
+    if (dateStr instanceof Date) {
+      const day = String(dateStr.getDate()).padStart(2, "0");
+      const month = String(dateStr.getMonth() + 1).padStart(2, "0");
+      const year = dateStr.getFullYear();
+      return `${day}-${month}-${year}`;
+    }
+
+    if (typeof dateStr === "string" && /^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+      const [year, month, day] = dateStr.split("-");
+      return `${day}-${month}-${year}`;
+    }
+
+    return dateStr as string;
   }
 }

@@ -1,5 +1,5 @@
 export interface ILeaseEntityDTO {
-  leaseId: number;
+  leaseId: string;
   LeaseActivationStatus: boolean;
   isLandlordSigned: boolean;
   isStudentSigned: boolean;
@@ -13,4 +13,5 @@ export interface ILeaseEntityDTO {
   landlordName: string;
   studentName: string;
   apartmentTitle: string;
+  apartmentId:string;
 }

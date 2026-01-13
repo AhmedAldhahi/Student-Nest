@@ -9,7 +9,7 @@ export class GetAllApartmentByQueryQueriesHandler
 
   public async handle(command: GetAllApartmentByQueriesQueries): Promise<any> {
     try {
-      return await this.ReadApartmentRepo.findApartmentByQuery(command.name);
+      return await this.ReadApartmentRepo.findApartmentByQuery(command.name,command.userId);
     } catch (error: any) {
       console.error("fail to get apartments");
       throw error;

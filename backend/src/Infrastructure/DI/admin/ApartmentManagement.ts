@@ -1,12 +1,16 @@
 import { deleteApartmentByIdCommandHandler } from "../../../Application/Command/Handlers/Housing/Apartment/DeleteApartmentByIdCommandHandler";
-import { EditApartmentDetailByIdCommandHandler } from "../../../Application/Command/Handlers/Housing/Apartment/EditApartmentDetailByIdCommandHandler";
+import { deleteApartmentByIdForLandlordCommandHandler } from "../../../Application/Command/Handlers/Housing/Apartment/DeleteApartmentForLandlordCommandHandler";
+import { EditApartmentDetailForLandlordCommandHandler } from "../../../Application/Command/Handlers/Housing/Apartment/EditApartmentDetailForLandlordCommandHandler";
 import { EditApartmentStatusVerifiedCommandHandler } from "../../../Application/Command/Handlers/Housing/Apartment/EditApartmetVerficationStatusCommandHandler";
 import { UpdateApartmentDocumentFileCommandHandler } from "../../../Application/Command/Handlers/Housing/Apartment/updateApartmentDocumentCommandHandler";
 import { GetAllApartmentByLandlordQueriesHandler } from "../../../Application/Queries/Handlers/Housing/Apartment/GetAllAartmentByLandlordQueriesHandler";
+import { GetAllApartmentByQueriesForLandlordQueriesHandler } from "../../../Application/Queries/Handlers/Housing/Apartment/GetAllApartmentByQueriesForLandlordQueriesHandler";
 import { GetAllApartmentByQueryQueriesHandler } from "../../../Application/Queries/Handlers/Housing/Apartment/GetAllApartmentQueries.QueriesHandler";
 import { GetAllApartmentQueriesHandler } from "../../../Application/Queries/Handlers/Housing/Apartment/GetAllApartmentQueriesHandler";
+import { GetApartmentByIdForLandlordQueriesHandler } from "../../../Application/Queries/Handlers/Housing/Apartment/GetApartmentByIdForLandlordQueriesHandler";
 import { GetApartmentByIdQueriesHandler } from "../../../Application/Queries/Handlers/Housing/Apartment/GetApartmentByIdQueriesHandler";
 import { GetApartmentDocumentByIdQueriesHandler } from "../../../Application/Queries/Handlers/Housing/Apartment/GetApartmentDocumentById.QueriesHandler";
+import { GetApartmentDocumentByIdForLandlordQueriersHandler } from "../../../Application/Queries/Handlers/Housing/Apartment/GetApartmentDocumentByIdForLandlordQueriesHandler";
 import { AdminApartmentStrategy } from "../../../Application/Strategy/apartment/AdminApartment.strategy";
 import { ApartmentContext } from "../../../Application/Strategy/apartment/ApartmentContext";
 import { LandlordApartmentStrategy } from "../../../Application/Strategy/apartment/LandlordApartment.strategy";
@@ -20,6 +24,7 @@ import { findApartmentDocumentByIdUseCase } from "../../../Application/Use-Case/
 import { UpdateApartmentDocumentUseCase } from "../../../Application/Use-Case/admin/ApartmentMangament/updateApartmentDocument.usecase";
 import { ReadApartmentDocumentRepositories } from "../../Repositories/Read/ReadApartmentDocumentRepositories";
 import { ReadApartmentRepositories } from "../../Repositories/Read/ReadApartmentRepositories";
+import { ReadLandlordRepositories } from "../../Repositories/Read/ReadLandlordRepositories";
 import { ReadUserRepositories } from "../../Repositories/Read/ReadUserRepositories";
 import { UnitOfWork } from "../../Repositories/unitOfWork.repositories";
 import { CloudinaryService } from "../../Services/media/CloudinaryService.service";
@@ -28,6 +33,7 @@ export function GetAllApartment(): findAllApartmentUseCase {
   const ReadApartmentRepo = new ReadApartmentRepositories();
   const ReadUseRepo = new ReadUserRepositories();
   const ReadApartmentDocumentRepo = new ReadApartmentDocumentRepositories();
+  const ReadLandlordRepo = new ReadLandlordRepositories();
 
   const uow = new UnitOfWork();
   const fileService = new CloudinaryService();
@@ -45,6 +51,9 @@ export function GetAllApartment(): findAllApartmentUseCase {
     ReadApartmentRepo
   );
 
+  const GetAllApartmentPrefixQH =
+    new GetAllApartmentByQueriesForLandlordQueriesHandler(ReadApartmentRepo);
+
   const GetApartmentDocumentByIdQH = new GetApartmentDocumentByIdQueriesHandler(
     ReadApartmentDocumentRepo
   );
@@ -56,6 +65,27 @@ export function GetAllApartment(): findAllApartmentUseCase {
   const GetAllApartmentForLandlord =
     new GetAllApartmentByLandlordQueriesHandler(ReadApartmentRepo);
 
+  const DeleteApartmentByIdForLandlord =
+    new deleteApartmentByIdForLandlordCommandHandler(
+      uow,
+      ReadApartmentRepo,
+      fileService
+    );
+
+  const GetApartmentByIdForLandlord =
+    new GetApartmentByIdForLandlordQueriesHandler(
+      ReadUseRepo,
+      ReadLandlordRepo,
+      ReadApartmentRepo
+    );
+
+  const GetApartmentDocumentByIdForLandlord =
+    new GetApartmentDocumentByIdForLandlordQueriersHandler(
+      ReadUseRepo,
+      ReadLandlordRepo,
+      ReadApartmentDocumentRepo
+    );
+
   const adminStrategy = new AdminApartmentStrategy(
     DeleteApartmentCH,
     queriesHandler,
@@ -65,7 +95,11 @@ export function GetAllApartment(): findAllApartmentUseCase {
   );
 
   const landlordStrategy = new LandlordApartmentStrategy(
-    GetAllApartmentForLandlord
+    GetAllApartmentForLandlord,
+    GetAllApartmentPrefixQH,
+    DeleteApartmentByIdForLandlord,
+    GetApartmentByIdForLandlord,
+    GetApartmentDocumentByIdForLandlord
   );
 
   const apartmentContext = new ApartmentContext(
@@ -79,6 +113,8 @@ export function GetApartmentByQueries(): FindAllApartmentByQueryUseCase {
   const ReadApartmentRepo = new ReadApartmentRepositories();
   const ReadUseRepo = new ReadUserRepositories();
   const ReadApartmentDocumentRepo = new ReadApartmentDocumentRepositories();
+  const ReadLandlordRepo = new ReadLandlordRepositories();
+  const readApartmentDocumentRepo = new ReadApartmentDocumentRepositories();
 
   const uow = new UnitOfWork();
   const fileService = new CloudinaryService();
@@ -106,6 +142,30 @@ export function GetApartmentByQueries(): FindAllApartmentByQueryUseCase {
   const GetAllApartmentForLandlord =
     new GetAllApartmentByLandlordQueriesHandler(ReadApartmentRepo);
 
+  const GetAllApartmentPrefixQH =
+    new GetAllApartmentByQueriesForLandlordQueriesHandler(ReadApartmentRepo);
+
+  const DeleteApartmentByIdForLandlord =
+    new deleteApartmentByIdForLandlordCommandHandler(
+      uow,
+      ReadApartmentRepo,
+      fileService
+    );
+
+  const GetApartmentByIdForLandlord =
+    new GetApartmentByIdForLandlordQueriesHandler(
+      ReadUseRepo,
+      ReadLandlordRepo,
+      ReadApartmentRepo
+    );
+
+  const GetApartmentDocumentByIdForLandlord =
+    new GetApartmentDocumentByIdForLandlordQueriersHandler(
+      ReadUseRepo,
+      ReadLandlordRepo,
+      ReadApartmentDocumentRepo
+    );
+
   const adminStrategy = new AdminApartmentStrategy(
     DeleteApartmentCH,
     queriesHandler,
@@ -114,7 +174,11 @@ export function GetApartmentByQueries(): FindAllApartmentByQueryUseCase {
     GetApartmentDetailByIdQH
   );
   const landlordStrategy = new LandlordApartmentStrategy(
-    GetAllApartmentForLandlord
+    GetAllApartmentForLandlord,
+    GetAllApartmentPrefixQH,
+    DeleteApartmentByIdForLandlord,
+    GetApartmentByIdForLandlord,
+    GetApartmentDocumentByIdForLandlord
   );
 
   const apartmentContext = new ApartmentContext(
@@ -143,7 +207,7 @@ export function DeleteApartmentById(): DeleteApartmentByIdUseCase {
   const ReadApartmentRepo = new ReadApartmentRepositories();
   const readUserRepositories = new ReadUserRepositories();
   const ReadApartmentDocumentRepo = new ReadApartmentDocumentRepositories();
-
+  const ReadLandlordRepo = new ReadLandlordRepositories();
   const commandHandler = new deleteApartmentByIdCommandHandler(
     uow,
     ReadApartmentRepo,
@@ -169,6 +233,30 @@ export function DeleteApartmentById(): DeleteApartmentByIdUseCase {
   const GetAllApartmentForLandlord =
     new GetAllApartmentByLandlordQueriesHandler(ReadApartmentRepo);
 
+  const GetAllApartmentPrefixQH =
+    new GetAllApartmentByQueriesForLandlordQueriesHandler(ReadApartmentRepo);
+
+  const DeleteApartmentByIdForLandlord =
+    new deleteApartmentByIdForLandlordCommandHandler(
+      uow,
+      ReadApartmentRepo,
+      fileService
+    );
+
+  const GetApartmentByIdForLandlord =
+    new GetApartmentByIdForLandlordQueriesHandler(
+      readUserRepositories,
+      ReadLandlordRepo,
+      ReadApartmentRepo
+    );
+
+  const GetApartmentDocumentByIdForLandlord =
+    new GetApartmentDocumentByIdForLandlordQueriersHandler(
+      readUserRepositories,
+      ReadLandlordRepo,
+      ReadApartmentDocumentRepo
+    );
+
   const adminDeleteApartmentStrategy = new AdminApartmentStrategy(
     commandHandler,
     queriesHandler,
@@ -178,7 +266,11 @@ export function DeleteApartmentById(): DeleteApartmentByIdUseCase {
   );
 
   const landlordDeleteApartmentStrategy = new LandlordApartmentStrategy(
-    GetAllApartmentForLandlord
+    GetAllApartmentForLandlord,
+    GetAllApartmentPrefixQH,
+    DeleteApartmentByIdForLandlord,
+    GetApartmentByIdForLandlord,
+    GetApartmentDocumentByIdForLandlord
   );
 
   const apartmentContext = new ApartmentContext(
@@ -196,6 +288,7 @@ export function FindApartmentDocumentByIdUseCase(): findApartmentDocumentByIdUse
   const ReadApartmentRepo = new ReadApartmentRepositories();
   const readUserRepositories = new ReadUserRepositories();
   const ReadApartmentDocumentRepo = new ReadApartmentDocumentRepositories();
+  const ReadLandlordRepo = new ReadLandlordRepositories();
 
   const commandHandler = new deleteApartmentByIdCommandHandler(
     uow,
@@ -219,6 +312,16 @@ export function FindApartmentDocumentByIdUseCase(): findApartmentDocumentByIdUse
     ReadApartmentRepo
   );
 
+  const GetAllApartmentPrefixQH =
+    new GetAllApartmentByQueriesForLandlordQueriesHandler(ReadApartmentRepo);
+
+  const DeleteApartmentByIdForLandlord =
+    new deleteApartmentByIdForLandlordCommandHandler(
+      uow,
+      ReadApartmentRepo,
+      fileService
+    );
+
   const adminDeleteApartmentStrategy = new AdminApartmentStrategy(
     commandHandler,
     queriesHandler,
@@ -227,11 +330,29 @@ export function FindApartmentDocumentByIdUseCase(): findApartmentDocumentByIdUse
     GetApartmentDetailByIdQH
   );
 
+  const GetApartmentByIdForLandlord =
+    new GetApartmentByIdForLandlordQueriesHandler(
+      readUserRepositories,
+      ReadLandlordRepo,
+      ReadApartmentRepo
+    );
+
+  const GetApartmentDocumentByIdForLandlord =
+    new GetApartmentDocumentByIdForLandlordQueriersHandler(
+      readUserRepositories,
+      ReadLandlordRepo,
+      ReadApartmentDocumentRepo
+    );
+
   const GetAllApartmentForLandlord =
     new GetAllApartmentByLandlordQueriesHandler(ReadApartmentRepo);
 
   const landlordDeleteApartmentStrategy = new LandlordApartmentStrategy(
-    GetAllApartmentForLandlord
+    GetAllApartmentForLandlord,
+    GetAllApartmentPrefixQH,
+    DeleteApartmentByIdForLandlord,
+    GetApartmentByIdForLandlord,
+    GetApartmentDocumentByIdForLandlord
   );
 
   const apartmentContext = new ApartmentContext(
@@ -251,6 +372,7 @@ export function FindApartmentDetailByIdUseCase(): findApartmentByIdUseCase {
   const ReadApartmentRepo = new ReadApartmentRepositories();
   const readUserRepositories = new ReadUserRepositories();
   const ReadApartmentDocumentRepo = new ReadApartmentDocumentRepositories();
+  const ReadLandlordRepo = new ReadLandlordRepositories();
 
   const commandHandler = new deleteApartmentByIdCommandHandler(
     uow,
@@ -274,6 +396,23 @@ export function FindApartmentDetailByIdUseCase(): findApartmentByIdUseCase {
     ReadApartmentRepo
   );
 
+  const GetAllApartmentPrefixQH =
+    new GetAllApartmentByQueriesForLandlordQueriesHandler(ReadApartmentRepo);
+
+  const DeleteApartmentByIdForLandlord =
+    new deleteApartmentByIdForLandlordCommandHandler(
+      uow,
+      ReadApartmentRepo,
+      fileService
+    );
+
+  const GetApartmentByIdForLandlord =
+    new GetApartmentByIdForLandlordQueriesHandler(
+      readUserRepositories,
+      ReadLandlordRepo,
+      ReadApartmentRepo
+    );
+
   const adminDeleteApartmentStrategy = new AdminApartmentStrategy(
     commandHandler,
     queriesHandler,
@@ -282,11 +421,22 @@ export function FindApartmentDetailByIdUseCase(): findApartmentByIdUseCase {
     GetApartmentDetailByIdQH
   );
 
+  const GetApartmentDocumentByIdForLandlord =
+    new GetApartmentDocumentByIdForLandlordQueriersHandler(
+      readUserRepositories,
+      ReadLandlordRepo,
+      ReadApartmentDocumentRepo
+    );
+
   const GetAllApartmentForLandlord =
     new GetAllApartmentByLandlordQueriesHandler(ReadApartmentRepo);
 
   const landlordDeleteApartmentStrategy = new LandlordApartmentStrategy(
-    GetAllApartmentForLandlord
+    GetAllApartmentForLandlord,
+    GetAllApartmentPrefixQH,
+    DeleteApartmentByIdForLandlord,
+    GetApartmentByIdForLandlord,
+    GetApartmentDocumentByIdForLandlord
   );
 
   const apartmentContext = new ApartmentContext(
@@ -301,10 +451,14 @@ export function editApartmentDetailUseCase(): EditApartmentDetailUseCase {
   const ReadApartmentRepo = new ReadApartmentRepositories();
   const uow = new UnitOfWork();
   const fileService = new CloudinaryService();
+  const readUserRepo = new ReadUserRepositories();
+  const readLandlordRepo = new ReadLandlordRepositories();
 
-  const commandHandler = new EditApartmentDetailByIdCommandHandler(
-    ReadApartmentRepo,
+  const commandHandler = new EditApartmentDetailForLandlordCommandHandler(
     uow,
+    ReadApartmentRepo,
+    readUserRepo,
+    readLandlordRepo,
     fileService
   );
 
@@ -314,10 +468,27 @@ export function editApartmentDetailUseCase(): EditApartmentDetailUseCase {
 export function EditApartmentDocumentsUseCase(): UpdateApartmentDocumentUseCase {
   const uow = new UnitOfWork();
   const ReadApartmentDocumentRepo = new ReadApartmentDocumentRepositories();
+  const readApartmentRepo = new ReadApartmentRepositories();
+  const fileService = new CloudinaryService();
+  const readUserRepo = new ReadUserRepositories();
+  const readLandlordRepo = new ReadLandlordRepositories();
+
   const commandHandler = new UpdateApartmentDocumentFileCommandHandler(
+    fileService,
     uow,
+    readApartmentRepo,
+    readLandlordRepo,
+    readUserRepo,
     ReadApartmentDocumentRepo
   );
+
+  // // REMOVED: 'first' (Syntax Error)
+  // private readonly fileService: IFileStorageService,
+  // private readonly uow: IUnitOfWork,
+  // private readonly readApartmentRepo: IReadApartmentRepo,
+  // private readonly readLandlordRepo: IReadLandlordRepositories,
+  // private readonly readUserRepo: IReadUserRepositories,
+  // private readonly readApartmentDocumentRepo: IReadApartmentDocumentRepo
 
   return new UpdateApartmentDocumentUseCase(commandHandler);
 }

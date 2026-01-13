@@ -1,5 +1,5 @@
 import { UserRole } from "../../../../Domain/Shared/Enum/UserRole.enum";
-import { RegisterStudentRequest } from "../../../DTO/registeration/RegisterStudentRequest.dto";
+import { RegisterStudentRequest } from "../../../DTO/shared/registeration/RegisterStudentRequest.dto";
 import { ICommand } from "../../ICommand";
 
 export class CreateStudentCommand implements ICommand {

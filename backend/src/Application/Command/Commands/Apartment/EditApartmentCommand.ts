@@ -11,9 +11,10 @@ export class EditApartmentDetailByIdCommand implements ICommand {
   public isJoin?: boolean;
   public price?: string;
   public id: string;
-  public photos?: ApartmentPhotoDocumentEntity[];
+  public photos?: Express.Multer.File[];
+  public userId: string;
 
-  constructor(data: EditApartmentDataRequest, id: string) {
+  constructor(data: EditApartmentDataRequest, id: string, userId: string) {
     this.title = data.title;
     this.description = data.description;
     this.address = data.address;
@@ -23,5 +24,6 @@ export class EditApartmentDetailByIdCommand implements ICommand {
     this.price = data.price;
     this.id = id;
     this.photos = data.photos;
+    this.userId = userId;
   }
 }
