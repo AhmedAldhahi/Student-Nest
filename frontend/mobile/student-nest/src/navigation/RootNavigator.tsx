@@ -32,6 +32,7 @@ import StudentsScreen from "../features/dashboard/screens/admin/StudentsScreen";
 import LandlordsScreen from "../features/dashboard/screens/admin/LandlordsScreen";
 import LandlordDetailScreen from "../features/dashboard/screens/admin/LandlordDetailScreen";
 import StudentDetailScreen from "../features/dashboard/screens/admin/StudentDetailScreen";
+import AdminApartmentDetailScreen from "../features/dashboard/screens/admin/AdminApartmentDetailScreen";
 
 // 🏘 Apartment & Lease features
 import ApartmentDetailsScreen from "../features/apartments/screens/ApartmentDetailsScreen";
@@ -41,6 +42,10 @@ import EditApartmentScreen from "../features/apartments/screens/EditApartmentScr
 import StudentLeaseScreen from "../features/dashboard/screens/student/StudentLeaseScreen";
 import StudentRequestsScreen from "../features/dashboard/screens/student/StudentRequestsScreen";
 import LandlordLeaseScreen from "../features/dashboard/screens/landlord/LandlordLeaseScreen";
+import ApartmentLeasesScreen from "../features/apartments/screens/ApartmentLeasesScreen";
+import ApartmentRequestsScreen from "../features/apartments/screens/ApartmentRequestsScreen";
+import LeasePaymentsScreen from "../features/apartments/screens/LeasePaymentsScreen";
+import MyApartmentsScreen from "../features/apartments/screens/MyApartmentsScreen";
 import VerificationScreen from "../features/dashboard/screens/universal/VerificationScreen";
 import NotificationScreen from "../features/dashboard/screens/universal/NotificationScreen";
 import { TopToast } from "../components/TopToast";
@@ -104,6 +109,14 @@ export default function RootNavigator() {
             <Stack.Screen name="AdminRequestsScreen" component={AdminRequestsScreen} options={{ headerShown: true, title: "Requests" }} />
             <Stack.Screen name="AdminApartmentsScreen" component={AdminApartmentsScreen} options={{ headerShown: true, title: "Apartments" }} />
             <Stack.Screen name="AdminLeaseScreen" component={AdminLeaseScreen} options={{ headerShown: true, title: "Leases" }} />
+            <Stack.Screen
+              name="AdminApartmentDetail"
+              component={AdminApartmentDetailScreen}
+              options={{
+                headerShown: true,
+                title: "Apartment Details"
+              }}
+            />
 
 
             <Stack.Screen name="StudentLeaseScreen" component={StudentLeaseScreen} options={{ headerShown: true, title: "Leases" }} />
@@ -129,9 +142,15 @@ export default function RootNavigator() {
                 headerTitleStyle: { fontWeight: "700" },
               }}
             />
+            <Stack.Screen name="MyApartmentsScreen" component={MyApartmentsScreen} options={{ headerShown: true, title: "My Apartments" }} />
+
             <Stack.Screen name="EditApartmentScreen" component={EditApartmentScreen} options={{ headerShown: true, title: "Edit Apartment" }} />
+            <Stack.Screen name="ApartmentLeasesScreen" component={ApartmentLeasesScreen} options={{ headerShown: true, title: "Apartment Leases" }} />
+            <Stack.Screen name="ApartmentRequestsScreen" component={ApartmentRequestsScreen} options={{ headerShown: true, title: "Lease Requests" }} />
+            <Stack.Screen name="LeasePaymentsScreen" component={LeasePaymentsScreen} options={{ headerShown: true, title: "Lease Payments" }} />
           </>
         )}
+
       </Stack.Navigator>
     </>
   );

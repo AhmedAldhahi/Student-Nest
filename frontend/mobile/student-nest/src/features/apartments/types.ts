@@ -1,16 +1,36 @@
+export type ApartmentPhoto = {
+  photoId: string;
+  photoUrl: string;
+};
+
+export type ApartmentDocument = {
+  apartmentDocumentId: string;
+  documentUrl: string;
+  apartmentType: string;
+  apartmentsId: string;
+};
+
+export type GoogleMapLocation = {
+  googleMapLocationId: string;
+  longitude: string;
+  latitude: string;
+};
+
 export type Apartment = {
   apartmentId: string;
-  landlordId: number;   
-  propertyStatus: "available" | "rented" | "pending";
+  isVisible: boolean;
   title: string;
   description: string;
-  price: string;
   address: string;
-  rooms: number;
-  beds: number;
-  images: (string | number)[];
-  verified: boolean;
-  apartmentDocumentId?: number | null; // 👈 use this to infer pending
+  isVerified: boolean;
+  isJoin: boolean;
+  numberOfBed: string;
+  numberOfRoom: string;
+  price: string;
+  landlordName: string;
+  apartmentPhoto: ApartmentPhoto[];
+  apartmentDocuments: ApartmentDocument | null;
+  googleMapLocation: GoogleMapLocation | null;
 };
 
 export interface AddApartmentFormValues {
@@ -21,7 +41,10 @@ export interface AddApartmentFormValues {
   rooms: number;   // 👈 number in form state
   beds: number;    // 👈 number in form state
   joinedRoom: boolean; // stays boolean
-  images: string[] 
+  isVisible: boolean; // 👈 new field
+  googleMapLocationLat: number; // 👈 new field
+  googleMapLocationLong: number; // 👈 new field
+  images: string[]
 }
 
 export interface AddApartmentPayload {

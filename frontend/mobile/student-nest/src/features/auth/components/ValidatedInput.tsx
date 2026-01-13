@@ -10,10 +10,11 @@ type ValidatedInputProps = {
   secure?: boolean; // for password fields
   textContentType?: string;
   autoComplete?: string;
-  keyboardType?: "default" | "email-address" | "phone-pad";
+  keyboardType?: "default" | "email-address" | "phone-pad" | "numeric" | "decimal-pad";
   multiline?: boolean
   numberOfLines?: number
   style?: StyleProp<TextStyle>; // 👈 new optional style
+  placeholder?: string;
 };
 
 export default function ValidatedInput({
@@ -26,8 +27,9 @@ export default function ValidatedInput({
   keyboardType = "default",
   multiline = false,
   numberOfLines = 1,
-  style
-  
+  style,
+  placeholder
+
 }: ValidatedInputProps) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -50,6 +52,7 @@ export default function ValidatedInput({
             textContentType={textContentType as any}
             autoComplete={autoComplete as any}
             keyboardType={keyboardType}
+            placeholder={placeholder}
             right={
               secure ? (
                 <TextInput.Icon
@@ -67,9 +70,9 @@ export default function ValidatedInput({
 }
 
 const styles = StyleSheet.create<{ validated: TextStyle }>({
-    validated:{
-        marginLeft: 10,
-        color: "red"
-    }
+  validated: {
+    marginLeft: 10,
+    color: "red"
+  }
 });
 

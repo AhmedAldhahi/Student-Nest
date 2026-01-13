@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { View, Text, FlatList, TextInput, StyleSheet, ActivityIndicator, Alert, RefreshControl } from "react-native";
 import { Card, Chip, Button } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -8,6 +8,7 @@ import { LeaseRequest } from "./types";
 import { useAuth } from "../../../../context/AuthContext";
 import { getAllLeaseRequests, searchLeaseRequests } from "../../api/adminService";
 import { Ionicons } from "@expo/vector-icons";
+import { useDebounce } from "../../../../hooks/useDebounce";
 
 type Props = NativeStackScreenProps<RootStackParamList, "AdminRequestsScreen">;
 
@@ -19,8 +20,8 @@ export default function AdminRequestsScreen({ route }: Props) {
   const [refreshing, setRefreshing] = useState(false);
   const [filter, setFilter] = useState<"all" | "Pending" | "Accept" | "Reject">("all");
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 500);
   const [isSearching, setIsSearching] = useState(false);
-  const searchTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const fetchRequests = async () => {
     if (!token) return;
@@ -40,13 +41,10 @@ export default function AdminRequestsScreen({ route }: Props) {
   };
 
   const performSearch = async (query: string) => {
-    if (!token || query.trim() === "") {
-      setSearchResults(null);
-      return;
-    }
+    if (!token) return;
     setIsSearching(true);
     try {
-      const data = await searchLeaseRequests(token, query.trim());
+      const data = await searchLeaseRequests(token, query);
       if (Array.isArray(data)) {
         setSearchResults(data);
       } else {
@@ -60,40 +58,22 @@ export default function AdminRequestsScreen({ route }: Props) {
     }
   };
 
-  const handleSearchChange = (text: string) => {
-    setSearch(text);
-
-    // Clear previous timeout
-    if (searchTimeout.current) {
-      clearTimeout(searchTimeout.current);
-    }
-
-    if (text.trim() === "") {
+  // Effect for Debounced Search
+  useEffect(() => {
+    if (debouncedSearch.trim() === "") {
       setSearchResults(null);
       return;
     }
-
-    // Debounce search - wait 500ms after user stops typing
-    searchTimeout.current = setTimeout(() => {
-      performSearch(text);
-    }, 500);
-  };
+    performSearch(debouncedSearch);
+  }, [debouncedSearch]);
 
   const clearSearch = () => {
-    if (searchTimeout.current) {
-      clearTimeout(searchTimeout.current);
-    }
     setSearch("");
     setSearchResults(null);
   };
 
   useEffect(() => {
     fetchRequests();
-    return () => {
-      if (searchTimeout.current) {
-        clearTimeout(searchTimeout.current);
-      }
-    };
   }, []);
 
   const onRefresh = useCallback(() => {
@@ -231,7 +211,7 @@ export default function AdminRequestsScreen({ route }: Props) {
           <TextInput
             placeholder="Search by Student, Landlord, or Apartment..."
             value={search}
-            onChangeText={handleSearchChange}
+            onChangeText={setSearch}
             returnKeyType="search"
             style={styles.searchBar}
             placeholderTextColor="#999"

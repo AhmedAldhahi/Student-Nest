@@ -75,7 +75,7 @@ export interface LeaseRequest {
 }
 
 export interface AdminApartment {
-    apartmentId: number;
+    apartmentId: string | number; // API returns UUID string
     propertyStatus: boolean;
     title: string;
     description: string;
@@ -87,7 +87,12 @@ export interface AdminApartment {
     numberOfRoom: string;
     price: string;
     landlordName: string;
-    apartmentPhoto: string[];
+    apartmentPhoto: { photoId: string; photoUrl: string }[];
+    googleMapLocation?: {
+        googleMapLocationId: string;
+        longitude: string;
+        latitude: string;
+    };
 }
 
 export interface AuditLog {

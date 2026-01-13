@@ -357,3 +357,29 @@ export const updateProfile = async (
     }
 };
 
+
+export const changePassword = async (token: string, data: { oldPassword: string; newPassword: string }) => {
+    try {
+        console.log("Changing Password at:", `${API_URL}/me/password`);
+        const response = await fetch(`${API_URL}/me/password`, {
+            method: "PATCH",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+
+        const result = await response.json();
+        console.log("Change Password Response:", result);
+
+        if (!response.ok) {
+            throw new Error(result.message || "Failed to change password");
+        }
+        return result;
+    } catch (error) {
+        console.error("Change Password Error:", error);
+        throw error;
+    }
+};

@@ -320,10 +320,10 @@ export const searchApartments = async (token: string, query: string) => {
     }
 };
 
-export const verifyApartment = async (token: string, apartmentId: number, isVerified: boolean) => {
+export const verifyApartment = async (token: string, apartmentId: number | string, isVerified: boolean) => {
     try {
         console.log(`Verifying apartment ${apartmentId} with status ${isVerified}`);
-        const response = await fetch(`${API_URL}/admin/apartment/${apartmentId}/verify`, {
+        const response = await fetch(`${API_URL}/admin/apartments/${apartmentId}/verify`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -335,8 +335,16 @@ export const verifyApartment = async (token: string, apartmentId: number, isVeri
             }),
         });
 
-        const result = await response.json();
-        console.log("verifyApartment Response:", result);
+        const text = await response.text();
+        console.log("verifyApartment Raw Response:", text);
+
+        let result;
+        try {
+            result = JSON.parse(text);
+        } catch (e) {
+            console.error("Failed to parse JSON:", text);
+            throw new Error(`Server returned non-JSON response: ${text.slice(0, 100)}...`);
+        }
 
         if (!response.ok) {
             throw new Error(result.message || "Failed to verify apartment");
@@ -526,3 +534,39 @@ export const deleteAllNotifications = async (token: string) => {
 };
 
 
+export const deleteApartment = async (token: string, apartmentId: number | string) => {
+    try {
+        console.log(`Deleting apartment ${apartmentId}`);
+        const response = await fetch(`${API_URL}/apartments/${apartmentId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+
+        const text = await response.text();
+        console.log("deleteApartment Raw Response:", text);
+
+        let result;
+        try {
+            if (response.status === 204 || !text) {
+                return { success: true };
+            }
+            result = JSON.parse(text);
+        } catch (e) {
+            console.error("Failed to parse JSON:", text);
+            if (response.ok) return { success: true, message: text };
+            throw new Error(`Server returned non-JSON response: ${text.slice(0, 100)}...`);
+        }
+
+        if (!response.ok) {
+            throw new Error(result.message || "Failed to delete apartment");
+        }
+        return result;
+    } catch (error) {
+        console.error("deleteApartment Error:", error);
+        throw error;
+    }
+};

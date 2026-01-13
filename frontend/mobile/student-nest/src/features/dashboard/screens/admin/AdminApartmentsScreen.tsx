@@ -1,19 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image, ActivityIndicator, Alert } from "react-native";
 import { Card, Chip, Button, Searchbar } from "react-native-paper";
-import { useRoute } from "@react-navigation/native";
+import { useRoute, useNavigation, useFocusEffect } from "@react-navigation/native";
 import { useAuth } from "../../../../context/AuthContext";
-import { getAllApartments, verifyApartment, searchApartments } from "../../api/adminService";
+import { getAllApartments, verifyApartment, searchApartments, deleteApartment } from "../../api/adminService";
 import { AdminApartment } from "./types";
 
-// Placeholder images for apartments without photos
-const PLACEHOLDER_IMAGES = [
-  require("../../../../assets/images/apartment-picture-a.jpg"),
-  require("../../../../assets/images/apartment-picture-b.jpg"),
-  require("../../../../assets/images/apartment-picture-c.jpg"),
-];
 
 export default function AdminApartmentsScreen() {
+  const navigation = useNavigation<any>();
   const route = useRoute();
   const { token } = useAuth();
   const landlordId = (route.params as any)?.landlordId;
@@ -23,7 +18,8 @@ export default function AdminApartmentsScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<"ALL" | "VERIFIED" | "UNVERIFIED">("ALL");
-  const [verifying, setVerifying] = useState<number | null>(null); // track which apartment is being verified
+  const [verifying, setVerifying] = useState<string | number | null>(null); // track which apartment is being verified
+  const [deleting, setDeleting] = useState<string | number | null>(null); // track which apartment is being deleted
   const [searchQuery, setSearchQuery] = useState("");
 
   const onChangeSearch = (query: string) => {
@@ -58,9 +54,48 @@ export default function AdminApartmentsScreen() {
     }
   };
 
-  useEffect(() => {
-    fetchApartments();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchApartments();
+    }, [token])
+  );
+
+  const handleDelete = async (apartmentId: number | string) => {
+    if (!token) {
+      Alert.alert("Error", "No authentication token found");
+      return;
+    }
+
+    Alert.alert(
+      "Confirm Deletion",
+      "Are you sure you want to delete this apartment? This action cannot be undone.",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              setDeleting(apartmentId);
+              await deleteApartment(token, apartmentId);
+
+              // Remove from local state
+              const removeFromList = (list: AdminApartment[]) => list.filter(a => a.apartmentId !== apartmentId);
+              setApartments(prev => removeFromList(prev));
+              setAllApartments(prev => removeFromList(prev));
+
+              Alert.alert("Success", "Apartment deleted successfully");
+            } catch (err: any) {
+              console.error("Error deleting apartment:", err);
+              Alert.alert("Error", err.message || "Failed to delete apartment");
+            } finally {
+              setDeleting(null);
+            }
+          }
+        }
+      ]
+    );
+  };
 
   const fetchApartments = async () => {
     try {
@@ -93,19 +128,37 @@ export default function AdminApartmentsScreen() {
     });
 
   const getImageSource = (apartment: AdminApartment) => {
-    if (apartment.apartmentPhoto && apartment.apartmentPhoto.length > 0) {
-      return { uri: apartment.apartmentPhoto[0] };
+    // Check if apartmentPhoto exists and has items
+    if (
+      apartment.apartmentPhoto &&
+      Array.isArray(apartment.apartmentPhoto) &&
+      apartment.apartmentPhoto.length > 0
+    ) {
+      const firstPhoto = apartment.apartmentPhoto[0];
+
+      // Handle if it's an object with photoUrl (new structure)
+      if (typeof firstPhoto === 'object' && firstPhoto !== null && 'photoUrl' in firstPhoto) {
+        const url = (firstPhoto as any).photoUrl;
+        if (typeof url === 'string' && url.trim() !== '') {
+          return { uri: url };
+        }
+      }
+
+      // Handle legacy case if it happens to be a string
+      if (typeof firstPhoto === 'string' && firstPhoto.trim() !== '' && firstPhoto !== 'null') {
+        return { uri: firstPhoto };
+      }
     }
-    // Cycle through placeholder images based on apartment ID
-    const index = apartment.apartmentId % PLACEHOLDER_IMAGES.length;
-    return PLACEHOLDER_IMAGES[index];
+
+    // Fallback to app logo
+    return require("../../../../assets/images/Student-nest-logo.png");
   };
 
   const getPropertyStatusLabel = (status: boolean) => {
     return status ? "AVAILABLE" : "UNAVAILABLE";
   };
 
-  const handleVerify = async (apartmentId: number, shouldVerify: boolean) => {
+  const handleVerify = async (apartmentId: number | string, shouldVerify: boolean) => {
     if (!token) {
       Alert.alert("Error", "No authentication token found");
       return;
@@ -185,14 +238,27 @@ export default function AdminApartmentsScreen() {
       </TouchableOpacity>
 
       <Card.Actions style={styles.actions}>
-        <Button mode="outlined" style={styles.btn}>
-          View Details
+        <Button
+          mode="outlined"
+          style={styles.btn}
+          onPress={() => navigation.navigate("AdminApartmentDetail", { apartment: item })}
+        >
+          View
+        </Button>
+        <Button
+          mode="outlined"
+          buttonColor="#e74c3c"
+          textColor="white"
+          style={styles.btn}
+          onPress={() => handleDelete(item.apartmentId)}
+        >
+          Delete
         </Button>
         {item.Verified ? (
           <Button
             mode="contained"
-            style={[styles.btn, { backgroundColor: "#c0392b" }]}
-            onPress={() => handleVerify(item.apartmentId, false)}
+            style={[styles.btn, { backgroundColor: "#f39c12" }]}
+            onPress={() => handleVerify(item.apartmentId as any, false)}
             loading={verifying === item.apartmentId}
             disabled={verifying === item.apartmentId}
           >
@@ -202,7 +268,7 @@ export default function AdminApartmentsScreen() {
           <Button
             mode="contained"
             style={[styles.btn, { backgroundColor: "#27ae60" }]}
-            onPress={() => handleVerify(item.apartmentId, true)}
+            onPress={() => handleVerify(item.apartmentId as any, true)}
             loading={verifying === item.apartmentId}
             disabled={verifying === item.apartmentId}
           >

@@ -34,6 +34,8 @@ export type RootStackParamList = {
   LandlordRequestsScreen: { landlordId: string };
   LandlordLeaseScreen: { landlordId: string };
 
+  AdminApartments: { landlordId?: string } | undefined;
+  AdminApartmentDetail: { apartment: any }; // Using any for simplicity now, but should ideally be AdminApartment
   LeaseScreen: { landlordId?: string; studentId?: string } | undefined;
   ProfileScreen: undefined;
   RequestsScreen: undefined;
@@ -43,7 +45,10 @@ export type RootStackParamList = {
   ApartmentDetailsScreen: { apartment: Apartment }; // ✅ expects an apartment object
   RequestLeaseForm: { apartment: Apartment }; // ✅ pass apartment into RequestLeaseForm
   TestRoleSwitcher: undefined; // 👈 add this for quick role switching
-  MyApartmentsScreen: undefined;
+  ApartmentRequestsScreen: { apartmentId: string };
+  MyApartmentsScreen: { filter?: "all" | "booked" } | undefined;
   AddApartmentForm: undefined;
   EditApartmentScreen: { apartment: Apartment };
+  ApartmentLeasesScreen: { apartmentId: string };
+  LeasePaymentsScreen: { leaseId: string; apartmentId?: string };
 };
