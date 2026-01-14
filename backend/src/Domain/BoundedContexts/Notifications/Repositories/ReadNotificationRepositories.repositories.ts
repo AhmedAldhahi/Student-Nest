@@ -1,14 +1,6 @@
-import { UserResponseDTO } from "../../IdentityAndAccess/Repositories/ReadStudentRepositories.repositories";
 import { NotificationEntity } from "../Entities/NotificationEntity.entity";
+import { INotificationDTO } from "../Representations/INotificationDTO";
 
-export interface INotificationDTO {
-  notifyId: number;
-  createAt: Date;
-  message: string;
-  title: string;
-  isRead: boolean;
-  receiver: UserResponseDTO;
-}
 export interface IReadNotificationRepositories {
   GetAllNotification(userId: string): Promise<INotificationDTO[] | null>;
   GetNotificationById(id: number): Promise<NotificationEntity | null>;

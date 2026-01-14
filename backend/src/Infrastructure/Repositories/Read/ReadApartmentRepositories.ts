@@ -1,10 +1,11 @@
 import { FindOptionsWhere, In, Like } from "typeorm";
-
-import { IApartmentDTO, IApartmentSimpleDTO, IReadApartmentRepo } from "../../../Domain/BoundedContexts/Housing/Repositories/ReadApartmentRepo.repositoreis";
 import { AppDataSource } from "../../Database/TypeOrm/data-source";
 import { ApartmentModel } from "../../Database/TypeOrm/entity/Apartment.entity";
 import { ApartmentMapper } from "../mapper/apartment.mapper";
 import { ApartmentAggregateRoot } from "../../../Domain/BoundedContexts/Housing/AgregateRoot/apartmentEntity.entity";
+import { IReadApartmentRepo } from "../../../Domain/BoundedContexts/Housing/Repositories/ReadApartmentRepo.repositoreis";
+import { IApartmentDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentDto";
+import { IApartmentSimpleDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentSimpleDto";
 
 
 

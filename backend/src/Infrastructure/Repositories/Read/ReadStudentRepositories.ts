@@ -2,8 +2,9 @@ import { FindOptionsWhere, Like } from "typeorm";
 import { AppDataSource } from "../../Database/TypeOrm/data-source";
 import { StudentModel } from "../../Database/TypeOrm/entity/Student.entity";
 import { StudentMapper } from "../mapper/student.mapper";
-import { IReadStudentRepositories, StudentResponseDto } from "../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadStudentRepositories.repositories";
+import { IReadStudentRepositories } from "../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadStudentRepositories.repositories";
 import { StudentAggregateRoot } from "../../../Domain/BoundedContexts/IdentityAndAccess/Aggregates/StudentAggregateRoot.entity";
+import { StudentResponseDto } from "../../../Domain/BoundedContexts/IdentityAndAccess/Representations/StudentResponseDTO";
 
 export class ReadStudentRepositories implements IReadStudentRepositories {
   public async findAllStudent(): Promise<StudentResponseDto[] | null> {

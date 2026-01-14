@@ -1,7 +1,5 @@
-import {
-  IApartmentSimpleDTO,
-  IReadApartmentRepo,
-} from "../../../../Domain/BoundedContexts/Housing/Repositories/ReadApartmentRepo.repositoreis";
+import { IReadApartmentRepo } from "../../../../Domain/BoundedContexts/Housing/Repositories/ReadApartmentRepo.repositoreis";
+import { IApartmentSimpleDTO } from "../../../../Domain/BoundedContexts/Housing/Representations/IApartmentSimpleDto";
 import { IReadLeaseRepositories } from "../../../../Domain/BoundedContexts/Leases/Repositories/Read/ReadLeaseRepositories.repositories";
 import { IQueriesHandlers } from "../../Shared/abstraction/IQueriesHandler";
 import { ApartmentBased } from "../Queries/ApartmentBases";

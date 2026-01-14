@@ -1,5 +1,5 @@
 import { NotificationEntity } from "../../../Domain/BoundedContexts/Notifications/Entities/NotificationEntity.entity";
-import { INotificationDTO } from "../../../Domain/BoundedContexts/Notifications/Repositories/ReadNotificationRepositories.repositories";
+import { INotificationDTO } from "../../../Domain/BoundedContexts/Notifications/Representations/INotificationDTO";
 import { NotificationModel } from "../../Database/TypeOrm/entity/Notifcation.entity";
 import { UserMapper } from "./user.mapper";
 

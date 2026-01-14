@@ -1,4 +1,5 @@
-import { IReadStudentRepositories, StudentResponseDto } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadStudentRepositories.repositories";
+import { IReadStudentRepositories } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadStudentRepositories.repositories";
+import { StudentResponseDto } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Representations/StudentResponseDTO";
 import { IQueriesHandlers } from "../../Shared/abstraction/IQueriesHandler";
 import { GetAllUser } from "../Queries/GetAllUser";
 

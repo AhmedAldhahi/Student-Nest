@@ -1,6 +1,7 @@
 
 import { ApartmentAggregateRoot } from "../../../Domain/BoundedContexts/Housing/AgregateRoot/apartmentEntity.entity";
-import { IApartmentSimpleDTO, IApartmentDTO } from "../../../Domain/BoundedContexts/Housing/Repositories/ReadApartmentRepo.repositoreis";
+import { IApartmentDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentDto";
+import { IApartmentSimpleDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentSimpleDto";
 import { ApartmentPrice } from "../../../Domain/BoundedContexts/Housing/Value-Object/ApartmentPrice.vo";
 import { NumberOfBed } from "../../../Domain/BoundedContexts/Housing/Value-Object/NumberOfBed.vo";
 import { NumberOfRoom } from "../../../Domain/BoundedContexts/Housing/Value-Object/NumberOfRoom.vo";

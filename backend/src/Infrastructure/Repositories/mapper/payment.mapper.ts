@@ -1,5 +1,5 @@
 import { PaymentAggregateRoot } from "../../../Domain/BoundedContexts/Payment/AgregateRoot/Payment.AgregateRoot";
-import { PaymentsResponse } from "../../../Domain/BoundedContexts/Payment/Repositories/ReadPaymentSchedualRepo.repostiores";
+import { PaymentsResponse } from "../../../Domain/BoundedContexts/Payment/Representations/IPaymentResponse";
 import { PaymentAmount } from "../../../Domain/BoundedContexts/Payment/Value-Object/PaymentAmount.vo";
 import { PaymentScheduleModel } from "../../Database/TypeOrm/entity/PaymentSchedual.entity";
 import { ReceiptMapper } from "./receipt.mapper";

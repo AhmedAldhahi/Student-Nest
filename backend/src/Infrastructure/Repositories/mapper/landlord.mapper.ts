@@ -1,5 +1,5 @@
 import { LandlordAggregateRoot } from "../../../Domain/BoundedContexts/IdentityAndAccess/Aggregates/landloardAggregateRoot.entity";
-import { LandlordResponseDTO } from "../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadLandlordRepositories.repositoreies";
+import { LandlordResponseDTO } from "../../../Domain/BoundedContexts/IdentityAndAccess/Representations/LandlordResponseDTO";
 import { GovernmentID } from "../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/UserGovId.vo";
 import { VerificationDocument } from "../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/VerficationDocument.vo";
 import { LandlordModel } from "../../Database/TypeOrm/entity/Landlord.entity";

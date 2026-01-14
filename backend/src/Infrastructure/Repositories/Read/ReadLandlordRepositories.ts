@@ -1,9 +1,10 @@
 import { FindOptionsWhere, Like } from "typeorm";
 import { LandlordAggregateRoot } from "../../../Domain/BoundedContexts/IdentityAndAccess/Aggregates/landloardAggregateRoot.entity";
-import { IReadLandlordRepositories, LandlordResponseDTO } from "../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadLandlordRepositories.repositoreies";
+import { IReadLandlordRepositories } from "../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadLandlordRepositories.repositoreies";
 import { AppDataSource } from "../../Database/TypeOrm/data-source";
 import { LandlordModel } from "../../Database/TypeOrm/entity/Landlord.entity";
 import { LandlordMapper } from "../mapper/landlord.mapper";
+import { LandlordResponseDTO } from "../../../Domain/BoundedContexts/IdentityAndAccess/Representations/LandlordResponseDTO";
 
 export class ReadLandlordRepositories implements IReadLandlordRepositories {
   public async findLandlordById(

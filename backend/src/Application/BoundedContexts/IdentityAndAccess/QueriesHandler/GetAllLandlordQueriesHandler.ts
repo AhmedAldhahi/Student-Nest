@@ -1,4 +1,5 @@
-import { IReadLandlordRepositories, LandlordResponseDTO } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadLandlordRepositories.repositoreies";
+import { IReadLandlordRepositories } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadLandlordRepositories.repositoreies";
+import { LandlordResponseDTO } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Representations/LandlordResponseDTO";
 import { IQueriesHandlers } from "../../Shared/abstraction/IQueriesHandler";
 import { GetAllUser } from "../Queries/GetAllUser";
 

@@ -1,5 +1,5 @@
 import { StudentAggregateRoot } from "../../../Domain/BoundedContexts/IdentityAndAccess/Aggregates/StudentAggregateRoot.entity";
-import { StudentResponseDto } from "../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadStudentRepositories.repositories";
+import { StudentResponseDto } from "../../../Domain/BoundedContexts/IdentityAndAccess/Representations/StudentResponseDTO";
 import { StudentCard } from "../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/StudentCard.vo";
 import { studentGraduateYear } from "../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/StudentGraduateYear.vo";
 import { StudentMajor } from "../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/StudentMajor.vo";

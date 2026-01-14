@@ -1,5 +1,5 @@
 import { UserEntity } from "../../../Domain/BoundedContexts/IdentityAndAccess/Entities/userEntity.entity";
-import { UserResponseDTO } from "../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadStudentRepositories.repositories";
+import { UserResponseDTO } from "../../../Domain/BoundedContexts/IdentityAndAccess/Representations/UserResponseDTO";
 import { OTP } from "../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/OTP.vo";
 import { UserDateOfBirth } from "../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/UserDateOfBirth.vo";
 import { UserEmail } from "../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/UserEmail.vo";
