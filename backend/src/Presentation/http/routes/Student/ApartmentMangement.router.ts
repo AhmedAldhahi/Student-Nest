@@ -15,5 +15,12 @@ export const ApartmentRouter = (
     studentApartmentControllers.GetRandomApartment
   );
 
+  router.get(
+    "/available",
+    isAuth,
+    isStudent,
+    studentApartmentControllers.GetAllVisibleAndNotFullApartments
+  );
+
   return router;
 };

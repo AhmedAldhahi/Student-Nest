@@ -5,7 +5,7 @@ import { UpdateApartmentDocumentFileCommandHandler } from "../../../../Applicati
 import { UpdateApartmentDetailForLandlordCommandHandler } from "../../../../Application/BoundedContexts/Apartment/CommandHandler/UpdateApartmentDetailCommandHandler";
 import { GetAllApartmentThatBeenBookedQueriesHandler } from "../../../../Application/BoundedContexts/Apartment/QueriesHandler/GetAllApartmentForLandlordThatbookenQueriesHandler";
 import { AuditLogActionType } from "../../../../Domain/BoundedContexts/adminstration/Enum/AuditLogAction.enum";
-import { GetRandomlyThreeApartmentThatIsVisibleAndNotFull } from "../../../../Application/BoundedContexts/Apartment/QueriesHandler/GetRandomlyThreeApartmentsVisableAndNotFull";
+import { GetRandomlyThreeApartmentThatIsVisibleAndNotFull } from "../../../../Application/BoundedContexts/Apartment/QueriesHandler/GetRandomlyThreeApartmentsVisableAndNotFullQueriesHandler";
 
 export class ApartmentControllerForLandlord {
   constructor(

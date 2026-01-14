@@ -107,7 +107,8 @@ export const buildControllersBoundaryContext = () => {
   );
 
   const apartmentControllerForStudent = new ApartmentControllerForStudent(
-    QueriesHandler.GetApartmentRandomlyThatNotFullAndVerifiedQueriesHandler
+    QueriesHandler.GetApartmentRandomlyThatNotFullAndVerifiedQueriesHandler,
+    QueriesHandler.GetApartmentNotFullAndVerifiedQueriesHandler
   );
 
   const LeaseRequest = {

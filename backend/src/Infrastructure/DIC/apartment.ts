@@ -10,11 +10,12 @@ import { GetAllApartmentByQueriesForLandlordQueriesHandler } from "../../Applica
 import { GetAllApartmentForAdminQueriesHandler } from "../../Application/BoundedContexts/Apartment/QueriesHandler/GetAllApartmentForAdminQueriesHandler";
 import { GetAllApartmentThatBeenBookedQueriesHandler } from "../../Application/BoundedContexts/Apartment/QueriesHandler/GetAllApartmentForLandlordThatbookenQueriesHandler";
 import { GetAllApartmentByQueryForAdminQueriesHandler } from "../../Application/BoundedContexts/Apartment/QueriesHandler/GetAllApartmentQueriesForAdmin";
+import { GetAllVisibleAndNotFullApartmentQueriesHandler } from "../../Application/BoundedContexts/Apartment/QueriesHandler/GetAllVisableAndNotFullApartmentQueriesHandler";
 import { GetApartmentByIdForLandlordQueriesHandler } from "../../Application/BoundedContexts/Apartment/QueriesHandler/GetApartmentByIdForLandlordQueriesHandler";
 import { GetApartmentByIdQueriesHandler } from "../../Application/BoundedContexts/Apartment/QueriesHandler/GetApartmentByIdQueriesHandler";
 import { GetApartmentDocumentByIdQueriesHandler } from "../../Application/BoundedContexts/Apartment/QueriesHandler/GetApartmentDocumentById.QueriesHandler";
 import { GetApartmentDocumentByIdForLandlordQueriersHandler } from "../../Application/BoundedContexts/Apartment/QueriesHandler/GetApartmentDocumentByIdForLandlordQueriesHandler";
-import { GetRandomlyThreeApartmentThatIsVisibleAndNotFull } from "../../Application/BoundedContexts/Apartment/QueriesHandler/GetRandomlyThreeApartmentsVisableAndNotFull";
+import { GetRandomlyThreeApartmentThatIsVisibleAndNotFullQueriesHandler } from "../../Application/BoundedContexts/Apartment/QueriesHandler/GetRandomlyThreeApartmentsVisableAndNotFullQueriesHandler";
 import { AdminApartmentStrategy } from "../../Application/BoundedContexts/Shared/Strategy/apartment/AdminApartment.strategy";
 import { ApartmentContext } from "../../Application/BoundedContexts/Shared/Strategy/apartment/ApartmentContext";
 import { LandlordApartmentStrategy } from "../../Application/BoundedContexts/Shared/Strategy/apartment/LandlordApartment.strategy";
@@ -190,11 +191,21 @@ export function GetAllBookedApartmentQH(): GetAllApartmentThatBeenBookedQueriesH
   );
 }
 
-export function GetRandomlyThreeApartmentThatIsVisibleAndNotFullQH(): GetRandomlyThreeApartmentThatIsVisibleAndNotFull {
+export function GetRandomlyThreeApartmentThatIsVisibleAndNotFullQH(): GetRandomlyThreeApartmentThatIsVisibleAndNotFullQueriesHandler {
   const readApartmentRepo = new ReadApartmentRepositories();
   const ReadLeaseRepo = new ReadLeaseRepositories();
 
-  return new GetRandomlyThreeApartmentThatIsVisibleAndNotFull(
+  return new GetRandomlyThreeApartmentThatIsVisibleAndNotFullQueriesHandler(
+    readApartmentRepo,
+    ReadLeaseRepo
+  );
+}
+
+export function GetAllVisibleAndNotFullApartmentQH(): GetAllVisibleAndNotFullApartmentQueriesHandler {
+  const readApartmentRepo = new ReadApartmentRepositories();
+  const ReadLeaseRepo = new ReadLeaseRepositories();
+
+  return new GetAllVisibleAndNotFullApartmentQueriesHandler(
     readApartmentRepo,
     ReadLeaseRepo
   );

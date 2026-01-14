@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
-import { GetRandomlyThreeApartmentThatIsVisibleAndNotFull } from "../../../../Application/BoundedContexts/Apartment/QueriesHandler/GetRandomlyThreeApartmentsVisableAndNotFull";
+import { GetRandomlyThreeApartmentThatIsVisibleAndNotFullQueriesHandler } from "../../../../Application/BoundedContexts/Apartment/QueriesHandler/GetRandomlyThreeApartmentsVisableAndNotFullQueriesHandler";
+import { GetAllVisibleAndNotFullApartmentQueriesHandler } from "../../../../Application/BoundedContexts/Apartment/QueriesHandler/GetAllVisableAndNotFullApartmentQueriesHandler";
 
 export class ApartmentControllerForStudent {
   constructor(
-    private readonly GetApartmentRandomThatIsVisibleAndNotFull: GetRandomlyThreeApartmentThatIsVisibleAndNotFull
+    private readonly GetApartmentRandomThatIsVisibleAndNotFull: GetRandomlyThreeApartmentThatIsVisibleAndNotFullQueriesHandler,
+    private readonly GetAllVisibleAndNotFullApartment: GetAllVisibleAndNotFullApartmentQueriesHandler
   ) {}
 
   public GetRandomApartment = async (req: Request, res: Response) => {
@@ -14,6 +16,24 @@ export class ApartmentControllerForStudent {
 
       const result =
         await this.GetApartmentRandomThatIsVisibleAndNotFull.handle();
+      return res.status(200).json(result);
+    } catch (error: any) {
+      return res
+        .status(400)
+        .json({ error: error.message || "internal server error" });
+    }
+  };
+
+  public GetAllVisibleAndNotFullApartments = async (
+    req: Request,
+    res: Response
+  ) => {
+    try {
+      const user = req.user?.userId;
+      if (!user)
+        return res.status(400).json({ error: "no user id been found !!" });
+
+      const result = await this.GetAllVisibleAndNotFullApartment.handle();
       return res.status(200).json(result);
     } catch (error: any) {
       return res

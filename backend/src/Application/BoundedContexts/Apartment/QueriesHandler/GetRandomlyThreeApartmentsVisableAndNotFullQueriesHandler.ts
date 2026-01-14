@@ -6,7 +6,7 @@ import { IReadLeaseRepositories } from "../../../../Domain/BoundedContexts/Lease
 import { IQueriesHandlers } from "../../Shared/abstraction/IQueriesHandler";
 import { ApartmentBased } from "../Queries/ApartmentBases";
 
-export class GetRandomlyThreeApartmentThatIsVisibleAndNotFull
+export class GetRandomlyThreeApartmentThatIsVisibleAndNotFullQueriesHandler
   implements IQueriesHandlers<ApartmentBased>
 {
   constructor(
