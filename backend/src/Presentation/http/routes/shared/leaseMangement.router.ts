@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { SharedLeaseManagementController } from "../../controllers/Lease/SharedLease.controlller";
+import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 
 export const LeaseManagementRouter = (
   leaseManagementController: SharedLeaseManagementController
@@ -7,11 +8,11 @@ export const LeaseManagementRouter = (
   const router = Router();
 
   //todo: need strategy and factory student-landlord-admin
-  router.get("/", leaseManagementController.getAllLease);
+  router.get("/", isAuth, leaseManagementController.getAllLease);
 
   //todo: need strategy and factory student-landlord-admin
 
-  router.get("/search", leaseManagementController.getLeaseByQuery);
+  router.get("/search", isAuth, leaseManagementController.getLeaseByQuery);
 
   return router;
 };

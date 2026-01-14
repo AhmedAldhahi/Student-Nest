@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { isAdminOrLandlord } from "../../middlewares/auth/isAdminOrLandlord.middleware";
 import { SharedApartmentManagementController } from "../../controllers/Apartment/ApartmentControllerShared";
+import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 
 export const ApartmentSharedRouter = (
   apartmentController: SharedApartmentManagementController
@@ -11,7 +12,11 @@ export const ApartmentSharedRouter = (
 
   router.get("/search", apartmentController.getApartmentsByQueries);
 
-  router.get("/:id/documents", apartmentController.FindApartmentDocumentById);
+  router.get(
+    "/:id/documents",
+    isAuth,
+    apartmentController.FindApartmentDocumentById
+  );
 
   router.get("/:id", apartmentController.getApartmentDetailById);
 

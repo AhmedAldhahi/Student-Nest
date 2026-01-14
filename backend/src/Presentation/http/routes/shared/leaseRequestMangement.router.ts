@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { SharedLeaseRequestController } from "../../controllers/LeaseRequest/SharedleaseReques.controller";
+import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 
 export const LeaseRequestManagementRouter = (
   leaseRequestManagementController: SharedLeaseRequestController
@@ -8,11 +9,11 @@ export const LeaseRequestManagementRouter = (
 
   //TODO: shared between it and students and need strategy
 
-  router.get("/", leaseRequestManagementController.getAllLeaseRequest);
+  router.get("/", isAuth,leaseRequestManagementController.getAllLeaseRequest);
 
   //TODO: shared between it and students and need strategy
   router.get(
-    "/search",
+    "/search",isAuth,
     leaseRequestManagementController.getLeaseRequestByQuery
   );
 

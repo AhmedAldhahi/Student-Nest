@@ -20,29 +20,20 @@ export const SharedIndexRouter = (
 ): Router => {
   const router = Router();
 
-  router.use("/apartments", isAuth, ApartmentSharedRouter(apartmentController));
+  router.use("/apartments", ApartmentSharedRouter(apartmentController));
 
   // //todo: need to implement landlord-student for strategy
   router.use(
     "/leases-request",
-    isAuth,
     LeaseRequestManagementRouter(leaseRequestManagementController)
   );
 
   // //todo: need to implement landlord-student for strategy
-  router.use(
-    "/leases",
-    isAuth,
-    LeaseManagementRouter(leaseManagementController)
-  );
+  router.use("/leases", LeaseManagementRouter(leaseManagementController));
 
-  router.use(
-    "/notifications",
-    isAuth,
-    notificationRouter(notificationController)
-  );
+  router.use("/notifications", notificationRouter(notificationController));
 
-  router.use("/payments", isAuth, PaymentManagementRouter(paymentController));
+  router.use("/payments", PaymentManagementRouter(paymentController));
 
   return router;
 };

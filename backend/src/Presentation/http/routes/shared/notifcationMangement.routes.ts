@@ -5,16 +5,18 @@ import {
   changeNotificationStatusSchema,
   DeleteBatchSchema,
 } from "../../validation/notificationMangement.validation.zod";
+import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 
 export const notificationRouter = (
   notificationController: NotificationController
 ): Router => {
   const router = Router();
 
-  router.get("/", notificationController.getAllNotification);
+  router.get("/", isAuth, notificationController.getAllNotification);
 
   router.patch(
     "/:id/notifications-status/",
+    isAuth,
 
     validation(changeNotificationStatusSchema),
     notificationController.updateNotificationsStatus
@@ -22,14 +24,15 @@ export const notificationRouter = (
 
   router.delete(
     "/batch",
+    isAuth,
     validation(DeleteBatchSchema),
 
     notificationController.deleteSpecificNotifications
   );
 
-  router.delete("/:id", notificationController.deleteNotificationById);
+  router.delete("/:id", isAuth, notificationController.deleteNotificationById);
 
-  router.delete("/", notificationController.deleteAllNotification);
+  router.delete("/", isAuth, notificationController.deleteAllNotification);
 
   return router;
 };
