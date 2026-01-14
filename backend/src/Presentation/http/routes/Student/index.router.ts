@@ -11,8 +11,6 @@ export const StudentIndexRouter = (
 
   router.use(
     "/apartments",
-    isAuth,
-    isStudent,
     ApartmentRouter(apartmentController)
   );
 
