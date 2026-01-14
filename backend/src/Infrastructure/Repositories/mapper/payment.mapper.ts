@@ -1,8 +1,8 @@
-import { PaymentAggregateRoot } from "../../../Domain/Modules/Payment/AgregateRoot/Payment.AgregateRoot";
-import { PaymentAmount } from "../../../Domain/Modules/Payment/Value-Object/PaymentAmount.vo";
-import { PaymentScheduleModel } from "../../Database/orm/TypeOrm/entity/PaymentSchedual.entity";
+import { PaymentAggregateRoot } from "../../../Domain/BoundedContexts/Payment/AgregateRoot/Payment.AgregateRoot";
+import { PaymentsResponse } from "../../../Domain/BoundedContexts/Payment/Repositories/ReadPaymentSchedualRepo.repostiores";
+import { PaymentAmount } from "../../../Domain/BoundedContexts/Payment/Value-Object/PaymentAmount.vo";
+import { PaymentScheduleModel } from "../../Database/TypeOrm/entity/PaymentSchedual.entity";
 import { ReceiptMapper } from "./receipt.mapper";
-import { PaymentsResponse } from "../../../Application/DTO/landlord/paymentRespone";
 export class PaymentMapper {
   public static toDomain(model: PaymentScheduleModel): PaymentAggregateRoot {
     const amountVO = PaymentAmount.create(model.amount);

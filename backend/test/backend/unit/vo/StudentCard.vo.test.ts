@@ -1,4 +1,4 @@
-import { StudentCard } from "../../../../src/Domain/Modules/Student/Value-Object/StudentCard.vo";
+import { StudentCard } from "../../../../src/Domain/BoundedContexts/IdentityAndAccess/Value-Object/StudentCard.vo";
 
 describe("StudentCard Value Object", () => {
   //  White List (Valid)

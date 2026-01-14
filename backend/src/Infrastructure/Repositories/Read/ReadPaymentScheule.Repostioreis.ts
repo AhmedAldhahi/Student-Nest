@@ -1,9 +1,8 @@
-import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
-import { PaymentScheduleModel } from "../../Database/orm/TypeOrm/entity/PaymentSchedual.entity";
-import { IReadPaymentScheduleRepo } from "../../../Domain/Modules/Payment/Repositories/ReadPaymentSchedualRepo.repostiores";
+import { AppDataSource } from "../../Database/TypeOrm/data-source";
+import { PaymentScheduleModel } from "../../Database/TypeOrm/entity/PaymentSchedual.entity";
+import { IReadPaymentScheduleRepo, PaymentsResponse } from "../../../Domain/BoundedContexts/Payment/Repositories/ReadPaymentSchedualRepo.repostiores";
 import { PaymentMapper } from "../mapper/payment.mapper";
-import { PaymentsResponse } from "../../../Application/DTO/landlord/paymentRespone";
-import { PaymentAggregateRoot } from "../../../Domain/Modules/Payment/AgregateRoot/Payment.AgregateRoot";
+import { PaymentAggregateRoot } from "../../../Domain/BoundedContexts/Payment/AgregateRoot/Payment.AgregateRoot";
 import { In } from "typeorm";
 
 export class ReadPaymentScheduleRepositories

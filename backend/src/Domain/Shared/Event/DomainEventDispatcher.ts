@@ -2,37 +2,38 @@ import { IDomainEvent } from "./IDomainEvent";
 import { IHandle } from "./IHandle";
 
 export class DomainEventDispatcher {
-  private static handlers = new Map<string, IHandle<any>[]>();
+  private handlersMap: Map<string, IHandle<IDomainEvent>[]> = new Map();
 
-
-  public static register<T extends IDomainEvent>(
+  public register<T extends IDomainEvent>(
     eventName: string,
     handler: IHandle<T>
   ): void {
-    const handlers = this.handlers.get(eventName) || [];
-    handlers.push(handler);
-    this.handlers.set(eventName, handlers);
+    const handlers = this.handlersMap.get(eventName) || [];
+    handlers.push(handler as IHandle<IDomainEvent>);
+    this.handlersMap.set(eventName, handlers);
   }
+  
 
+  
+  public async dispatch(event: IDomainEvent): Promise<void> {
+    const eventName = event.getEventName();
 
-  public static async dispatch(event: IDomainEvent): Promise<void> {
-    const eventName = event.constructor.name;
-    const handlers = this.handlers.get(eventName);
+    const handlers = this.handlersMap.get(eventName);
 
-    if (handlers) {
-      for (const handler of handlers) {
+    if (handlers && handlers.length > 0) {
+      const promises = handlers.map(async (handler) => {
         try {
-          await handler.setup(event);
+          await handler.handle(event);
         } catch (err) {
           console.error(`Error handling event ${eventName}:`, err);
         }
-      }
+      });
+
+      await Promise.allSettled(promises);
     }
   }
 
-  
-
-  public static clearHandlers(): void {
-    this.handlers.clear();
+  public clearHandlers(): void {
+    this.handlersMap.clear();
   }
 }

@@ -1,7 +1,7 @@
-import { ReceiptEntity } from "../../../Domain/Modules/Payment/Entities/ReceiptEntities.entity";
-import { IReadReceiptPaymentRepo } from "../../../Domain/Modules/Payment/Repositories/ReadReceiptPaymentRepo.Repositories";
-import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
-import { ReceiptModel } from "../../Database/orm/TypeOrm/entity/Receipt.entity";
+import { ReceiptEntity } from "../../../Domain/BoundedContexts/Payment/Entities/ReceiptEntities.entity";
+import { IReadReceiptPaymentRepo } from "../../../Domain/BoundedContexts/Payment/Repositories/ReadReceiptPaymentRepo.Repositories";
+import { AppDataSource } from "../../Database/TypeOrm/data-source";
+import { ReceiptModel } from "../../Database/TypeOrm/entity/Receipt.entity";
 import { ReceiptMapper } from "../mapper/receipt.mapper";
 
 export class ReadPaymentReceiptRepositories implements IReadReceiptPaymentRepo {

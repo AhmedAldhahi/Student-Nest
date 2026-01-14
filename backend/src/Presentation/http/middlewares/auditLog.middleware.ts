@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { AppDataSource } from "../../../Infrastructure/Database/orm/TypeOrm/data-source";
-import { AuditLogModel } from "../../../Infrastructure/Database/orm/TypeOrm/entity/AuditLog.entity";
+import { AppDataSource } from "../../../Infrastructure/Database/TypeOrm/data-source";
+import { AuditLogModel } from "../../../Infrastructure/Database/TypeOrm/entity/AuditLog.entity";
 import geoip from "geoip-lite"; // Optional: Remove if you don't want real locations
 
 export const auditMiddleware = (

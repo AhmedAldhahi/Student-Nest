@@ -1,8 +1,8 @@
 import { EntityManager } from "typeorm";
-import { IWriteApartmentRepo } from "../../../Domain/Modules/Housing/Repositories/Write/IWriteApartmentRepositories.repositories";
-import { ApartmentAggregateRoot } from "../../../Domain/Modules/Housing/AgregateRoot/apartmentEntity.entity";
+import { IWriteApartmentRepo } from "../../../Domain/BoundedContexts/Housing/Repositories/IWriteApartmentRepositories.repositories";
+import { ApartmentAggregateRoot } from "../../../Domain/BoundedContexts/Housing/AgregateRoot/apartmentEntity.entity";
 import { ApartmentMapper } from "../mapper/apartment.mapper";
-import { ApartmentModel } from "../../Database/orm/TypeOrm/entity/Apartment.entity";
+import { ApartmentModel } from "../../Database/TypeOrm/entity/Apartment.entity";
 
 export class WriteApartmentsRepositories implements IWriteApartmentRepo {
   private manager: EntityManager;

@@ -1,8 +1,8 @@
-import { UserEntity } from "../../../Domain/Modules/Identity/Entities/userEntity.entity";
-import { IReadUserRepositories } from "../../../Domain/Modules/Identity/Repositories/ReadUserRepositories.repositories";
+import { UserEntity } from "../../../Domain/BoundedContexts/IdentityAndAccess/Entities/userEntity.entity";
+import { IReadUserRepositories } from "../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadUserRepositories.repositories";
 import { UserMapper } from "../mapper/user.mapper";
-import { UserModel } from "../../Database/orm/TypeOrm/entity/User.entity";
-import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
+import { UserModel } from "../../Database/TypeOrm/entity/User.entity";
+import { AppDataSource } from "../../Database/TypeOrm/data-source";
 
 export class ReadUserRepositories implements IReadUserRepositories {
   public async findById(id: string): Promise<UserEntity | null> {

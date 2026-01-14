@@ -1,4 +1,4 @@
-import { PaymentAmount } from "../../../../src/Domain/Modules/Payment/Value-Object/PaymentAmount.vo";
+import { PaymentAmount } from "../../../../src/Domain/BoundedContexts/Payment/Value-Object/PaymentAmount.vo";
 
 describe("PaymentAmount Value Object", () => {
   it("should create a valid payment amount with a whole number", () => {

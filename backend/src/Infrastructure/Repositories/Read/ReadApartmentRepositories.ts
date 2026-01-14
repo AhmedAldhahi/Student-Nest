@@ -1,17 +1,65 @@
 import { FindOptionsWhere, In, Like } from "typeorm";
 
-import { IReadApartmentRepo } from "../../../Domain/Modules/Housing/Repositories/Read/ReadApartmentRepo.repositoreis";
-import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
-import { ApartmentModel } from "../../Database/orm/TypeOrm/entity/Apartment.entity";
+import { IApartmentDTO, IApartmentSimpleDTO, IReadApartmentRepo } from "../../../Domain/BoundedContexts/Housing/Repositories/ReadApartmentRepo.repositoreis";
+import { AppDataSource } from "../../Database/TypeOrm/data-source";
+import { ApartmentModel } from "../../Database/TypeOrm/entity/Apartment.entity";
 import { ApartmentMapper } from "../mapper/apartment.mapper";
-import { ApartmentAggregateRoot } from "../../../Domain/Modules/Housing/AgregateRoot/apartmentEntity.entity";
-import {
-  IApartmentSimpleDTO,
-  IApartmentDTO,
-} from "../../../Application/DTO/admin/ApartmentDTo.dto";
+import { ApartmentAggregateRoot } from "../../../Domain/BoundedContexts/Housing/AgregateRoot/apartmentEntity.entity";
+
 
 
 export class ReadApartmentRepositories implements IReadApartmentRepo {
+  
+public async FindAllApartmentThatBeenVerified(): Promise<IApartmentSimpleDTO[] | null> {
+  try {
+    const apartmentRepo = AppDataSource.getInstance().getRepository(ApartmentModel);
+
+    const apartments = await apartmentRepo.find({
+      where: {
+        isVerified: true,
+        isVisible: true, 
+      },
+      select: {
+        apartmentId: true,
+        isVisible: true,
+        title: true,
+        description: true,
+        address: true,
+        isJoin: true,
+        createAt: true,
+        updateAt: true,
+        price: true,
+        isVerified: true,
+        numberOfBed: true,
+        numberOfRoom: true,
+        landlordId: true,
+        landlord: {
+          userId: true,
+          user: {
+            Name: true,
+          },
+        },
+      },
+      relations: {
+        landlord: {
+          user: true,
+        },
+        photos: true,
+        location: true,
+        documents: true,
+      },
+    });
+
+    if (!apartments || apartments.length === 0) {
+      return [];
+    }
+
+    return apartments.map((apt) => ApartmentMapper.toResponsesSimple(apt));
+  } catch (error: any) {
+    console.error("Error finding verified apartments:", error);
+    throw new Error("Unable to retrieve verified apartments.");
+  }
+}
 
   public async findAllApartmentBasedArray(
     ids: string[],

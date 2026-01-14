@@ -1,15 +1,13 @@
-import {
-  IApartmentSimpleDTO,
-  IApartmentDTO,
-} from "../../../Application/DTO/admin/ApartmentDTo.dto";
-import { ApartmentAggregateRoot } from "../../../Domain/Modules/Housing/AgregateRoot/apartmentEntity.entity";
-import { ApartmentPrice } from "../../../Domain/Modules/Housing/Value-Object/ApartmentPrice.vo";
-import { NumberOfBed } from "../../../Domain/Modules/Housing/Value-Object/NumberOfBed.vo";
-import { NumberOfRoom } from "../../../Domain/Modules/Housing/Value-Object/NumberOfRoom.vo";
-import { ApartmentModel } from "../../Database/orm/TypeOrm/entity/Apartment.entity";
+
+import { ApartmentAggregateRoot } from "../../../Domain/BoundedContexts/Housing/AgregateRoot/apartmentEntity.entity";
+import { IApartmentSimpleDTO, IApartmentDTO } from "../../../Domain/BoundedContexts/Housing/Repositories/ReadApartmentRepo.repositoreis";
+import { ApartmentPrice } from "../../../Domain/BoundedContexts/Housing/Value-Object/ApartmentPrice.vo";
+import { NumberOfBed } from "../../../Domain/BoundedContexts/Housing/Value-Object/NumberOfBed.vo";
+import { NumberOfRoom } from "../../../Domain/BoundedContexts/Housing/Value-Object/NumberOfRoom.vo";
+import { ApartmentModel } from "../../Database/TypeOrm/entity/Apartment.entity";
 import { ApartmentDocumentMapper } from "./apartmentDocument.mapper";
 import { apartmentPhotoMapper } from "./apartmentPhoto.mapper";
-import { GoogleMapMapper } from "./gogleMap.mapper";
+import { GoogleMapMapper } from "./googleMap.mapper";
 
 export class ApartmentMapper {
   public static toModel(apartment: ApartmentAggregateRoot): ApartmentModel {

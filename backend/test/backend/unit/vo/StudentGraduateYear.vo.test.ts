@@ -1,4 +1,4 @@
-import { studentGraduateYear } from "../../../../src/Domain/Modules/Student/Value-Object/StudentGraduateYear.vo";
+import { studentGraduateYear } from "../../../../src/Domain/BoundedContexts/IdentityAndAccess/Value-Object/StudentGraduateYear.vo";
 import { currentYear } from "../../../../src/Shared/constants/validationZod.constant";
 
 describe("StudentGraduateYear Value Object", () => {

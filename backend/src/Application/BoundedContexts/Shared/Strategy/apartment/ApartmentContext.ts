@@ -1,0 +1,125 @@
+import { UserRole } from "../../../../../Domain/BoundedContexts/IdentityAndAccess/Enum/UserRole.enum";
+import { IReadUserRepositories } from "../../../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadUserRepositories.repositories";
+import { AdminApartmentStrategy } from "./AdminApartment.strategy";
+import { IApartmentStrategy } from "./IApartment.strategy";
+import { LandlordApartmentStrategy } from "./LandlordApartment.strategy";
+
+export class ApartmentContext {
+  constructor(
+    private readonly readUserRepo: IReadUserRepositories,
+    private readonly adminStrategy: AdminApartmentStrategy,
+    private readonly landlordStrategy: LandlordApartmentStrategy
+  ) {}
+
+  public async DeleteApartment(userId: string, id: string) {
+    try {
+      let strategy: IApartmentStrategy;
+      const role = await this.GetUserRole(userId);
+      switch (role) {
+        case UserRole.admin:
+          strategy = this.adminStrategy;
+          break;
+        case UserRole.landlord:
+          strategy = this.landlordStrategy;
+          break;
+
+        default:
+          throw new Error("Invalid user Role");
+      }
+
+      return strategy.deleteApartments(userId, id);
+    } catch (error: any) {}
+  }
+
+  public async GetApartmentsBySearchByQueries(userId: string, Queried: string) {
+    try {
+      let strategy: IApartmentStrategy;
+      const role = await this.GetUserRole(userId);
+      switch (role) {
+        case UserRole.admin:
+          strategy = this.adminStrategy;
+          break;
+        case UserRole.landlord:
+          strategy = this.landlordStrategy;
+          break;
+
+        default:
+          throw new Error("Invalid user Role");
+      }
+
+      return strategy.getApartmentByQueries(Queried, userId);
+    } catch (error: any) {}
+  }
+
+  public async executeGetAllApartments(userId: string) {
+    try {
+      let strategy: IApartmentStrategy;
+      const role = await this.GetUserRole(userId);
+      switch (role) {
+        case UserRole.admin:
+          strategy = this.adminStrategy;
+          break;
+        case UserRole.landlord:
+          strategy = this.landlordStrategy;
+          break;
+
+        default:
+          throw new Error("Invalid user Role");
+      }
+
+      return strategy.getAllApartment(userId);
+    } catch (error: any) {}
+  }
+
+  public async executeApartmentDocumentById(userId: string, id: string) {
+    try {
+      let strategy: IApartmentStrategy;
+      const role = await this.GetUserRole(userId);
+      switch (role) {
+        case UserRole.admin:
+          strategy = this.adminStrategy;
+          break;
+        case UserRole.landlord:
+          strategy = this.landlordStrategy;
+          break;
+
+        default:
+          throw new Error("Invalid user Role");
+      }
+
+      return strategy.FindApartmentDocumentById(userId, id);
+    } catch (error: any) {}
+  }
+
+  public async executeGetApartmentDetailById(userId: string, id: string) {
+    try {
+      let strategy: IApartmentStrategy;
+      const role = await this.GetUserRole(userId);
+      switch (role) {
+        case UserRole.admin:
+          strategy = this.adminStrategy;
+          break;
+        case UserRole.landlord:
+          strategy = this.landlordStrategy;
+          break;
+
+        default:
+          throw new Error("Invalid user Role");
+      }
+
+      return strategy.GetApartmentDetailById(userId, id);
+    } catch (error: any) {}
+  }
+
+  private async GetUserRole(userId: string): Promise<UserRole> {
+    try {
+      const user = await this.readUserRepo.findById(userId);
+      if (!user) throw new Error("no user been found !!");
+
+      return user.getRole();
+    } catch (error: any) {
+      console.error("Invalid role", error);
+      throw error;
+    }
+  }
+}

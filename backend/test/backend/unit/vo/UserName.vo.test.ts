@@ -1,4 +1,4 @@
-import { UserName } from "../../../../src/Domain/Shared/Value-Object/UserName.vo";
+import { UserName } from "../../../../src/Domain/BoundedContexts/IdentityAndAccess/Value-Object/UserName.vo";
 
 describe("user name value object validation", () => {
   describe("validate user name Object", () => {

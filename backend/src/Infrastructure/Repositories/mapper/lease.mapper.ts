@@ -1,11 +1,11 @@
-import { ILeaseEntityDTO } from "../../../Application/DTO/admin/LeaseDTO.dto";
-import { LeaseAggregateRoot } from "../../../Domain/Modules/Leases/AgregateRoot/leaseEntity.entity";
-import { MonthlyRent } from "../../../Domain/Modules/Housing/Value-Object/MonthlyRent.vo";
-import { LeaseModel } from "../../Database/orm/TypeOrm/entity/Lease.entity";
-import { LeaseEndDate } from "../../../Domain/Modules/Leases/Value-Object/LeaseEndDate.vo";
-import { LeaseStartDate } from "../../../Domain/Modules/Leases/Value-Object/LeaseStartDate.vo";
-import { LeaseTerm } from "../../../Domain/Modules/Leases/Value-Object/LeaseTerm.vo";
+import { LeaseAggregateRoot } from "../../../Domain/BoundedContexts/Leases/AgregateRoot/leaseEntity.entity";
+import { MonthlyRent } from "../../../Domain/BoundedContexts/Housing/Value-Object/MonthlyRent.vo";
+import { LeaseModel } from "../../Database/TypeOrm/entity/Lease.entity";
+import { LeaseEndDate } from "../../../Domain/BoundedContexts/Leases/Value-Object/LeaseEndDate.vo";
+import { LeaseStartDate } from "../../../Domain/BoundedContexts/Leases/Value-Object/LeaseStartDate.vo";
+import { LeaseTerm } from "../../../Domain/BoundedContexts/Leases/Value-Object/LeaseTerm.vo";
 import { PaymentMapper } from "./payment.mapper";
+import { ILeaseEntityDTO } from "../../../Domain/BoundedContexts/Leases/Repositories/Read/ReadLeaseRepositories.repositories";
 
 export class LeaseMapper {
   public static toEntity(model: LeaseModel): LeaseAggregateRoot {

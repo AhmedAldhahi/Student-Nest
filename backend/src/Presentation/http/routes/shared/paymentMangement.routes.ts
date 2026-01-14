@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { PaymentController } from "../../controllers/Landlord/PaymentMangement.controller";
 import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 import { isLandlordOrStudent } from "../../middlewares/auth/isLandlordOrStudent.middleware";
+import { SharedPaymentController } from "../../controllers/Payment/SharedPayment.controller";
 
 export const PaymentManagementRouter = (
-  paymentController: PaymentController
+  paymentController: SharedPaymentController
 ): Router => {
   const router = Router();
 

@@ -1,5 +1,5 @@
-import { ReceiptEntity } from "../../../Domain/Modules/Payment/Entities/ReceiptEntities.entity";
-import { ReceiptModel } from "../../Database/orm/TypeOrm/entity/Receipt.entity";
+import { ReceiptEntity } from "../../../Domain/BoundedContexts/Payment/Entities/ReceiptEntities.entity";
+import { ReceiptModel } from "../../Database/TypeOrm/entity/Receipt.entity";
 
 export class ReceiptMapper {
   public static toDomain(model: ReceiptModel): ReceiptEntity {

@@ -1,10 +1,9 @@
 import { FindOptionsWhere, Like } from "typeorm";
-import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
-import { StudentModel } from "../../Database/orm/TypeOrm/entity/Student.entity";
+import { AppDataSource } from "../../Database/TypeOrm/data-source";
+import { StudentModel } from "../../Database/TypeOrm/entity/Student.entity";
 import { StudentMapper } from "../mapper/student.mapper";
-import { IReadStudentRepositories } from "../../../Domain/Modules/Student/Repositories/ReadStudentRepositories.repositories";
-import { StudentAggregateRoot } from "../../../Domain/Modules/Student/AgregatesRoot/studentEntity.entity";
-import { StudentResponseDto } from "../../../Application/DTO/shared/profile/StudentResponseDto";
+import { IReadStudentRepositories, StudentResponseDto } from "../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadStudentRepositories.repositories";
+import { StudentAggregateRoot } from "../../../Domain/BoundedContexts/IdentityAndAccess/Aggregates/StudentAggregateRoot.entity";
 
 export class ReadStudentRepositories implements IReadStudentRepositories {
   public async findAllStudent(): Promise<StudentResponseDto[] | null> {

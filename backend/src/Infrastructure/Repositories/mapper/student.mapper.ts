@@ -1,12 +1,12 @@
-import { StudentResponseDto } from "../../../Application/DTO/shared/profile/StudentResponseDto";
-import { StudentAggregateRoot } from "../../../Domain/Modules/Student/AgregatesRoot/studentEntity.entity";
-import { StudentCard } from "../../../Domain/Modules/Student/Value-Object/StudentCard.vo";
-import { studentGraduateYear } from "../../../Domain/Modules/Student/Value-Object/StudentGraduateYear.vo";
-import { StudentMajor } from "../../../Domain/Modules/Student/Value-Object/StudentMajor.vo";
-import { StudentUniversity } from "../../../Domain/Modules/Student/Value-Object/StudentUniversity.vo";
-import { GovernmentID } from "../../../Domain/Shared/Value-Object/UserGovId.vo";
-import { VerificationDocument } from "../../../Domain/Shared/Value-Object/VerficationDocument.vo";
-import { StudentModel } from "../../Database/orm/TypeOrm/entity/Student.entity";
+import { StudentAggregateRoot } from "../../../Domain/BoundedContexts/IdentityAndAccess/Aggregates/StudentAggregateRoot.entity";
+import { StudentResponseDto } from "../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadStudentRepositories.repositories";
+import { StudentCard } from "../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/StudentCard.vo";
+import { studentGraduateYear } from "../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/StudentGraduateYear.vo";
+import { StudentMajor } from "../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/StudentMajor.vo";
+import { StudentUniversity } from "../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/StudentUniversity.vo";
+import { GovernmentID } from "../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/UserGovId.vo";
+import { VerificationDocument } from "../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/VerficationDocument.vo";
+import { StudentModel } from "../../Database/TypeOrm/entity/Student.entity";
 
 export class StudentMapper {
   public static toEntity(stdModel: StudentModel): StudentAggregateRoot {

@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { ApartmentController } from "../../controllers/Landlord/ApartmentMangement.controller";
 import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 import { isLandlord } from "../../middlewares/auth/isLandloard.middleware";
 import multer from "multer";
@@ -9,6 +8,7 @@ import {
 } from "../../validation/Landlord/apartment.validation.zod";
 import { validationMedia } from "../../middlewares/validation.media.middleware.zod";
 import uploads from "../../../../Shared/utils/uploader.multer";
+import { ApartmentControllerForLandlord } from "../../controllers/Apartment/ApartmentControllerForLandlord";
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -17,7 +17,7 @@ const apartmentUploads = upload.fields([
 ]);
 
 export const ApartmentRouter = (
-  apartmentController: ApartmentController
+  apartmentController: ApartmentControllerForLandlord
 ): Router => {
   const router = Router();
 

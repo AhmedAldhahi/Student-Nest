@@ -1,8 +1,8 @@
 import { EntityManager } from "typeorm";
-import { ApartmentDocumentEntity } from "../../../Domain/Modules/Housing/Entities/apartmentDocumentEntity.entity";
-import { IWriteApartmentDocumentRepo } from "../../../Domain/Modules/Housing/Repositories/Write/IWriteApartmentDocumentRepositoires.repositories";
+import { ApartmentDocumentEntity } from "../../../Domain/BoundedContexts/Housing/Entities/apartmentDocumentEntity.entity";
+import { IWriteApartmentDocumentRepo } from "../../../Domain/BoundedContexts/Housing/Repositories/IWriteApartmentDocumentRepositoires.repositories";
 import { ApartmentDocumentMapper } from "../mapper/apartmentDocument.mapper";
-import { ApartmentDocumentModel } from "../../Database/orm/TypeOrm/entity/ApartmentDocument.entity";
+import { ApartmentDocumentModel } from "../../Database/TypeOrm/entity/ApartmentDocument.entity";
 
 export class WriteApartmentDocumentRepositories
   implements IWriteApartmentDocumentRepo

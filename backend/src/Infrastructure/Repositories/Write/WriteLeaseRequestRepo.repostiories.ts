@@ -1,8 +1,8 @@
 import { EntityManager } from "typeorm";
-import { LeaseRequestEntity } from "../../../Domain/Modules/Leases/Entities/leaseRequestEntity.entity";
-import { IWriteLeaseRequestRepo } from "../../../Domain/Modules/Leases/Repositories/Write/WriteLeaseRequestRepositories.repostitores";
+import { LeaseRequestEntity } from "../../../Domain/BoundedContexts/Leases/Entities/leaseRequestEntity.entity";
+import { IWriteLeaseRequestRepo } from "../../../Domain/BoundedContexts/Leases/Repositories/Write/WriteLeaseRequestRepositories.repostitores";
 import { LeaseRequestMapper } from "../mapper/leaseRequest.mapper";
-import { LeaseRequestModel } from "../../Database/orm/TypeOrm/entity/LeaseRequest";
+import { LeaseRequestModel } from "../../Database/TypeOrm/entity/LeaseRequest";
 
 export class WriteLeastRequestRepositories implements IWriteLeaseRequestRepo {
   private manager: EntityManager;

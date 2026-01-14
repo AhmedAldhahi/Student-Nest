@@ -1,5 +1,5 @@
-import { ApartmentPhotoDocumentEntity } from "../../../Domain/Modules/Housing/Entities/phohtoDocumentEntity.entity";
-import { ApartmentPhotoModel } from "../../Database/orm/TypeOrm/entity/ApartmentPhoto.entity";
+import { ApartmentPhotoDocumentEntity } from "../../../Domain/BoundedContexts/Housing/Entities/phohtoDocumentEntity.entity";
+import { ApartmentPhotoModel } from "../../Database/TypeOrm/entity/ApartmentPhoto.entity";
 import { ApartmentMapper } from "./apartment.mapper";
 
 export class apartmentPhotoMapper {

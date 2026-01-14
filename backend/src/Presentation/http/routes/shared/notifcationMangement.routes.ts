@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { NotificationController } from "../../controllers/Notification.controller";
+import { NotificationController } from "../../controllers/Shared/Notification.controller";
 import { validation } from "../../middlewares/validation.middleware";
 import {
   changeNotificationStatusSchema,

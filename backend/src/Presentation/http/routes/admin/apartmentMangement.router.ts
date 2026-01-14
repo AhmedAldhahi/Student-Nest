@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { ApartmentManagementController } from "../../controllers/admin/apartmentManagement.controller";
 import { validation } from "../../middlewares/validation.middleware";
 import { apartmentVerifiedZod } from "../../validation/admin/apartment.validation.zod";
+import { ApartmentManagementControllerForAdmin } from "../../controllers/Apartment/ApartmentControllerForAdmin";
 
 export const ApartmentRouter = (
-  apartmentController: ApartmentManagementController
+  apartmentController: ApartmentManagementControllerForAdmin
 ): Router => {
   const router = Router();
 

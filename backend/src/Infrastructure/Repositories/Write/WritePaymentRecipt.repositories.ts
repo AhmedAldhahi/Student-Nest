@@ -1,6 +1,6 @@
 import { EntityManager } from "typeorm";
-import { ReceiptEntity } from "../../../Domain/Modules/Payment/Entities/ReceiptEntities.entity";
-import { IWriteReceiptRepo } from "../../../Domain/Modules/Payment/Repositories/writeReceiptRepo.Repositories";
+import { ReceiptEntity } from "../../../Domain/BoundedContexts/Payment/Entities/ReceiptEntities.entity";
+import { IWriteReceiptRepo } from "../../../Domain/BoundedContexts/Payment/Repositories/writeReceiptRepo.Repositories";
 import { ReceiptMapper } from "../mapper/receipt.mapper";
 
 export class PaymentReceiptRepositories implements IWriteReceiptRepo {

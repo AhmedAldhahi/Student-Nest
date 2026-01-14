@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { hasSequentialNumbers } from "../../../../Shared/utils/zodValidationMethod.util";
-import { UserRole } from "../../../../Domain/Shared/Enum/UserRole.enum";
+import { UserRole } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Enum/UserRole.enum";
 import { roleEnum } from "../../../../Shared/constants/validationZod.constant";
 
 const basedUserSchema = z.object({
@@ -27,7 +27,7 @@ const basedUserSchema = z.object({
     ),
 });
 
-export const RegisterStudetSchema = basedUserSchema
+export const RegisterStudentSchema = basedUserSchema
   .extend({
     gradateYear: z.string().trim().length(4, "invalid graduate year formate"),
     studentCardId: z.string(),
@@ -40,7 +40,7 @@ export const RegisterStudetSchema = basedUserSchema
   })
   .strict();
 
-export const RegisterLandloardSchema = basedUserSchema
+export const RegisterLandlordSchema = basedUserSchema
   .extend({
     cliQAccount: z.string(),
     LandlordGovId: z.string(),

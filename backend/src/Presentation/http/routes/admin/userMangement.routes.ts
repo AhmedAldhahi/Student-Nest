@@ -3,7 +3,7 @@ import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 import { isAdmin } from "../../middlewares/auth/isAdmin.middleware";
 import { validation } from "../../middlewares/validation.middleware";
 import { verifiedLandlordSchema } from "../../validation/admin/landlordMagement.validation.zod";
-import { UserManagementController } from "../../controllers/admin/userManagement.controller";
+import { UserManagementController } from "../../controllers/Adminstration/userManagement.controller";
 
 export const userManagementRouter = (
   userManagementRouter: UserManagementController

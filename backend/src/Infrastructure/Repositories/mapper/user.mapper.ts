@@ -1,11 +1,11 @@
-import { UserResponseDTO } from "../../../Application/DTO/shared/profile/ UserResponseDTO";
-import { UserEntity } from "../../../Domain/Modules/Identity/Entities/userEntity.entity";
-import { OTP } from "../../../Domain/Shared/Value-Object/OTP.vo";
-import { UserDateOfBirth } from "../../../Domain/Shared/Value-Object/UserDateOfBirth.vo";
-import { UserEmail } from "../../../Domain/Shared/Value-Object/UserEmail.vo";
-import { UserName } from "../../../Domain/Shared/Value-Object/UserName.vo";
-import { userPhoneNumber } from "../../../Domain/Shared/Value-Object/UserPhoneNumber.vo";
-import { UserModel } from "../../Database/orm/TypeOrm/entity/User.entity";
+import { UserEntity } from "../../../Domain/BoundedContexts/IdentityAndAccess/Entities/userEntity.entity";
+import { UserResponseDTO } from "../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadStudentRepositories.repositories";
+import { OTP } from "../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/OTP.vo";
+import { UserDateOfBirth } from "../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/UserDateOfBirth.vo";
+import { UserEmail } from "../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/UserEmail.vo";
+import { UserName } from "../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/UserName.vo";
+import { userPhoneNumber } from "../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/UserPhoneNumber.vo";
+import { UserModel } from "../../Database/TypeOrm/entity/User.entity";
 
 export class UserMapper {
   public static toOrm(user: UserEntity): UserModel {

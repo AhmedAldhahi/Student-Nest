@@ -1,0 +1,115 @@
+import {
+  ChangeApartmentVerificationStatusCH,
+  ChangeLandlordVerificationStatusCH,
+  ChangeUserActivityStatusCH,
+  DeleteApartmentByIdForAdminCH,
+  DeleteUserForAdminCH,
+  GetAllAuditLogsQH,
+  SearchForAuditLogQH,
+} from "./administration";
+import {
+  AddApartmentDocumentCH,
+  AddNewApartmentCH,
+  DeleteApartmentByIdForLandlordCH,
+  GetAllBookedApartmentQH,
+  GetRandomlyThreeApartmentThatIsVisibleAndNotFullQH,
+  UpdateApartmentDetailCH,
+  UpdateApartmentDocumentsCH,
+  UserApartmentContext,
+} from "./apartment";
+import {
+  findUserByQuery,
+  GetAllUsers,
+  getUserProfileData,
+  LoginUserQH,
+  RegisterLandlordCH,
+  RegisterStudentCH,
+  ResendOtpCH,
+  ResendOtpForgetPasswordCH,
+  UpdateForgetPasswordCH,
+  updateUserProfile,
+  VerifiedOtpCH,
+  VerifiedOtpForgetPasswordCH,
+} from "./IdentityAndAccess";
+import {
+  GetForAllLeaseForSingleApartmentQH,
+  SearchForAllLeaseForSingleApartmentQH,
+  UserLeaseContext,
+} from "./Lease";
+import {
+  ChangeLeaseRequestCH,
+  GetAllLeaseRequestForLandlordForSingleApartmentQH,
+  SearchAllLeaseRequestForLandlordForSingleApartmentQH,
+  UserLeaseRequestContext,
+} from "./LeaseRequest";
+import { ChangeStatusOfPaymentCH, GetAllPaidPaymentCH, GetAllPaymentScheduleForSingleLeaseQH, GetReceiptForPaymentQH, UserPaymentContext } from "./Payment";
+import {
+  DeleteSpecificNotifications,
+  notificationContext,
+  updateNotificationStatus,
+} from "./shared/NotificationManagement";
+
+export function buildDependencies() {
+  return {
+    commandHandler: {
+      RegisterLandlordCommandHandler: RegisterLandlordCH(),
+      RegisterStudentCommandHandler: RegisterStudentCH(),
+      ResendOtpCommandHandler: ResendOtpCH(),
+      VerifiedOtpCommandHandler: VerifiedOtpCH(),
+      ResendOtpForgetPasswordCommandHandler: ResendOtpForgetPasswordCH(),
+      VerifiedOtpForgetPasswordCommandHandler: VerifiedOtpForgetPasswordCH(),
+      UpdateForgetPasswordCommandHandler: UpdateForgetPasswordCH(),
+      UpdateNotificationStatus: updateNotificationStatus(),
+      DeleteSpecificNotification: DeleteSpecificNotifications(),
+      ChangeLeaseRequestCommandHandler: ChangeLeaseRequestCH(),
+      ChangePaymentStatusCommandHandler: ChangeStatusOfPaymentCH(),
+      AddNewApartmentCommandHandler: AddNewApartmentCH(),
+      AddApartmentDocumentCommandHandler: AddApartmentDocumentCH(),
+      DeleteApartmentByIdForLandlordCommandHandler:
+        DeleteApartmentByIdForLandlordCH(),
+      UpdateApartmentDetailCommandHandler: UpdateApartmentDetailCH(),
+      UpdateApartmentDocumentCommandHandler: UpdateApartmentDocumentsCH(),
+      ChangeLandlordVerificationStatusCommandHandler:
+        ChangeLandlordVerificationStatusCH(),
+      ChangeUserActivityStatusCommandHandler: ChangeUserActivityStatusCH(),
+      ChangeApartmentVerificationStatusCommandHandler:
+        ChangeApartmentVerificationStatusCH(),
+      DeleteApartmentByIdForAdminCommandHandler:
+        DeleteApartmentByIdForAdminCH(),
+      DeleteUserForAdminCommandHandler: DeleteUserForAdminCH(),
+    },
+
+    QueriesHandler: {
+      LoginUserQueriesHandler: LoginUserQH(),
+      GetUserProfileQH: getUserProfileData(),
+      GetAllAuditLogQueriesHandler: GetAllAuditLogsQH(),
+      SearchForAuditLogQueriesHandler: SearchForAuditLogQH(),
+      GetAllApartmentBeenBookedQueriesHandler: GetAllBookedApartmentQH(),
+      GetAllLeaseRequestForLandlordForSingleApartmentQueriesHandler:
+        GetAllLeaseRequestForLandlordForSingleApartmentQH(),
+      SearchForLeaseRequestForLandlordForSingleApartmentQueriesHandler:
+        SearchAllLeaseRequestForLandlordForSingleApartmentQH(),
+      SearchForLeaseForLandlordForSingleApartmentQueriesHandler:
+        SearchForAllLeaseForSingleApartmentQH(),
+      GetLeaseForLandlordForSingleApartmentQueriesHandler:
+        GetForAllLeaseForSingleApartmentQH(),
+      GetAllPaidPaymentQueriesHandler: GetAllPaidPaymentCH(),
+      GetReceiptorPaymentQueriesHandler:GetReceiptForPaymentQH(),
+      GetAllPaymentScheduleForSingleLeaseQueriesHandler:GetAllPaymentScheduleForSingleLeaseQH(),
+      GetApartmentRandomlyThatNotFullAndVerifiedQueriesHandler:GetRandomlyThreeApartmentThatIsVisibleAndNotFullQH(),
+    },
+
+    StrategyContext: {
+      ProfileContext: updateUserProfile(),
+      notificationUserContext: notificationContext(),
+      ApartmentUserContext: UserApartmentContext(),
+      UsersLeaseRequestContext: UserLeaseRequestContext(),
+      UserLeasesContext: UserLeaseContext(),
+      UserPaymentsContext: UserPaymentContext()
+    },
+    SimpleFactory: {
+      GetAllUserFactory: GetAllUsers(),
+      SearchForAllUserFactory: findUserByQuery(),
+    },
+  };
+}

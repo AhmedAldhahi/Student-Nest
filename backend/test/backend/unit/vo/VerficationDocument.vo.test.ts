@@ -1,4 +1,4 @@
-import { VerificationDocument } from "../../../../src/Domain/Shared/Value-Object/VerficationDocument.vo";
+import { VerificationDocument } from "../../../../src/Domain/BoundedContexts/IdentityAndAccess/Value-Object/VerficationDocument.vo";
 
 describe("validate StudentVerificationDocument value object", () => {
   describe("valid document", () => {

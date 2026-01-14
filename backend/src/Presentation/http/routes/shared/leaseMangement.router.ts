@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { LeaseManagementController } from "../../controllers/admin/leaseManagement.controller";
+import { SharedLeaseManagementController } from "../../controllers/Lease/SharedLease.controlller";
 
 export const LeaseManagementRouter = (
-  leaseManagementController: LeaseManagementController
+  leaseManagementController: SharedLeaseManagementController
 ): Router => {
   const router = Router();
 

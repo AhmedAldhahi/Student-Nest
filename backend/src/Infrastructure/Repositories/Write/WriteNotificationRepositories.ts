@@ -1,11 +1,11 @@
 import { EntityManager, In } from "typeorm";
-import { NotificationEntity } from "../../../Domain/Shared/Entities/NotificationEntity.entity";
-import { IWriteNotificationRepo } from "../../../Domain/Shared/Repositories/IWriteNotficationRepositories.repositores";
+import { IWriteNotificationRepo } from "../../../Domain/BoundedContexts/Notifications/Repositories/IWriteNotficationRepositories.repositores";
 import { NotificationMapper } from "../mapper/notification.mapper";
-import { NotificationModel } from "../../Database/orm/TypeOrm/entity/Notifcation.entity";
-import { UserRole } from "../../../Domain/Shared/Enum/UserRole.enum";
-import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
-import { UserModel } from "../../Database/orm/TypeOrm/entity/User.entity";
+import { NotificationModel } from "../../Database/TypeOrm/entity/Notifcation.entity";
+import { UserRole } from "../../../Domain/BoundedContexts/IdentityAndAccess/Enum/UserRole.enum";
+import { AppDataSource } from "../../Database/TypeOrm/data-source";
+import { UserModel } from "../../Database/TypeOrm/entity/User.entity";
+import { NotificationEntity } from "../../../Domain/BoundedContexts/Notifications/Entities/NotificationEntity.entity";
 
 export class WriteNotificationRepositories implements IWriteNotificationRepo {
   private manager: EntityManager;

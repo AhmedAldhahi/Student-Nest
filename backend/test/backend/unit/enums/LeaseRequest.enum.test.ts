@@ -1,4 +1,4 @@
-import { LeaseRequestStatus } from "../../../../src/Domain/Shared/Enum/LeaseRequestStatus.enum";
+import { LeaseRequestStatus } from "../../../../src/Domain/BoundedContexts/Leases/Enum/LeaseRequestStatus.enum";
 
 describe(" LeaseRequest  Status Enum", () => {
   test("should have 'Pending' action", () => {

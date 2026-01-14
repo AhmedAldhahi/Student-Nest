@@ -1,20 +1,20 @@
 import { Router } from "express";
 import { isAuth } from "../../middlewares/auth/isAuth.middleware";
-import { ApartmentController } from "../../controllers/Landlord/ApartmentMangement.controller";
 import { isLandlord } from "../../middlewares/auth/isLandloard.middleware";
 import { ApartmentRouter } from "./apartmentMangement.router";
-import { LeaseManagement } from "../../controllers/Landlord/LeaseMangement.controller";
 import { LeaseRouter } from "./leaseMangement.router";
-import { LeastRequestController } from "../../controllers/Landlord/LeastRequestMangement.controller";
+import { LeastRequestForLandlordController } from "../../controllers/LeaseRequest/LeastRequestForLandlord.controller";
 import { LeastRequestRouter } from "./leastRequestMangement.router";
 import { PaymentRouter } from "./paymentMangement.router";
-import { PaymentController } from "../../controllers/Landlord/PaymentMangement.controller";
+import { PaymentForLandlordController } from "../../controllers/Payment/PaymentForLandlord.controller";
+import { ApartmentControllerForLandlord } from "../../controllers/Apartment/ApartmentControllerForLandlord";
+import { LeaseManagementForLandlord } from "../../controllers/Lease/LeaseForLandlord.controller";
 
 export const LandlordIndexRouter = (
-  apartmentController: ApartmentController,
-  leaseController: LeaseManagement,
-  leastRequestController: LeastRequestController,
-  paymentController: PaymentController
+  apartmentController: ApartmentControllerForLandlord,
+  leaseController: LeaseManagementForLandlord,
+  leastRequestController: LeastRequestForLandlordController,
+  paymentController: PaymentForLandlordController
 ): Router => {
   const router = Router();
 
@@ -29,7 +29,7 @@ export const LandlordIndexRouter = (
 
   router.use("/leases-request", LeastRequestRouter(leastRequestController));
 
-  router.use("/payment",  PaymentRouter(paymentController));
+  router.use("/payment", PaymentRouter(paymentController));
 
   return router;
 };

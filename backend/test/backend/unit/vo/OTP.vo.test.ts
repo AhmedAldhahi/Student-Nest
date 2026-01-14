@@ -1,4 +1,4 @@
-import { OTP } from "../../../../src/Domain/Shared/Value-Object/OTP.vo"; // Adjust path as needed
+import { OTP } from "../../../../src/Domain/BoundedContexts/IdentityAndAccess/Value-Object/OTP.vo";
 
 describe("OTP Value Object", () => {
   

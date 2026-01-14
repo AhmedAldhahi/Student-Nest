@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 import { isLandlord } from "../../middlewares/auth/isLandloard.middleware";
-import { LeaseManagement } from "../../controllers/Landlord/LeaseMangement.controller";
+import { LeaseManagementForLandlord } from "../../controllers/Lease/LeaseForLandlord.controller";
 
-export const LeaseRouter = (LeastController: LeaseManagement): Router => {
+export const LeaseRouter = (LeastController: LeaseManagementForLandlord): Router => {
   const router = Router();
 
   router.get(

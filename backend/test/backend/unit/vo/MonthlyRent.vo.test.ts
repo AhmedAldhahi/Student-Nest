@@ -1,4 +1,4 @@
-import { MonthlyRent } from "../../../../src/Domain/Modules/Housing/Value-Object/MonthlyRent.vo";
+import { MonthlyRent } from "../../../../src/Domain/BoundedContexts/Housing/Value-Object/MonthlyRent.vo";
 
 describe("MonthlyRent Value Object", () => {
   

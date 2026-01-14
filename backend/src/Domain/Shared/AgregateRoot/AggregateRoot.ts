@@ -2,9 +2,13 @@ import { IDomainEvent } from "../Event/IDomainEvent";
 
 export abstract class AggregateRoot<T> {
   
-  protected _id: T;
+  protected  readonly _id: T;
   
   private _domainEvents: IDomainEvent[] = [];
+
+  constructor(id: T) {
+    this._id = id;
+  }
 
   public get id(): T {
     return this._id;

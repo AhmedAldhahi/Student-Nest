@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { AuditLogController } from "../../controllers/admin/auditLogManagement.controller";
+import { AuditLogController } from "../../controllers/Adminstration/auditLogManagement.controller";
 
 export const AuditLogRouter = (
   auditLogController: AuditLogController

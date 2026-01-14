@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { AppDataSource } from "../../../../Infrastructure/Database/orm/TypeOrm/data-source";
-import { UserModel } from "../../../../Infrastructure/Database/orm/TypeOrm/entity/User.entity";
+import { AppDataSource } from "../../../../Infrastructure/Database/TypeOrm/data-source";
+import { UserModel } from "../../../../Infrastructure/Database/TypeOrm/entity/User.entity";
 
 export const isAdmin = async (
   req: Request,

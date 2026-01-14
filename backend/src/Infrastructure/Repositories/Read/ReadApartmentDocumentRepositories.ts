@@ -1,7 +1,7 @@
-import { ApartmentDocumentEntity } from "../../../Domain/Modules/Housing/Entities/apartmentDocumentEntity.entity";
-import { IReadApartmentDocumentRepo } from "../../../Domain/Modules/Housing/Repositories/Read/ReadApartmentDocument.repositories";
-import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
-import { ApartmentDocumentModel } from "../../Database/orm/TypeOrm/entity/ApartmentDocument.entity";
+import { ApartmentDocumentEntity } from "../../../Domain/BoundedContexts/Housing/Entities/apartmentDocumentEntity.entity";
+import { IReadApartmentDocumentRepo } from "../../../Domain/BoundedContexts/Housing/Repositories/ReadApartmentDocument.repositories";
+import { AppDataSource } from "../../Database/TypeOrm/data-source";
+import { ApartmentDocumentModel } from "../../Database/TypeOrm/entity/ApartmentDocument.entity";
 import { ApartmentDocumentMapper } from "../mapper/apartmentDocument.mapper";
 
 export class ReadApartmentDocumentRepositories

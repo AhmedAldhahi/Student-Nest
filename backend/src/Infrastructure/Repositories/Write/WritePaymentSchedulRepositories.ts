@@ -1,6 +1,6 @@
 import { EntityManager } from "typeorm";
-import { PaymentAggregateRoot } from "../../../Domain/Modules/Payment/AgregateRoot/Payment.AgregateRoot";
-import { IWritePaymentScheduleRepo } from "../../../Domain/Modules/Payment/Repositories/WritePaymentSchedualRepositories";
+import { PaymentAggregateRoot } from "../../../Domain/BoundedContexts/Payment/AgregateRoot/Payment.AgregateRoot";
+import { IWritePaymentScheduleRepo } from "../../../Domain/BoundedContexts/Payment/Repositories/WritePaymentSchedualRepositories";
 import { PaymentMapper } from "../mapper/payment.mapper";
 
 export class WritePaymentScheduleRepositories

@@ -6,18 +6,18 @@ import winston from "winston";
 import expressWinston from "express-winston";
 import debug from "debug";
 import cors from "cors";
-import { AppDataSource } from "./Infrastructure/Database/orm/TypeOrm/data-source";
-import { createAuthRouter } from "./Presentation/http/routes/registeration/Registeration.route";
-import { buildControllers } from "./Presentation/http/controllers/index.controller";
-import { createVerificationRouter } from "./Presentation/http/routes/registeration/Verfication.route";
-import { PasswordRecoveryRouter } from "./Presentation/http/routes/registeration/PasswordRecvery.route";
-import { profileRouter } from "./Presentation/http/routes/shared/profile.routes";
+import { AppDataSource } from "./Infrastructure/Database/TypeOrm/data-source";
+import { createAuthRouter } from "./Presentation/http/routes/IdentityAndAccess/Registeration.route";
+import { createVerificationRouter } from "./Presentation/http/routes/IdentityAndAccess/Verfication.route";
+import { PasswordRecoveryRouter } from "./Presentation/http/routes/IdentityAndAccess/PasswordRecvery.route";
+import { profileRouter } from "./Presentation/http/routes/IdentityAndAccess/profile.routes";
 import { auditMiddleware } from "./Presentation/http/middlewares/auditLog.middleware";
 import { ApartmentSharedRouter } from "./Presentation/http/routes/shared/apartment.routes";
 import { AdminIndexRouter } from "./Presentation/http/routes/admin/index.router";
 import { SharedIndexRouter } from "./Presentation/http/routes/shared/index.router";
 import { LandlordIndexRouter } from "./Presentation/http/routes/Landlord/index.router";
-import { PaymentController } from "./Presentation/http/controllers/Landlord/PaymentMangement.controller";
+import { buildControllersBoundaryContext } from "./Presentation/http/controllers/main.controller";
+import { StudentIndexRouter } from "./Presentation/http/routes/Student/index.router";
 export class Server {
   public app = express();
   public port = parseInt(process.env.PORT || "4000", 10);
@@ -89,28 +89,24 @@ export class Server {
       })
     );
 
-    // Routes
     const {
       authController,
       verificationController,
       passwordRecoverController,
       profileController,
-      adminLeaseManagementController,
+      NotificationsController,
       adminUserManagementController,
-      adminLeaseRequestManagementController,
-      adminApartmentController,
+      Apartment,
       adminAuditLogController,
-      adminNotificationController,
-      LandlordApartmentController,
-      LandlordLeaseController,
-      LandlordLeaseRequestController,
-      landlordPayment,
-    } = buildControllers();
+      LeaseRequest,
+      Lease,
+      Payment,
+    } = buildControllersBoundaryContext();
 
     this.app.use(
       "/api/v1/admin",
       AdminIndexRouter(
-        adminApartmentController,
+        Apartment.Admin,
         adminAuditLogController,
         adminUserManagementController
       )
@@ -119,45 +115,36 @@ export class Server {
     this.app.use(
       "/api/v1/landlord",
       LandlordIndexRouter(
-        LandlordApartmentController,
-        LandlordLeaseController,
-        LandlordLeaseRequestController,
-        landlordPayment
+        Apartment.Landlord,
+        Lease.Landlord,
+        LeaseRequest.Landlord,
+        Payment.Landlord
       )
     );
+
+    this.app.use("/api/v1/student", StudentIndexRouter(Apartment.Student));
 
     this.app.use(
       "/api/v1/",
       SharedIndexRouter(
-        adminApartmentController,
-        adminLeaseRequestManagementController,
-        adminLeaseManagementController,
-        adminNotificationController,
-        landlordPayment
+        Apartment.Shared,
+        LeaseRequest.Shared,
+        Lease.Shared,
+        NotificationsController,
+        Payment.Shared
       )
     );
 
     this.app.use("/api/v1/auth", createAuthRouter(authController));
     this.app.use("/api/v1/", createVerificationRouter(verificationController));
 
-    //shared
+    // //shared
     this.app.use("/api/v1/me/", profileRouter(profileController));
 
     this.app.use(
       "/api/v1/password-recovery",
       PasswordRecoveryRouter(passwordRecoverController)
     );
-
-    // this.app.use(
-    //   "/api/v1/admin",
-    //   notificationRouter(adminNotificationController)
-    // );
-
-    /////////////////////Apartment section ////////////////////////////////
-
-    this.app.use("/api/v1/", ApartmentSharedRouter(adminApartmentController));
-
-    /////////////////////End apartment section ///////////////////////////
 
     this.startupDebug("Server configuration completed.");
   }

@@ -1,12 +1,28 @@
-import { FindOptionsWhere, Like } from "typeorm";
-import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
-import { LeaseModel } from "../../Database/orm/TypeOrm/entity/Lease.entity";
+import { Like, FindOptionsWhere } from "typeorm";
+import { LeaseAggregateRoot } from "../../../Domain/BoundedContexts/Leases/AgregateRoot/leaseEntity.entity";
+import {
+  ILeaseEntityDTO,
+  IReadLeaseRepositories,
+} from "../../../Domain/BoundedContexts/Leases/Repositories/Read/ReadLeaseRepositories.repositories";
+import { AppDataSource } from "../../Database/TypeOrm/data-source";
+import { LeaseModel } from "../../Database/TypeOrm/entity/Lease.entity";
 import { LeaseMapper } from "../mapper/lease.mapper";
-import { ILeaseEntityDTO } from "../../../Application/DTO/admin/LeaseDTO.dto";
-import { IReadLeaseRepositories } from "../../../Domain/Modules/Leases/Repositories/Read/ReadLeaseRepositories.repositories";
-import { LeaseAggregateRoot } from "../../../Domain/Modules/Leases/AgregateRoot/leaseEntity.entity";
 
 export class ReadLeaseRepositories implements IReadLeaseRepositories {
+  
+  public async countActiveLeasesByApartmentId(
+    apartmentId: string
+  ): Promise<number> {
+    const count = await AppDataSource.getInstance()
+      .getRepository(LeaseModel)
+      .createQueryBuilder("lease")
+      .where("lease.apartmentId = :apartmentId", { apartmentId })
+      .andWhere("lease.LeaseActivationStatus = :status", { status: true })
+      .getCount();
+
+    return count;
+  }
+
   public async findLeaseForLandlordById(
     userId: string,
     id: string

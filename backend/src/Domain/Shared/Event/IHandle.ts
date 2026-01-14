@@ -1,5 +1,5 @@
 import { IDomainEvent } from "./IDomainEvent";
 
-export interface IHandle<E extends IDomainEvent> {
-  setup(event: E): Promise<void>;
+export interface IHandle<T extends IDomainEvent> {
+  handle(event: T): Promise<void>;
 }

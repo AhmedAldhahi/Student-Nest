@@ -1,0 +1,26 @@
+import { ICommand } from "../../Shared/abstraction/ICommand";
+import { UpdateLandlordProfileRequest } from "../Dto/Request/UpdateLandlordProfileRequest";
+
+export class UpdateLandlordCommand implements ICommand {
+  public name?: string;
+  public newPassword?: string;
+  public oldPassword?: string;
+  public dateOfBirth?: string;
+  public phoneNumber?: string;
+  public address?: string;
+  public photo?: Express.Multer.File;
+  public userId: string;
+  public cliQAccount?: string;
+
+  constructor(userId: string, updateData: UpdateLandlordProfileRequest) {
+    this.userId = userId;
+    this.name = updateData.name;
+    this.newPassword = updateData.newPassword;
+    this.oldPassword = updateData.oldPassword;
+    this.dateOfBirth = updateData.dateOfBirth;
+    this.phoneNumber = updateData.phoneNumber;
+    this.address = updateData.address;
+    this.photo = updateData.photo;
+    this.cliQAccount = this.cliQAccount;
+  }
+}

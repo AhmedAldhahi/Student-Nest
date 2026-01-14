@@ -1,6 +1,6 @@
-import { INotificationDTO } from "../../../Application/DTO/admin/NotificationDTO.dto";
-import { NotificationEntity } from "../../../Domain/Shared/Entities/NotificationEntity.entity";
-import { NotificationModel } from "../../Database/orm/TypeOrm/entity/Notifcation.entity";
+import { NotificationEntity } from "../../../Domain/BoundedContexts/Notifications/Entities/NotificationEntity.entity";
+import { INotificationDTO } from "../../../Domain/BoundedContexts/Notifications/Repositories/ReadNotificationRepositories.repositories";
+import { NotificationModel } from "../../Database/TypeOrm/entity/Notifcation.entity";
 import { UserMapper } from "./user.mapper";
 
 export class NotificationMapper {

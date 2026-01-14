@@ -1,9 +1,9 @@
 import { EntityManager } from "typeorm";
 import { WriteUserRepositories } from "./WriteUserRepositories";
 import { StudentMapper } from "../mapper/student.mapper";
-import { StudentModel } from "../../Database/orm/TypeOrm/entity/Student.entity";
-import { IWriteStudentRepositories } from "../../../Domain/Modules/Student/Repositories/WriteStudentRepositories.repositories";
-import { StudentAggregateRoot } from "../../../Domain/Modules/Student/AgregatesRoot/studentEntity.entity";
+import { StudentModel } from "../../Database/TypeOrm/entity/Student.entity";
+import { IWriteStudentRepositories } from "../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/WriteStudentRepositories.repositories";
+import { StudentAggregateRoot } from "../../../Domain/BoundedContexts/IdentityAndAccess/Aggregates/StudentAggregateRoot.entity";
 
 export class WriteStudentRepositories implements IWriteStudentRepositories {
   private writeUserRepo: WriteUserRepositories;

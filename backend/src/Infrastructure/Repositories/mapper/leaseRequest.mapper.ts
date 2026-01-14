@@ -1,8 +1,8 @@
-import { ILeaseRequestDTO } from "../../../Application/DTO/admin/LeaseRequestDTO.dto";
-import { LeaseRequestEntity } from "../../../Domain/Modules/Leases/Entities/leaseRequestEntity.entity";
-import { LeaseStartDate } from "../../../Domain/Modules/Leases/Value-Object/LeaseStartDate.vo";
-import { RentTerm } from "../../../Domain/Modules/Leases/Value-Object/RentTerm.vo";
-import { LeaseRequestModel } from "../../Database/orm/TypeOrm/entity/LeaseRequest";
+import { LeaseRequestEntity } from "../../../Domain/BoundedContexts/Leases/Entities/leaseRequestEntity.entity";
+import { ILeaseRequestDTO } from "../../../Domain/BoundedContexts/Leases/Repositories/Read/ReadLeaseRequestRepositories.repositories";
+import { LeaseStartDate } from "../../../Domain/BoundedContexts/Leases/Value-Object/LeaseStartDate.vo";
+import { RentTerm } from "../../../Domain/BoundedContexts/Leases/Value-Object/RentTerm.vo";
+import { LeaseRequestModel } from "../../Database/TypeOrm/entity/LeaseRequest";
 
 export class LeaseRequestMapper {
   public static toModel(entity: LeaseRequestEntity): LeaseRequestModel {

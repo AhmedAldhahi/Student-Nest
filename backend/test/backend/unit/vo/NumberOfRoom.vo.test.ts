@@ -1,4 +1,4 @@
-import { NumberOfRoom } from "../../../../src/Domain/Modules/Housing/Value-Object/NumberOfRoom.vo";
+import { NumberOfRoom } from "../../../../src/Domain/BoundedContexts/Housing/Value-Object/NumberOfRoom.vo";
 
 describe("NumberOfRoom Value Object", () => {
   

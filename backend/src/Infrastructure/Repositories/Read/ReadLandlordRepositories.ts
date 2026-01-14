@@ -1,10 +1,9 @@
-import { LandlordAggregateRoot } from "../../../Domain/Modules/Housing/AgregateRoot/landloardEntity.entity";
-import { LandlordModel } from "../../Database/orm/TypeOrm/entity/Landloard.entity";
-import { LandlordMapper } from "../mapper/landloard.mapper";
-import { AppDataSource } from "../../Database/orm/TypeOrm/data-source";
 import { FindOptionsWhere, Like } from "typeorm";
-import { IReadLandlordRepositories } from "../../../Domain/Modules/Housing/Repositories/Read/ReadLandlordRepositories.repositoreies";
-import { LandlordResponseDTO } from "../../../Application/DTO/shared/profile/LandlordResponeDTO";
+import { LandlordAggregateRoot } from "../../../Domain/BoundedContexts/IdentityAndAccess/Aggregates/landloardAggregateRoot.entity";
+import { IReadLandlordRepositories, LandlordResponseDTO } from "../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadLandlordRepositories.repositoreies";
+import { AppDataSource } from "../../Database/TypeOrm/data-source";
+import { LandlordModel } from "../../Database/TypeOrm/entity/Landlord.entity";
+import { LandlordMapper } from "../mapper/landlord.mapper";
 
 export class ReadLandlordRepositories implements IReadLandlordRepositories {
   public async findLandlordById(

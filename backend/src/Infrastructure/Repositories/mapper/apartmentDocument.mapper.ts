@@ -1,5 +1,5 @@
-import { ApartmentDocumentEntity } from "../../../Domain/Modules/Housing/Entities/apartmentDocumentEntity.entity";
-import { ApartmentDocumentModel } from "../../Database/orm/TypeOrm/entity/ApartmentDocument.entity";
+import { ApartmentDocumentEntity } from "../../../Domain/BoundedContexts/Housing/Entities/apartmentDocumentEntity.entity";
+import { ApartmentDocumentModel } from "../../Database/TypeOrm/entity/ApartmentDocument.entity";
 
 export class ApartmentDocumentMapper {
   public static toModel(

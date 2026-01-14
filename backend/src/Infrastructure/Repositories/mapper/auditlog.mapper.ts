@@ -1,6 +1,6 @@
-import { AuditLogEntity } from "../../../Domain/Modules/adminstration/Entities/auditlogEntity.entity";
-import { UserRole } from "../../../Domain/Shared/Enum/UserRole.enum";
-import { AuditLogModel } from "../../Database/orm/TypeOrm/entity/AuditLog.entity";
+import { AuditLogEntity } from "../../../Domain/BoundedContexts/adminstration/Entities/auditlogEntity.entity";
+import { UserRole } from "../../../Domain/BoundedContexts/IdentityAndAccess/Enum/UserRole.enum";
+import { AuditLogModel } from "../../Database/TypeOrm/entity/AuditLog.entity";
 
 export class AuditLogMapper {
   public static toModel(auditEntity: AuditLogEntity): AuditLogModel {

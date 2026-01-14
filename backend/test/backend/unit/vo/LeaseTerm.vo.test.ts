@@ -1,4 +1,4 @@
-import { LeaseTerm } from "../../../../src/Domain/Modules/Leases/Value-Object/LeaseTerm.vo";
+import { LeaseTerm } from "../../../../src/Domain/BoundedContexts/Leases/Value-Object/LeaseTerm.vo";
 
 // Mocking dependencies to test LeaseTerm in isolation
 const createMockDate = (y: number, m: number, d: number) =>

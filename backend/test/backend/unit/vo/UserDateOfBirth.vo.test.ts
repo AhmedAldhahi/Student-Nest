@@ -1,5 +1,5 @@
 // Import the constant to ensure tests stay in sync with your logic
-import { UserDateOfBirth } from "../../../../src/Domain/Shared/Value-Object/UserDateOfBirth.vo";
+import { UserDateOfBirth } from "../../../../src/Domain/BoundedContexts/IdentityAndAccess/Value-Object/UserDateOfBirth.vo";
 import { currentYear } from "../../../../src/Shared/constants/validationZod.constant"; 
 
 describe("UserDateOfBirth Value Object", () => {

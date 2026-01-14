@@ -1,4 +1,5 @@
 export interface IDomainEvent {
-  dateTimeOccurred: Date;
-  getAggregateId(): string; // Every event must point back to an Entity
+  readonly dateTimeOccurred: Date;
+  getAggregateId(): string;
+  getEventName(): string;
 }

@@ -1,16 +1,15 @@
 import { QueryRunner } from "typeorm";
 import { IUnitOfWork } from "../../Domain/Shared/Repositories/UnitOfWorkRepositories.repositories";
-import { AppDataSource } from "../Database/orm/TypeOrm/data-source";
-
-import { IWriteLeaseRequestRepo } from "../../Domain/Modules/Leases/Repositories/Write/WriteLeaseRequestRepositories.repostitores";
+import { AppDataSource } from "../Database/TypeOrm/data-source";
+import { IWriteLeaseRequestRepo } from "../../Domain/BoundedContexts/Leases/Repositories/Write/WriteLeaseRequestRepositories.repostitores";
 import { WriteLeastRequestRepositories } from "./Write/WriteLeaseRequestRepo.repostiories";
-import { IWriteAuditLogRepositories } from "../../Domain/Modules/adminstration/Entities/IWriteAuditLogRepo.repositories";
-import { IWriteApartmentDocumentRepo } from "../../Domain/Modules/Housing/Repositories/Write/IWriteApartmentDocumentRepositoires.repositories";
-import { IWriteApartmentRepo } from "../../Domain/Modules/Housing/Repositories/Write/IWriteApartmentRepositories.repositories";
-import { IWriteLandlordRepositories } from "../../Domain/Modules/Housing/Repositories/Write/WriteLandlordRepositories.repositories";
-import { IWriteUserRepositories } from "../../Domain/Modules/Identity/Repositories/WriteUserRepositories.repositories";
-import { IWriteStudentRepositories } from "../../Domain/Modules/Student/Repositories/WriteStudentRepositories.repositories";
-import { IWriteNotificationRepo } from "../../Domain/Shared/Repositories/IWriteNotficationRepositories.repositores";
+import { IWriteAuditLogRepositories } from "../../Domain/BoundedContexts/adminstration/Repositories/IWriteAuditLogRepo.repositories";
+import { IWriteApartmentDocumentRepo } from "../../Domain/BoundedContexts/Housing/Repositories/IWriteApartmentDocumentRepositoires.repositories";
+import { IWriteApartmentRepo } from "../../Domain/BoundedContexts/Housing/Repositories/IWriteApartmentRepositories.repositories";
+import { IWriteLandlordRepositories } from "../../Domain/BoundedContexts/IdentityAndAccess/Repositories/WriteLandlordRepositories.repositories";
+import { IWriteUserRepositories } from "../../Domain/BoundedContexts/IdentityAndAccess/Repositories/WriteUserRepositories.repositories";
+import { IWriteStudentRepositories } from "../../Domain/BoundedContexts/IdentityAndAccess/Repositories/WriteStudentRepositories.repositories";
+import { IWriteNotificationRepo } from "../../Domain/BoundedContexts/Notifications/Repositories/IWriteNotficationRepositories.repositores";
 import { WriteApartmentDocumentRepositories } from "./Write/WriteApartmentDocumentRepositories";
 import { WriteApartmentsRepositories } from "./Write/WriteApartmentRepositories";
 import { WriteAuditLogRepositories } from "./Write/WriteAuditLog.repositories";
@@ -18,14 +17,15 @@ import { WriteLandlordRepositories } from "./Write/WriteLandlordRepositories";
 import { WriteNotificationRepositories } from "./Write/WriteNotificationRepositories";
 import { WriteStudentRepositories } from "./Write/WriteStudentRepositories";
 import { WriteUserRepositories } from "./Write/WriteUserRepositories";
-import { IWritePaymentScheduleRepo } from "../../Domain/Modules/Payment/Repositories/WritePaymentSchedualRepositories";
+import { IWritePaymentScheduleRepo } from "../../Domain/BoundedContexts/Payment/Repositories/WritePaymentSchedualRepositories";
 import { WritePaymentScheduleRepositories } from "./Write/WritePaymentSchedulRepositories";
-import { IWriteReceiptRepo } from "../../Domain/Modules/Payment/Repositories/writeReceiptRepo.Repositories";
+import { IWriteReceiptRepo } from "../../Domain/BoundedContexts/Payment/Repositories/writeReceiptRepo.Repositories";
 import { PaymentReceiptRepositories } from "./Write/WritePaymentRecipt.repositories";
+import { IWriteDomainEventRepo } from "../../Domain/Shared/Repositories/IWriteDomainEventRepo.repositories";
 
 export class UnitOfWork implements IUnitOfWork {
   private queryRunner: QueryRunner | null = null;
-
+  
   // CQRS Repositories
   public writeUserRepo!: IWriteUserRepositories;
   public writeStudentRepo!: IWriteStudentRepositories;
@@ -37,6 +37,7 @@ export class UnitOfWork implements IUnitOfWork {
   public writeLeaseRequestRepo!: IWriteLeaseRequestRepo;
   public writePaymentScheduleRepo!: IWritePaymentScheduleRepo;
   public writePaymentReceiptRepo!: IWriteReceiptRepo;
+  public writeDomainEventRepo!: IWriteDomainEventRepo;
 
   async startTransaction(): Promise<void> {
     this.queryRunner = AppDataSource.getInstance().createQueryRunner();
