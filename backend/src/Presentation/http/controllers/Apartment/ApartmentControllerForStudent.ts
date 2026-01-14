@@ -10,10 +10,6 @@ export class ApartmentControllerForStudent {
 
   public GetRandomApartment = async (req: Request, res: Response) => {
     try {
-      const user = req.user?.userId;
-      if (!user)
-        return res.status(400).json({ error: "no user id been found !!" });
-
       const result =
         await this.GetApartmentRandomThatIsVisibleAndNotFull.handle();
       return res.status(200).json(result);
@@ -29,10 +25,6 @@ export class ApartmentControllerForStudent {
     res: Response
   ) => {
     try {
-      const user = req.user?.userId;
-      if (!user)
-        return res.status(400).json({ error: "no user id been found !!" });
-
       const result = await this.GetAllVisibleAndNotFullApartment.handle();
       return res.status(200).json(result);
     } catch (error: any) {

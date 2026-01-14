@@ -70,7 +70,6 @@ export class LandlordAggregateRoot extends AggregateRoot<string> {
     apartment: ApartmentAggregateRoot,
     apartmentDoc: ApartmentDocumentEntity
   ) {
-    // make need validation
     if (!apartmentDoc) {
       console.log("no document to add ");
       return;

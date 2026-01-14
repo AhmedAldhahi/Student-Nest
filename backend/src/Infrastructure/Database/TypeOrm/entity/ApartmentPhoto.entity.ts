@@ -11,8 +11,9 @@ export class ApartmentPhotoModel {
 
 
   @ManyToOne(() => ApartmentModel, (apartment) => apartment.photos, {
-    onDelete: "CASCADE", // If the apartment is deleted, delete the photos too
+    onDelete: "CASCADE", 
   })
-  @JoinColumn({ name: "apartmentId" }) // Maps this to the 'apartmentId' column below
+  
+  @JoinColumn({ name: "apartmentId" })
   apartment: ApartmentModel;
 }

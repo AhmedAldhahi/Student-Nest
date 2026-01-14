@@ -8,17 +8,10 @@ export const ApartmentRouter = (
 ): Router => {
   const router = Router();
 
-  router.get(
-    "/featured",
-    isAuth,
-    isStudent,
-    studentApartmentControllers.GetRandomApartment
-  );
+  router.get("/featured", studentApartmentControllers.GetRandomApartment);
 
   router.get(
     "/available",
-    isAuth,
-    isStudent,
     studentApartmentControllers.GetAllVisibleAndNotFullApartments
   );
 
