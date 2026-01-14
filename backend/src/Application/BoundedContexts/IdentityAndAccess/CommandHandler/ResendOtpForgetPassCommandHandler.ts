@@ -37,7 +37,11 @@ export class ResendOtpForgetPassCommandHandler
       await this.uow.writeUserRepo.updateUser(user);
       await this.uow.commitTransaction();
 
-      const event = new ResendOtpEvent(user.getUserId(), command.email);
+      const event = new ResendOtpEvent(
+        user.getUserId(),
+        command.email,
+        otp.getValue()
+      );
 
       await this.eventBus.publish(event);
 

@@ -39,7 +39,11 @@ export class ResendOtpCommandHandler
       await this.unitOfWork.writeUserRepo.updateUser(user);
       await this.unitOfWork.commitTransaction();
 
-      const event = new ResendOtpEvent(user.getUserId(), command.email);
+      const event = new ResendOtpEvent(
+        user.getUserId(),
+        command.email,
+        otp.getValue()
+      );
       await this.eventBus.publish(event);
 
       return {

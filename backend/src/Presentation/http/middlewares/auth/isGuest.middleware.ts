@@ -11,19 +11,11 @@ export const isGuest = async (
   try {
     const userId = req.user?.userId;
 
-    if (!userId)
-      return res
-        .status(400)
-        .json({ error: "Unauthorized: No user ID found in payload." });
-
     const user = await AppDataSource.getInstance()
       .getRepository(UserModel)
       .findOne({ where: { userId: userId } });
 
-    if (user?.Role !== UserRole.Guest)
-      return res
-        .status(400)
-        .json({ error: "Forbidden  you do not have Guest privilege" });
+    if (!userId) user?.Role === UserRole.Guest;
 
     return next();
   } catch (error: any) {

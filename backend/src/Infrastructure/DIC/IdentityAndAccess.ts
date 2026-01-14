@@ -23,6 +23,7 @@ import { AdminProfileStrategy } from "../../Application/BoundedContexts/Shared/S
 import { LandlordProfileStrategy } from "../../Application/BoundedContexts/Shared/Strategy/profile/LandlordProfile.strategy";
 import { ProfileContext } from "../../Application/BoundedContexts/Shared/Strategy/profile/profilecontext";
 import { StudentProfileStrategy } from "../../Application/BoundedContexts/Shared/Strategy/profile/StudentProfile.strategy";
+import { ResendOtpEvent } from "../../Domain/BoundedContexts/IdentityAndAccess/Events/ResendOtpEvent.event";
 import { UserRegisteredEvent } from "../../Domain/BoundedContexts/IdentityAndAccess/Events/UserRegisterdEvent.event";
 import { DomainEventDispatcher } from "../../Domain/Shared/Event/DomainEventDispatcher";
 import { InMemoryEventBus } from "../EventBus/InMemmoryEventBus";
@@ -111,7 +112,7 @@ export function ResendOtpCH(): ResendOtpCommandHandler {
 
   const eventDispatch = new DomainEventDispatcher();
   eventDispatch.register(
-    UserRegisteredEvent.EVENT_KEY,
+    ResendOtpEvent.EVENT_KEY,
     verificationEmailHandler
   );
 
@@ -137,7 +138,7 @@ export function ResendOtpForgetPasswordCH(): ResendOtpForgetPassCommandHandler {
 
   const eventDispatch = new DomainEventDispatcher();
 
-  eventDispatch.register(UserRegisteredEvent.EVENT_KEY, emailEventHandler);
+  eventDispatch.register(ResendOtpEvent.EVENT_KEY, emailEventHandler);
   const eventBus = new InMemoryEventBus(eventDispatch);
 
   return new ResendOtpForgetPassCommandHandler(uow, readUserRepo, eventBus);
