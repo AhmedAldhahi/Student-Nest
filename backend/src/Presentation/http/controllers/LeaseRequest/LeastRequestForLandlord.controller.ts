@@ -27,6 +27,7 @@ export class LeastRequestForLandlordController {
 
       return res.status(200).json(result);
     } catch (error: any) {
+      console.log(error);
       return res
         .status(400)
         .json({ error: error.message || "internal server error" });
