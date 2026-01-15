@@ -27,7 +27,7 @@ export class StudentMapper {
   public static toResponse(stdModel: StudentModel): StudentResponseDto {
     return {
       user: {
-        userId: stdModel.userId,
+        userId: stdModel.user.userId,
         name: stdModel.user.Name,
         dateOfBirth: stdModel.user.DateOfBirth,
         email: stdModel.user.Email,
