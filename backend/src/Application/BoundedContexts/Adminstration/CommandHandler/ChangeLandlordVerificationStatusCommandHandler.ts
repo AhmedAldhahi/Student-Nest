@@ -1,4 +1,6 @@
+import { UpdateUserEvent } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Events/UpdateUserEvent.event";
 import { IReadLandlordRepositories } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadLandlordRepositories.repositoreies";
+import { IEventBus } from "../../../../Domain/Shared/Event/IEventBus";
 import { IUnitOfWork } from "../../../../Domain/Shared/Repositories/UnitOfWorkRepositories.repositories";
 import { ICommandHandlers } from "../../Shared/abstraction/ICommandHandler";
 import { ChangeLandlordVerificationStatusCommand } from "../Command/ChangeLandlordVerificationStatusCommand";
@@ -9,7 +11,8 @@ export class ChangeLandlordVerificationStatusCommandHandler
 {
   constructor(
     private readLandlordRepo: IReadLandlordRepositories,
-    private uow: IUnitOfWork
+    private uow: IUnitOfWork,
+    private readonly eventBus:IEventBus,
   ) {}
 
   public async handle(
@@ -28,6 +31,10 @@ export class ChangeLandlordVerificationStatusCommandHandler
       await this.uow.startTransaction();
       await this.uow.writeLandlordRepo.updateLandlord(user);
       await this.uow.commitTransaction();
+
+      const event = new UpdateUserEvent(user.getUserId());
+
+      await this.eventBus.publish(event);
 
       return {
         message: "landlord status updated scussfuly ",

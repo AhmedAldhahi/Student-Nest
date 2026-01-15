@@ -3,20 +3,38 @@ import { ChangeUserActivateStatusCommandHandler } from "../../Application/Bounde
 import { ChangeApartmentStatusVerifiedCommandHandler } from "../../Application/BoundedContexts/Adminstration/CommandHandler/ChnageApartmentVerificationStatusCommandHandler";
 import { DeleteApartmentByIdForAdminCommandHandler } from "../../Application/BoundedContexts/Adminstration/CommandHandler/DeleteApartmentByIdForAdminCommandHandler";
 import { DeleteUserCommandHandler } from "../../Application/BoundedContexts/Adminstration/CommandHandler/DeleteUserCommand";
+import { RemoveCashHandler } from "../../Application/BoundedContexts/Adminstration/EventHandler/RemoveCashHandler";
 import { GetAllAuditLogQueriesHandler } from "../../Application/BoundedContexts/Adminstration/QueriesHandler/GetAllAuditLogQueries";
 import { SearchForAuditLogByQueriesHandler } from "../../Application/BoundedContexts/Adminstration/QueriesHandler/SeachForAuditLogQueriesHandler";
+import { UpdateUserEvent } from "../../Domain/BoundedContexts/IdentityAndAccess/Events/UpdateUserEvent.event";
+import { DomainEventDispatcher } from "../../Domain/Shared/Event/DomainEventDispatcher";
+import { InMemoryEventBus } from "../EventBus/InMemmoryEventBus";
 import { ReadApartmentRepositories } from "../Repositories/Read/ReadApartmentRepositories";
 import { ReadAuditLogRepositories } from "../Repositories/Read/ReadAuditLogRepositories";
 import { ReadLandlordRepositories } from "../Repositories/Read/ReadLandlordRepositories";
 import { ReadUserRepositories } from "../Repositories/Read/ReadUserRepositories";
 import { UnitOfWork } from "../Repositories/unitOfWork.repositories";
+import { RedisCashService } from "../Services/Cashing/RadisCashe";
 import { CloudinaryService } from "../Services/media/CloudinaryService.service";
 
 export function ChangeLandlordVerificationStatusCH(): ChangeLandlordVerificationStatusCommandHandler {
   const uow = new UnitOfWork();
   const readLandlordRepo = new ReadLandlordRepositories();
 
-  return new ChangeLandlordVerificationStatusCommandHandler(readLandlordRepo, uow);
+  const cashService = new RedisCashService();
+
+  const eventDispatch = new DomainEventDispatcher();
+  const cashHandler = new RemoveCashHandler(cashService);
+
+  eventDispatch.register(UpdateUserEvent.EVENT_KEY, cashHandler);
+
+  const eventBus = new InMemoryEventBus(eventDispatch);
+
+  return new ChangeLandlordVerificationStatusCommandHandler(
+    readLandlordRepo,
+    uow,
+    eventBus
+  );
 }
 
 export function ChangeUserActivityStatusCH(): ChangeUserActivateStatusCommandHandler {
@@ -30,7 +48,10 @@ export function ChangeApartmentVerificationStatusCH(): ChangeApartmentStatusVeri
   const uow = new UnitOfWork();
   const readApartmentRepo = new ReadApartmentRepositories();
 
-  return new ChangeApartmentStatusVerifiedCommandHandler(uow, readApartmentRepo);
+  return new ChangeApartmentStatusVerifiedCommandHandler(
+    uow,
+    readApartmentRepo
+  );
 }
 
 export function DeleteApartmentByIdForAdminCH(): DeleteApartmentByIdForAdminCommandHandler {
