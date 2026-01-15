@@ -2,7 +2,6 @@ import { z } from "zod";
 
 import { hasSequentialNumbers } from "../../../../Shared/utils/zodValidationMethod.util";
 import { UserRole } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Enum/UserRole.enum";
-import { roleEnum } from "../../../../Shared/constants/validationZod.constant";
 
 const basedUserSchema = z.object({
   email: z.email(),
