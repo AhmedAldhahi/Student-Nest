@@ -22,6 +22,7 @@ export const ApartmentSharedRouter = (
 
   router.delete(
     "/:apartmentId",
+    isAuth,
     isAdminOrLandlord,
     apartmentController.DeleteApartmentById
   );
