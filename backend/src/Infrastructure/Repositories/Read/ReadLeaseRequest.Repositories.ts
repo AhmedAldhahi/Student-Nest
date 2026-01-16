@@ -1,6 +1,9 @@
 import { Like, FindOptionsWhere } from "typeorm";
 import { LeaseRequestEntity } from "../../../Domain/BoundedContexts/Leases/Entities/leaseRequestEntity.entity";
-import { ILeaseRequestDTO, IReadLeaseRequestRepositories } from "../../../Domain/BoundedContexts/Leases/Repositories/Read/ReadLeaseRequestRepositories.repositories";
+import {
+  ILeaseRequestDTO,
+  IReadLeaseRequestRepositories,
+} from "../../../Domain/BoundedContexts/Leases/Repositories/Read/ReadLeaseRequestRepositories.repositories";
 import { AppDataSource } from "../../Database/TypeOrm/data-source";
 import { LeaseRequestModel } from "../../Database/TypeOrm/entity/LeaseRequest";
 import { LeaseRequestMapper } from "../mapper/leaseRequest.mapper";
@@ -399,23 +402,31 @@ export class ReadLeaseRequestRepositories
   ): Promise<ILeaseRequestDTO[]> {
     try {
       const query = Queries.trim();
-      const searchPattern = Like(`%${query}%`);
+
+      // 1. Define the raw string pattern only (e.g. "%John%")
+      const pattern = `%${query}%`;
 
       let whereCondition: FindOptionsWhere<LeaseRequestModel>[];
+
+      // 2. Use Like(pattern) cleanly for each field
       whereCondition = [
-        { leaseRequestId: searchPattern },
-        // Search in Landlord Name
-        { landlord: { user: { Name: Like(`%${searchPattern}%`) } } },
-        // Search in Student Name
-        { student: { user: { Name: Like(`%${searchPattern}%`) } } },
+        // Search ID
+        { leaseRequestId: Like(pattern) },
+
+        // Search in Landlord Name (Nested Relation)
+        { landlord: { user: { Name: Like(pattern) } } },
+
+        // Search in Student Name (Nested Relation)
+        { student: { user: { Name: Like(pattern) } } },
+
         // Search in Apartment Title
-        { apartment: { title: Like(`%${searchPattern}%`) } },
+        { apartment: { title: Like(pattern) } },
       ];
 
       const leaseRequests = await AppDataSource.getInstance()
         .getRepository(LeaseRequestModel)
         .find({
-          where: whereCondition,
+          where: whereCondition, // Acts as OR logic
           select: {
             leaseRequestId: true,
             requestMessage: true,
