@@ -29,7 +29,7 @@ export class ApartmentContext {
         default:
           throw new Error("Invalid role !!");
       }
-      return strategy;
+      return strategy.deleteApartments(userId,id);
     } catch (error: any) {
       console.error("fail to delete apartment ", error);
       throw error;
@@ -53,7 +53,7 @@ export class ApartmentContext {
         default:
           throw new Error("Invalid role !!");
       }
-      return strategy;
+      return strategy.getApartmentByQueries(Queried,userId);
     } catch (error: any) {
       console.error("fail to get apartment by queries  ", error);
       throw error;
@@ -77,7 +77,7 @@ export class ApartmentContext {
         default:
           throw new Error("Invalid role !!");
       }
-      return strategy;
+      return strategy.getAllApartment(userId);
     } catch (error: any) {
       console.error("fail to get apartments  ", error);
       throw error;
@@ -101,7 +101,7 @@ export class ApartmentContext {
         default:
           throw new Error("Invalid role !!");
       }
-      return strategy;
+      return strategy.FindApartmentDocumentById(userId,id);
     } catch (error: any) {
       console.error("fail to get apartment  documents by id  ", error);
       throw error;
