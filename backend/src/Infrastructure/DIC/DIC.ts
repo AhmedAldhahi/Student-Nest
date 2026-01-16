@@ -13,6 +13,7 @@ import {
   DeleteApartmentByIdForLandlordCH,
   GetAllBookedApartmentQH,
   GetAllVisibleAndNotFullApartmentQH,
+  GetApartmentDetailForGuestQH,
   GetRandomlyThreeApartmentThatIsVisibleAndNotFullQH,
   UpdateApartmentDetailCH,
   UpdateApartmentDocumentsCH,
@@ -97,6 +98,7 @@ export function buildDependencies() {
       GetAllPaymentScheduleForSingleLeaseQueriesHandler:GetAllPaymentScheduleForSingleLeaseQH(),
       GetApartmentRandomlyThatNotFullAndVerifiedQueriesHandler:GetRandomlyThreeApartmentThatIsVisibleAndNotFullQH(),
       GetApartmentNotFullAndVerifiedQueriesHandler:GetAllVisibleAndNotFullApartmentQH(),
+      GetApartmentDetailsForGuestQueriesHandler:GetApartmentDetailForGuestQH()
     },
 
     StrategyContext: {

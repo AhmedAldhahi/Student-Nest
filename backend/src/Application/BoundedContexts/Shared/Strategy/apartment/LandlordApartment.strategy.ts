@@ -20,11 +20,14 @@ export class LandlordApartmentStrategy implements IApartmentStrategy {
   ) {}
 
   public async GetApartmentDetailById(
-    userId: string,
-    id: string
+    id: string,
+    userId: string
   ): Promise<any> {
+    
     try {
       const Queries = new GetApartmentByIdQueries(id, userId);
+      console.log("landlord strategy is ", userId);
+
       return await this.GetApartmentDetailForLandlordQH.handle(Queries);
     } catch (error: any) {
       console.error("fail to get apartment details !!");

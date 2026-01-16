@@ -183,12 +183,7 @@ export function UserApartmentContext(): ApartmentContext {
 
   const guestStrategy = new GuestApartmentStrategy(getGustApartmentDetailsQH);
 
-  return new ApartmentContext(
-    ReadUseRepo,
-    adminStrategy,
-    landlordStrategy,
-    guestStrategy
-  );
+  return new ApartmentContext(ReadUseRepo, adminStrategy, landlordStrategy);
 }
 
 export function GetAllBookedApartmentQH(): GetAllApartmentThatBeenBookedQueriesHandler {
@@ -221,4 +216,10 @@ export function GetAllVisibleAndNotFullApartmentQH(): GetAllVisibleAndNotFullApa
     readApartmentRepo,
     ReadLeaseRepo
   );
+}
+
+export function GetApartmentDetailForGuestQH(): GetApartmentByIdForGuestQueriesHandler {
+  const readApartmentRepo = new ReadApartmentRepositories();
+
+  return new GetApartmentByIdForGuestQueriesHandler(readApartmentRepo);
 }

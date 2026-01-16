@@ -282,12 +282,14 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
   public async findApartmentDetailsByIdForLandlord(
     id: string,
     userId: string
-  ): Promise<IApartmentDTO | null> {
+  ): Promise<IApartmentDTO | null> { 
+
+    console.log(`id ${id} and user id ${userId}`);
     try {
       const apartment = await AppDataSource.getInstance()
         .getRepository(ApartmentModel)
         .findOne({
-          where: { apartmentId: id, landlordId: userId },
+          where: { apartmentId: id, landlord: { userId: userId } },
           relations: {
             landlord: { user: true },
             documents: true,

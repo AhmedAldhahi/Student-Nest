@@ -84,7 +84,8 @@ export const buildControllersBoundaryContext = () => {
   );
 
   const SharedApartmentController = new SharedApartmentManagementController(
-    StrategyContext.ApartmentUserContext
+    StrategyContext.ApartmentUserContext,
+    QueriesHandler.GetApartmentDetailsForGuestQueriesHandler
   );
 
   const PaymentForLandlord = new PaymentForLandlordController(

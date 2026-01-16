@@ -1,5 +1,4 @@
 import { IReadApartmentRepo } from "../../../../Domain/BoundedContexts/Housing/Repositories/ReadApartmentRepo.repositoreis";
-import { IReadLandlordRepositories } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadLandlordRepositories.repositoreies";
 import { IReadUserRepositories } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadUserRepositories.repositories";
 import { IQueriesHandlers } from "../../Shared/abstraction/IQueriesHandler";
 import { GetApartmentByIdQueries } from "../Queries/GetApartmentById";
@@ -16,6 +15,7 @@ export class GetApartmentByIdForLandlordQueriesHandler
     try {
       const user = await this.readUserRepo.findById(command.userId);
       if (!user) throw new Error("no user been found !!");
+
 
       user.ensureAccountIsActive();
 

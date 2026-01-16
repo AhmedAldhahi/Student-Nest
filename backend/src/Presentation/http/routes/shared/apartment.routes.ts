@@ -8,7 +8,7 @@ export const ApartmentSharedRouter = (
 ): Router => {
   const router = Router();
 
-  router.get("/", isAuth,apartmentController.getAllApartments);
+  router.get("/", isAuth, apartmentController.getAllApartments);
 
   router.get("/search", isAuth, apartmentController.getApartmentsByQueries);
 
@@ -18,7 +18,7 @@ export const ApartmentSharedRouter = (
     apartmentController.FindApartmentDocumentById
   );
 
-  router.get("/:id", apartmentController.getApartmentDetailById);
+  router.get("/:id", isAuth, apartmentController.getApartmentDetailById);
 
   router.delete(
     "/:apartmentId",
@@ -26,6 +26,8 @@ export const ApartmentSharedRouter = (
     isAdminOrLandlord,
     apartmentController.DeleteApartmentById
   );
+
+  router.get("/detail/:id", apartmentController.getApartmentDetailForGuest);
 
   return router;
 };

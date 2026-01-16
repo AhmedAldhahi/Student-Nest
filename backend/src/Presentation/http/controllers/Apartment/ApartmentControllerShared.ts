@@ -1,8 +1,12 @@
 import { Request, Response } from "express";
 import { ApartmentContext } from "../../../../Application/BoundedContexts/Shared/Strategy/apartment/ApartmentContext";
+import { GetApartmentByIdForGuestQueriesHandler } from "../../../../Application/BoundedContexts/Apartment/QueriesHandler/GetApartmentForGuestUserQueriesHandler";
 
 export class SharedApartmentManagementController {
-  constructor(private readonly userApartmentContext: ApartmentContext) {}
+  constructor(
+    private readonly userApartmentContext: ApartmentContext,
+    private readonly getApartmentDetailsForGuestQH: GetApartmentByIdForGuestQueriesHandler
+  ) {}
 
   public getAllApartments = async (req: Request, res: Response) => {
     try {
@@ -96,11 +100,33 @@ export class SharedApartmentManagementController {
       const { id } = req.params;
       const userId = req.user?.userId;
 
+      console.log("id ", id);
+      console.log("user id", userId);
+
+      if (!userId)
+        return res.status(400).json({ error: "no user id found !!" });
+
       const result =
         await this.userApartmentContext.executeGetApartmentDetailById(
           id,
           userId
         );
+      return res.status(200).json(result);
+    } catch (error: any) {
+      return res
+        .status(400)
+        .json({ error: error.message || "internal server error" });
+    }
+  };
+
+  public getApartmentDetailForGuest = async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+
+      const result = await this.getApartmentDetailsForGuestQH.handle({
+        id: id,
+      });
+
       return res.status(200).json(result);
     } catch (error: any) {
       return res
