@@ -7,60 +7,60 @@ import { IReadApartmentRepo } from "../../../Domain/BoundedContexts/Housing/Repo
 import { IApartmentDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentDto";
 import { IApartmentSimpleDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentSimpleDto";
 
-
-
 export class ReadApartmentRepositories implements IReadApartmentRepo {
-  
-public async FindAllApartmentThatBeenVerified(): Promise<IApartmentSimpleDTO[] | null> {
-  try {
-    const apartmentRepo = AppDataSource.getInstance().getRepository(ApartmentModel);
+  public async FindAllApartmentThatBeenVerified(): Promise<
+    IApartmentSimpleDTO[] | null
+  > {
+    try {
+      const apartmentRepo =
+        AppDataSource.getInstance().getRepository(ApartmentModel);
 
-    const apartments = await apartmentRepo.find({
-      where: {
-        isVerified: true,
-        isVisible: true, 
-      },
-      select: {
-        apartmentId: true,
-        isVisible: true,
-        title: true,
-        description: true,
-        address: true,
-        isJoin: true,
-        createAt: true,
-        updateAt: true,
-        price: true,
-        isVerified: true,
-        numberOfBed: true,
-        numberOfRoom: true,
-        landlordId: true,
-        landlord: {
-          userId: true,
-          user: {
-            Name: true,
+      const apartments = await apartmentRepo.find({
+        where: {
+          isVerified: true,
+          isVisible: true,
+        },
+        select: {
+          apartmentId: true,
+          isVisible: true,
+          title: true,
+          description: true,
+          address: true,
+          isJoin: true,
+          createAt: true,
+          updateAt: true,
+          price: true,
+          isVerified: true,
+          numberOfBed: true,
+          numberOfRoom: true,
+          landlordId: true,
+          landlord: {
+            userId: true,
+            user: {
+              Name: true,
+            },
           },
         },
-      },
-      relations: {
-        landlord: {
-          user: true,
+        relations: {
+          landlord: {
+            user: true,
+          },
+          photos: true,
+          location: true,
+          documents: true,
         },
-        photos: true,
-        location: true,
-        documents: true,
-      },
-    });
+      });
 
-    if (!apartments || apartments.length === 0) {
-      return [];
+      if (!apartments || apartments.length === 0) {
+        return [];
+      }
+
+      return apartments.map((apt) => ApartmentMapper.toResponsesSimple(apt));
+    } catch (error: any) {
+      console.error("Error finding verified apartments:", error);
+      throw new Error("Unable to retrieve verified apartments.");
     }
-
-    return apartments.map((apt) => ApartmentMapper.toResponsesSimple(apt));
-  } catch (error: any) {
-    console.error("Error finding verified apartments:", error);
-    throw new Error("Unable to retrieve verified apartments.");
   }
-}
 
   public async findAllApartmentBasedArray(
     ids: string[],
@@ -76,7 +76,6 @@ public async FindAllApartmentThatBeenVerified(): Promise<IApartmentSimpleDTO[] |
           where: {
             apartmentId: In(ids),
             landlord: { userId: userId },
-            
           },
           relations: {
             photos: true,

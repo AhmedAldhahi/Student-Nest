@@ -14,7 +14,7 @@ export class AdminProfileStrategy implements IProfileStrategy {
     private readonly commandHandler: UpdateAdminCommandHandler,
     private readonly cashService: ICashMemoryService
   ) {}
-  public async UserProfile(userId: string) : Promise<GetUserProfileResponse>{
+  public async UserProfile(userId: string): Promise<GetUserProfileResponse> {
     const cashKey = `profile : ${userId}`;
 
     const cashData = await this.cashService.get<any>(cashKey);
@@ -41,9 +41,6 @@ export class AdminProfileStrategy implements IProfileStrategy {
       const command = new UpdateAdminCommand(userId, dto);
 
       await this.commandHandler.handle(command);
-
-      const cashKey = `profile : ${userId}`;
-      await this.cashService.delete(cashKey);
 
       return {
         message: "Admin profile update successfully ",

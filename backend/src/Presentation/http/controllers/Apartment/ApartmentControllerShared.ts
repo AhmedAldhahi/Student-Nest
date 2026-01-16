@@ -7,6 +7,7 @@ export class SharedApartmentManagementController {
   public getAllApartments = async (req: Request, res: Response) => {
     try {
       const userId = req.user?.userId;
+      console.log("userId : ", userId);
 
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
@@ -79,8 +80,8 @@ export class SharedApartmentManagementController {
 
       const result =
         await this.userApartmentContext.executeApartmentDocumentById(
-          id,
-          userId
+          userId,
+          id
         );
       return res.status(200).json(result);
     } catch (error: any) {

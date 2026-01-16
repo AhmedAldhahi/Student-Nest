@@ -8,9 +8,9 @@ export const ApartmentSharedRouter = (
 ): Router => {
   const router = Router();
 
-  router.get("/", apartmentController.getAllApartments);
+  router.get("/", isAuth,apartmentController.getAllApartments);
 
-  router.get("/search", apartmentController.getApartmentsByQueries);
+  router.get("/search", isAuth, apartmentController.getApartmentsByQueries);
 
   router.get(
     "/:id/documents",
