@@ -151,7 +151,6 @@ export function UserApartmentContext(): ApartmentContext {
   const GetApartmentByIdForLandlord =
     new GetApartmentByIdForLandlordQueriesHandler(
       ReadUseRepo,
-      ReadLandlordRepo,
       ReadApartmentRepo
     );
 
