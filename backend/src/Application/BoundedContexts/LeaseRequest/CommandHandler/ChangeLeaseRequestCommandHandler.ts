@@ -4,6 +4,7 @@ import { IReadLeaseRequestRepositories } from "../../../../Domain/BoundedContext
 import { IUnitOfWork } from "../../../../Domain/Shared/Repositories/UnitOfWorkRepositories.repositories";
 import { ICommandHandlers } from "../../Shared/abstraction/ICommandHandler";
 import { ChangeLeaseRequestCommand } from "../Command/ChangeLeaseRequestCommand";
+import { leaseRequestResponse } from "../Dto/Respone/ChangeLeaseRequestResponse";
 
 export class updateLeaseRequestCommandHandler
   implements ICommandHandlers<ChangeLeaseRequestCommand>
@@ -15,7 +16,9 @@ export class updateLeaseRequestCommandHandler
     private readonly readLeaseRequestRepo: IReadLeaseRequestRepositories
   ) {}
 
-  public async handle(command: ChangeLeaseRequestCommand): Promise<any> {
+  public async handle(
+    command: ChangeLeaseRequestCommand
+  ): Promise<leaseRequestResponse> {
     try {
       const user = await this.readUserRepo.findById(command.userId);
       if (!user) throw new Error("no user been found !!");
@@ -33,7 +36,7 @@ export class updateLeaseRequestCommandHandler
           command.id
         );
 
-      if (!leaseRequest) throw new Error("no least request been found !!"); 
+      if (!leaseRequest) throw new Error("no least request been found !!");
 
       landlord.updateLeaseRequestStatus(leaseRequest, command.status);
 
@@ -41,6 +44,10 @@ export class updateLeaseRequestCommandHandler
 
       await this.uow.writeLeaseRequestRepo.updateLeaseRequest(leaseRequest);
       await this.uow.commitTransaction();
+
+      return {
+        message: "lease request been updated !!",
+      };
     } catch (error: any) {
       await this.uow.rollbackTransaction();
       console.log("fail to update leases request !!");
