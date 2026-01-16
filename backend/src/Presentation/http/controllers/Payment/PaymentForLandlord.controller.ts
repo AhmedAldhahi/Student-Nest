@@ -25,7 +25,7 @@ export class PaymentForLandlordController {
         userId: userId,
         leaseId: leaseId,
         paymentId: paymentId,
-        status: dto.status,
+        status: dto,
       });
 
       return res.status(200).json(result);
