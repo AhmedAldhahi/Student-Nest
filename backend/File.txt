@@ -1,0 +1,14 @@
+- specification pattern 
+- result pattern
+- Saga pattern 
+- Idempotency
+- Outbox Pattern:
+
+- rate limit with redis for cluster 
+- Circuit Breaker Pattern
+- Distributed Lock Pattern
+- Check-then-Act Pattern
+- Retries with Exponential Backoff
+- Graceful Degradation
+- Materialized Views Pattern
+- snapshot pattern

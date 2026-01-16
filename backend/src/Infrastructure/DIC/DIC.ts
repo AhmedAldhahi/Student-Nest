@@ -21,14 +21,13 @@ import {
 import {
   findUserByQuery,
   GetAllUsers,
-  getUserProfileData,
   LoginUserQH,
   RegisterLandlordCH,
   RegisterStudentCH,
   ResendOtpCH,
   ResendOtpForgetPasswordCH,
   UpdateForgetPasswordCH,
-  updateUserProfile,
+  UserProfileContext,
   VerifiedOtpCH,
   VerifiedOtpForgetPasswordCH,
 } from "./IdentityAndAccess";
@@ -82,7 +81,6 @@ export function buildDependencies() {
 
     QueriesHandler: {
       LoginUserQueriesHandler: LoginUserQH(),
-      GetUserProfileQH: getUserProfileData(),
       GetAllAuditLogQueriesHandler: GetAllAuditLogsQH(),
       SearchForAuditLogQueriesHandler: SearchForAuditLogQH(),
       GetAllApartmentBeenBookedQueriesHandler: GetAllBookedApartmentQH(),
@@ -102,7 +100,7 @@ export function buildDependencies() {
     },
 
     StrategyContext: {
-      ProfileContext: updateUserProfile(),
+      ProfileContext: UserProfileContext(),
       notificationUserContext: notificationContext(),
       ApartmentUserContext: UserApartmentContext(),
       UsersLeaseRequestContext: UserLeaseRequestContext(),

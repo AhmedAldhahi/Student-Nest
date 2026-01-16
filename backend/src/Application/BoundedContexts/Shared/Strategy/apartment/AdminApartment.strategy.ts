@@ -21,8 +21,8 @@ export class AdminApartmentStrategy implements IApartmentStrategy {
   ) {}
 
   public async GetApartmentDetailById(
-    userId: string,
-    id: string
+    id: string,
+    userId: string
   ): Promise<any> {
     try {
       const queries = new GetApartmentByIdQueries(id, userId);

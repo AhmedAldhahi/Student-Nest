@@ -1,3 +1,4 @@
+import { RemoveCashHandler } from "../../Application/BoundedContexts/Adminstration/EventHandler/RemoveCashHandler";
 import { CreateLandlordCommandHandler } from "../../Application/BoundedContexts/IdentityAndAccess/CommandHandler/CreateLandlordCommandHandler";
 import { CreateStudentCommandHandler } from "../../Application/BoundedContexts/IdentityAndAccess/CommandHandler/CreateStudentCommandHandler";
 import { ResendOtpCommandHandler } from "../../Application/BoundedContexts/IdentityAndAccess/CommandHandler/ResendOtpCommandHandler";
@@ -24,6 +25,7 @@ import { LandlordProfileStrategy } from "../../Application/BoundedContexts/Share
 import { ProfileContext } from "../../Application/BoundedContexts/Shared/Strategy/profile/profilecontext";
 import { StudentProfileStrategy } from "../../Application/BoundedContexts/Shared/Strategy/profile/StudentProfile.strategy";
 import { ResendOtpEvent } from "../../Domain/BoundedContexts/IdentityAndAccess/Events/ResendOtpEvent.event";
+import { UpdateUserEvent } from "../../Domain/BoundedContexts/IdentityAndAccess/Events/UpdateUserEvent.event";
 import { UserRegisteredEvent } from "../../Domain/BoundedContexts/IdentityAndAccess/Events/UserRegisterdEvent.event";
 import { DomainEventDispatcher } from "../../Domain/Shared/Event/DomainEventDispatcher";
 import { InMemoryEventBus } from "../EventBus/InMemmoryEventBus";
@@ -111,10 +113,7 @@ export function ResendOtpCH(): ResendOtpCommandHandler {
   );
 
   const eventDispatch = new DomainEventDispatcher();
-  eventDispatch.register(
-    ResendOtpEvent.EVENT_KEY,
-    verificationEmailHandler
-  );
+  eventDispatch.register(ResendOtpEvent.EVENT_KEY, verificationEmailHandler);
 
   const eventBus = new InMemoryEventBus(eventDispatch);
 
@@ -165,8 +164,7 @@ export function UpdateForgetPasswordCH(): UpdateForgetPasswordCommandHandler {
   );
 }
 
-export function getUserProfileData(): ProfileContext {
-  // shared
+export function UserProfileContext(): ProfileContext {
   const passwordService = new BcryptPasswordHasher();
   const fileService = new CloudinaryService();
   const cashService = new RedisCashService();
@@ -188,77 +186,10 @@ export function getUserProfileData(): ProfileContext {
     ReadUserRepo
   );
 
-  // command handler
-
-  const UserCommand = new UpdateAdminCommandHandler(
-    uow,
-    ReadUserRepo,
-    fileService,
-    passwordService
-  );
-  const LandlordCommand = new UpdateLandlordCommandHandler(
-    uow,
-    ReadLandlordRepo,
-    ReadUserRepo,
-    fileService,
-    passwordService
-  );
-
-  const StudentCommand = new UpdateStudentCommandHandler(
-    uow,
-    ReadUserRepo,
-    ReadStudentRepo,
-    fileService,
-    passwordService
-  );
-
-  // strategy
-  const userStrategy = new AdminProfileStrategy(
-    UserQueries,
-    UserCommand,
-    cashService
-  );
-  const landlordStrategy = new LandlordProfileStrategy(
-    landlordQueries,
-    LandlordCommand,
-    cashService
-  );
-  const studentStrategy = new StudentProfileStrategy(
-    studentQueries,
-    StudentCommand,
-    cashService
-  );
-
-  // profile context
-  return new ProfileContext(
-    ReadUserRepo,
-    userStrategy,
-    landlordStrategy,
-    studentStrategy
-  );
-}
-
-export function updateUserProfile(): ProfileContext {
-  const passwordService = new BcryptPasswordHasher();
-  const fileService = new CloudinaryService();
-  const cashService = new RedisCashService();
-  const uow = new UnitOfWork();
-
-  // Queries Repo
-  const ReadUserRepo = new ReadUserRepositories();
-  const ReadLandlordRepo = new ReadLandlordRepositories();
-  const ReadStudentRepo = new ReadStudentRepositories();
-
-  // queries handler
-  const UserQueries = new GetUserProfileQueriesHandlers(ReadUserRepo);
-  const landlordQueries = new GetLandlordProfileQueriesHandlers(
-    ReadLandlordRepo,
-    ReadUserRepo
-  );
-  const studentQueries = new GetStudentQueriesHandlers(
-    ReadStudentRepo,
-    ReadUserRepo
-  );
+  const cashHandler = new RemoveCashHandler(cashService);
+  const eventDispatch = new DomainEventDispatcher();
+  eventDispatch.register(UpdateUserEvent.EVENT_KEY, cashHandler);
+  const eventBus = new InMemoryEventBus(eventDispatch);
 
   // command handler
 
@@ -266,7 +197,8 @@ export function updateUserProfile(): ProfileContext {
     uow,
     ReadUserRepo,
     fileService,
-    passwordService
+    passwordService,
+    eventBus
   );
   const LandlordCommand = new UpdateLandlordCommandHandler(
     uow,

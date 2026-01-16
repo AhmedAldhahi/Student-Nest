@@ -1,7 +1,9 @@
+import { UpdateUserEvent } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Events/UpdateUserEvent.event";
 import { IReadUserRepositories } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadUserRepositories.repositories";
 import { UserDateOfBirth } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/UserDateOfBirth.vo";
 import { UserName } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/UserName.vo";
 import { userPhoneNumber } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/UserPhoneNumber.vo";
+import { IEventBus } from "../../../../Domain/Shared/Event/IEventBus";
 import { IUnitOfWork } from "../../../../Domain/Shared/Repositories/UnitOfWorkRepositories.repositories";
 import { IFileStorageService } from "../../../Interfaces/IFileStorage.interface";
 import { IPasswordService } from "../../../Interfaces/IPassword.interface";
@@ -15,7 +17,8 @@ export class UpdateAdminCommandHandler
     private readonly uow: IUnitOfWork,
     private readonly readUserRepo: IReadUserRepositories,
     private readonly fileService: IFileStorageService,
-    private readonly passwordService: IPasswordService
+    private readonly passwordService: IPasswordService,
+    private readonly eventBus: IEventBus
   ) {}
 
   public async handle(command: UpdateAdminCommand): Promise<void> {
@@ -66,8 +69,9 @@ export class UpdateAdminCommandHandler
       await this.uow.startTransaction();
       await this.uow.writeUserRepo.updateUser(user);
       await this.uow.commitTransaction();
-      
 
+      const event = new UpdateUserEvent(user.getUserId());
+      await this.eventBus.publish(event);
 
       // Return success message
     } catch (error: any) {

@@ -405,11 +405,11 @@ export class ReadLeaseRequestRepositories
       whereCondition = [
         { leaseRequestId: searchPattern },
         // Search in Landlord Name
-        { landlord: { user: { Name: Like(`%${query}%`) } } },
+        { landlord: { user: { Name: Like(`%${searchPattern}%`) } } },
         // Search in Student Name
-        { student: { user: { Name: Like(`%${query}%`) } } },
+        { student: { user: { Name: Like(`%${searchPattern}%`) } } },
         // Search in Apartment Title
-        { apartment: { title: Like(`%${query}%`) } },
+        { apartment: { title: Like(`%${searchPattern}%`) } },
       ];
 
       const leaseRequests = await AppDataSource.getInstance()

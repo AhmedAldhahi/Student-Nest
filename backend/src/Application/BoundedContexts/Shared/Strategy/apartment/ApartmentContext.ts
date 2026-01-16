@@ -1,6 +1,7 @@
 import { UserRole } from "../../../../../Domain/BoundedContexts/IdentityAndAccess/Enum/UserRole.enum";
 import { IReadUserRepositories } from "../../../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadUserRepositories.repositories";
 import { AdminApartmentStrategy } from "./AdminApartment.strategy";
+import { GuestApartmentStrategy } from "./GuestApartment.strategy";
 import { IApartmentStrategy } from "./IApartment.strategy";
 import { LandlordApartmentStrategy } from "./LandlordApartment.strategy";
 
@@ -8,7 +9,8 @@ export class ApartmentContext {
   constructor(
     private readonly readUserRepo: IReadUserRepositories,
     private readonly adminStrategy: AdminApartmentStrategy,
-    private readonly landlordStrategy: LandlordApartmentStrategy
+    private readonly landlordStrategy: LandlordApartmentStrategy,
+    private readonly guestStrategy:GuestApartmentStrategy
   ) {}
 
   public async DeleteApartment(userId: string, id: string) {
@@ -54,6 +56,8 @@ export class ApartmentContext {
   public async executeGetAllApartments(userId: string) {
     try {
       let strategy: IApartmentStrategy;
+      console.log("context user id ", userId);
+
       const role = await this.GetUserRole(userId);
       switch (role) {
         case UserRole.admin:
