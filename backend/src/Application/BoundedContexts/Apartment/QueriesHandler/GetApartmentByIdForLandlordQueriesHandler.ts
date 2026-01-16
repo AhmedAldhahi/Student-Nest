@@ -9,7 +9,6 @@ export class GetApartmentByIdForLandlordQueriesHandler
 {
   constructor(
     private readonly readUserRepo: IReadUserRepositories,
-    private readonly readLandlordRepo: IReadLandlordRepositories,
     private readonly readApartmentRepo: IReadApartmentRepo
   ) {}
 
@@ -17,11 +16,6 @@ export class GetApartmentByIdForLandlordQueriesHandler
     try {
       const user = await this.readUserRepo.findById(command.userId);
       if (!user) throw new Error("no user been found !!");
-
-      const landlord = await this.readLandlordRepo.findLandlordById(
-        command.userId
-      );
-      if (!landlord) throw new Error("no landlord been found !!");
 
       user.ensureAccountIsActive();
 
