@@ -15,9 +15,11 @@ import { GetApartmentByIdForLandlordQueriesHandler } from "../../Application/Bou
 import { GetApartmentByIdQueriesHandler } from "../../Application/BoundedContexts/Apartment/QueriesHandler/GetApartmentByIdQueriesHandler";
 import { GetApartmentDocumentByIdQueriesHandler } from "../../Application/BoundedContexts/Apartment/QueriesHandler/GetApartmentDocumentById.QueriesHandler";
 import { GetApartmentDocumentByIdForLandlordQueriersHandler } from "../../Application/BoundedContexts/Apartment/QueriesHandler/GetApartmentDocumentByIdForLandlordQueriesHandler";
+import { GetApartmentByIdForGuestQueriesHandler } from "../../Application/BoundedContexts/Apartment/QueriesHandler/GetApartmentForGuestUserQueriesHandler";
 import { GetRandomlyThreeApartmentThatIsVisibleAndNotFullQueriesHandler } from "../../Application/BoundedContexts/Apartment/QueriesHandler/GetRandomlyThreeApartmentsVisableAndNotFullQueriesHandler";
 import { AdminApartmentStrategy } from "../../Application/BoundedContexts/Shared/Strategy/apartment/AdminApartment.strategy";
 import { ApartmentContext } from "../../Application/BoundedContexts/Shared/Strategy/apartment/ApartmentContext";
+import { GuestApartmentStrategy } from "../../Application/BoundedContexts/Shared/Strategy/apartment/GuestApartment.strategy";
 import { LandlordApartmentStrategy } from "../../Application/BoundedContexts/Shared/Strategy/apartment/LandlordApartment.strategy";
 import { ReadApartmentDocumentRepositories } from "../Repositories/Read/ReadApartmentDocumentRepositories";
 import { ReadApartmentRepositories } from "../Repositories/Read/ReadApartmentRepositories";
@@ -160,6 +162,10 @@ export function UserApartmentContext(): ApartmentContext {
       ReadApartmentDocumentRepo
     );
 
+  const getGustApartmentDetailsQH = new GetApartmentByIdForGuestQueriesHandler(
+    ReadApartmentRepo
+  );
+
   const adminStrategy = new AdminApartmentStrategy(
     DeleteApartmentCH,
     queriesHandler,
@@ -176,7 +182,14 @@ export function UserApartmentContext(): ApartmentContext {
     GetApartmentDocumentByIdForLandlord
   );
 
-  return new ApartmentContext(ReadUseRepo, adminStrategy, landlordStrategy);
+  const guestStrategy = new GuestApartmentStrategy(getGustApartmentDetailsQH);
+
+  return new ApartmentContext(
+    ReadUseRepo,
+    adminStrategy,
+    landlordStrategy,
+    guestStrategy
+  );
 }
 
 export function GetAllBookedApartmentQH(): GetAllApartmentThatBeenBookedQueriesHandler {

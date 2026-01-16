@@ -96,9 +96,6 @@ export class SharedApartmentManagementController {
       const { id } = req.params;
       const userId = req.user?.userId;
 
-      if (!userId)
-        return res.status(400).json({ error: "no user id found !!" });
-
       const result =
         await this.userApartmentContext.executeGetApartmentDetailById(
           id,

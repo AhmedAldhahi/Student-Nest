@@ -8,7 +8,7 @@ export class GetApartmentByIdForGuestQueriesHandler
 
   public async handle(command: GetApartmentDetailForGuestQueries): Promise<any> {
     try {
-      return await this.readApartmentRepo.findApartmentDetailsById(command.id);
+      return await this.readApartmentRepo.findApartmentDetailsForGuestById(command.id);
     } catch (error: any) {
       console.error("fail to get apartment details !!");
       throw error;

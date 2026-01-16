@@ -22,3 +22,5 @@ export interface IApartmentDTO {
   apartmentDocument: ApartmentDocumentEntity | null;
   apartmentPhoto: ApartmentPhotoDocumentEntity[];
 }
+
+

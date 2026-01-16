@@ -34,7 +34,7 @@ export class GuestApartmentStrategy implements IApartmentStrategy {
     userId?: string
   ): Promise<any> {
     try {
-      const Queries = new GetApartmentDetailForGuestQueries(id, userId);
+      const Queries = new GetApartmentDetailForGuestQueries(id, "");
       return await this.getApartmentDetailForGuestQH.handle(Queries);
     } catch (error: any) {
       console.error("fail to get apartment details !!", error);

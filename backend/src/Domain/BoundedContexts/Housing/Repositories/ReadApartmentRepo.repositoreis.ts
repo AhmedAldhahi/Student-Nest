@@ -1,5 +1,6 @@
 import { ApartmentAggregateRoot } from "../AgregateRoot/apartmentEntity.entity";
 import { IApartmentDTO } from "../Representations/IApartmentDto";
+import { IApartmentForGuestDTO } from "../Representations/IApartmentForGuestDTO";
 import { IApartmentSimpleDTO } from "../Representations/IApartmentSimpleDto";
 export interface IReadApartmentRepo {
   findAllApartment(userId?: string): Promise<IApartmentSimpleDTO[] | null>;
@@ -46,4 +47,6 @@ export interface IReadApartmentRepo {
     queries: string,
     userId: string
   ): Promise<ApartmentAggregateRoot[] | null>;
+
+  findApartmentDetailsForGuestById(id: string): Promise<IApartmentForGuestDTO | null>;
 }

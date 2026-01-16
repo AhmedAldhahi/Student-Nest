@@ -6,6 +6,7 @@ import { ApartmentAggregateRoot } from "../../../Domain/BoundedContexts/Housing/
 import { IReadApartmentRepo } from "../../../Domain/BoundedContexts/Housing/Repositories/ReadApartmentRepo.repositoreis";
 import { IApartmentDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentDto";
 import { IApartmentSimpleDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentSimpleDto";
+import { IApartmentForGuestDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentForGuestDTO";
 
 export class ReadApartmentRepositories implements IReadApartmentRepo {
   public async FindAllApartmentThatBeenVerified(): Promise<
@@ -461,5 +462,31 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
       console.error("Error finding landlord by ID:", error);
       throw new Error("Error retrieving landlord data");
     }
+  }
+
+  public async findApartmentDetailsForGuestById(
+    id: string
+  ): Promise<IApartmentForGuestDTO | null> {
+    // 1. Fetch only public data
+    const apartment = await AppDataSource.getInstance()
+      .getRepository(ApartmentModel)
+      .findOne({
+        where: {
+          apartmentId: id,
+          isVisible: true,
+          isVerified: true,
+        },
+        relations: {
+          landlord: { user: true },
+          location: true,
+          photos: true,
+        },
+      });
+
+    if (!apartment) return null;
+
+    // 2. Map to DTO
+    // Your mapper should handle "undefined" documents gracefully (e.g., return empty array)
+    return ApartmentMapper.toResponsesDetailForGuest(apartment);
   }
 }

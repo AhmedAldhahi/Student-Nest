@@ -1,6 +1,6 @@
-
 import { ApartmentAggregateRoot } from "../../../Domain/BoundedContexts/Housing/AgregateRoot/apartmentEntity.entity";
 import { IApartmentDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentDto";
+import { IApartmentForGuestDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentForGuestDTO";
 import { IApartmentSimpleDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentSimpleDto";
 import { ApartmentPrice } from "../../../Domain/BoundedContexts/Housing/Value-Object/ApartmentPrice.vo";
 import { NumberOfBed } from "../../../Domain/BoundedContexts/Housing/Value-Object/NumberOfBed.vo";
@@ -123,8 +123,6 @@ export class ApartmentMapper {
       apartmentDocuments: model.documents
         ? ApartmentDocumentMapper.toEntity(model.documents)
         : null,
-
-     
     };
   }
 
@@ -149,6 +147,32 @@ export class ApartmentMapper {
       apartmentDocument: model.documents
         ? ApartmentDocumentMapper.toEntity(model.documents)
         : null,
+
+      apartmentPhoto: model.photos
+        ? model.photos.map((file) => apartmentPhotoMapper.toEntity(file))
+        : [],
+    };
+  }
+
+  public static toResponsesDetailForGuest(
+    model: ApartmentModel
+  ): IApartmentForGuestDTO {
+    return {
+      apartmentId: model.apartmentId,
+      isVisible: model.isVisible,
+      title: model.title,
+      description: model.description,
+      address: model.address,
+      isVerified: model.isVerified,
+      isJoin: model.isJoin,
+      numberOfBed: model.numberOfBed,
+      numberOfRoom: model.numberOfRoom,
+      price: model.price,
+      createAt: model.createAt,
+      updateAt: model.updateAt,
+      googleMapLocation: GoogleMapMapper.toEntity(model.location),
+      // Optional chaining
+      landlordName: model.landlord?.user?.Name,
 
       apartmentPhoto: model.photos
         ? model.photos.map((file) => apartmentPhotoMapper.toEntity(file))
