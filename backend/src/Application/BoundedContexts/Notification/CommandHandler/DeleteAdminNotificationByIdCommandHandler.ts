@@ -2,6 +2,7 @@ import { IReadNotificationRepositories } from "../../../../Domain/BoundedContext
 import { IUnitOfWork } from "../../../../Domain/Shared/Repositories/UnitOfWorkRepositories.repositories";
 import { ICommandHandlers } from "../../Shared/abstraction/ICommandHandler";
 import { deleteAdminNotificationByIdCommand } from "../Command/DeleteAdminNotifcationByIdCommand";
+import { DeleteNotificationResponse } from "../Dto/Respone/deleteNotifcationResponse";
 
 export class deleteAdminNotificationByIdCommandHandler
   implements ICommandHandlers<deleteAdminNotificationByIdCommand>
@@ -13,7 +14,7 @@ export class deleteAdminNotificationByIdCommandHandler
 
   public async handle(
     command: deleteAdminNotificationByIdCommand
-  ): Promise<any> {
+  ): Promise<DeleteNotificationResponse> {
     try {
       const notification = await this.ReadNotificationRepo.GetNotificationById(
         command.id
@@ -29,6 +30,10 @@ export class deleteAdminNotificationByIdCommandHandler
       );
 
       await this.uow.commitTransaction();
+
+      return {
+        message: `"notification id : ${command.id}" been deleted !!`,
+      };
     } catch (error: any) {
       await this.uow.rollbackTransaction();
       console.error("fail to delete notification !!");

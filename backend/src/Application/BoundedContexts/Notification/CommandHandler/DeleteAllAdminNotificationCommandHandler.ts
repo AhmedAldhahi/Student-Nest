@@ -2,6 +2,7 @@ import { IReadUserRepositories } from "../../../../Domain/BoundedContexts/Identi
 import { IUnitOfWork } from "../../../../Domain/Shared/Repositories/UnitOfWorkRepositories.repositories";
 import { ICommandHandlers } from "../../Shared/abstraction/ICommandHandler";
 import { DeleteAllNotificationCommand } from "../Command/DeleteAllNotificationCommand";
+import { DeleteNotificationResponse } from "../Dto/Respone/deleteNotifcationResponse";
 
 export class DeleteAllAdminNotificationCommandHandler
   implements ICommandHandlers<DeleteAllNotificationCommand>
@@ -11,7 +12,9 @@ export class DeleteAllAdminNotificationCommandHandler
     private readonly readUserRepo: IReadUserRepositories
   ) {}
 
-  public async handle(command: DeleteAllNotificationCommand): Promise<any> {
+  public async handle(
+    command: DeleteAllNotificationCommand
+  ): Promise<DeleteNotificationResponse> {
     try {
       const user = await this.readUserRepo.findById(command.userId);
 
@@ -24,6 +27,10 @@ export class DeleteAllAdminNotificationCommandHandler
       );
 
       await this.uow.commitTransaction();
+
+      return {
+        message: "all notifications been deleted !!",
+      };
     } catch (error: any) {
       await this.uow.rollbackTransaction();
       console.error("fail to delete admins notifications !!");

@@ -2,6 +2,8 @@ import { IReadNotificationRepositories } from "../../../../Domain/BoundedContext
 import { IUnitOfWork } from "../../../../Domain/Shared/Repositories/UnitOfWorkRepositories.repositories";
 import { ICommandHandlers } from "../../Shared/abstraction/ICommandHandler";
 import { UpdateNotificationStatusCommand } from "../Command/UpdateNotifcationStatusCommand";
+import { DeleteNotificationResponse } from "../Dto/Respone/deleteNotifcationResponse";
+import { UpdateNotificationResponse } from "../Dto/Respone/updateNotificationResponse";
 
 export class UpdateNotificationStatusCommandHandler
   implements ICommandHandlers<UpdateNotificationStatusCommand>
@@ -11,7 +13,9 @@ export class UpdateNotificationStatusCommandHandler
     private readonly ReadNotificationRepo: IReadNotificationRepositories
   ) {}
 
-  public async handle(command: UpdateNotificationStatusCommand): Promise<any> {
+  public async handle(
+    command: UpdateNotificationStatusCommand
+  ): Promise<UpdateNotificationResponse> {
     try {
       const notificationRepo =
         await this.ReadNotificationRepo.GetNotificationById(command.id);
@@ -31,6 +35,10 @@ export class UpdateNotificationStatusCommandHandler
       await this.uow.startTransaction();
       await this.uow.writeNotificationRepo.updateNotification(notificationRepo);
       await this.uow.commitTransaction();
+
+      return {
+        message: `the notification id : ${command.id} been updated !!`,
+      };
     } catch (error: any) {
       await this.uow.rollbackTransaction();
       console.error("fail to update status !!");
