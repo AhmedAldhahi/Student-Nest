@@ -1,5 +1,5 @@
 import { LeaseAggregateRoot } from "../../AgregateRoot/leaseEntity.entity";
-import { ILeaseEntityDTO } from "../../types/LeaseEntityData";
+import { ILeaseEntityDTO } from "../../Representations/ILeaseEntityDTO";
 
 export interface IReadLeaseRepositories {
   findByQuery(query: string): Promise<ILeaseEntityDTO[] | null>;

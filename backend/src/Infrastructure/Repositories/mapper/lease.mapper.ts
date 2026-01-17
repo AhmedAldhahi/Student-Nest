@@ -5,7 +5,7 @@ import { LeaseEndDate } from "../../../Domain/BoundedContexts/Leases/Value-Objec
 import { LeaseStartDate } from "../../../Domain/BoundedContexts/Leases/Value-Object/LeaseStartDate.vo";
 import { LeaseTerm } from "../../../Domain/BoundedContexts/Leases/Value-Object/LeaseTerm.vo";
 import { PaymentMapper } from "./payment.mapper";
-import { ILeaseEntityDTO } from "../../../Domain/BoundedContexts/Leases/types/LeaseEntityData";
+import { ILeaseEntityDTO } from "../../../Domain/BoundedContexts/Leases/Representations/ILeaseEntityDTO";
 
 export class LeaseMapper {
   public static toEntity(model: LeaseModel): LeaseAggregateRoot {

@@ -1,22 +1,5 @@
 import { LeaseRequestEntity } from "../../Entities/leaseRequestEntity.entity";
-
-export interface ILeaseRequestDTO {
-  requestLeaseId: string;
-  requestMessage: string;
-  startDate: string;
-  rentTerm: string;
-  requestStatus: string;
-  createAt: Date;
-  studentName: string;
-  landlordName: string;
-  Major: string;
-  apartmentPrice: string;
-  apartmentTitle: string;
-
-  // price  ? do u want me to add to db
-  //TODO: need to add end date
-}
-
+import { ILeaseRequestDTO } from "../../Representations/ILeaseRequestDTO";
 
 export interface IReadLeaseRequestRepositories {
   findAllLeaseRequest(): Promise<ILeaseRequestDTO[] | null>;
@@ -46,4 +29,17 @@ export interface IReadLeaseRequestRepositories {
     apartmentId: string,
     queries: string
   ): Promise<ILeaseRequestDTO[] | null>;
+
+
+  findAllLeaseRequestForStudent(
+    userId: string
+  ): Promise<ILeaseRequestDTO[] | null>;
+
+  SearchForLeaseRequestForStudent(
+    userId: string,
+    queries: string
+  ): Promise<ILeaseRequestDTO[] | null>
 }
+
+
+
