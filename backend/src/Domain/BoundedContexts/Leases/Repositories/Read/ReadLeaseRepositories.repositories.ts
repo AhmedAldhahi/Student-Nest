@@ -1,22 +1,5 @@
 import { LeaseAggregateRoot } from "../../AgregateRoot/leaseEntity.entity";
-
-export interface ILeaseEntityDTO {
-  leaseId: string;
-  LeaseActivationStatus: boolean;
-  isLandlordSigned: boolean;
-  isStudentSigned: boolean;
-  houseRule: string;
-  leaseStartDate: string;
-  leaseEndDate: string;
-  monthlyRent: string;
-  leaseTerm: string;
-  includeUtilities?: string;
-  createAt: Date;
-  landlordName: string;
-  studentName: string;
-  apartmentTitle: string;
-  apartmentId: string;
-}
+import { ILeaseEntityDTO } from "../../Representations/ILeaseEntityDTO";
 
 export interface IReadLeaseRepositories {
   findByQuery(query: string): Promise<ILeaseEntityDTO[] | null>;
