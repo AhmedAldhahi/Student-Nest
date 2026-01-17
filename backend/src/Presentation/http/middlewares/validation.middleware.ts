@@ -3,7 +3,6 @@ import { ZodType } from "zod";
 
 export const validation = (Schema: ZodType<any>) => {
   return (req: Request, res: Response, next: NextFunction): void => {
-    // Standard JSON validation (No wrapping)
     const result = Schema.safeParse(req.body);
 
     if (!result.success) {

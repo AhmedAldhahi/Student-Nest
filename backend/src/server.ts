@@ -122,7 +122,10 @@ export class Server {
       )
     );
 
-    this.app.use("/api/v1/student", StudentIndexRouter(Apartment.Student));
+    this.app.use(
+      "/api/v1/student",
+      StudentIndexRouter(Apartment.Student, LeaseRequest.Student)
+    );
 
     this.app.use(
       "/api/v1/",

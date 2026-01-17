@@ -6,6 +6,8 @@ import { GovernmentID } from "../Value-Object/UserGovId.vo";
 import { VerificationDocument } from "../Value-Object/VerficationDocument.vo";
 import { StudentDataType } from "../types/StudentDataType.type";
 import { AggregateRoot } from "../../../Shared/AgregateRoot/AggregateRoot";
+import { LeaseRequestEntity } from "../../Leases/Entities/leaseRequestEntity.entity";
+import { ApartmentAggregateRoot } from "../../Housing/AgregateRoot/apartmentEntity.entity";
 
 export class StudentAggregateRoot extends AggregateRoot<string> {
   private studentCardID: StudentCard;
@@ -27,6 +29,22 @@ export class StudentAggregateRoot extends AggregateRoot<string> {
     this.major = data.major;
     this.studentValidateDocument = data.validateStudentDocument;
     //private walletAddress: string = "";
+  }
+
+  /**
+   * ==================================================================================
+   *                              Update Methods sections
+   * ==================================================================================
+   */
+
+  public createLeaseRequestForApartment(leaseRequest: LeaseRequestEntity) {
+    if (!leaseRequest.getRequestMessage()) {
+      throw new Error("lease request message is require !!");
+    }
+
+    if (!leaseRequest.getApartment()) {
+      throw new Error("can not send lease request for unknown apartments !!");
+    }
   }
 
   //todo: need fix logic before

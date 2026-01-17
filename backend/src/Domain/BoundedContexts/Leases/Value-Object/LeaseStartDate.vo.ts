@@ -17,10 +17,32 @@ export class LeaseStartDate {
     // 1. Create instance (Runs structural checks)
     const instance = new LeaseStartDate(value);
 
+    instance.validateStructure();
+
     // 2. Run Business Rules (Only for NEW data)
     instance.validateBusinessRules();
 
     return instance;
+  }
+
+  private validateStructure(): void {
+    const val = this.value!;
+
+    // 1. Check Regex Format
+    if (!this.isValidDateFormat(val)) {
+        throw new Error("Invalid date format. Expected DD-MM-YYYY");
+    }
+
+    // 2. Extract parts for validation
+    const dayStr = val.substring(0, 2);
+    const monthStr = val.substring(3, 5);
+    const yearStr = val.substring(6, 10);
+
+    // 3. Check Month Validity
+    this.validateMonth(monthStr);
+
+    // 4. Check Day Validity (including Leap Years)
+    this.validateDays(dayStr, monthStr, yearStr);
   }
 
   // --- GETTERS ---
