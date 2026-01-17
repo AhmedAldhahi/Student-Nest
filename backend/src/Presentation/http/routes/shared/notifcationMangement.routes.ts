@@ -4,7 +4,7 @@ import { validation } from "../../middlewares/validation.middleware";
 import {
   changeNotificationStatusSchema,
   DeleteBatchSchema,
-} from "../../validation/notificationMangement.validation.zod";
+} from "../../validation/shared/notificationMangement.validation.zod";
 import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 
 export const notificationRouter = (

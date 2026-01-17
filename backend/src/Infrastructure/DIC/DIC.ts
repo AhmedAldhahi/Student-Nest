@@ -39,11 +39,18 @@ import {
 } from "./Lease";
 import {
   ChangeLeaseRequestCH,
+  CreateLeaseRequestCH,
   GetAllLeaseRequestForLandlordForSingleApartmentQH,
   SearchAllLeaseRequestForLandlordForSingleApartmentQH,
   UserLeaseRequestContext,
 } from "./LeaseRequest";
-import { ChangeStatusOfPaymentCH, GetAllPaidPaymentCH, GetAllPaymentScheduleForSingleLeaseQH, GetReceiptForPaymentQH, UserPaymentContext } from "./Payment";
+import {
+  ChangeStatusOfPaymentCH,
+  GetAllPaidPaymentCH,
+  GetAllPaymentScheduleForSingleLeaseQH,
+  GetReceiptForPaymentQH,
+  UserPaymentContext,
+} from "./Payment";
 import {
   DeleteSpecificNotifications,
   notificationContext,
@@ -78,6 +85,7 @@ export function buildDependencies() {
       DeleteApartmentByIdForAdminCommandHandler:
         DeleteApartmentByIdForAdminCH(),
       DeleteUserForAdminCommandHandler: DeleteUserForAdminCH(),
+      CreateLeaseRequestCommandHandler: CreateLeaseRequestCH(),
     },
 
     QueriesHandler: {
@@ -94,11 +102,14 @@ export function buildDependencies() {
       GetLeaseForLandlordForSingleApartmentQueriesHandler:
         GetForAllLeaseForSingleApartmentQH(),
       GetAllPaidPaymentQueriesHandler: GetAllPaidPaymentCH(),
-      GetReceiptorPaymentQueriesHandler:GetReceiptForPaymentQH(),
-      GetAllPaymentScheduleForSingleLeaseQueriesHandler:GetAllPaymentScheduleForSingleLeaseQH(),
-      GetApartmentRandomlyThatNotFullAndVerifiedQueriesHandler:GetRandomlyThreeApartmentThatIsVisibleAndNotFullQH(),
-      GetApartmentNotFullAndVerifiedQueriesHandler:GetAllVisibleAndNotFullApartmentQH(),
-      GetApartmentDetailsForGuestQueriesHandler:GetApartmentDetailForGuestQH()
+      GetReceiptorPaymentQueriesHandler: GetReceiptForPaymentQH(),
+      GetAllPaymentScheduleForSingleLeaseQueriesHandler:
+        GetAllPaymentScheduleForSingleLeaseQH(),
+      GetApartmentRandomlyThatNotFullAndVerifiedQueriesHandler:
+        GetRandomlyThreeApartmentThatIsVisibleAndNotFullQH(),
+      GetApartmentNotFullAndVerifiedQueriesHandler:
+        GetAllVisibleAndNotFullApartmentQH(),
+      GetApartmentDetailsForGuestQueriesHandler: GetApartmentDetailForGuestQH(),
     },
 
     StrategyContext: {
@@ -107,7 +118,7 @@ export function buildDependencies() {
       ApartmentUserContext: UserApartmentContext(),
       UsersLeaseRequestContext: UserLeaseRequestContext(),
       UserLeasesContext: UserLeaseContext(),
-      UserPaymentsContext: UserPaymentContext()
+      UserPaymentsContext: UserPaymentContext(),
     },
     SimpleFactory: {
       GetAllUserFactory: GetAllUsers(),

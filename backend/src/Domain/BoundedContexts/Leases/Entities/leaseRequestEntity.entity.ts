@@ -1,21 +1,10 @@
+import { AggregateRoot } from "../../../Shared/AgregateRoot/AggregateRoot";
 import { LeaseRequestStatus } from "../Enum/LeaseRequestStatus.enum";
+import { LeaseRequestDate } from "../types/LeaseRequestData";
 import { LeaseStartDate } from "../Value-Object/LeaseStartDate.vo";
 import { RentTerm } from "../Value-Object/RentTerm.vo";
 
-export interface ILeaseRequestDate {
-  requestLeaseId: string;
-  requestMessage: string;
-  startDate: LeaseStartDate;
-  rentTerm: RentTerm;
-  requestStatus: LeaseRequestStatus;
-  createAt: Date;
-
-  studentId: string;
-  landlordId: string;
-  apartmentId: string;
-}
-
-export class LeaseRequestEntity {
+export class LeaseRequestEntity extends AggregateRoot<string> {
   private requestLeaseId: string;
   private requestMessage: string;
   private startDate: LeaseStartDate;
@@ -27,7 +16,8 @@ export class LeaseRequestEntity {
   private landlordId: string;
   private apartmentId: string;
 
-  constructor(data: ILeaseRequestDate) {
+  constructor(data: LeaseRequestDate) {
+    super(data.requestLeaseId);
     this.requestLeaseId = data.requestLeaseId;
     this.requestMessage = data.requestMessage;
     this.startDate = data.startDate;

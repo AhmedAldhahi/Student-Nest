@@ -10,17 +10,8 @@ export const DeleteBatchSchema = z
   })
   .strict();
 
-// export const changeApartmentStatusSchema = z
-//   .object({
-//     isRead: z.boolean(),
-//   })
-//   .strict();
-
 export const changeNotificationStatusSchema = z
   .object({
     isRead: z.boolean(),
   })
   .strict();
-
-
-  

@@ -4,7 +4,7 @@ import {
   adminProfileSchema,
   studentProfileSchema,
   landlordProfileSchema,
-} from "../../validation/profileValidation.zod";
+} from "../../validation/shared/profileValidation.zod";
 import { AppDataSource } from "../../../../Infrastructure/Database/TypeOrm/data-source";
 import { UserModel } from "../../../../Infrastructure/Database/TypeOrm/entity/User.entity";
 

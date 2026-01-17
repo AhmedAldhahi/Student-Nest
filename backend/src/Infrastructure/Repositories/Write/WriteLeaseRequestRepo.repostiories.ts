@@ -11,6 +11,13 @@ export class WriteLeastRequestRepositories implements IWriteLeaseRequestRepo {
     this.manager = manager;
   }
 
+  public async createLeaseRequest(
+    leaseRequest: LeaseRequestEntity
+  ): Promise<void> {
+    const model = LeaseRequestMapper.toModel(leaseRequest);
+    await this.manager.save(LeaseRequestModel, model);
+  }
+
   public async updateLeaseRequest(
     LeaseRequest: LeaseRequestEntity
   ): Promise<void> {

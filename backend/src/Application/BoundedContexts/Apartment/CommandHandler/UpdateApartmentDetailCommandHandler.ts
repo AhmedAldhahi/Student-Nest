@@ -29,16 +29,13 @@ export class UpdateApartmentDetailForLandlordCommandHandler
     let oldPhotosUrlsToDelete: string[] = [];
 
     try {
-      // ---------------------------------------------------------
-      // 1. Validation & Retrieval
-      // ---------------------------------------------------------
       const user = await this.readUserRepo.findById(command.userId);
       if (!user) throw new Error("User not found !!");
 
       const landlord = await this.readLandlordRepo.findLandlordById(
         command.userId
       );
-
+                                                                                              
       user.ensureAccountIsActive();
 
       if (!landlord) throw new Error("Landlord account not found !!");
@@ -51,9 +48,6 @@ export class UpdateApartmentDetailForLandlordCommandHandler
 
       if (!apartment) throw new Error("Apartment not found !!");
 
-      // ---------------------------------------------------------
-      // 2. Update Scalar Fields
-      // ---------------------------------------------------------
       // TODO: need to fix price when it have student must throw error
 
       if (command.address) apartment.updateAddress(command.address);

@@ -1,4 +1,5 @@
 import { updateLeaseRequestCommandHandler } from "../../Application/BoundedContexts/LeaseRequest/CommandHandler/ChangeLeaseRequestCommandHandler";
+import { CreateLeaseRequestCommandHandler } from "../../Application/BoundedContexts/LeaseRequest/CommandHandler/CreateLeaseRequestCommandHandler";
 import { GetAllLeasesRequestForLandlordQueriesHandler } from "../../Application/BoundedContexts/LeaseRequest/QueriesHandler/GetAllLeaseRequesForLandlordQueriesHandler";
 import { GetAllLeastRequestForSingleApartmentQueriesHandler } from "../../Application/BoundedContexts/LeaseRequest/QueriesHandler/GetAllLeaseRequestForLandlordForSingleApartmentQueriesHandler";
 import { GetAllLeaseRequestQueriesHandler } from "../../Application/BoundedContexts/LeaseRequest/QueriesHandler/GetAllLeaseRequestQueriesHandler";
@@ -9,8 +10,12 @@ import { AdminLeaseRequestStrategy } from "../../Application/BoundedContexts/Sha
 import { LandlordLeaseRequestStrategy } from "../../Application/BoundedContexts/Shared/Strategy/leaseRequest/LandlordLeaseRequest.strategy";
 import { LeaseRequestContext } from "../../Application/BoundedContexts/Shared/Strategy/leaseRequest/LeaseRequestContext";
 import { StudentLeaseRequestStrategy } from "../../Application/BoundedContexts/Shared/Strategy/leaseRequest/StudentLeaseRequest.strategy";
+import { CreateLeaseRequestEvent } from "../../Domain/BoundedContexts/Leases/Event/LeaseRequestEvent.event";
+import { DomainEventDispatcher } from "../../Domain/Shared/Event/DomainEventDispatcher";
+import { ReadApartmentRepositories } from "../Repositories/Read/ReadApartmentRepositories";
 import { ReadLandlordRepositories } from "../Repositories/Read/ReadLandlordRepositories";
 import { ReadLeaseRequestRepositories } from "../Repositories/Read/ReadLeaseRequest.Repositories";
+import { ReadStudentRepositories } from "../Repositories/Read/ReadStudentRepositories";
 import { ReadUserRepositories } from "../Repositories/Read/ReadUserRepositories";
 import { UnitOfWork } from "../Repositories/unitOfWork.repositories";
 
@@ -40,10 +45,11 @@ export function UserLeaseRequestContext(): LeaseRequestContext {
     readLeaseRequestRepo
   );
 
-  const GetAllLeaseRequestForLandlordQH = new GetAllLeasesRequestForLandlordQueriesHandler(
-    readUserRepo,
-    readLeaseRequestRepo
-  );
+  const GetAllLeaseRequestForLandlordQH =
+    new GetAllLeasesRequestForLandlordQueriesHandler(
+      readUserRepo,
+      readLeaseRequestRepo
+    );
 
   const searchForLeaseRequestQH =
     new SearchForLeaseRequestForLandlordQueriesHandler(
@@ -87,5 +93,19 @@ export function SearchAllLeaseRequestForLandlordForSingleApartmentQH(): SearchFo
   return new SearchForAllLeaseRequestForLandlordForSingleApartment(
     readUserRepo,
     readLeaseRequestRep
+  );
+}
+
+export function CreateLeaseRequestCH(): CreateLeaseRequestCommandHandler {
+  const userRepo = new ReadUserRepositories();
+  const studentRepo = new ReadStudentRepositories();
+  const apartmentRepo = new ReadApartmentRepositories();
+  const uow = new UnitOfWork();
+
+  return new CreateLeaseRequestCommandHandler(
+    userRepo,
+    studentRepo,
+    apartmentRepo,
+    uow
   );
 }

@@ -16,6 +16,7 @@ export const isStudent = async (
         .status(400)
         .json({ error: "Unauthorized: No user ID found in payload." });
 
+
     const user = await AppDataSource.getInstance()
       .getRepository(UserModel)
       .findOne({ where: { userId: userId } });
@@ -23,10 +24,10 @@ export const isStudent = async (
     if (user?.Role !== UserRole.student)
       return res
         .status(400)
-        .json({ error: "Forbidden  you do not have Student privilege" });
+        .json({ error: "Forbidden  you do not have student privilege" });
 
     return next();
-  } catch (error: any) {
+  } catch (error: any) { 
     console.log(error);
     return res.status(500).json({ error: "Internal Server Error " });
   }
