@@ -2,9 +2,11 @@ import { updateLeaseRequestCommandHandler } from "../../Application/BoundedConte
 import { CreateLeaseRequestCommandHandler } from "../../Application/BoundedContexts/LeaseRequest/CommandHandler/CreateLeaseRequestCommandHandler";
 import { GetAllLeasesRequestForLandlordQueriesHandler } from "../../Application/BoundedContexts/LeaseRequest/QueriesHandler/GetAllLeaseRequesForLandlordQueriesHandler";
 import { GetAllLeastRequestForSingleApartmentQueriesHandler } from "../../Application/BoundedContexts/LeaseRequest/QueriesHandler/GetAllLeaseRequestForLandlordForSingleApartmentQueriesHandler";
+import { GetAllLeasesRequestForStudentQueriesHandler } from "../../Application/BoundedContexts/LeaseRequest/QueriesHandler/GetAllLeaseRequestForStudentQueriesHandler";
 import { GetAllLeaseRequestQueriesHandler } from "../../Application/BoundedContexts/LeaseRequest/QueriesHandler/GetAllLeaseRequestQueriesHandler";
 import { GetLeaseRequestByQueryQueriesHandler } from "../../Application/BoundedContexts/LeaseRequest/QueriesHandler/GetLeaseRequestByQueryQueriesHandler";
 import { SearchForAllLeaseRequestForLandlordForSingleApartment } from "../../Application/BoundedContexts/LeaseRequest/QueriesHandler/SeachForAllLeasRequestForSingleApartmentQueriesHandler";
+import { SearchForLeaseRequestForStudentQueriesHandler } from "../../Application/BoundedContexts/LeaseRequest/QueriesHandler/SearchForAllLeaseRequestForStudentQueriesHandler";
 import { SearchForLeaseRequestForLandlordQueriesHandler } from "../../Application/BoundedContexts/LeaseRequest/QueriesHandler/SearchForLeaseRequestForLandlord";
 import { AdminLeaseRequestStrategy } from "../../Application/BoundedContexts/Shared/Strategy/leaseRequest/AdminLeaseRequest.strategy";
 import { LandlordLeaseRequestStrategy } from "../../Application/BoundedContexts/Shared/Strategy/leaseRequest/LandlordLeaseRequest.strategy";
@@ -57,6 +59,18 @@ export function UserLeaseRequestContext(): LeaseRequestContext {
       readLeaseRequestRepo
     );
 
+  const GetAllLeaseRequestForStudentQH =
+    new GetAllLeasesRequestForStudentQueriesHandler(
+      readUserRepo,
+      readLeaseRequestRepo
+    );
+
+  const searchForLeaseRequestStudentQH =
+    new SearchForLeaseRequestForStudentQueriesHandler(
+      readUserRepo,
+      readLeaseRequestRepo
+    );
+
   const adminStrategy = new AdminLeaseRequestStrategy(
     queriesHandler,
     FindSearchQH
@@ -66,7 +80,10 @@ export function UserLeaseRequestContext(): LeaseRequestContext {
     GetAllLeaseRequestForLandlordQH,
     searchForLeaseRequestQH
   );
-  const studentStrategy = new StudentLeaseRequestStrategy();
+  const studentStrategy = new StudentLeaseRequestStrategy(
+    GetAllLeaseRequestForStudentQH,
+    searchForLeaseRequestStudentQH
+  );
 
   return new LeaseRequestContext(
     readUserRepo,

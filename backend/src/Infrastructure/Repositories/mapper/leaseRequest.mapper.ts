@@ -1,5 +1,5 @@
 import { LeaseRequestEntity } from "../../../Domain/BoundedContexts/Leases/Entities/leaseRequestEntity.entity";
-import { ILeaseRequestDTO } from "../../../Domain/BoundedContexts/Leases/Repositories/Read/ReadLeaseRequestRepositories.repositories";
+import { ILeaseRequestDTO } from "../../../Domain/BoundedContexts/Leases/Representations/ILeaseRequestDTO";
 import { LeaseStartDate } from "../../../Domain/BoundedContexts/Leases/Value-Object/LeaseStartDate.vo";
 import { RentTerm } from "../../../Domain/BoundedContexts/Leases/Value-Object/RentTerm.vo";
 import { LeaseRequestModel } from "../../Database/TypeOrm/entity/LeaseRequest";

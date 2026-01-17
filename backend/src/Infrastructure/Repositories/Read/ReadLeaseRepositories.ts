@@ -1,12 +1,12 @@
 import { Like, FindOptionsWhere } from "typeorm";
 import { LeaseAggregateRoot } from "../../../Domain/BoundedContexts/Leases/AgregateRoot/leaseEntity.entity";
 import {
-  ILeaseEntityDTO,
   IReadLeaseRepositories,
 } from "../../../Domain/BoundedContexts/Leases/Repositories/Read/ReadLeaseRepositories.repositories";
 import { AppDataSource } from "../../Database/TypeOrm/data-source";
 import { LeaseModel } from "../../Database/TypeOrm/entity/Lease.entity";
 import { LeaseMapper } from "../mapper/lease.mapper";
+import { ILeaseEntityDTO } from "../../../Domain/BoundedContexts/Leases/Representations/ILeaseEntityDTO";
 
 export class ReadLeaseRepositories implements IReadLeaseRepositories {
   
