@@ -22,3 +22,5 @@ export type LeaseDataType = {
   createAt: Date;
   paymentSchedule: PaymentAggregateRoot[] | null;
 };
+
+

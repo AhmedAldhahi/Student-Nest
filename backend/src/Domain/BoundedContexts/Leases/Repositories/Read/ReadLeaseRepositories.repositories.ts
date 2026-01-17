@@ -35,4 +35,11 @@ export interface IReadLeaseRepositories {
   ): Promise<ILeaseEntityDTO[] | null>;
 
   countActiveLeasesByApartmentId(apartmentId: string): Promise<number>;
+
+  findAllLeaseForStudentSearch(
+    userId: string,
+    query: string
+  ): Promise<ILeaseEntityDTO[] | null>;
+
+  findAllLeaseForStudent(userId: string): Promise<ILeaseEntityDTO[] | null>;
 }

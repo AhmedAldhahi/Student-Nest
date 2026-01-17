@@ -6,10 +6,140 @@ import {
 import { AppDataSource } from "../../Database/TypeOrm/data-source";
 import { LeaseModel } from "../../Database/TypeOrm/entity/Lease.entity";
 import { LeaseMapper } from "../mapper/lease.mapper";
-import { ILeaseEntityDTO } from "../../../Domain/BoundedContexts/Leases/Representations/ILeaseEntityDTO";
+import { ILeaseEntityDTO } from "../../../Domain/BoundedContexts/Leases/types/LeaseEntityData";
 
 export class ReadLeaseRepositories implements IReadLeaseRepositories {
-  
+  public async findAllLeaseForStudentSearch(
+    userId: string,
+    query: string
+  ): Promise<ILeaseEntityDTO[] | null> {
+    try {
+      const Queries = query.trim();
+      const searchPattern = Like(`%${Queries}%`);
+
+      const whereCondition: FindOptionsWhere<LeaseModel>[] = [
+        {
+          studentId: userId,
+          student: { user: { Name: searchPattern } },
+        },
+        {
+          landlord: { userId: userId },
+          apartment: { title: searchPattern },
+        },
+        {
+          landlord: { userId: userId },
+          leaseId: searchPattern,
+        },
+      ];
+
+      const leasesModel = await AppDataSource.getInstance()
+        .getRepository(LeaseModel)
+        .find({
+          where: whereCondition,
+          select: {
+            leaseId: true,
+            LeaseActivationStatus: true,
+            isLandlordSigned: true,
+            isStudentSigned: true,
+            houseRule: true,
+            leaseStartDate: true,
+            leaseEndDate: true,
+            monthlyRent: true,
+            leaseTerm: true,
+            includeUtilities: true,
+            createAt: true,
+            apartmentId: true,
+            landlord: {
+              userId: true,
+              user: { Name: true },
+            },
+            student: {
+              userId: true,
+              user: { Name: true },
+            },
+            apartment: {
+              apartmentId: true,
+              title: true,
+            },
+          },
+          relations: {
+            student: { user: true },
+            landlord: { user: true },
+            apartment: true,
+          },
+        });
+
+      if (leasesModel.length === 0) return [];
+
+      return leasesModel.map((orm) => {
+        return LeaseMapper.toResponse(orm);
+      });
+    } catch (error: any) {
+      console.error("fail to get all lease", error);
+      throw error;
+    }
+  }
+
+  public async findAllLeaseForStudent(
+    userId: string
+  ): Promise<ILeaseEntityDTO[] | null> {
+    try {
+      const leasesModel = await AppDataSource.getInstance()
+        .getRepository(LeaseModel)
+        .find({
+          where: { student: { userId: userId } },
+          select: {
+            leaseId: true,
+            LeaseActivationStatus: true,
+            isLandlordSigned: true,
+            isStudentSigned: true,
+            houseRule: true,
+            leaseStartDate: true,
+            leaseEndDate: true,
+            monthlyRent: true,
+            leaseTerm: true,
+            includeUtilities: true,
+            createAt: true,
+            apartmentId: true,
+            landlord: {
+              userId: true,
+              user: {
+                Name: true,
+              },
+            },
+            student: {
+              userId: true,
+
+              user: {
+                Name: true,
+              },
+            },
+
+            apartment: {
+              apartmentId: true,
+              title: true,
+            },
+          },
+          relations: {
+            student: { user: true },
+            landlord: { user: true },
+            apartment: true,
+          },
+        });
+
+      if (!leasesModel) return [];
+
+      if (!leasesModel || leasesModel.length === 0) return [];
+
+      return leasesModel.map((orm) => {
+        return LeaseMapper.toResponse(orm);
+      });
+    } catch (error: any) {
+      console.error("fail to get all lease", error);
+      throw error;
+    }
+  }
+
   public async countActiveLeasesByApartmentId(
     apartmentId: string
   ): Promise<number> {
