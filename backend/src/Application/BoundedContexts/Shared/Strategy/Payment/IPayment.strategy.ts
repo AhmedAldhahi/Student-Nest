@@ -3,4 +3,9 @@ export interface IPaymentStrategy {
     userId: string,
     leaseId: string
   ): Promise<any>;
+
+  FindAllPaymentScheduleForSingleLease(
+    userId: string,
+    leaseId: string
+  ): Promise<any>;
 }

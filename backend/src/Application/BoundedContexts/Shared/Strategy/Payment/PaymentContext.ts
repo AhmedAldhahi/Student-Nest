@@ -36,6 +36,28 @@ export class PaymentContext {
     );
   }
 
+  public async GetAllPaymentScheduleForSingleLeaseExecute(
+    userId: string,
+    leaseId: string
+  ) {
+    let strategy: IPaymentStrategy;
+    const role = await this.getUserRole(userId);
+
+    switch (role) {
+      case UserRole.landlord:
+        strategy = this.LandlordStrategy;
+        break;
+      case UserRole.student:
+        strategy = this.StudentStrategy;
+        break;
+
+      default:
+        throw new Error("Invalid user Role !!");
+    }
+
+    return await strategy.FindAllPaymentScheduleForSingleLease(userId, leaseId);
+  }
+
   private async getUserRole(userId: string): Promise<UserRole> {
     try {
       const user = await this.readUserRepo.findById(userId);

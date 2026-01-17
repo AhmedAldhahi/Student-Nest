@@ -7,7 +7,6 @@ export class PaymentForLandlordController {
   constructor(
     private readonly ChangePaymentStatusCH: ChangeStatusOfPaymentCommandHandler,
 
-    private readonly GetAllPaymentForSingleLeasesQH: GetAllPaymentScheduleForSingleLeasesQueriesHandler,
     private readonly GetReceiptForSinglePaymentQH: GetReceiptForSinglePaymentQueriesHandler
   ) {}
 
@@ -36,27 +35,7 @@ export class PaymentForLandlordController {
     }
   };
 
-  public getAllPaymentForSingleLeases = async (req: Request, res: Response) => {
-    try {
-      const userId = req.user?.userId;
-      const { leaseId } = req.params;
-
-      if (!userId)
-        return res.status(400).json({ error: "no user id been found !!" });
-
-      const result = await this.GetAllPaymentForSingleLeasesQH.handle({
-        userId: userId,
-        leaseId: leaseId,
-      });
-
-      return res.status(200).json(result);
-    } catch (error: any) {
-      return res
-        .status(400)
-        .json({ error: error.message || "internal server error" });
-    }
-  };
-
+ 
   public getReceiptsForSinglePayment = async (req: Request, res: Response) => {
     try {
       const userId = req.user?.userId;

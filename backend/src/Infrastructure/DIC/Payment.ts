@@ -1,6 +1,7 @@
 import { ChangeStatusOfPaymentCommandHandler } from "../../Application/BoundedContexts/Payment/CommandHandler/ChangeStatusOfPaymentCommandHandler";
 import { FindAllPaymentHistoryForLandlordQueriesHandler } from "../../Application/BoundedContexts/Payment/QueriesHandler/FindAllPaymentHistoryForLandlordForSingleLease";
 import { GetAllPaymentScheduleForSingleLeasesQueriesHandler } from "../../Application/BoundedContexts/Payment/QueriesHandler/GetAllPaymentScheduleForSingleLeasesQueriesHandler";
+import { GetAllPaymentScheduleForSingleLeasesForStudentQueriesHandler } from "../../Application/BoundedContexts/Payment/QueriesHandler/GetAllPaymentScheduleForStudentQueriesHandler";
 import { GetReceiptForSinglePaymentQueriesHandler } from "../../Application/BoundedContexts/Payment/QueriesHandler/GetReceiptForSinglePaymentQueriesHandler";
 import { LandlordPaymentStrategy } from "../../Application/BoundedContexts/Shared/Strategy/Payment/LandlordPayment.strategy";
 import { PaymentContext } from "../../Application/BoundedContexts/Shared/Strategy/Payment/PaymentContext";
@@ -30,23 +31,23 @@ export function ChangeStatusOfPaymentCH(): ChangeStatusOfPaymentCommandHandler {
   );
 }
 
-export function GetAllPaidPaymentCH(): PaymentContext {
-  const readUserRepo = new ReadUserRepositories();
-  const paymentRepo = new ReadPaymentScheduleRepositories();
+// export function GetAllPaidPaymentCH(): PaymentContext {
+//   const readUserRepo = new ReadUserRepositories();
+//   const paymentRepo = new ReadPaymentScheduleRepositories();
 
-  const GetPaidPaymentForLandlordQH =
-    new FindAllPaymentHistoryForLandlordQueriesHandler(
-      readUserRepo,
-      paymentRepo
-    );
+//   const GetPaidPaymentForLandlordQH =
+//     new FindAllPaymentHistoryForLandlordQueriesHandler(
+//       readUserRepo,
+//       paymentRepo
+//     );
 
-  const LandlordStrategy = new LandlordPaymentStrategy(
-    GetPaidPaymentForLandlordQH
-  );
-  const StudentStrategy = new StudentPaymentStrategy();
+//   const LandlordStrategy = new LandlordPaymentStrategy(
+//     GetPaidPaymentForLandlordQH
+//   );
+//   const StudentStrategy = new StudentPaymentStrategy();
 
-  return new PaymentContext(readUserRepo, LandlordStrategy, StudentStrategy);
-}
+//   return new PaymentContext(readUserRepo, LandlordStrategy, StudentStrategy);
+// }
 
 export function GetReceiptForPaymentQH(): GetReceiptForSinglePaymentQueriesHandler {
   const readUserRepo = new ReadUserRepositories();
@@ -80,10 +81,25 @@ export function UserPaymentContext(): PaymentContext {
       paymentRepo
     );
 
+  const GetAllPaymentScheduleForLandlordForSingleApartment =
+    new GetAllPaymentScheduleForSingleLeasesQueriesHandler(
+      readUserRepo,
+      paymentRepo
+    );
+
+  const GetAllPaymentScheduleForStudentForSingleApartment =
+    new GetAllPaymentScheduleForSingleLeasesForStudentQueriesHandler(
+      readUserRepo,
+      paymentRepo
+    );
+
   const LandlordStrategy = new LandlordPaymentStrategy(
+    GetAllPaymentScheduleForLandlordForSingleApartment,
     GetPaidPaymentForLandlordQH
   );
-  const StudentStrategy = new StudentPaymentStrategy();
+  const StudentStrategy = new StudentPaymentStrategy(
+    GetAllPaymentScheduleForStudentForSingleApartment
+  );
 
   return new PaymentContext(readUserRepo, LandlordStrategy, StudentStrategy);
 }

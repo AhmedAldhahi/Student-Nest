@@ -46,7 +46,6 @@ import {
 } from "./LeaseRequest";
 import {
   ChangeStatusOfPaymentCH,
-  GetAllPaidPaymentCH,
   GetAllPaymentScheduleForSingleLeaseQH,
   GetReceiptForPaymentQH,
   UserPaymentContext,
@@ -101,7 +100,6 @@ export function buildDependencies() {
         SearchForAllLeaseForSingleApartmentQH(),
       GetLeaseForLandlordForSingleApartmentQueriesHandler:
         GetForAllLeaseForSingleApartmentQH(),
-      GetAllPaidPaymentQueriesHandler: GetAllPaidPaymentCH(),
       GetReceiptorPaymentQueriesHandler: GetReceiptForPaymentQH(),
       GetAllPaymentScheduleForSingleLeaseQueriesHandler:
         GetAllPaymentScheduleForSingleLeaseQH(),

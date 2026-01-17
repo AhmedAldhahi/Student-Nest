@@ -15,5 +15,12 @@ export const PaymentManagementRouter = (
     paymentController.GetPaidPaymentSchedule
   );
 
+    router.get(
+    "/:leaseId",
+    isAuth,
+    isLandlordOrStudent,
+    paymentController.getAllPaymentForSingleLeases
+  );
+
   return router;
 };

@@ -17,12 +17,7 @@ export const PaymentRouter = (
     paymentController.getReceiptsForSinglePayment
   );
 
-  router.get(
-    "/:leaseId",
-    isAuth,
-    isLandlord,
-    paymentController.getAllPaymentForSingleLeases
-  );
+
 
   router.patch(
     "/:leaseId/:paymentId/status",

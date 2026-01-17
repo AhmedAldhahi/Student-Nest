@@ -12,7 +12,6 @@ import { createVerificationRouter } from "./Presentation/http/routes/IdentityAnd
 import { PasswordRecoveryRouter } from "./Presentation/http/routes/IdentityAndAccess/PasswordRecvery.route";
 import { profileRouter } from "./Presentation/http/routes/IdentityAndAccess/profile.routes";
 import { auditMiddleware } from "./Presentation/http/middlewares/auditLog.middleware";
-import { ApartmentSharedRouter } from "./Presentation/http/routes/shared/apartment.routes";
 import { AdminIndexRouter } from "./Presentation/http/routes/admin/index.router";
 import { SharedIndexRouter } from "./Presentation/http/routes/shared/index.router";
 import { LandlordIndexRouter } from "./Presentation/http/routes/Landlord/index.router";

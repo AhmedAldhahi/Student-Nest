@@ -23,4 +23,27 @@ export class SharedPaymentController {
         .json({ error: error.message || "internal server error" });
     }
   };
+
+  public getAllPaymentForSingleLeases = async (req: Request, res: Response) => {
+    try {
+      const userId = req.user?.userId;
+      const { leaseId } = req.params;
+
+      if (!userId)
+        return res.status(400).json({ error: "no user id been found !!" });
+
+      const result =
+      
+        await this.UserPaymentContext.GetAllPaymentScheduleForSingleLeaseExecute(
+          userId,
+          leaseId
+        );
+
+      return res.status(200).json(result);
+    } catch (error: any) {
+      return res
+        .status(400)
+        .json({ error: error.message || "internal server error" });
+    }
+  };
 }

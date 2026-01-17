@@ -9,6 +9,41 @@ import { PaymentsResponse } from "../../../Domain/BoundedContexts/Payment/Repres
 export class ReadPaymentScheduleRepositories
   implements IReadPaymentScheduleRepo
 {
+  public async FindAllPaymentScheduleForOneLeaseForStudent(
+    userId: string,
+    leaseId: string
+  ): Promise<PaymentsResponse[] | null> {
+    try {
+      const paymentModels = await AppDataSource.getInstance()
+        .getRepository(PaymentScheduleModel)
+        .find({
+          where: {
+            leaseId: leaseId,
+            lease: {
+              studentId: userId,
+            },
+          },
+          relations: {
+            receipt: true,
+            lease: true,
+          },
+          order: {
+            dueDate: "ASC",
+          },
+        });
+
+      if (!paymentModels || paymentModels.length === 0) {
+        return [];
+      }
+
+      return paymentModels.map((orm) => {
+        return PaymentMapper.toResponse(orm);
+      });
+    } catch (error: any) {
+      console.error("Failed to find payment schedule for lease,", error);
+      throw new Error("Unable to retrieve payment schedule.");
+    }
+  }
   public async FindAllPaymentAsArray(
     userId: string,
     leaseId: string,
