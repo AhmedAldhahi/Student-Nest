@@ -4,12 +4,14 @@ import { AdminApartmentStrategy } from "./AdminApartment.strategy";
 import { GuestApartmentStrategy } from "./GuestApartment.strategy";
 import { IApartmentStrategy } from "./IApartment.strategy";
 import { LandlordApartmentStrategy } from "./LandlordApartment.strategy";
+import { StudentApartmentStrategy } from "./StudentApartment.strategy";
 
 export class ApartmentContext {
   constructor(
     private readonly readUserRepo: IReadUserRepositories,
     private readonly adminStrategy: AdminApartmentStrategy,
     private readonly landlordStrategy: LandlordApartmentStrategy,
+    private readonly studentStrategy: StudentApartmentStrategy
   ) {}
 
   public async DeleteApartment(userId: string, id: string) {
@@ -29,7 +31,7 @@ export class ApartmentContext {
         default:
           throw new Error("Invalid role !!");
       }
-      return strategy.deleteApartments(userId,id);
+      return strategy.deleteApartments(userId, id);
     } catch (error: any) {
       console.error("fail to delete apartment ", error);
       throw error;
@@ -49,11 +51,14 @@ export class ApartmentContext {
         case UserRole.landlord:
           strategy = this.landlordStrategy;
           break;
+        case UserRole.student:
+          strategy = this.studentStrategy;
+          break;
 
         default:
           throw new Error("Invalid role !!");
       }
-      return strategy.getApartmentByQueries(Queried,userId);
+      return strategy.getApartmentByQueries(Queried, userId);
     } catch (error: any) {
       console.error("fail to get apartment by queries  ", error);
       throw error;
@@ -101,7 +106,7 @@ export class ApartmentContext {
         default:
           throw new Error("Invalid role !!");
       }
-      return strategy.FindApartmentDocumentById(userId,id);
+      return strategy.FindApartmentDocumentById(userId, id);
     } catch (error: any) {
       console.error("fail to get apartment  documents by id  ", error);
       throw error;
@@ -122,15 +127,21 @@ export class ApartmentContext {
           strategy = this.landlordStrategy;
           break;
 
+        case UserRole.student:
+          strategy = this.studentStrategy;
+          break;
+
         default:
           throw new Error("Invalid role !!");
       }
-      return strategy.GetApartmentDetailById(id,userId);
+      return strategy.GetApartmentDetailById(id, userId);
     } catch (error: any) {
       console.error("fail to get apartment details", error);
       throw error;
     }
   }
+
+  
   private async GetUserRole(userId: string): Promise<UserRole> {
     try {
       const user = await this.readUserRepo.findById(userId);

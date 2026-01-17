@@ -21,6 +21,7 @@ import { AdminApartmentStrategy } from "../../Application/BoundedContexts/Shared
 import { ApartmentContext } from "../../Application/BoundedContexts/Shared/Strategy/apartment/ApartmentContext";
 import { GuestApartmentStrategy } from "../../Application/BoundedContexts/Shared/Strategy/apartment/GuestApartment.strategy";
 import { LandlordApartmentStrategy } from "../../Application/BoundedContexts/Shared/Strategy/apartment/LandlordApartment.strategy";
+import { StudentApartmentStrategy } from "../../Application/BoundedContexts/Shared/Strategy/apartment/StudentApartment.strategy";
 import { ReadApartmentDocumentRepositories } from "../Repositories/Read/ReadApartmentDocumentRepositories";
 import { ReadApartmentRepositories } from "../Repositories/Read/ReadApartmentRepositories";
 import { ReadLandlordRepositories } from "../Repositories/Read/ReadLandlordRepositories";
@@ -181,9 +182,18 @@ export function UserApartmentContext(): ApartmentContext {
     GetApartmentDocumentByIdForLandlord
   );
 
+  const studentStrategy = new StudentApartmentStrategy(
+    GetApartmentDetailByIdQH
+  );
+
   const guestStrategy = new GuestApartmentStrategy(getGustApartmentDetailsQH);
 
-  return new ApartmentContext(ReadUseRepo, adminStrategy, landlordStrategy);
+  return new ApartmentContext(
+    ReadUseRepo,
+    adminStrategy,
+    landlordStrategy,
+    studentStrategy
+  );
 }
 
 export function GetAllBookedApartmentQH(): GetAllApartmentThatBeenBookedQueriesHandler {
