@@ -23,6 +23,13 @@ export class ReceiptEntity {
    * ==================================================================================
    */
 
+  public static create(data: ReceiptDataType) {
+    if (!data.ReceiptUrl) {
+      throw new Error("Receipt image URL is required.");
+    }
+    return new ReceiptEntity(data);
+  }
+
   public markAsVerified(): void {
     this.verifiedByLandlord = VerifiedLandlordStatus.Accept;
     this.createAt = new Date();

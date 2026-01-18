@@ -47,7 +47,7 @@ export class Server {
         stream: {
           write: (message) => this.httpDebug(message.trim()),
         },
-      })
+      }),
     );
 
     // Security
@@ -69,9 +69,9 @@ export class Server {
         ],
         format: winston.format.combine(
           winston.format.timestamp(),
-          winston.format.json()
+          winston.format.json(),
         ),
-      })
+      }),
     );
 
     this.app.options("*", cors());
@@ -86,7 +86,7 @@ export class Server {
         ],
         methods: ["GET", "POST", "PUT", "DELETE ", "PATCH"],
         credentials: true,
-      })
+      }),
     );
 
     const {
@@ -108,8 +108,8 @@ export class Server {
       AdminIndexRouter(
         Apartment.Admin,
         adminAuditLogController,
-        adminUserManagementController
-      )
+        adminUserManagementController,
+      ),
     );
 
     this.app.use(
@@ -118,13 +118,17 @@ export class Server {
         Apartment.Landlord,
         Lease.Landlord,
         LeaseRequest.Landlord,
-        Payment.Landlord
-      )
+        Payment.Landlord,
+      ),
     );
 
     this.app.use(
       "/api/v1/student",
-      StudentIndexRouter(Apartment.Student, LeaseRequest.Student)
+      StudentIndexRouter(
+        Apartment.Student,
+        LeaseRequest.Student,
+        Payment.Student,
+      ),
     );
 
     this.app.use(
@@ -134,8 +138,8 @@ export class Server {
         LeaseRequest.Shared,
         Lease.Shared,
         NotificationsController,
-        Payment.Shared
-      )
+        Payment.Shared,
+      ),
     );
 
     this.app.use("/api/v1/auth", createAuthRouter(authController));
@@ -146,7 +150,7 @@ export class Server {
 
     this.app.use(
       "/api/v1/password-recovery",
-      PasswordRecoveryRouter(passwordRecoverController)
+      PasswordRecoveryRouter(passwordRecoverController),
     );
 
     this.startupDebug("Server configuration completed.");

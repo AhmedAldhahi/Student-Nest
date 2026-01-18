@@ -44,7 +44,7 @@ import {
   SearchAllLeaseRequestForLandlordForSingleApartmentQH,
   UserLeaseRequestContext,
 } from "./LeaseRequest";
-import { ChangeStatusOfPaymentCH, UserPaymentContext } from "./Payment";
+import { AddReceiptForPaymentCH, ChangeStatusOfPaymentCH, UserPaymentContext } from "./Payment";
 import {
   DeleteSpecificNotifications,
   notificationContext,
@@ -80,6 +80,7 @@ export function buildDependencies() {
         DeleteApartmentByIdForAdminCH(),
       DeleteUserForAdminCommandHandler: DeleteUserForAdminCH(),
       CreateLeaseRequestCommandHandler: CreateLeaseRequestCH(),
+      CreateNewReceiptForPaymentCommandHandler:AddReceiptForPaymentCH()
     },
 
     QueriesHandler: {

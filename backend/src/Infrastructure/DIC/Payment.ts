@@ -1,3 +1,4 @@
+import { AddNewPaymentReceiptForPaymentCommandHandler } from "../../Application/BoundedContexts/Payment/CommandHandler/AddNewReceiptForPaymentCommandHandler";
 import { ChangeStatusOfPaymentCommandHandler } from "../../Application/BoundedContexts/Payment/CommandHandler/ChangeStatusOfPaymentCommandHandler";
 import { FindAllPaymentHistoryForLandlordQueriesHandler } from "../../Application/BoundedContexts/Payment/QueriesHandler/FindAllPaymentHistoryForLandlordForSingleLease";
 import { FindAllPaymentHistoryForStudentQueriesHandler } from "../../Application/BoundedContexts/Payment/QueriesHandler/FindAllPaymentHistoryForStudentQueriesHandler";
@@ -14,6 +15,7 @@ import { ReadPaymentReceiptRepositories } from "../Repositories/Read/ReadPayment
 import { ReadPaymentScheduleRepositories } from "../Repositories/Read/ReadPaymentScheule.Repostioreis";
 import { ReadUserRepositories } from "../Repositories/Read/ReadUserRepositories";
 import { UnitOfWork } from "../Repositories/unitOfWork.repositories";
+import { CloudinaryService } from "../Services/media/CloudinaryService.service";
 
 export function ChangeStatusOfPaymentCH(): ChangeStatusOfPaymentCommandHandler {
   const uow = new UnitOfWork();
@@ -30,6 +32,20 @@ export function ChangeStatusOfPaymentCH(): ChangeStatusOfPaymentCommandHandler {
     readPaymentScheduleRepo,
     readLeaseRepo,
     readReceiptRepo,
+  );
+}
+
+export function AddReceiptForPaymentCH(): AddNewPaymentReceiptForPaymentCommandHandler {
+  const readUserRepo = new ReadUserRepositories();
+  const readPaymentRepo = new ReadPaymentScheduleRepositories();
+  const fileService = new CloudinaryService();
+  const uow = new UnitOfWork();
+
+  return new AddNewPaymentReceiptForPaymentCommandHandler(
+    readUserRepo,
+    readPaymentRepo,
+    fileService,
+    uow,
   );
 }
 

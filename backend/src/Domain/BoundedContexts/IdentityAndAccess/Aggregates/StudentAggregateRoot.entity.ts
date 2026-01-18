@@ -7,7 +7,6 @@ import { VerificationDocument } from "../Value-Object/VerficationDocument.vo";
 import { StudentDataType } from "../types/StudentDataType.type";
 import { AggregateRoot } from "../../../Shared/AgregateRoot/AggregateRoot";
 import { LeaseRequestEntity } from "../../Leases/Entities/leaseRequestEntity.entity";
-import { ApartmentAggregateRoot } from "../../Housing/AgregateRoot/apartmentEntity.entity";
 
 export class StudentAggregateRoot extends AggregateRoot<string> {
   private studentCardID: StudentCard;
@@ -51,7 +50,7 @@ export class StudentAggregateRoot extends AggregateRoot<string> {
   public changeStudentCardID(userCardId: StudentCard): void {
     if (!this.changeUniversityName)
       throw new Error(
-        "you have to change your university before change card id "
+        "you have to change your university before change card id ",
       );
     this.studentCardID = userCardId;
   }
@@ -84,6 +83,8 @@ export class StudentAggregateRoot extends AggregateRoot<string> {
   public updateVerificationDocument(document: VerificationDocument) {
     this.studentValidateDocument = document;
   }
+
+
 
   /**
    * ==================================================================================

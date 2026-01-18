@@ -7,6 +7,36 @@ import { In } from "typeorm";
 import { PaymentsResponse } from "../../../Domain/BoundedContexts/Payment/Representations/IPaymentResponse";
 
 export class ReadPaymentScheduleRepositories implements IReadPaymentScheduleRepo {
+  public async FindPaymentScheduleByIdForStudent(
+    userId: string,
+    leaseId: string,
+    paymentId: string,
+  ): Promise<PaymentAggregateRoot | null> {
+    try {
+      const paymentModel = await AppDataSource.getInstance()
+        .getRepository(PaymentScheduleModel)
+        .findOne({
+          where: {
+            scheduleId: paymentId,
+            leaseId: leaseId,
+            lease: {
+              studentId: userId,
+            },
+          },
+          relations: {
+            receipt: true,
+            lease: true,
+          },
+        });
+
+      if (!paymentModel) return null;
+
+      return PaymentMapper.toDomain(paymentModel);
+    } catch (error: any) {
+      console.error("Failed to find specific payment schedule:", error);
+      throw new Error("Unable to retrieve payment schedule.");
+    }
+  }
   public async FindAllPaymentScheduleForOneLeaseForStudent(
     userId: string,
     leaseId: string,

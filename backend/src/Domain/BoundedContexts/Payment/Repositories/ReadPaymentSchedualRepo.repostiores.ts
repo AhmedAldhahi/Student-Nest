@@ -29,4 +29,10 @@ export interface IReadPaymentScheduleRepo {
     userId: string,
     leaseId: string,
   ): Promise<PaymentsResponse[] | null>;
+
+    FindPaymentScheduleByIdForStudent(
+    userId: string,
+    leaseId: string,
+    paymentId: string,
+  ): Promise<PaymentAggregateRoot | null>;
 }
