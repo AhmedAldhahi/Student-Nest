@@ -7,6 +7,7 @@ import { IFileStorageService } from "../../../Interfaces/IFileStorage.interface"
 import { ICommandHandlers } from "../../Shared/abstraction/ICommandHandler";
 import { AddNewReceiptCommand } from "../Command/AddNewReceptCPaymentCommand";
 import { v4 as uuidv4 } from "uuid";
+import { AddNewReceiptForPaymentResponse } from "../Dto/Respone/AddNewReceiptForPaymentResponse";
 
 //todo need to add event bus for notifications !!
 
@@ -18,7 +19,9 @@ export class AddNewPaymentReceiptForPaymentCommandHandler implements ICommandHan
     private readonly uow: IUnitOfWork,
   ) {}
 
-  public async handle(command: AddNewReceiptCommand): Promise<any> {
+  public async handle(
+    command: AddNewReceiptCommand,
+  ): Promise<AddNewReceiptForPaymentResponse> {
     try {
       const user = await this.readUserRepo.findById(command.userId);
       if (!user) throw new Error("no user been found !!");
@@ -52,9 +55,14 @@ export class AddNewPaymentReceiptForPaymentCommandHandler implements ICommandHan
       await this.uow.startTransaction();
       await this.uow.writePaymentScheduleRepo.updatePaymentSchedule(payments);
       await this.uow.commitTransaction();
+
+      return {
+        message: "Receipt uploaded successfully",
+      };
     } catch (error: any) {
       await this.uow.rollbackTransaction();
       console.error("fail to add apartment receipt !!", error);
+      throw error;
     } finally {
       await this.uow.releaseTransaction();
     }
