@@ -34,20 +34,22 @@ export class PaymentAggregateRoot extends AggregateRoot<string> {
    * ==================================================================================
    */
 
+  public uploadReceipt(receipt: ReceiptEntity): void {
+    // 2. State Validation: Can't upload if already paid
+    if (this.paymentStatus === PaymentStatus.Paid) {
+      throw new Error("Payment is already completed.");
+    }
+
+    this.paymentReceipt = receipt;
+    this.paymentStatus = PaymentStatus.Paid;
+  }
+
   public acceptPayment(): void {
     this.paymentStatus = PaymentStatus.Paid;
   }
 
   public rejectPayment(): void {
     this.paymentStatus = PaymentStatus.UnPaid;
-  }
-
-  public addReceipt(receipt: ReceiptEntity) {
-    if (this.getPaymentStatus() === PaymentStatus.Paid) {
-      throw new Error("Cannot upload receipt for an already accepted payment.");
-    }
-
-    this.paymentReceipt = receipt;
   }
 
   /**

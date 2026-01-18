@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { ChangeStatusOfPaymentCommandHandler } from "../../../../Application/BoundedContexts/Payment/CommandHandler/ChangeStatusOfPaymentCommandHandler";
-import { GetReceiptForSinglePaymentQueriesHandler } from "../../../../Application/BoundedContexts/Payment/QueriesHandler/GetReceiptForSinglePaymentQueriesHandler";
 export class PaymentForLandlordController {
   constructor(
     private readonly ChangePaymentStatusCH: ChangeStatusOfPaymentCommandHandler,

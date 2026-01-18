@@ -11,7 +11,7 @@ export class UpdateApartmentDocumentFileCommand implements ICommand {
   constructor(
     data: UpdateApartmentDocumentDataRequest,
     apartmentId: string,
-    userId: string
+    userId: string,
   ) {
     this.documentUrl = data.documentUrl;
     this.apartmentType = data.apartmentType;
@@ -19,3 +19,5 @@ export class UpdateApartmentDocumentFileCommand implements ICommand {
     this.userId = userId;
   }
 }
+
+

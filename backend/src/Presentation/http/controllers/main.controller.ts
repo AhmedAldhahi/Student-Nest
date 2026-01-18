@@ -17,6 +17,7 @@ import { NotificationController } from "./Shared/Notification.controller";
 import { SharedPaymentController } from "./Payment/SharedPayment.controller";
 import { ApartmentControllerForStudent } from "./Apartment/ApartmentControllerForStudent";
 import { LeaseRequestForStudentController } from "./LeaseRequest/LeaseRequstForStudent.controller";
+import { PaymentForStudentController } from "./Payment/PaymentForStudent.controller";
 
 export const buildControllersBoundaryContext = () => {
   const { commandHandler, QueriesHandler, StrategyContext, SimpleFactory } =
@@ -89,6 +90,10 @@ export const buildControllersBoundaryContext = () => {
     QueriesHandler.GetApartmentDetailsForGuestQueriesHandler,
   );
 
+  const PaymentForStudent = new PaymentForStudentController(
+    commandHandler.CreateNewReceiptForPaymentCommandHandler,
+  );
+
   const PaymentForLandlord = new PaymentForLandlordController(
     commandHandler.ChangePaymentStatusCommandHandler,
   );
@@ -130,6 +135,7 @@ export const buildControllersBoundaryContext = () => {
 
   const Payment = {
     Landlord: PaymentForLandlord,
+    Student: PaymentForStudent,
     Shared: SharedPayment,
   };
 
