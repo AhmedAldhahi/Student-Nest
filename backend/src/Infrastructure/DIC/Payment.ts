@@ -3,6 +3,7 @@ import { FindAllPaymentHistoryForLandlordQueriesHandler } from "../../Applicatio
 import { FindAllPaymentHistoryForStudentQueriesHandler } from "../../Application/BoundedContexts/Payment/QueriesHandler/FindAllPaymentHistoryForStudentQueriesHandler";
 import { GetAllPaymentScheduleForSingleLeasesQueriesHandlerForStudent } from "../../Application/BoundedContexts/Payment/QueriesHandler/GetAllPaymentScheduleForSignleLeaseForStudentQuereisHandler";
 import { GetAllPaymentScheduleForSingleLeasesQueriesHandler } from "../../Application/BoundedContexts/Payment/QueriesHandler/GetAllPaymentScheduleForSingleLeasesQueriesHandler";
+import { GetReceiptForSinglePaymentForStudentQueriesHandler } from "../../Application/BoundedContexts/Payment/QueriesHandler/GetReceiptForSinglePaymentforStudentQueriesHandler";
 import { GetReceiptForSinglePaymentQueriesHandler } from "../../Application/BoundedContexts/Payment/QueriesHandler/GetReceiptForSinglePaymentQueriesHandler";
 import { LandlordPaymentStrategy } from "../../Application/BoundedContexts/Shared/Strategy/Payment/LandlordPayment.strategy";
 import { PaymentContext } from "../../Application/BoundedContexts/Shared/Strategy/Payment/PaymentContext";
@@ -32,21 +33,11 @@ export function ChangeStatusOfPaymentCH(): ChangeStatusOfPaymentCommandHandler {
   );
 }
 
-export function GetReceiptForPaymentQH(): GetReceiptForSinglePaymentQueriesHandler {
-  const readUserRepo = new ReadUserRepositories();
-  const readLeaseRepo = new ReadLeaseRepositories();
-  const readPaymentReceiptRepo = new ReadPaymentReceiptRepositories();
-
-  return new GetReceiptForSinglePaymentQueriesHandler(
-    readUserRepo,
-    readLeaseRepo,
-    readPaymentReceiptRepo,
-  );
-}
-
 export function UserPaymentContext(): PaymentContext {
   const readUserRepo = new ReadUserRepositories();
   const paymentRepo = new ReadPaymentScheduleRepositories();
+  const readLeaseRepo = new ReadLeaseRepositories();
+  const readReceiptRepo = new ReadPaymentReceiptRepositories();
 
   const GetPaidPaymentForLandlordQH =
     new FindAllPaymentHistoryForLandlordQueriesHandler(
@@ -72,13 +63,30 @@ export function UserPaymentContext(): PaymentContext {
       paymentRepo,
     );
 
+  const GetReceiptForSinglePaymentForLandlord =
+    new GetReceiptForSinglePaymentQueriesHandler(
+      readUserRepo,
+      readLeaseRepo,
+      readReceiptRepo,
+    );
+
+  const GetReceiptForSinglePaymentForStudent =
+    new GetReceiptForSinglePaymentForStudentQueriesHandler(
+      readUserRepo,
+      readLeaseRepo,
+      readReceiptRepo,
+    );
+
   const LandlordStrategy = new LandlordPaymentStrategy(
     GetPaidPaymentForLandlordQH,
     GetAllPaymentScheduleForSingleLeaseForLandlord,
+    GetReceiptForSinglePaymentForLandlord,
   );
+
   const StudentStrategy = new StudentPaymentStrategy(
     GetPaidPaymentForStudentGH,
     GetAllPaymentScheduleForSingleLeaseForStudent,
+    GetReceiptForSinglePaymentForStudent,
   );
 
   return new PaymentContext(readUserRepo, LandlordStrategy, StudentStrategy);

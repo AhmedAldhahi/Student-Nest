@@ -44,11 +44,7 @@ import {
   SearchAllLeaseRequestForLandlordForSingleApartmentQH,
   UserLeaseRequestContext,
 } from "./LeaseRequest";
-import {
-  ChangeStatusOfPaymentCH,
-  GetReceiptForPaymentQH,
-  UserPaymentContext,
-} from "./Payment";
+import { ChangeStatusOfPaymentCH, UserPaymentContext } from "./Payment";
 import {
   DeleteSpecificNotifications,
   notificationContext,
@@ -99,7 +95,6 @@ export function buildDependencies() {
         SearchForAllLeaseForSingleApartmentQH(),
       GetLeaseForLandlordForSingleApartmentQueriesHandler:
         GetForAllLeaseForSingleApartmentQH(),
-      GetReceiptorPaymentQueriesHandler: GetReceiptForPaymentQH(),
 
       GetApartmentRandomlyThatNotFullAndVerifiedQueriesHandler:
         GetRandomlyThreeApartmentThatIsVisibleAndNotFullQH(),

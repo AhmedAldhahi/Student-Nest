@@ -4,7 +4,6 @@ import { GetReceiptForSinglePaymentQueriesHandler } from "../../../../Applicatio
 export class PaymentForLandlordController {
   constructor(
     private readonly ChangePaymentStatusCH: ChangeStatusOfPaymentCommandHandler,
-    private readonly GetReceiptForSinglePaymentQH: GetReceiptForSinglePaymentQueriesHandler,
   ) {}
 
   public editPaymentStatus = async (req: Request, res: Response) => {
@@ -32,26 +31,5 @@ export class PaymentForLandlordController {
     }
   };
 
-  public getReceiptsForSinglePayment = async (req: Request, res: Response) => {
-    try {
-      const userId = req.user?.userId;
-      const { paymentId } = req.params;
-      const { leaseId } = req.params;
-
-      if (!userId)
-        return res.status(400).json({ error: "no user been found !!" });
-
-      const result = await this.GetReceiptForSinglePaymentQH.handle({
-        userId: userId,
-        paymentId: paymentId,
-        leaseId: leaseId,
-      });
-
-      return res.status(200).json(result);
-    } catch (error: any) {
-      return res
-        .status(400)
-        .json({ error: error.message || "internal server error" });
-    }
-  };
+  
 }

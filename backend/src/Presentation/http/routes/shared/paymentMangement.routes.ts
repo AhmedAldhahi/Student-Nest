@@ -4,7 +4,7 @@ import { isLandlordOrStudent } from "../../middlewares/auth/isLandlordOrStudent.
 import { SharedPaymentController } from "../../controllers/Payment/SharedPayment.controller";
 
 export const PaymentManagementRouter = (
-  paymentController: SharedPaymentController
+  paymentController: SharedPaymentController,
 ): Router => {
   const router = Router();
 
@@ -12,14 +12,21 @@ export const PaymentManagementRouter = (
     "/:leaseId/history",
     isAuth,
     isLandlordOrStudent,
-    paymentController.GetPaidPaymentSchedule
+    paymentController.GetPaidPaymentSchedule,
   );
 
-    router.get(
+  router.get(
     "/:leaseId",
     isAuth,
     isLandlordOrStudent,
-    paymentController.getAllPaymentForSingleLeases
+    paymentController.getAllPaymentForSingleLeases,
+  );
+
+  router.get(
+    "/:leaseId/:paymentId/receipt",
+    isAuth,
+    isLandlordOrStudent,
+    paymentController.getReceiptsForSinglePayment,
   );
 
   return router;

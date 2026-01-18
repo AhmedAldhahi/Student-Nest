@@ -91,7 +91,6 @@ export const buildControllersBoundaryContext = () => {
 
   const PaymentForLandlord = new PaymentForLandlordController(
     commandHandler.ChangePaymentStatusCommandHandler,
-    QueriesHandler.GetReceiptorPaymentQueriesHandler,
   );
 
   const SharedPayment = new SharedPaymentController(

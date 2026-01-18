@@ -8,12 +8,12 @@ export class PaymentContext {
   constructor(
     private readonly readUserRepo: IReadUserRepositories,
     private readonly LandlordStrategy: LandlordPaymentStrategy,
-    private readonly StudentStrategy: StudentPaymentStrategy
+    private readonly StudentStrategy: StudentPaymentStrategy,
   ) {}
 
   public async GetAllPaymentHistoryThatPaidExecute(
     userId: string,
-    leaseId: string
+    leaseId: string,
   ) {
     let strategy: IPaymentStrategy;
     const role = await this.getUserRole(userId);
@@ -32,14 +32,13 @@ export class PaymentContext {
 
     return await strategy.FindAllPaymentHistoryForLeaseThatPaid(
       userId,
-      leaseId
+      leaseId,
     );
   }
 
-
-    public async GetAllPaymentScheduleForSingleLeasesExecute(
+  public async GetAllPaymentScheduleForSingleLeasesExecute(
     userId: string,
-    leaseId: string
+    leaseId: string,
   ) {
     let strategy: IPaymentStrategy;
     const role = await this.getUserRole(userId);
@@ -56,14 +55,35 @@ export class PaymentContext {
         throw new Error("Invalid user Role !!");
     }
 
-    return await strategy.GetAllPaymentScheduleForSingleLeases(
-      userId,
-      leaseId
-    );
+    return await strategy.GetAllPaymentScheduleForSingleLeases(userId, leaseId);
   }
 
+  public async GetReceiptForSinglePaymentExecute(
+    userId: string,
+    leaseId: string,
+    paymentId: string,
+  ) {
+    let strategy: IPaymentStrategy;
+    const role = await this.getUserRole(userId);
 
-  
+    switch (role) {
+      case UserRole.landlord:
+        strategy = this.LandlordStrategy;
+        break;
+      case UserRole.student:
+        strategy = this.StudentStrategy;
+        break;
+
+      default:
+        throw new Error("Invalid user Role !!");
+    }
+
+    return await strategy.GetReceiptForSinglePayment(
+      userId,
+      leaseId,
+      paymentId,
+    );
+  }
 
   private async getUserRole(userId: string): Promise<UserRole> {
     try {

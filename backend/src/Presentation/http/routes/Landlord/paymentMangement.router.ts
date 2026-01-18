@@ -10,12 +10,7 @@ export const PaymentRouter = (
 ): Router => {
   const router = Router();
 
-  router.get(
-    "/:leaseId/:paymentId/receipt",
-    isAuth,
-    isLandlord,
-    paymentController.getReceiptsForSinglePayment
-  );
+
 
 
 

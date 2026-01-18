@@ -5,10 +5,46 @@ import { ReceiptModel } from "../../Database/TypeOrm/entity/Receipt.entity";
 import { ReceiptMapper } from "../mapper/receipt.mapper";
 
 export class ReadPaymentReceiptRepositories implements IReadReceiptPaymentRepo {
-  
+  public async findAllReceiptForPaymentScheduleByIdForStudent(
+    userId: string,
+    paymentId: string,
+  ): Promise<ReceiptEntity[] | null> {
+    try {
+      const receiptRepo =
+        AppDataSource.getInstance().getRepository(ReceiptModel);
+
+      const receipts = await receiptRepo.find({
+        where: {
+          scheduleId: paymentId,
+          payment: {
+            lease: {
+              studentId: userId,
+            },
+          },
+        },
+        relations: {
+          payment: {
+            lease: true,
+          },
+        },
+        order: {
+          createAt: "DESC",
+        },
+      });
+
+      if (!receipts || receipts.length === 0) {
+        return [];
+      }
+      return receipts.map((receipt) => ReceiptMapper.toDomain(receipt));
+    } catch (error: any) {
+      console.error("Error fetching receipts for payment:", error);
+      throw new Error("Unable to retrieve receipts.");
+    }
+  }
+
   public async findAllReceiptForPaymentScheduleForOneReceiptById(
     userId: string,
-    receiptId: string
+    receiptId: string,
   ): Promise<ReceiptEntity[] | null> {
     try {
       const receiptModels = await AppDataSource.getInstance()
@@ -42,7 +78,7 @@ export class ReadPaymentReceiptRepositories implements IReadReceiptPaymentRepo {
 
   public async findAllReceiptForPaymentScheduleById(
     userId: string,
-    paymentId: string
+    paymentId: string,
   ): Promise<ReceiptEntity[] | null> {
     try {
       const receiptRepo =

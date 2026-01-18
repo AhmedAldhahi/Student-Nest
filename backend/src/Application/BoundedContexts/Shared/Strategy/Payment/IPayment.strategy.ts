@@ -8,4 +8,10 @@ export interface IPaymentStrategy {
     userId: string,
     leaseId: string,
   ): Promise<any>;
+
+  GetReceiptForSinglePayment(
+    userId: string,
+    leaseId: string,
+    paymentId: string,
+  ): Promise<any>;
 }
