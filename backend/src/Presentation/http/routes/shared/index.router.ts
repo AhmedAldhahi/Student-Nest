@@ -22,7 +22,6 @@ export const SharedIndexRouter = (
 
   router.use("/apartments", ApartmentSharedRouter(apartmentController));
 
-  // //todo: need to implement landlord-student for strategy
   router.use(
     "/leases-request",
     LeaseRequestManagementRouter(leaseRequestManagementController)

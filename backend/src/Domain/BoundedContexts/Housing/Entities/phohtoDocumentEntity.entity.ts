@@ -1,7 +1,4 @@
-export interface IPhotoDocumentData {
-  photoId: string;
-  photoUrl: string;
-}
+import { IPhotoDocumentData } from "../Types/PhotoDocumentType.type";
 
 export class ApartmentPhotoDocumentEntity {
   private photoId: string;

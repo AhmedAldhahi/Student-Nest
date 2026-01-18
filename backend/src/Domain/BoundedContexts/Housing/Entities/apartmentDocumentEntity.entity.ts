@@ -1,11 +1,7 @@
 import { ApartmentDocumentType } from "../Enum/ApartmentDocument.enum";
+import { ApartmentDocumentData } from "../Types/ApartmentDocumentType.type";
 
-export interface ApartmentDocumentData {
-  apartmentDocumentId: string;
-  apartmentType: ApartmentDocumentType; // enum
-  documentUrl: string;
-  apartmentsId: string;
-}
+
 
 export class ApartmentDocumentEntity {
   private apartmentDocumentId: string;

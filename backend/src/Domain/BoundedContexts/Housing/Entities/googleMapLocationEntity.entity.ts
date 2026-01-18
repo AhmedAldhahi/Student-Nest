@@ -1,8 +1,5 @@
-export interface GoogleMapLocationData {
-  placeId: string;
-  longitude: string;
-  latitude: string;
-}
+import { GoogleMapLocationData } from "../Types/GoogleMapLocationData.type";
+
 
 export class GoogleMapLocationEntity {
   private googleMapLocationId: string;
