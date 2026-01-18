@@ -5,15 +5,14 @@ import { ReceiptModel } from "../../Database/TypeOrm/entity/Receipt.entity";
 import { ReceiptMapper } from "../mapper/receipt.mapper";
 
 export class ReadPaymentReceiptRepositories implements IReadReceiptPaymentRepo {
-  public async findAllReceiptForPaymentScheduleByIdForStudent(
+  public async findReceiptForPaymentScheduleByIdForStudent(
     userId: string,
     paymentId: string,
-  ): Promise<ReceiptEntity[] | null> {
+  ): Promise<ReceiptEntity | null> {
     try {
       const receiptRepo =
         AppDataSource.getInstance().getRepository(ReceiptModel);
-
-      const receipts = await receiptRepo.find({
+      const receipt = await receiptRepo.findOne({
         where: {
           scheduleId: paymentId,
           payment: {
@@ -27,18 +26,19 @@ export class ReadPaymentReceiptRepositories implements IReadReceiptPaymentRepo {
             lease: true,
           },
         },
+        // We keep the order to ensure we get the *latest* receipt if multiple exist
         order: {
           createAt: "DESC",
         },
       });
 
-      if (!receipts || receipts.length === 0) {
-        return [];
+      if (!receipt) {
+        return null;
       }
-      return receipts.map((receipt) => ReceiptMapper.toDomain(receipt));
+      return ReceiptMapper.toDomain(receipt);
     } catch (error: any) {
-      console.error("Error fetching receipts for payment:", error);
-      throw new Error("Unable to retrieve receipts.");
+      console.error("Error fetching receipt for payment:", error);
+      throw new Error("Unable to retrieve receipt.");
     }
   }
 

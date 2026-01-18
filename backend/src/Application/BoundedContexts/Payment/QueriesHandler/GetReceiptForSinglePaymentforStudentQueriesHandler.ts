@@ -25,7 +25,7 @@ export class GetReceiptForSinglePaymentForStudentQueriesHandler implements IQuer
 
       if (!lease) throw new Error("no lease found !!");
 
-      return await this.readReceiptRepo.findAllReceiptForPaymentScheduleByIdForStudent(
+      return await this.readReceiptRepo.findReceiptForPaymentScheduleByIdForStudent(
         command.userId,
         command.paymentId,
       );

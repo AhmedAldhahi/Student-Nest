@@ -11,8 +11,8 @@ export interface IReadReceiptPaymentRepo {
     receiptId: string,
   ): Promise<ReceiptEntity[] | null>;
 
-  findAllReceiptForPaymentScheduleByIdForStudent(
+  findReceiptForPaymentScheduleByIdForStudent(
     userId: string,
     paymentId: string,
-  ): Promise<ReceiptEntity[] | null>;
+  ): Promise<ReceiptEntity| null>;
 }
