@@ -25,43 +25,43 @@ export const buildControllersBoundaryContext = () => {
   const authController = new AuthController(
     commandHandler.RegisterLandlordCommandHandler,
     commandHandler.RegisterStudentCommandHandler,
-    QueriesHandler.LoginUserQueriesHandler
+    QueriesHandler.LoginUserQueriesHandler,
   );
 
   const verificationController = new VerificationController(
     commandHandler.ResendOtpCommandHandler,
-    commandHandler.VerifiedOtpCommandHandler
+    commandHandler.VerifiedOtpCommandHandler,
   );
 
   const passwordRecoverController = new PasswordRecoverController(
     commandHandler.ResendOtpForgetPasswordCommandHandler,
     commandHandler.VerifiedOtpForgetPasswordCommandHandler,
-    commandHandler.UpdateForgetPasswordCommandHandler
+    commandHandler.UpdateForgetPasswordCommandHandler,
   );
 
   const profileController = new ProfileController(
-    StrategyContext.ProfileContext
+    StrategyContext.ProfileContext,
   );
 
   const NotificationsController = new NotificationController(
     StrategyContext.notificationUserContext,
     commandHandler.UpdateNotificationStatus,
-    commandHandler.DeleteSpecificNotification
+    commandHandler.DeleteSpecificNotification,
   );
 
   const LandlordLeaseRequestController = new LeastRequestForLandlordController(
     commandHandler.ChangeLeaseRequestCommandHandler,
     QueriesHandler.GetAllLeaseRequestForLandlordForSingleApartmentQueriesHandler,
-    QueriesHandler.SearchForLeaseRequestForLandlordForSingleApartmentQueriesHandler
+    QueriesHandler.SearchForLeaseRequestForLandlordForSingleApartmentQueriesHandler,
   );
 
   const sharedLeaseRequestController = new SharedLeaseRequestController(
-    StrategyContext.UsersLeaseRequestContext
+    StrategyContext.UsersLeaseRequestContext,
   );
 
   const adminAuditLogController = new AuditLogController(
     QueriesHandler.GetAllAuditLogQueriesHandler,
-    QueriesHandler.SearchForAuditLogQueriesHandler
+    QueriesHandler.SearchForAuditLogQueriesHandler,
   );
 
   const adminUserManagementController = new UserManagementController(
@@ -69,11 +69,11 @@ export const buildControllersBoundaryContext = () => {
     commandHandler.DeleteUserForAdminCommandHandler,
     commandHandler.ChangeUserActivityStatusCommandHandler,
     SimpleFactory.GetAllUserFactory,
-    SimpleFactory.SearchForAllUserFactory
+    SimpleFactory.SearchForAllUserFactory,
   );
 
   const adminApartmentController = new ApartmentManagementControllerForAdmin(
-    commandHandler.ChangeApartmentVerificationStatusCommandHandler
+    commandHandler.ChangeApartmentVerificationStatusCommandHandler,
   );
 
   const LandlordApartmentController = new ApartmentControllerForLandlord(
@@ -81,46 +81,45 @@ export const buildControllersBoundaryContext = () => {
     commandHandler.AddApartmentDocumentCommandHandler,
     commandHandler.UpdateApartmentDocumentCommandHandler,
     commandHandler.UpdateApartmentDetailCommandHandler,
-    QueriesHandler.GetAllApartmentBeenBookedQueriesHandler
+    QueriesHandler.GetAllApartmentBeenBookedQueriesHandler,
   );
 
   const SharedApartmentController = new SharedApartmentManagementController(
     StrategyContext.ApartmentUserContext,
-    QueriesHandler.GetApartmentDetailsForGuestQueriesHandler
+    QueriesHandler.GetApartmentDetailsForGuestQueriesHandler,
   );
 
   const PaymentForLandlord = new PaymentForLandlordController(
     commandHandler.ChangePaymentStatusCommandHandler,
-    QueriesHandler.GetAllPaymentScheduleForSingleLeaseQueriesHandler,
-    QueriesHandler.GetReceiptorPaymentQueriesHandler
+    QueriesHandler.GetReceiptorPaymentQueriesHandler,
   );
 
   const SharedPayment = new SharedPaymentController(
-    StrategyContext.UserPaymentsContext
+    StrategyContext.UserPaymentsContext,
   );
 
   const LeaseForLandlord = new LeaseManagementForLandlord(
     QueriesHandler.SearchForLeaseForLandlordForSingleApartmentQueriesHandler,
-    QueriesHandler.GetLeaseForLandlordForSingleApartmentQueriesHandler
+    QueriesHandler.GetLeaseForLandlordForSingleApartmentQueriesHandler,
   );
 
   const SharedLease = new SharedLeaseManagementController(
-    StrategyContext.UserLeasesContext
+    StrategyContext.UserLeasesContext,
   );
 
   const apartmentControllerForStudent = new ApartmentControllerForStudent(
     QueriesHandler.GetApartmentRandomlyThatNotFullAndVerifiedQueriesHandler,
-    QueriesHandler.GetApartmentNotFullAndVerifiedQueriesHandler
+    QueriesHandler.GetApartmentNotFullAndVerifiedQueriesHandler,
   );
 
   const StudentLeaseRequest = new LeaseRequestForStudentController(
-    commandHandler.CreateLeaseRequestCommandHandler
+    commandHandler.CreateLeaseRequestCommandHandler,
   );
 
   const LeaseRequest = {
     Landlord: LandlordLeaseRequestController,
     Shared: sharedLeaseRequestController,
-    Student:StudentLeaseRequest
+    Student: StudentLeaseRequest,
   };
 
   const Apartment = {

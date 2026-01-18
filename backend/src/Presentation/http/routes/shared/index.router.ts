@@ -28,7 +28,6 @@ export const SharedIndexRouter = (
     LeaseRequestManagementRouter(leaseRequestManagementController)
   );
 
-  // //todo: need to implement landlord-student for strategy
   router.use("/leases", LeaseManagementRouter(leaseManagementController));
 
   router.use("/notifications", notificationRouter(notificationController));

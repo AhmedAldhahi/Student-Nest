@@ -6,13 +6,87 @@ import { PaymentAggregateRoot } from "../../../Domain/BoundedContexts/Payment/Ag
 import { In } from "typeorm";
 import { PaymentsResponse } from "../../../Domain/BoundedContexts/Payment/Representations/IPaymentResponse";
 
-export class ReadPaymentScheduleRepositories
-  implements IReadPaymentScheduleRepo
-{
+export class ReadPaymentScheduleRepositories implements IReadPaymentScheduleRepo {
+  public async FindAllPaymentScheduleForOneLeaseForStudent(
+    userId: string,
+    leaseId: string,
+  ): Promise<PaymentsResponse[] | null> {
+    try {
+      const paymentModels = await AppDataSource.getInstance()
+        .getRepository(PaymentScheduleModel)
+        .find({
+          where: {
+            leaseId: leaseId,
+            lease: {
+              studentId: userId,
+            },
+          },
+          relations: {
+            receipt: true,
+            lease: true,
+          },
+          order: {
+            dueDate: "ASC",
+          },
+        });
+
+      if (!paymentModels || paymentModels.length === 0) {
+        return [];
+      }
+
+      return paymentModels.map((orm) => {
+        return PaymentMapper.toResponse(orm);
+      });
+    } catch (error: any) {
+      console.error("Failed to find payment schedule for lease,", error);
+      throw new Error("Unable to retrieve payment schedule.");
+    }
+  }
+  public async FindAllPaymentAsArrayForStudent(
+    userId: string,
+    leaseId: string,
+    paymentId: string[],
+  ): Promise<PaymentsResponse[] | null> {
+    try {
+      if (!paymentId || paymentId.length === 0) {
+        return [];
+      }
+
+      const paymentModels = await AppDataSource.getInstance()
+        .getRepository(PaymentScheduleModel)
+        .find({
+          where: {
+            leaseId: leaseId,
+            lease: {
+              studentId: userId,
+            },
+            scheduleId: In(paymentId),
+          },
+          relations: {
+            receipt: true,
+            lease: true,
+          },
+          order: {
+            dueDate: "ASC",
+          },
+        });
+
+      if (!paymentModels || paymentModels.length === 0) {
+        return [];
+      }
+
+      return paymentModels.map((orm) => {
+        return PaymentMapper.toResponse(orm);
+      });
+    } catch (error: any) {
+      console.error("Failed to find batch payment schedules:", error);
+      throw new Error("Unable to retrieve specific payment schedules.");
+    }
+  }
   public async FindAllPaymentAsArray(
     userId: string,
     leaseId: string,
-    paymentIds: string[] // Changed name slightly for clarity, matches interface logic
+    paymentIds: string[], // Changed name slightly for clarity, matches interface logic
   ): Promise<PaymentsResponse[] | null> {
     try {
       if (!paymentIds || paymentIds.length === 0) {
@@ -54,7 +128,7 @@ export class ReadPaymentScheduleRepositories
   public async FindPaymentScheduleById(
     userId: string,
     leaseId: string,
-    paymentId: string
+    paymentId: string,
   ): Promise<PaymentAggregateRoot | null> {
     try {
       const paymentModel = await AppDataSource.getInstance()
@@ -84,7 +158,7 @@ export class ReadPaymentScheduleRepositories
 
   public async FindAllPaymentScheduleForOneLease(
     userId: string,
-    leaseId: string
+    leaseId: string,
   ): Promise<PaymentsResponse[] | null> {
     try {
       const paymentModels = await AppDataSource.getInstance()

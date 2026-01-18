@@ -7,10 +7,8 @@ export const LeaseManagementRouter = (
 ): Router => {
   const router = Router();
 
-  //todo: need strategy and factory student-landlord-admin
   router.get("/", isAuth, leaseManagementController.getAllLease);
 
-  //todo: need strategy and factory student-landlord-admin
 
   router.get("/search", isAuth, leaseManagementController.getLeaseByQuery);
 
