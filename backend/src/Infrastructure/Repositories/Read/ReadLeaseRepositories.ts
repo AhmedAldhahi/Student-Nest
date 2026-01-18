@@ -1,17 +1,39 @@
 import { Like, FindOptionsWhere } from "typeorm";
 import { LeaseAggregateRoot } from "../../../Domain/BoundedContexts/Leases/AgregateRoot/leaseEntity.entity";
-import {
-  IReadLeaseRepositories,
-} from "../../../Domain/BoundedContexts/Leases/Repositories/Read/ReadLeaseRepositories.repositories";
+import { IReadLeaseRepositories } from "../../../Domain/BoundedContexts/Leases/Repositories/Read/ReadLeaseRepositories.repositories";
 import { AppDataSource } from "../../Database/TypeOrm/data-source";
 import { LeaseModel } from "../../Database/TypeOrm/entity/Lease.entity";
 import { LeaseMapper } from "../mapper/lease.mapper";
-import { ILeaseEntityDTO } from "../../../Domain/BoundedContexts/Leases/types/LeaseEntityData";
+import { ILeaseEntityDTO } from "../../../Domain/BoundedContexts/Leases/Representations/ILeaseEntityDTO";
 
 export class ReadLeaseRepositories implements IReadLeaseRepositories {
+  public async findLeaseForStudentById(
+    userId: string,
+    id: string,
+  ): Promise<ILeaseEntityDTO | null> {
+    try {
+      const leaseModel = await AppDataSource.getInstance()
+        .getRepository(LeaseModel)
+        .findOne({
+          where: { studentId: userId, leaseId: id },
+          relations: {
+            landlord: { user: true },
+            student: { user: true },
+            apartment: true,
+          },
+        });
+
+      if (!leaseModel) return null;
+
+      return LeaseMapper.toResponse(leaseModel);
+    } catch (error: any) {
+      console.error("fail to get leases !!");
+      throw error;
+    }
+  }
   public async findAllLeaseForStudentSearch(
     userId: string,
-    query: string
+    query: string,
   ): Promise<ILeaseEntityDTO[] | null> {
     try {
       const Queries = query.trim();
@@ -81,7 +103,7 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
   }
 
   public async findAllLeaseForStudent(
-    userId: string
+    userId: string,
   ): Promise<ILeaseEntityDTO[] | null> {
     try {
       const leasesModel = await AppDataSource.getInstance()
@@ -141,7 +163,7 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
   }
 
   public async countActiveLeasesByApartmentId(
-    apartmentId: string
+    apartmentId: string,
   ): Promise<number> {
     const count = await AppDataSource.getInstance()
       .getRepository(LeaseModel)
@@ -155,7 +177,7 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
 
   public async findLeaseForLandlordById(
     userId: string,
-    id: string
+    id: string,
   ): Promise<ILeaseEntityDTO | null> {
     try {
       const leaseModel = await AppDataSource.getInstance()
@@ -181,7 +203,7 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
   public async findLeaseForLandlordForSingleApartmentById(
     userId: string,
     apartmentId: string,
-    leaseId: string
+    leaseId: string,
   ): Promise<LeaseAggregateRoot | null> {
     try {
       const leaseModel = await AppDataSource.getInstance()
@@ -209,7 +231,7 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
   }
 
   public async findAllLeaseForLandlord(
-    userId: string
+    userId: string,
   ): Promise<ILeaseEntityDTO[] | null> {
     try {
       const leasesModel = await AppDataSource.getInstance()
@@ -270,7 +292,7 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
 
   public async findAllLeaseForLandlordSearch(
     userId: string,
-    query: string
+    query: string,
   ): Promise<ILeaseEntityDTO[] | null> {
     try {
       const Queries = query.trim();
@@ -341,7 +363,7 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
 
   public async findAllLeaseForLandlordForSingleApartment(
     userId: string,
-    apartmentId: string
+    apartmentId: string,
   ): Promise<ILeaseEntityDTO[] | null> {
     try {
       const leasesModel = await AppDataSource.getInstance()
@@ -371,7 +393,7 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
   public async findAllLeaseForLandlordForSingleApartmentByQueries(
     userId: string,
     apartmentId: string,
-    query: string // Added query parameter here
+    query: string, // Added query parameter here
   ): Promise<ILeaseEntityDTO[] | null> {
     try {
       const Queries = query.trim();

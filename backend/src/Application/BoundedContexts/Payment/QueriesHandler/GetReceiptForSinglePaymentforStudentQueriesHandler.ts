@@ -18,7 +18,7 @@ export class GetReceiptForSinglePaymentForStudentQueriesHandler implements IQuer
 
       user.ensureAccountIsActive();
 
-      const lease = await this.readLeaseRepo.findLeaseForLandlordById(
+      const lease = await this.readLeaseRepo.findLeaseForStudentById(
         command.userId,
         command.leaseId,
       );
