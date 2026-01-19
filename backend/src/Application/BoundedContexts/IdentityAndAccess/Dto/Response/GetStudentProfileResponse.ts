@@ -7,4 +7,5 @@ export interface GetStudentProfileResponse extends GetUserProfileResponse {
   universityName: string | undefined;
   studentGovId: string | undefined;
   verificationFile: string | undefined;
+  roommateProfileStatus: boolean;
 }

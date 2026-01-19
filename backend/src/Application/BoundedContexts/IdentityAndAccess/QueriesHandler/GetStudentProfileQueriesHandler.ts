@@ -45,6 +45,7 @@ export class GetStudentQueriesHandlers
         universityName: student.getUniversityName(),
         studentGovId: student.getGovernmentId(),
         verificationFile: student.getVerificationDocument(),
+        roommateProfileStatus: student.getRoommateProfileStatus(),
       };
     } catch (error: any) {
       console.error("failed to fetch student from  our app");

@@ -120,6 +120,10 @@ export class StudentAggregateRoot extends AggregateRoot<string> {
     return this.universityName.getValue() ?? undefined;
   }
 
+  public getRoommateProfileStatus():boolean {
+    return this.roommateProfileStatus;
+  }
+
   // public getWalletAddress(): string {
   //   return this.walletAddress;
   // }
