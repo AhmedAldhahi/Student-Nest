@@ -27,7 +27,6 @@ export class FilterSearchForApartmentQueriesHandler implements IQueriesHandlers<
       }
 
       return await this.readApartmentRepo.filterApartment(filter);
-      
     } catch (error: any) {
       console.error(
         "Failed to execute FilterSearchForApartmentQueriesHandler",

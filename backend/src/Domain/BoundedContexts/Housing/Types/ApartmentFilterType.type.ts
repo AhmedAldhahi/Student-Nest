@@ -2,8 +2,8 @@
 export type FilterOptionType = {
   minAge?: string;
   maxAge?: string;
-  minDistLocation?: string;
-  maxDistLocation?: string;
+  minDistLocation?: number;
+  maxDistLocation?: number;
   minPrice?: string;
   maxPrice?: string;
   University?: string;

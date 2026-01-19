@@ -34,7 +34,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
     }
 
     if (type.isJoint !== undefined) {
-      queryBuilder.andWhere("apartment.isJoint = :isJoint", {
+      queryBuilder.andWhere("apartment.isJoin = :isJoint", {
         isJoint: type.isJoint,
       });
     }
@@ -44,6 +44,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
         minPrice: Number(type.minPrice),
       });
     }
+    
     if (type.maxPrice) {
       queryBuilder.andWhere("apartment.price <= :maxPrice", {
         maxPrice: Number(type.maxPrice),
