@@ -14,6 +14,7 @@ import {
   GetAllBookedApartmentQH,
   GetAllVisibleAndNotFullApartmentQH,
   GetApartmentDetailForGuestQH,
+  GetFilterApartmentQH,
   GetRandomlyThreeApartmentThatIsVisibleAndNotFullQH,
   UpdateApartmentDetailCH,
   UpdateApartmentDocumentsCH,
@@ -102,6 +103,7 @@ export function buildDependencies() {
       GetApartmentNotFullAndVerifiedQueriesHandler:
         GetAllVisibleAndNotFullApartmentQH(),
       GetApartmentDetailsForGuestQueriesHandler: GetApartmentDetailForGuestQH(),
+      GetFilterApartmentQueriesHandler:GetFilterApartmentQH()
     },
 
     StrategyContext: {

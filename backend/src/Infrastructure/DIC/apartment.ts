@@ -5,6 +5,7 @@ import { CreateApartmentDocumentCommandHandler } from "../../Application/Bounded
 import { deleteApartmentByIdForLandlordCommandHandler } from "../../Application/BoundedContexts/Apartment/CommandHandler/DeleteApartmentByIdForLandlordCommandHandler";
 import { UpdateApartmentDetailForLandlordCommandHandler } from "../../Application/BoundedContexts/Apartment/CommandHandler/UpdateApartmentDetailCommandHandler";
 import { UpdateApartmentDocumentFileCommandHandler } from "../../Application/BoundedContexts/Apartment/CommandHandler/UpdateApartmentDocumentCommandHandler";
+import { FilterSearchForApartmentQueriesHandler } from "../../Application/BoundedContexts/Apartment/QueriesHandler/FilterSearchForApartmentQueriesHandler";
 import { GetAllApartmentByLandlordQueriesHandler } from "../../Application/BoundedContexts/Apartment/QueriesHandler/GetAllAartmentByLandlordQueriesHandler";
 import { GetAllApartmentByQueriesForLandlordQueriesHandler } from "../../Application/BoundedContexts/Apartment/QueriesHandler/GetAllApartmentByQueriesForLandlordQueriesHandler";
 import { GetAllApartmentForAdminQueriesHandler } from "../../Application/BoundedContexts/Apartment/QueriesHandler/GetAllApartmentForAdminQueriesHandler";
@@ -40,7 +41,7 @@ export function AddNewApartmentCH(): CreateApartmentCommandHandler {
     uow,
     fileService,
     readUserRepo,
-    readLandlordRepo
+    readLandlordRepo,
   );
 }
 
@@ -56,7 +57,7 @@ export function AddApartmentDocumentCH(): CreateApartmentDocumentCommandHandler 
     readLandlordRepo,
     readApartmentRepo,
     uow,
-    fileService
+    fileService,
   );
 }
 
@@ -68,7 +69,7 @@ export function DeleteApartmentByIdForLandlordCH(): deleteApartmentByIdForLandlo
   return new deleteApartmentByIdForLandlordCommandHandler(
     uow,
     readApartmentRepo,
-    fileService
+    fileService,
   );
 }
 
@@ -84,7 +85,7 @@ export function UpdateApartmentDetailCH(): UpdateApartmentDetailForLandlordComma
     ReadApartmentRepo,
     readUserRepo,
     readLandlordRepo,
-    fileService
+    fileService,
   );
 }
 
@@ -102,7 +103,7 @@ export function UpdateApartmentDocumentsCH(): UpdateApartmentDocumentFileCommand
     readApartmentRepo,
     readLandlordRepo,
     readUserRepo,
-    ReadApartmentDocumentRepo
+    ReadApartmentDocumentRepo,
   );
 }
 
@@ -118,25 +119,25 @@ export function UserApartmentContext(): ApartmentContext {
   const DeleteApartmentCH = new DeleteApartmentByIdForAdminCommandHandler(
     uow,
     ReadApartmentRepo,
-    fileService
+    fileService,
   );
   const queriesHandler = new GetAllApartmentByQueryForAdminQueriesHandler(
-    ReadApartmentRepo
+    ReadApartmentRepo,
   );
 
   const GetAllApartmentQH = new GetAllApartmentForAdminQueriesHandler(
-    ReadApartmentRepo
+    ReadApartmentRepo,
   );
 
   const GetAllApartmentPrefixQH =
     new GetAllApartmentByQueriesForLandlordQueriesHandler(ReadApartmentRepo);
 
   const GetApartmentDocumentByIdQH = new GetApartmentDocumentByIdQueriesHandler(
-    ReadApartmentDocumentRepo
+    ReadApartmentDocumentRepo,
   );
 
   const GetApartmentDetailByIdQH = new GetApartmentByIdQueriesHandler(
-    ReadApartmentRepo
+    ReadApartmentRepo,
   );
 
   const GetAllApartmentForLandlord =
@@ -146,24 +147,24 @@ export function UserApartmentContext(): ApartmentContext {
     new deleteApartmentByIdForLandlordCommandHandler(
       uow,
       ReadApartmentRepo,
-      fileService
+      fileService,
     );
 
   const GetApartmentByIdForLandlord =
     new GetApartmentByIdForLandlordQueriesHandler(
       ReadUseRepo,
-      ReadApartmentRepo
+      ReadApartmentRepo,
     );
 
   const GetApartmentDocumentByIdForLandlord =
     new GetApartmentDocumentByIdForLandlordQueriersHandler(
       ReadUseRepo,
       ReadLandlordRepo,
-      ReadApartmentDocumentRepo
+      ReadApartmentDocumentRepo,
     );
 
   const getGustApartmentDetailsQH = new GetApartmentByIdForGuestQueriesHandler(
-    ReadApartmentRepo
+    ReadApartmentRepo,
   );
 
   const adminStrategy = new AdminApartmentStrategy(
@@ -171,7 +172,7 @@ export function UserApartmentContext(): ApartmentContext {
     queriesHandler,
     GetAllApartmentQH,
     GetApartmentDocumentByIdQH,
-    GetApartmentDetailByIdQH
+    GetApartmentDetailByIdQH,
   );
 
   const landlordStrategy = new LandlordApartmentStrategy(
@@ -179,11 +180,11 @@ export function UserApartmentContext(): ApartmentContext {
     GetAllApartmentPrefixQH,
     DeleteApartmentByIdForLandlord,
     GetApartmentByIdForLandlord,
-    GetApartmentDocumentByIdForLandlord
+    GetApartmentDocumentByIdForLandlord,
   );
 
   const studentStrategy = new StudentApartmentStrategy(
-    GetApartmentDetailByIdQH
+    GetApartmentDetailByIdQH,
   );
 
   const guestStrategy = new GuestApartmentStrategy(getGustApartmentDetailsQH);
@@ -192,7 +193,7 @@ export function UserApartmentContext(): ApartmentContext {
     ReadUseRepo,
     adminStrategy,
     landlordStrategy,
-    studentStrategy
+    studentStrategy,
   );
 }
 
@@ -204,7 +205,7 @@ export function GetAllBookedApartmentQH(): GetAllApartmentThatBeenBookedQueriesH
   return new GetAllApartmentThatBeenBookedQueriesHandler(
     userRepo,
     ApartmentRepo,
-    leaseRepo
+    leaseRepo,
   );
 }
 
@@ -214,7 +215,7 @@ export function GetRandomlyThreeApartmentThatIsVisibleAndNotFullQH(): GetRandoml
 
   return new GetRandomlyThreeApartmentThatIsVisibleAndNotFullQueriesHandler(
     readApartmentRepo,
-    ReadLeaseRepo
+    ReadLeaseRepo,
   );
 }
 
@@ -224,7 +225,7 @@ export function GetAllVisibleAndNotFullApartmentQH(): GetAllVisibleAndNotFullApa
 
   return new GetAllVisibleAndNotFullApartmentQueriesHandler(
     readApartmentRepo,
-    ReadLeaseRepo
+    ReadLeaseRepo,
   );
 }
 
@@ -232,4 +233,10 @@ export function GetApartmentDetailForGuestQH(): GetApartmentByIdForGuestQueriesH
   const readApartmentRepo = new ReadApartmentRepositories();
 
   return new GetApartmentByIdForGuestQueriesHandler(readApartmentRepo);
+}
+
+export function GetFilterApartmentQH(): FilterSearchForApartmentQueriesHandler {
+  const readApartmentRepo = new ReadApartmentRepositories();
+
+  return new FilterSearchForApartmentQueriesHandler(readApartmentRepo);
 }

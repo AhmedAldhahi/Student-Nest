@@ -1,4 +1,4 @@
-import { FindOptionsWhere, In, Like } from "typeorm";
+import { FindOptionsWhere, In, Like, SelectQueryBuilder } from "typeorm";
 import { AppDataSource } from "../../Database/TypeOrm/data-source";
 import { ApartmentModel } from "../../Database/TypeOrm/entity/Apartment.entity";
 import { ApartmentMapper } from "../mapper/apartment.mapper";
@@ -7,8 +7,76 @@ import { IReadApartmentRepo } from "../../../Domain/BoundedContexts/Housing/Repo
 import { IApartmentDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentDto";
 import { IApartmentSimpleDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentSimpleDto";
 import { IApartmentForGuestDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentForGuestDTO";
+import { FilterOptionType } from "../../../Domain/BoundedContexts/Housing/Types/ApartmentFilterType.type";
 
 export class ReadApartmentRepositories implements IReadApartmentRepo {
+  public async filterApartment(
+    type: FilterOptionType,
+  ): Promise<IApartmentSimpleDTO[] | null> {
+    const queryBuilder: SelectQueryBuilder<ApartmentModel> =
+      AppDataSource.getInstance()
+        .getRepository(ApartmentModel)
+        .createQueryBuilder("apartment")
+        .leftJoinAndSelect("apartment.location", "location")
+        .leftJoinAndSelect("apartment.landlord", "landlord")
+        .leftJoinAndSelect("landlord.user", "user")
+        .leftJoinAndSelect("apartment.photos", "photos");
+
+    queryBuilder.andWhere("apartment.isVisible = :visible", { visible: true });
+    queryBuilder.andWhere("apartment.isVerified = :verified", {
+      verified: true,
+    });
+
+    if (type.University) {
+      queryBuilder.andWhere("apartment.universityName = :uName", {
+        uName: type.University,
+      });
+    }
+
+    if (type.isJoint !== undefined) {
+      queryBuilder.andWhere("apartment.isJoint = :isJoint", {
+        isJoint: type.isJoint,
+      });
+    }
+
+    if (type.minPrice) {
+      queryBuilder.andWhere("apartment.price >= :minPrice", {
+        minPrice: Number(type.minPrice),
+      });
+    }
+    if (type.maxPrice) {
+      queryBuilder.andWhere("apartment.price <= :maxPrice", {
+        maxPrice: Number(type.maxPrice),
+      });
+    }
+
+    if (type.minAge) {
+      queryBuilder.andWhere("apartment.allowedAge >= :minAge", {
+        minAge: Number(type.minAge),
+      });
+    }
+    if (type.maxAge) {
+      queryBuilder.andWhere("apartment.allowedAge <= :maxAge", {
+        maxAge: Number(type.maxAge),
+      });
+    }
+
+    queryBuilder.orderBy("apartment.createAt", "DESC");
+
+    try {
+      const apartments = await queryBuilder.getMany();
+
+      if (!apartments || apartments.length === 0) {
+        return [];
+      }
+
+      return apartments.map((apt) => ApartmentMapper.toResponsesSimple(apt));
+    } catch (error) {
+      console.error("Database Error: Failed to filter apartments", error);
+      throw new Error("Could not fetch apartments from database");
+    }
+  }
+
   public async FindAllApartmentThatBeenVerified(): Promise<
     IApartmentSimpleDTO[] | null
   > {
@@ -65,7 +133,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
 
   public async findAllApartmentBasedArray(
     ids: string[],
-    userId: string
+    userId: string,
   ): Promise<IApartmentSimpleDTO[] | null> {
     try {
       if (!ids || ids.length === 0) {
@@ -90,7 +158,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
       }
 
       return apartmentModels.map((model) =>
-        ApartmentMapper.toResponsesSimple(model)
+        ApartmentMapper.toResponsesSimple(model),
       );
     } catch (error) {
       console.error("Failed to find apartments by ID array:", error);
@@ -100,14 +168,14 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
 
   public async SearchForApartmentBasedArray(
     ids: string[],
-    queries: string
+    queries: string,
   ): Promise<ApartmentAggregateRoot[] | null> {
     throw new Error("Method not implemented.");
   }
 
   public async findApartmentByIdForLandlord(
     id: string,
-    userId: string
+    userId: string,
   ): Promise<ApartmentAggregateRoot | null> {
     try {
       const apartment = await AppDataSource.getInstance()
@@ -129,7 +197,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
     }
   }
   public async findAllApartmentForLandlord(
-    userId: string
+    userId: string,
   ): Promise<IApartmentSimpleDTO[] | null> {
     try {
       const apartmentRepo =
@@ -184,7 +252,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
 
   public async findApartmentByQueryForLandlord(
     prefix: string,
-    userId: string
+    userId: string,
   ): Promise<IApartmentSimpleDTO[] | null> {
     try {
       const apartmentRepo =
@@ -257,7 +325,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
 
   public async findApartmentForLandlordById(
     id: string,
-    userId: string
+    userId: string,
   ): Promise<ApartmentAggregateRoot | null> {
     try {
       const apartment = await AppDataSource.getInstance()
@@ -281,9 +349,8 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
 
   public async findApartmentDetailsByIdForLandlord(
     id: string,
-    userId: string
-  ): Promise<IApartmentDTO | null> { 
-
+    userId: string,
+  ): Promise<IApartmentDTO | null> {
     console.log(`id ${id} and user id ${userId}`);
     try {
       const apartment = await AppDataSource.getInstance()
@@ -305,7 +372,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
     }
   }
   public async findAllApartment(
-    userId: string
+    userId: string,
   ): Promise<IApartmentSimpleDTO[] | null> {
     try {
       const apartmentRepo =
@@ -356,7 +423,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
   }
 
   public async findApartmentByQuery(
-    prefix: string
+    prefix: string,
   ): Promise<IApartmentSimpleDTO[] | null> {
     try {
       const apartmentRepo =
@@ -421,7 +488,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
   }
 
   public async findApartmentById(
-    id: string
+    id: string,
   ): Promise<ApartmentAggregateRoot | null> {
     try {
       const apartment = await AppDataSource.getInstance()
@@ -444,7 +511,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
   }
 
   public async findApartmentDetailsById(
-    id: string
+    id: string,
   ): Promise<IApartmentDTO | null> {
     try {
       const apartment = await AppDataSource.getInstance()
@@ -467,7 +534,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
   }
 
   public async findApartmentDetailsForGuestById(
-    id: string
+    id: string,
   ): Promise<IApartmentForGuestDTO | null> {
     // 1. Fetch only public data
     const apartment = await AppDataSource.getInstance()

@@ -4,7 +4,7 @@ import { SharedApartmentManagementController } from "../../controllers/Apartment
 import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 
 export const ApartmentSharedRouter = (
-  apartmentController: SharedApartmentManagementController
+  apartmentController: SharedApartmentManagementController,
 ): Router => {
   const router = Router();
 
@@ -15,7 +15,7 @@ export const ApartmentSharedRouter = (
   router.get(
     "/:id/documents",
     isAuth,
-    apartmentController.FindApartmentDocumentById
+    apartmentController.FindApartmentDocumentById,
   );
 
   router.get("/:id", isAuth, apartmentController.getApartmentDetailById);
@@ -24,10 +24,12 @@ export const ApartmentSharedRouter = (
     "/:apartmentId",
     isAuth,
     isAdminOrLandlord,
-    apartmentController.DeleteApartmentById
+    apartmentController.DeleteApartmentById,
   );
 
   router.get("/detail/:id", apartmentController.getApartmentDetailForGuest);
+
+  router.get("/search/filter", apartmentController.getFilterApartment);
 
   return router;
 };
