@@ -23,19 +23,17 @@ import { RegistrationStudentResponse } from "../Dto/Response/RegisterStudentResp
 import { IEventBus } from "../../../../Domain/Shared/Event/IEventBus";
 import { UserRegisteredEvent } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Events/UserRegisterdEvent.event";
 
-export class CreateStudentCommandHandler
-  implements ICommandHandlers<CreateStudentCommand>
-{
+export class CreateStudentCommandHandler implements ICommandHandlers<CreateStudentCommand> {
   constructor(
     private readonly unitOfWork: IUnitOfWork,
     private readonly passwordService: IPasswordService,
     private readonly fileService: IFileStorageService,
     private readonly readUserRepo: IReadUserRepositories,
-    private readonly eventBus: IEventBus
+    private readonly eventBus: IEventBus,
   ) {}
 
   public async handle(
-    command: CreateStudentCommand
+    command: CreateStudentCommand,
   ): Promise<RegistrationStudentResponse> {
     const otp = OTP.generate();
     const userId = uuidv4();
@@ -57,7 +55,7 @@ export class CreateStudentCommandHandler
     user.setOtpForEmail(otp);
 
     let verificationFilesUrl: string = await this.fileService.upload(
-      command.verificationFile
+      command.verificationFile,
     );
 
     const student = new StudentAggregateRoot({
@@ -69,6 +67,7 @@ export class CreateStudentCommandHandler
       userGovId: GovernmentID.create(command.studentGovId),
       validateStudentDocument:
         VerificationDocument.create(verificationFilesUrl),
+      roommateProfileStatus: false,
     });
 
     await this.unitOfWork.startTransaction();
@@ -90,7 +89,7 @@ export class CreateStudentCommandHandler
         user.getUserId(),
         command.email,
         command.name,
-        otp.getValue()
+        otp.getValue(),
       );
 
       await this.eventBus.publish(event);
