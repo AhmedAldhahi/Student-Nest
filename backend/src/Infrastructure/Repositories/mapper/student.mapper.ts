@@ -17,9 +17,10 @@ export class StudentMapper {
       universityName: new StudentUniversity(stdModel.UniversityName),
       graduateYear: new studentGraduateYear(stdModel.GraduationYear),
       major: new StudentMajor(stdModel.Major),
+      roommateProfileStatus: stdModel.roommateProfileStatus,
 
       validateStudentDocument: new VerificationDocument(
-        stdModel.verificationFiles
+        stdModel.verificationFiles,
       ),
     });
   }
@@ -44,6 +45,7 @@ export class StudentMapper {
       userGovId: stdModel.StudentGovId,
       universityName: stdModel.UniversityName,
       studentValidateDocument: stdModel.verificationFiles,
+      roommateProfileStatus: stdModel.roommateProfileStatus,
     };
   }
 

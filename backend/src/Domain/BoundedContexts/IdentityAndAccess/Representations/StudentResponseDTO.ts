@@ -8,4 +8,5 @@ export interface StudentResponseDto {
   userGovId: string;
   universityName: string;
   studentValidateDocument: string;
+  roommateProfileStatus:boolean
 }

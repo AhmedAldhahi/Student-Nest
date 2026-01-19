@@ -16,6 +16,7 @@ export class StudentAggregateRoot extends AggregateRoot<string> {
   private major: StudentMajor;
   private graduateYear: studentGraduateYear;
   private studentValidateDocument: VerificationDocument;
+  private roommateProfileStatus: boolean = false;
   //private walletAddress: string = "";
 
   constructor(data: StudentDataType) {
@@ -27,6 +28,7 @@ export class StudentAggregateRoot extends AggregateRoot<string> {
     this.graduateYear = data.graduateYear;
     this.major = data.major;
     this.studentValidateDocument = data.validateStudentDocument;
+    this.roommateProfileStatus = data.roommateProfileStatus;
     //private walletAddress: string = "";
   }
 
@@ -83,8 +85,6 @@ export class StudentAggregateRoot extends AggregateRoot<string> {
   public updateVerificationDocument(document: VerificationDocument) {
     this.studentValidateDocument = document;
   }
-
-
 
   /**
    * ==================================================================================

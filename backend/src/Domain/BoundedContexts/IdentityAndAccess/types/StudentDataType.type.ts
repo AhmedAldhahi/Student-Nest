@@ -25,5 +25,6 @@ export type StudentDataType = {
   universityName: StudentUniversity;
   studentCardId: StudentCard;
   validateStudentDocument: VerificationDocument;
+  roommateProfileStatus:boolean
   //walletAddress: string = "";
 };

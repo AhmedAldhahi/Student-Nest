@@ -25,6 +25,9 @@ export class StudentModel {
   @Column({ type: "varchar", length: 200 })
   verificationFiles: string;
 
+  @Column({type:"boolean", nullable: true, default: false})
+  roommateProfileStatus:boolean;
+
   @PrimaryColumn()
   userId: string; // same id as user
 
