@@ -101,6 +101,7 @@ export class Server {
       LeaseRequest,
       Lease,
       Payment,
+      RoommateProfileForStudent
     } = buildControllersBoundaryContext();
 
     this.app.use(
@@ -128,6 +129,7 @@ export class Server {
         Apartment.Student,
         LeaseRequest.Student,
         Payment.Student,
+        RoommateProfileForStudent
       ),
     );
 

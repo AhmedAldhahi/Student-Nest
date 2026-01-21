@@ -22,10 +22,12 @@ import { WritePaymentScheduleRepositories } from "./Write/WritePaymentSchedulRep
 import { IWriteReceiptRepo } from "../../Domain/BoundedContexts/Payment/Repositories/writeReceiptRepo.Repositories";
 import { PaymentReceiptRepositories } from "./Write/WritePaymentRecipt.repositories";
 import { IWriteDomainEventRepo } from "../../Domain/Shared/Repositories/IWriteDomainEventRepo.repositories";
+import { IWriteRoommateProfile } from "../../Domain/BoundedContexts/RommateProfile/Repositories/WriteRommateProfile.reposotries";
+import { WriteRoommateProfileRepositories } from "./Write/WriteRoommateProfile.repositories";
 
 export class UnitOfWork implements IUnitOfWork {
   private queryRunner: QueryRunner | null = null;
-  
+
   // CQRS Repositories
   public writeUserRepo!: IWriteUserRepositories;
   public writeStudentRepo!: IWriteStudentRepositories;
@@ -38,6 +40,7 @@ export class UnitOfWork implements IUnitOfWork {
   public writePaymentScheduleRepo!: IWritePaymentScheduleRepo;
   public writePaymentReceiptRepo!: IWriteReceiptRepo;
   public writeDomainEventRepo!: IWriteDomainEventRepo;
+  public writeRoommateProfileRepo!: IWriteRoommateProfile;
 
   async startTransaction(): Promise<void> {
     this.queryRunner = AppDataSource.getInstance().createQueryRunner();
@@ -53,14 +56,17 @@ export class UnitOfWork implements IUnitOfWork {
     this.writeNotificationRepo = new WriteNotificationRepositories(manager);
     this.writeApartmentRepo = new WriteApartmentsRepositories(manager);
     this.writeApartmentDocumentRepo = new WriteApartmentDocumentRepositories(
-      manager
+      manager,
     );
     this.writeAuditLogRepo = new WriteAuditLogRepositories(manager);
     this.writePaymentScheduleRepo = new WritePaymentScheduleRepositories(
-      manager
+      manager,
     );
     this.writeLeaseRequestRepo = new WriteLeastRequestRepositories(manager);
     this.writePaymentReceiptRepo = new PaymentReceiptRepositories(manager);
+    this.writeRoommateProfileRepo = new WriteRoommateProfileRepositories(
+      manager,
+    );
   }
 
   async commitTransaction(): Promise<void> {
