@@ -33,7 +33,7 @@ export class CreateRoommateProfileCommandHandler implements ICommandHandlers<Cre
       if (!student) throw new Error("no student been found !!");
 
       const existingProfile =
-        await this.readRoommateProfileRepo.FindStudentRoommateProfile(
+        await this.readRoommateProfileRepo.FindStudentRoommateProfileById(
           command.userId,
         );
       if (existingProfile)

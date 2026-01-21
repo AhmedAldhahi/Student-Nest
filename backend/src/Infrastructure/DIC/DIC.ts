@@ -46,7 +46,7 @@ import {
   UserLeaseRequestContext,
 } from "./LeaseRequest";
 import { AddReceiptForPaymentCH, ChangeStatusOfPaymentCH, UserPaymentContext } from "./Payment";
-import { createRoommateProfileCH, UpdateRoommateProfileCH } from "./RoomateProfile";
+import { createRoommateProfileCH, GetRoommateProfileQH, GetRoommateProfileThatMatchQH, UpdateRoommateProfileCH } from "./RoomateProfile";
 import {
   DeleteSpecificNotifications,
   notificationContext,
@@ -106,7 +106,9 @@ export function buildDependencies() {
       GetApartmentNotFullAndVerifiedQueriesHandler:
         GetAllVisibleAndNotFullApartmentQH(),
       GetApartmentDetailsForGuestQueriesHandler: GetApartmentDetailForGuestQH(),
-      GetFilterApartmentQueriesHandler:GetFilterApartmentQH()
+      GetFilterApartmentQueriesHandler:GetFilterApartmentQH(),
+      GetRoommateProfileQueriesHandler:GetRoommateProfileQH(),
+      GetRoommateProfileThatMatchQueriesHandler:GetRoommateProfileThatMatchQH()
     },
 
     StrategyContext: {

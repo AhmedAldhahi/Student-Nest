@@ -1,5 +1,7 @@
 import { RoommateProfileAggregate } from "../../../Domain/BoundedContexts/RommateProfile/Aggregates/RommateProfile.aggregateRoot";
+import { StudentRoommateProfileDTO } from "../../../Domain/BoundedContexts/RommateProfile/Representations/StudntRoommateProfileDTO";
 import { Age } from "../../../Domain/BoundedContexts/RommateProfile/Value-Object/AgeValueObject.vo";
+import { LifeCycleHabitModel } from "../../Database/TypeOrm/entity/LifeCycleHabits.entity";
 import { RoommateProfileModel } from "../../Database/TypeOrm/entity/RoommateProfile.entity";
 import { LifeCycleHabitMapper } from "./lifeCycleHabit.mapper";
 
@@ -42,6 +44,29 @@ export class RoommateProfileMapper {
       bio: model.bio,
       studentId: model.studentId,
     });
+  }
+
+  public static toResponse(
+    model: RoommateProfileModel,
+  ): StudentRoommateProfileDTO {
+    const lifeCycleHabitModel = new LifeCycleHabitModel();
+
+    return {
+      Language: model.language,
+      bio: model.bio,
+      UserAcceptNoiseTolerance: model.noiseTolerance,
+      UserSleepSchedule: model.sleepSchedule,
+      minAge: model.minAge,
+      maxAge: model.maxAge,
+      createAt: model.createAt,
+
+      guestPolicyType: lifeCycleHabitModel.guestPolicyType,
+      petType: lifeCycleHabitModel.pet,
+      FoodPreferenceType: lifeCycleHabitModel.FoodPreferenceType,
+      petPreferenceType: lifeCycleHabitModel.petPreferences,
+      SharingLevelType: lifeCycleHabitModel.sharingLevelType,
+      SmokoHabitType: lifeCycleHabitModel.smokingType,
+    };
   }
 
   public static ValidateModel(entity: RoommateProfileAggregate) {

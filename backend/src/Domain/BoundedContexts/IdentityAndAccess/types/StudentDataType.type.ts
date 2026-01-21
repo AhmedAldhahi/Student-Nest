@@ -26,5 +26,6 @@ export type StudentDataType = {
   studentCardId: StudentCard;
   validateStudentDocument: VerificationDocument;
   roommateProfileStatus:boolean
+  enableWhatsapp:boolean;
   //walletAddress: string = "";
 };

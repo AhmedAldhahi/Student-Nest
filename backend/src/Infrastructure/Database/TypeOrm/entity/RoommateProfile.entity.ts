@@ -44,7 +44,7 @@ export class RoommateProfileModel {
 
   @OneToOne(() => StudentModel)
   @JoinColumn({ name: "studentId" })
-  student: StudentAggregateRoot;
+  student: StudentModel;
 
   @OneToOne(() => LifeCycleHabitModel, (habit) => habit.profile, {
     cascade: true,

@@ -68,6 +68,7 @@ export class CreateStudentCommandHandler implements ICommandHandlers<CreateStude
       validateStudentDocument:
         VerificationDocument.create(verificationFilesUrl),
       roommateProfileStatus: false,
+      enableWhatsapp: true,
     });
 
     await this.unitOfWork.startTransaction();

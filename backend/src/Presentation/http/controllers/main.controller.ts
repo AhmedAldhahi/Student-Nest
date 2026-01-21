@@ -125,6 +125,8 @@ export const buildControllersBoundaryContext = () => {
   const RoommateProfileForStudent = new RoommateProfileControllerForStudent(
     commandHandler.CreateRoommateProfileCommandHandler,
     commandHandler.updateRoommateProfileCommandHandler,
+    QueriesHandler.GetRoommateProfileQueriesHandler,
+    QueriesHandler.GetRoommateProfileThatMatchQueriesHandler,
   );
 
   const LeaseRequest = {
