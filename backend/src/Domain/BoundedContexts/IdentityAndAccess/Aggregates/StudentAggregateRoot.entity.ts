@@ -18,6 +18,7 @@ export class StudentAggregateRoot extends AggregateRoot<string> {
   private graduateYear: studentGraduateYear;
   private studentValidateDocument: VerificationDocument;
   private roommateProfileStatus: boolean = false;
+  private enableWhatsapp: boolean = true;
   //private walletAddress: string = "";
 
   constructor(data: StudentDataType) {
@@ -30,6 +31,7 @@ export class StudentAggregateRoot extends AggregateRoot<string> {
     this.major = data.major;
     this.studentValidateDocument = data.validateStudentDocument;
     this.roommateProfileStatus = data.roommateProfileStatus;
+    this.enableWhatsapp = data.enableWhatsapp;
     //private walletAddress: string = "";
   }
 
@@ -41,6 +43,14 @@ export class StudentAggregateRoot extends AggregateRoot<string> {
 
   public markAsRoommateProfileCreated(): void {
     this.roommateProfileStatus = true;
+  }
+
+  public markAsVisibleForWhatsapp(): void {
+    this.enableWhatsapp = true;
+  }
+
+  public markAsNotVisibleForWhatsapp(): void {
+    this.enableWhatsapp = false;
   }
 
   public markAsRoommateProfileNotCreated(): void {
@@ -152,6 +162,10 @@ export class StudentAggregateRoot extends AggregateRoot<string> {
 
   public getRoommateProfileStatus(): boolean {
     return this.roommateProfileStatus;
+  }
+
+  public getWhatsappStatus() : boolean {
+    return this.enableWhatsapp;
   }
 
   // public getWalletAddress(): string {

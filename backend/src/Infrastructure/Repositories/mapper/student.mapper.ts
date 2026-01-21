@@ -18,6 +18,7 @@ export class StudentMapper {
       graduateYear: new studentGraduateYear(stdModel.GraduationYear),
       major: new StudentMajor(stdModel.Major),
       roommateProfileStatus: stdModel.roommateProfileStatus,
+      enableWhatsapp: stdModel.enableWhatsapp,
 
       validateStudentDocument: new VerificationDocument(
         stdModel.verificationFiles,
@@ -59,6 +60,8 @@ export class StudentMapper {
     userModel.GraduationYear = validationData.stdGrdYear;
     userModel.Major = validationData.stdMajor;
     userModel.verificationFiles = validationData.stdFile;
+    userModel.enableWhatsapp = stdEntity.getWhatsappStatus();
+    userModel.roommateProfileStatus = stdEntity.getRoommateProfileStatus();
 
     return userModel;
   }

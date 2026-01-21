@@ -25,6 +25,9 @@ export class StudentModel {
   @Column({ type: "varchar", length: 200 })
   verificationFiles: string;
 
+  @Column({ type: "boolean", default: true, nullable: false })
+  enableWhatsapp: boolean;
+
   @Column({ type: "boolean", nullable: true, default: false })
   roommateProfileStatus: boolean;
 

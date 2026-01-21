@@ -32,7 +32,7 @@ export class UpdateRoommateProfileCommandHandler implements ICommandHandlers<Upd
       }
 
       const roommateProfile =
-        await this.readRoommateProfileRepo.FindStudentRoommateProfile(
+        await this.readRoommateProfileRepo.FindStudentRoommateProfileById(
           command.userId,
         );
 
