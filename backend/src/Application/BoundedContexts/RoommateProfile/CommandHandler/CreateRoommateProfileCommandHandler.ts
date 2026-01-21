@@ -39,17 +39,13 @@ export class CreateRoommateProfileCommandHandler implements ICommandHandlers<Cre
       if (existingProfile)
         throw new Error("this student already have roommate profile !!");
 
-      // 2. ID Generation Strategy
-      // ✅ تصحيح: استخدام userId كـ ID للبروفايل (Shared Key)
       const roommateProfileId = command.userId;
 
-      // ✅ الإبقاء على uuidv4 للـ Habit لأنها كيان مستقل فرعي
       const lifeHabitId = uuidv4();
 
       // 3. Create Habit Entity
       const lifeHabit = new LifeCycleHabitEntity({
         habitId: lifeHabitId,
-        // نمرر ID البروفايل (الذي هو نفسه UserID)
         roommateProfileId: roommateProfileId,
         guestPolicyType: command.guestPolicyType,
         petType: command.petType,
@@ -61,7 +57,7 @@ export class CreateRoommateProfileCommandHandler implements ICommandHandlers<Cre
 
       // 4. Create Aggregate Root
       const roommateProfile = RoommateProfileAggregate.create({
-        roommateId: roommateProfileId, // ✅ استخدام نفس الـ ID هنا
+        roommateId: roommateProfileId, 
         Language: command.Language,
         bio: command.bio,
         UserAcceptNoiseTolerance: command.UserAcceptNoiseTolerance,

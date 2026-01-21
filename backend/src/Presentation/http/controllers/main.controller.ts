@@ -124,6 +124,7 @@ export const buildControllersBoundaryContext = () => {
 
   const RoommateProfileForStudent = new RoommateProfileControllerForStudent(
     commandHandler.CreateRoommateProfileCommandHandler,
+    commandHandler.updateRoommateProfileCommandHandler,
   );
 
   const LeaseRequest = {
@@ -162,6 +163,6 @@ export const buildControllersBoundaryContext = () => {
     Apartment,
     Payment,
     Lease,
-    RoommateProfileForStudent
+    RoommateProfileForStudent,
   };
 };
