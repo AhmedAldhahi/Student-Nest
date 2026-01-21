@@ -101,7 +101,8 @@ export class Server {
       LeaseRequest,
       Lease,
       Payment,
-      RoommateProfileForStudent
+      RoommateProfileForStudent,
+      Setting,
     } = buildControllersBoundaryContext();
 
     this.app.use(
@@ -129,7 +130,7 @@ export class Server {
         Apartment.Student,
         LeaseRequest.Student,
         Payment.Student,
-        RoommateProfileForStudent
+        RoommateProfileForStudent,
       ),
     );
 
@@ -141,6 +142,7 @@ export class Server {
         Lease.Shared,
         NotificationsController,
         Payment.Shared,
+        Setting,
       ),
     );
 
