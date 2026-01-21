@@ -7,6 +7,7 @@ import { VerificationDocument } from "../Value-Object/VerficationDocument.vo";
 import { StudentDataType } from "../types/StudentDataType.type";
 import { AggregateRoot } from "../../../Shared/AgregateRoot/AggregateRoot";
 import { LeaseRequestEntity } from "../../Leases/Entities/leaseRequestEntity.entity";
+import { RoommateProfileAggregate } from "../../RommateProfile/Aggregates/RommateProfile.aggregateRoot";
 
 export class StudentAggregateRoot extends AggregateRoot<string> {
   private studentCardID: StudentCard;
@@ -38,6 +39,14 @@ export class StudentAggregateRoot extends AggregateRoot<string> {
    * ==================================================================================
    */
 
+  public markAsRoommateProfileCreated(): void {
+    this.roommateProfileStatus = true;
+  }
+
+  public markAsRoommateProfileNotCreated(): void {
+    this.roommateProfileStatus = false;
+  }
+
   public createLeaseRequestForApartment(leaseRequest: LeaseRequestEntity) {
     if (!leaseRequest.getRequestMessage()) {
       throw new Error("lease request message is require !!");
@@ -45,6 +54,27 @@ export class StudentAggregateRoot extends AggregateRoot<string> {
 
     if (!leaseRequest.getApartment()) {
       throw new Error("can not send lease request for unknown apartments !!");
+    }
+  }
+
+  public createRoommateProfile(roommateProfile: RoommateProfileAggregate) {
+    if (!roommateProfile.getLanguage()) {
+      throw new Error("the language field is missed !!");
+    }
+
+    if (!roommateProfile.getMaxAge()) {
+      throw new Error("the max age field is missed !!");
+    }
+
+    if (!roommateProfile.getMinAge()) {
+      throw new Error("the min age field is missed !!");
+    }
+
+    if (!roommateProfile.getNoiseTolerance()) {
+      throw new Error("the noise tolerance field is require !!");
+    }
+    if (!roommateProfile.getSleepSchedule()) {
+      throw new Error("the sleep schedule field is require !!");
     }
   }
 
@@ -120,7 +150,7 @@ export class StudentAggregateRoot extends AggregateRoot<string> {
     return this.universityName.getValue() ?? undefined;
   }
 
-  public getRoommateProfileStatus():boolean {
+  public getRoommateProfileStatus(): boolean {
     return this.roommateProfileStatus;
   }
 

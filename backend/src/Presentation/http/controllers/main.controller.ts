@@ -18,6 +18,7 @@ import { SharedPaymentController } from "./Payment/SharedPayment.controller";
 import { ApartmentControllerForStudent } from "./Apartment/ApartmentControllerForStudent";
 import { LeaseRequestForStudentController } from "./LeaseRequest/LeaseRequstForStudent.controller";
 import { PaymentForStudentController } from "./Payment/PaymentForStudent.controller";
+import { RoommateProfileControllerForStudent } from "./RoommateProfile/RoommateProfileControllerForStudent.controller";
 
 export const buildControllersBoundaryContext = () => {
   const { commandHandler, QueriesHandler, StrategyContext, SimpleFactory } =
@@ -88,7 +89,7 @@ export const buildControllersBoundaryContext = () => {
   const SharedApartmentController = new SharedApartmentManagementController(
     StrategyContext.ApartmentUserContext,
     QueriesHandler.GetApartmentDetailsForGuestQueriesHandler,
-    QueriesHandler.GetFilterApartmentQueriesHandler
+    QueriesHandler.GetFilterApartmentQueriesHandler,
   );
 
   const PaymentForStudent = new PaymentForStudentController(
@@ -119,6 +120,10 @@ export const buildControllersBoundaryContext = () => {
 
   const StudentLeaseRequest = new LeaseRequestForStudentController(
     commandHandler.CreateLeaseRequestCommandHandler,
+  );
+
+  const RoommateProfileForStudent = new RoommateProfileControllerForStudent(
+    commandHandler.CreateRoommateProfileCommandHandler,
   );
 
   const LeaseRequest = {
@@ -157,5 +162,6 @@ export const buildControllersBoundaryContext = () => {
     Apartment,
     Payment,
     Lease,
+    RoommateProfileForStudent
   };
 };

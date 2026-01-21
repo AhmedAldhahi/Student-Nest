@@ -9,6 +9,7 @@ import { IWriteLeaseRequestRepo } from "../../BoundedContexts/Leases/Repositorie
 import { IWritePaymentScheduleRepo } from "../../BoundedContexts/Payment/Repositories/WritePaymentSchedualRepositories";
 import { IWriteReceiptRepo } from "../../BoundedContexts/Payment/Repositories/writeReceiptRepo.Repositories";
 import { IWriteDomainEventRepo } from "./IWriteDomainEventRepo.repositories";
+import { IWriteRoommateProfile } from "../../BoundedContexts/RommateProfile/Repositories/WriteRommateProfile.reposotries";
 
 export interface IUnitOfWork {
   // cqrs
@@ -22,6 +23,8 @@ export interface IUnitOfWork {
   writeLeaseRequestRepo: IWriteLeaseRequestRepo;
   writePaymentScheduleRepo: IWritePaymentScheduleRepo;
   writePaymentReceiptRepo: IWriteReceiptRepo;
+  writeRoommateProfileRepo:IWriteRoommateProfile;
+  
   
   writeDomainEventRepo: IWriteDomainEventRepo;
 

@@ -25,8 +25,8 @@ export class StudentModel {
   @Column({ type: "varchar", length: 200 })
   verificationFiles: string;
 
-  @Column({type:"boolean", nullable: true, default: false})
-  roommateProfileStatus:boolean;
+  @Column({ type: "boolean", nullable: true, default: false })
+  roommateProfileStatus: boolean;
 
   @PrimaryColumn()
   userId: string; // same id as user
@@ -41,5 +41,3 @@ export class StudentModel {
   @OneToMany(() => LeaseModel, (lease) => lease.student)
   leases: LeaseModel[];
 }
-
-//TODO: add wallet address

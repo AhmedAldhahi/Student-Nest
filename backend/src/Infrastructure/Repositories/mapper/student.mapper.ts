@@ -45,7 +45,6 @@ export class StudentMapper {
       userGovId: stdModel.StudentGovId,
       universityName: stdModel.UniversityName,
       studentValidateDocument: stdModel.verificationFiles,
-      roommateProfileStatus: stdModel.roommateProfileStatus,
     };
   }
 
