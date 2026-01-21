@@ -46,12 +46,9 @@ export class RoommateProfileModel {
   @JoinColumn({ name: "studentId" })
   student: StudentAggregateRoot;
 
-  // 1-to-1 Relationship Definition
   @OneToOne(() => LifeCycleHabitModel, (habit) => habit.profile, {
     cascade: true,
     eager: true,
-    onDelete: "CASCADE", // If Profile is deleted, delete Habit
   })
-  @JoinColumn()
   lifeCycleHabit: LifeCycleHabitModel;
 }

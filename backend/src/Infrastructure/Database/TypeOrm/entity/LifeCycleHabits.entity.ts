@@ -36,6 +36,6 @@ export class LifeCycleHabitModel {
   @OneToOne(() => RoommateProfileModel, (profile) => profile.lifeCycleHabit, {
     onDelete: "CASCADE",
   })
-  
+  @JoinColumn({ name: "roommateProfileId" })
   profile: RoommateProfileModel;
 }
