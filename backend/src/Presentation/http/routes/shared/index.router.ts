@@ -10,13 +10,16 @@ import { SharedApartmentManagementController } from "../../controllers/Apartment
 import { SharedLeaseRequestController } from "../../controllers/LeaseRequest/SharedleaseReques.controller";
 import { SharedLeaseManagementController } from "../../controllers/Lease/SharedLease.controlller";
 import { SharedPaymentController } from "../../controllers/Payment/SharedPayment.controller";
+import { SettingController } from "../../controllers/Shared/Setting.controller";
+import { SettingRouter } from "./setting.routes";
 
 export const SharedIndexRouter = (
   apartmentController: SharedApartmentManagementController,
   leaseRequestManagementController: SharedLeaseRequestController,
   leaseManagementController: SharedLeaseManagementController,
   notificationController: NotificationController,
-  paymentController: SharedPaymentController
+  paymentController: SharedPaymentController,
+  settingController: SettingController,
 ): Router => {
   const router = Router();
 
@@ -24,7 +27,7 @@ export const SharedIndexRouter = (
 
   router.use(
     "/leases-request",
-    LeaseRequestManagementRouter(leaseRequestManagementController)
+    LeaseRequestManagementRouter(leaseRequestManagementController),
   );
 
   router.use("/leases", LeaseManagementRouter(leaseManagementController));
@@ -32,6 +35,8 @@ export const SharedIndexRouter = (
   router.use("/notifications", notificationRouter(notificationController));
 
   router.use("/payments", PaymentManagementRouter(paymentController));
+
+  router.use("/setting", SettingRouter(settingController));
 
   return router;
 };

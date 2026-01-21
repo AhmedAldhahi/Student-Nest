@@ -54,7 +54,8 @@ export class ReadRoommateProfileRepositories implements IReadRoommateProfileRepo
 
         .leftJoinAndSelect("profile.lifeCycleHabit", "habit")
 
-        .where("profile.studentId != :myId", { myId: userId });
+        .where("profile.studentId != :myId", { myId: userId })
+        .andWhere("student.enableWhatsapp = :enabled", { enabled: true });
 
       const matches = await query.getMany();
 

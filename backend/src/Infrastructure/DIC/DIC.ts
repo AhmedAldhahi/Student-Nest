@@ -1,3 +1,4 @@
+import { UpdateWhatsappPhoneNumberCommand } from "../../Application/BoundedContexts/RoommateProfile/Command/UpdateVisableForWhatsappCommand";
 import {
   ChangeApartmentVerificationStatusCH,
   ChangeLandlordVerificationStatusCH,
@@ -46,7 +47,7 @@ import {
   UserLeaseRequestContext,
 } from "./LeaseRequest";
 import { AddReceiptForPaymentCH, ChangeStatusOfPaymentCH, UserPaymentContext } from "./Payment";
-import { createRoommateProfileCH, GetRoommateProfileQH, GetRoommateProfileThatMatchQH, UpdateRoommateProfileCH } from "./RoomateProfile";
+import { createRoommateProfileCH, GetRoommateProfileQH, GetRoommateProfileThatMatchQH, UpdateRoommateProfileCH, UpdateWhatsappPhoneNumberVisibleCH } from "./RoomateProfile";
 import {
   DeleteSpecificNotifications,
   notificationContext,
@@ -84,7 +85,8 @@ export function buildDependencies() {
       CreateLeaseRequestCommandHandler: CreateLeaseRequestCH(),
       CreateNewReceiptForPaymentCommandHandler:AddReceiptForPaymentCH(),
       CreateRoommateProfileCommandHandler:createRoommateProfileCH(),
-      updateRoommateProfileCommandHandler:UpdateRoommateProfileCH()
+      updateRoommateProfileCommandHandler:UpdateRoommateProfileCH(),
+      UpdateWhatsappPhoneNumberCommandHandler:UpdateWhatsappPhoneNumberVisibleCH()
     },
 
     QueriesHandler: {

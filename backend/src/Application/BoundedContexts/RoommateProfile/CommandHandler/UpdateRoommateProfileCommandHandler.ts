@@ -1,8 +1,10 @@
 import { IReadStudentRepositories } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadStudentRepositories.repositories";
 import { IReadUserRepositories } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadUserRepositories.repositories";
+import { UpdateRoommateEvent } from "../../../../Domain/BoundedContexts/RommateProfile/Events/UpdateRoommateEvent.event";
 import { IReadLifeCycleHabit } from "../../../../Domain/BoundedContexts/RommateProfile/Repositories/ReadLifeCycleHabbit.reposotires";
 import { IReadRoommateProfileRepo } from "../../../../Domain/BoundedContexts/RommateProfile/Repositories/ReadRommateProfile.reposotries";
 import { Age } from "../../../../Domain/BoundedContexts/RommateProfile/Value-Object/AgeValueObject.vo";
+import { IEventBus } from "../../../../Domain/Shared/Event/IEventBus";
 import { IUnitOfWork } from "../../../../Domain/Shared/Repositories/UnitOfWorkRepositories.repositories";
 import { ICommandHandlers } from "../../Shared/abstraction/ICommandHandler";
 import { UpdateRoommateProfileCommand } from "../Command/UpdateRoommateProfileCommand";
@@ -14,6 +16,7 @@ export class UpdateRoommateProfileCommandHandler implements ICommandHandlers<Upd
     private readonly readRoommateProfileRepo: IReadRoommateProfileRepo,
     private readonly readLifeCycleHabitRepo: IReadLifeCycleHabit,
     private readonly uow: IUnitOfWork,
+    private readonly eventBus: IEventBus,
   ) {}
 
   public async handle(command: UpdateRoommateProfileCommand): Promise<any> {
@@ -108,6 +111,9 @@ export class UpdateRoommateProfileCommandHandler implements ICommandHandlers<Upd
       );
 
       await this.uow.commitTransaction();
+
+      const event = new UpdateRoommateEvent(command.userId);
+      await this.eventBus.publish(event);
 
       return {
         message: "Roommate profile updated successfully",

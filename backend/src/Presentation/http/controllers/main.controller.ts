@@ -19,6 +19,7 @@ import { ApartmentControllerForStudent } from "./Apartment/ApartmentControllerFo
 import { LeaseRequestForStudentController } from "./LeaseRequest/LeaseRequstForStudent.controller";
 import { PaymentForStudentController } from "./Payment/PaymentForStudent.controller";
 import { RoommateProfileControllerForStudent } from "./RoommateProfile/RoommateProfileControllerForStudent.controller";
+import { SettingController } from "./Shared/Setting.controller";
 
 export const buildControllersBoundaryContext = () => {
   const { commandHandler, QueriesHandler, StrategyContext, SimpleFactory } =
@@ -127,6 +128,11 @@ export const buildControllersBoundaryContext = () => {
     commandHandler.updateRoommateProfileCommandHandler,
     QueriesHandler.GetRoommateProfileQueriesHandler,
     QueriesHandler.GetRoommateProfileThatMatchQueriesHandler,
+    commandHandler.UpdateWhatsappPhoneNumberCommandHandler,
+  );
+
+  const Setting = new SettingController(
+    commandHandler.UpdateWhatsappPhoneNumberCommandHandler,
   );
 
   const LeaseRequest = {
@@ -166,5 +172,6 @@ export const buildControllersBoundaryContext = () => {
     Payment,
     Lease,
     RoommateProfileForStudent,
+    Setting,
   };
 };

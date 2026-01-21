@@ -39,10 +39,9 @@ export const UpdateRoommateProfileSchema = z
     UserAcceptNoiseTolerance: z
       .enum(NoiseTolerance, "Invalid Noise Tolerance Selection")
       .optional(),
-    UserSleepSchedule: z.enum(
-      SleepSchedule,
-      "Invalid Sleep Schedule selection",
-    ).optional(),
+    UserSleepSchedule: z
+      .enum(SleepSchedule, "Invalid Sleep Schedule selection")
+      .optional(),
     minAge: z.string().optional(),
     maxAge: z.string().optional(),
     guestPolicyType: z.enum(GuestPolicy).optional(),
@@ -53,3 +52,4 @@ export const UpdateRoommateProfileSchema = z
     SmokoHabitType: z.enum(SmokingHabit).optional(),
   })
   .strict();
+

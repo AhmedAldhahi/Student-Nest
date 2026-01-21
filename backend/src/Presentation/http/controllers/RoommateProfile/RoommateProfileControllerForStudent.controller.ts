@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { UpdateRoommateProfileCommandHandler } from "../../../../Application/BoundedContexts/RoommateProfile/CommandHandler/UpdateRoommateProfileCommandHandler";
 import { GetRoommateProfileQueriesHandler } from "../../../../Application/BoundedContexts/RoommateProfile/QueriesHandler/GetRoommateProfileQueriesHandler";
 import { GetRoommateProfileThatMatched } from "../../../../Application/BoundedContexts/RoommateProfile/QueriesHandler/GetRoommatedProfileThatMatchedQueriesHandler";
+import { UpdateWhatsappVisibleCommandHandler } from "../../../../Application/BoundedContexts/RoommateProfile/CommandHandler/UodateWhatsappVisableStatusCommandHandler";
 
 export class RoommateProfileControllerForStudent {
   constructor(
@@ -10,6 +11,7 @@ export class RoommateProfileControllerForStudent {
     private readonly updateRoommateProfileCH: UpdateRoommateProfileCommandHandler,
     private readonly getRoommateProfileQH: GetRoommateProfileQueriesHandler,
     private readonly getRoommateProfileThatMatchQH: GetRoommateProfileThatMatched,
+    private readonly updateWhatsappVisibleCH: UpdateWhatsappVisibleCommandHandler,
   ) {}
 
   public createRoommateProfile = async (req: Request, res: Response) => {
@@ -113,4 +115,6 @@ export class RoommateProfileControllerForStudent {
         .json({ error: error.message || "internal server error" });
     }
   };
+
+
 }
