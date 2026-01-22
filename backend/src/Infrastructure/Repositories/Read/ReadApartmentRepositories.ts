@@ -11,7 +11,6 @@ import { FilterOptionType } from "../../../Domain/BoundedContexts/Housing/Types/
 import { LeaseStatus } from "../../../Domain/BoundedContexts/Leases/Enum/LeaseStatus.enum";
 
 export class ReadApartmentRepositories implements IReadApartmentRepo {
-
   public async filterApartment(
     type: FilterOptionType,
   ): Promise<IApartmentSimpleDTO[] | null> {

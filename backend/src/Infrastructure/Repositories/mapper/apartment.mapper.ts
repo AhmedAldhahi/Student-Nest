@@ -3,6 +3,7 @@ import { IApartmentDTO } from "../../../Domain/BoundedContexts/Housing/Represent
 import { IApartmentForGuestDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentForGuestDTO";
 import { IApartmentSimpleDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentSimpleDto";
 import { ApartmentPrice } from "../../../Domain/BoundedContexts/Housing/Value-Object/ApartmentPrice.vo";
+import { HouseRule } from "../../../Domain/BoundedContexts/Housing/Value-Object/HouseRole.vo";
 import { NumberOfBed } from "../../../Domain/BoundedContexts/Housing/Value-Object/NumberOfBed.vo";
 import { NumberOfRoom } from "../../../Domain/BoundedContexts/Housing/Value-Object/NumberOfRoom.vo";
 import { ApartmentModel } from "../../Database/TypeOrm/entity/Apartment.entity";
@@ -30,12 +31,14 @@ export class ApartmentMapper {
 
     // Value Objects extraction
     apartmentModel.price = validateData.price;
-    apartmentModel.numberOfBed = validateData.numberOfBed;
+    apartmentModel.numberOfBed = validateData.numberOfBed; 
     apartmentModel.numberOfRoom = validateData.numberOfRoom;
+    apartmentModel.houseRule = apartment.getHouseRule();
+    apartmentModel.includeUtilities = apartment.getIncludeUtilities() ?? null;
 
     // Relationship: Location
     apartmentModel.location = GoogleMapMapper.toModel(
-      apartment.getGoogleMapLocation()
+      apartment.getGoogleMapLocation(),
     );
 
     // Relationship: Photos (One-to-Many)
@@ -66,6 +69,8 @@ export class ApartmentMapper {
     if (!numberOfRoom)
       throw new Error("Cannot save apartment , number of room is required !!");
 
+
+
     return { price, numberOfBed, numberOfRoom };
   }
 
@@ -78,6 +83,7 @@ export class ApartmentMapper {
       address: model.address,
       IsVerified: model.isVerified,
       isJoin: model.isJoin,
+      houseRule: new HouseRule(model.houseRule),
       createAt: model.createAt,
       updateAt: model.updateAt,
 
@@ -138,6 +144,8 @@ export class ApartmentMapper {
       numberOfBed: model.numberOfBed,
       numberOfRoom: model.numberOfRoom,
       price: model.price,
+      houseRule: model.houseRule,
+      includeUtilities: model.includeUtilities,
       createAt: model.createAt,
       updateAt: model.updateAt,
       googleMapLocation: GoogleMapMapper.toEntity(model.location),
@@ -155,7 +163,7 @@ export class ApartmentMapper {
   }
 
   public static toResponsesDetailForGuest(
-    model: ApartmentModel
+    model: ApartmentModel,
   ): IApartmentForGuestDTO {
     return {
       apartmentId: model.apartmentId,
