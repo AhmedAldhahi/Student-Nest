@@ -56,4 +56,8 @@ export interface IReadApartmentRepo {
   filterApartment(
     type: FilterOptionType,
   ): Promise<IApartmentSimpleDTO[] | null>;
+
+  searchForVisibleApartments(
+    queries: string,
+  ): Promise<IApartmentSimpleDTO[] | null>;
 }

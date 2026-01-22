@@ -7,4 +7,6 @@ export interface UpdateApartmentDataRequest {
   isJoin?: boolean;
   price?: string;
   photos?: Express.Multer.File[];
-  }
+  includeUtilities?: string | undefined;
+  houseRule: string;
+}

@@ -10,21 +10,19 @@ import { ICommandHandlers } from "../../Shared/abstraction/ICommandHandler";
 import { CreateApartmentRequestCommand } from "../Command/CreateLeaseRequestCommand";
 import { v4 as uuidv4 } from "uuid";
 import { createLeaseRequestResponse } from "../Dto/Respone/createLeaseRequestResponse";
-import { IEventBus } from "../../../../Domain/Shared/Event/IEventBus";
-import { CreateLeaseRequestEvent } from "../../../../Domain/BoundedContexts/Leases/Event/LeaseRequestEvent.event";
+import { IReadLeaseRepositories } from "../../../../Domain/BoundedContexts/Leases/Repositories/Read/ReadLeaseRepositories.repositories";
 
-export class CreateLeaseRequestCommandHandler
-  implements ICommandHandlers<CreateApartmentRequestCommand>
-{
+export class CreateLeaseRequestCommandHandler implements ICommandHandlers<CreateApartmentRequestCommand> {
   constructor(
     private readonly readUserRepo: IReadUserRepositories,
     private readonly readStudentRepo: IReadStudentRepositories,
     private readonly readApartmentRepo: IReadApartmentRepo,
-    private readonly uow: IUnitOfWork
+    private readonly readLeaseRepo: IReadLeaseRepositories,
+    private readonly uow: IUnitOfWork,
   ) {}
 
   public async handle(
-    command: CreateApartmentRequestCommand
+    command: CreateApartmentRequestCommand,
   ): Promise<createLeaseRequestResponse> {
     try {
       const user = await this.readUserRepo.findById(command.studentId);
@@ -33,17 +31,34 @@ export class CreateLeaseRequestCommandHandler
       user.ensureAccountIsActive();
 
       const student = await this.readStudentRepo.findStudentById(
-        command.studentId
+        command.studentId,
       );
+
       if (!student) throw new Error("no student been found !!");
 
       const landlordUser = await this.readUserRepo.findById(command.landlordId);
       if (!landlordUser) throw new Error("no landlord been found !!");
 
       const apartment = await this.readApartmentRepo.findApartmentById(
-        command.apartmentId
+        command.apartmentId,
       );
       if (!apartment) throw new Error("no apartment been found !!");
+
+      const leasesActiveNumber =
+        await this.readLeaseRepo.countActiveLeasesByApartmentId(
+          command.apartmentId,
+        );
+
+      const DigitNumberOfBed = Number(apartment.getNumberOfBed());
+
+      if (isNaN(DigitNumberOfBed)) {
+        throw new Error("number of bed is invalid or undefine !!");
+      } else if (leasesActiveNumber === DigitNumberOfBed) {
+        throw new Error(
+          "The apartment is full. You cannot make a lease request until a lease ends.",
+        );
+      }
+      
 
       const leaseRequestId = uuidv4();
       const NewLeaseRequest = new LeaseRequestEntity({

@@ -12,6 +12,8 @@ export class UpdateApartmentDetailByIdCommand implements ICommand {
   public id: string;
   public photos?: Express.Multer.File[];
   public userId: string;
+    public includeUtilities?: string | undefined;
+  public houseRule: string;
 
   constructor(data: UpdateApartmentDataRequest, id: string, userId: string) {
     this.title = data.title;

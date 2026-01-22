@@ -12,26 +12,25 @@ import { IReadUserRepositories } from "../../../../Domain/BoundedContexts/Identi
 import { IUnitOfWork } from "../../../../Domain/Shared/Repositories/UnitOfWorkRepositories.repositories";
 import { IFileStorageService } from "../../../Interfaces/IFileStorage.interface";
 import { CreateApartmentResponse } from "../Dto/Respone/CreateApartmentResponse";
+import { HouseRule } from "../../../../Domain/BoundedContexts/Housing/Value-Object/HouseRole.vo";
 
-export class CreateApartmentCommandHandler
-  implements ICommandHandlers<CreateApartmentCommand>
-{
+export class CreateApartmentCommandHandler implements ICommandHandlers<CreateApartmentCommand> {
   constructor(
     private readonly uow: IUnitOfWork,
     private readonly fileService: IFileStorageService,
     private readonly readUserRepo: IReadUserRepositories,
-    private readonly readLandlordRepo: IReadLandlordRepositories
+    private readonly readLandlordRepo: IReadLandlordRepositories,
   ) {}
 
   public async handle(
-    command: CreateApartmentCommand
+    command: CreateApartmentCommand,
   ): Promise<CreateApartmentResponse> {
     try {
       const user = await this.readUserRepo.findById(command.landlord);
       if (!user) throw new Error("no user been found !!");
 
       const landlord = await this.readLandlordRepo.findLandlordById(
-        command.landlord
+        command.landlord,
       );
       if (!landlord) throw new Error("no user been found !!");
 
@@ -46,7 +45,7 @@ export class CreateApartmentCommandHandler
           const photoUrl = await this.fileService.upload(file);
           const photoId = uuidv4();
           photoEntities.push(
-            new ApartmentPhotoDocumentEntity({ photoId, photoUrl })
+            new ApartmentPhotoDocumentEntity({ photoId, photoUrl }),
           );
         }
       }
@@ -66,9 +65,9 @@ export class CreateApartmentCommandHandler
         title: command.title,
         description: command.description,
         address: command.address,
-
+        houseRule: HouseRule.create(command.houseRule),
+        includeUtilities: command.includeUtilities,
         IsVerified: false,
-
         isJoin: command.isJoin,
         numberOfBed: NumberOfBed.create(command.numberOfBed),
         numberOfRoom: NumberOfRoom.create(command.numberOfRoom),

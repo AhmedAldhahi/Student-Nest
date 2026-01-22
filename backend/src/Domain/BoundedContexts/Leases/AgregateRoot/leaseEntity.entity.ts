@@ -24,7 +24,7 @@ export class LeaseAggregateRoot {
   private landlordId: string;
 
   private createAt: Date;
-  private activateStatus: boolean = true;
+  private activateStatus: boolean = false;
   private paymentSchedule: PaymentAggregateRoot[] | null;
 
   constructor(data: LeaseDataType) {

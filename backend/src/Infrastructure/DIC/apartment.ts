@@ -18,6 +18,7 @@ import { GetApartmentDocumentByIdQueriesHandler } from "../../Application/Bounde
 import { GetApartmentDocumentByIdForLandlordQueriersHandler } from "../../Application/BoundedContexts/Apartment/QueriesHandler/GetApartmentDocumentByIdForLandlordQueriesHandler";
 import { GetApartmentByIdForGuestQueriesHandler } from "../../Application/BoundedContexts/Apartment/QueriesHandler/GetApartmentForGuestUserQueriesHandler";
 import { GetRandomlyThreeApartmentThatIsVisibleAndNotFullQueriesHandler } from "../../Application/BoundedContexts/Apartment/QueriesHandler/GetRandomlyThreeApartmentsVisableAndNotFullQueriesHandler";
+import { SearchForApartmentQueriesHandler } from "../../Application/BoundedContexts/Apartment/QueriesHandler/SearchForQuereyForApartmentQueriesHandler";
 import { AdminApartmentStrategy } from "../../Application/BoundedContexts/Shared/Strategy/apartment/AdminApartment.strategy";
 import { ApartmentContext } from "../../Application/BoundedContexts/Shared/Strategy/apartment/ApartmentContext";
 import { GuestApartmentStrategy } from "../../Application/BoundedContexts/Shared/Strategy/apartment/GuestApartment.strategy";
@@ -239,4 +240,10 @@ export function GetFilterApartmentQH(): FilterSearchForApartmentQueriesHandler {
   const readApartmentRepo = new ReadApartmentRepositories();
 
   return new FilterSearchForApartmentQueriesHandler(readApartmentRepo);
+}
+
+export function SearchForVisibleApartmentsQH(): SearchForApartmentQueriesHandler {
+  const readApartmentRepo = new ReadApartmentRepositories();
+
+  return new SearchForApartmentQueriesHandler(readApartmentRepo);
 }

@@ -47,4 +47,7 @@ export interface IReadLeaseRepositories {
   ): Promise<ILeaseEntityDTO[] | null>;
 
   findAllLeaseForStudent(userId: string): Promise<ILeaseEntityDTO[] | null>;
+
+  
+  
 }

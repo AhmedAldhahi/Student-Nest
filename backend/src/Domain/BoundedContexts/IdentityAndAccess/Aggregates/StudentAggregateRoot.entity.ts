@@ -37,25 +37,9 @@ export class StudentAggregateRoot extends AggregateRoot<string> {
 
   /**
    * ==================================================================================
-   *                              Update Methods sections
+   *                              Behavior Methods sections
    * ==================================================================================
    */
-
-  public markAsRoommateProfileCreated(): void {
-    this.roommateProfileStatus = true;
-  }
-
-  public markAsVisibleForWhatsapp(): void {
-    this.enableWhatsapp = true;
-  }
-
-  public markAsNotVisibleForWhatsapp(): void {
-    this.enableWhatsapp = false;
-  }
-
-  public markAsRoommateProfileNotCreated(): void {
-    this.roommateProfileStatus = false;
-  }
 
   public createLeaseRequestForApartment(leaseRequest: LeaseRequestEntity) {
     if (!leaseRequest.getRequestMessage()) {
@@ -86,6 +70,28 @@ export class StudentAggregateRoot extends AggregateRoot<string> {
     if (!roommateProfile.getSleepSchedule()) {
       throw new Error("the sleep schedule field is require !!");
     }
+  }
+
+  /**
+   * ==================================================================================
+   *                              Update Methods sections
+   * ==================================================================================
+   */
+
+  public markAsRoommateProfileCreated(): void {
+    this.roommateProfileStatus = true;
+  }
+
+  public markAsVisibleForWhatsapp(): void {
+    this.enableWhatsapp = true;
+  }
+
+  public markAsNotVisibleForWhatsapp(): void {
+    this.enableWhatsapp = false;
+  }
+
+  public markAsRoommateProfileNotCreated(): void {
+    this.roommateProfileStatus = false;
   }
 
   //todo: need fix logic before
@@ -164,7 +170,7 @@ export class StudentAggregateRoot extends AggregateRoot<string> {
     return this.roommateProfileStatus;
   }
 
-  public getWhatsappStatus() : boolean {
+  public getWhatsappStatus(): boolean {
     return this.enableWhatsapp;
   }
 

@@ -13,7 +13,6 @@ export const SettingRouter = (settingController: SettingController): Router => {
     isAuth,
     isStudent,
     validation(whatsappStatusSchema),
-
     settingController.updateWhatsappVisible,
   );
 

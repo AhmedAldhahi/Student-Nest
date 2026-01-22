@@ -17,7 +17,7 @@ export class ApartmentControllerForLandlord {
 
   public createApartment = async (
     req: Request,
-    res: Response
+    res: Response,
   ): Promise<any> => {
     try {
       // 1. SECURITY
@@ -57,7 +57,8 @@ export class ApartmentControllerForLandlord {
         apartmentDocument: null,
         apartmentPhoto: photos,
         isJoin: Boolean(req.body.isJoin),
-
+        houseRule: req.body.houseRule,
+        includeUtilities: req.body.includeUtilities,
         isVisible: false,
         Verified: false,
 
@@ -90,7 +91,7 @@ export class ApartmentControllerForLandlord {
 
   public addApartmentDocumentForApartment = async (
     req: Request,
-    res: Response
+    res: Response,
   ) => {
     try {
       const userId = req.user?.userId;
@@ -194,6 +195,8 @@ export class ApartmentControllerForLandlord {
         photos: files || [],
         id: id,
         userId: userId,
+        houseRule: req.body.houseRule,
+        includeUtilities: req.body.includeUtilities,
       });
 
       return res.status(200).json(result);

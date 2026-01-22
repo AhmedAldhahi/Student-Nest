@@ -35,7 +35,7 @@ export class LeaseModel {
   @Column({ type: "varchar", nullable: false })
   monthlyRent: string;
 
-  @Column({ type: "boolean", default: true })
+  @Column({ type: "boolean", default: false })
   LeaseActivationStatus: boolean;
 
   @Column({ type: "varchar", nullable: false })
