@@ -15,6 +15,8 @@ export class CreateApartmentCommand implements ICommand {
   public createAt: Date;
   public updateAt: Date;
   public landlord: string;
+  public includeUtilities?: string | undefined;
+  public houseRule: string;
 
   public apartmentPhoto: Express.Multer.File[];
   public googleMapLocationLong: string;
@@ -36,5 +38,7 @@ export class CreateApartmentCommand implements ICommand {
     this.googleMapLocationLat = data.googleMapLocationLat;
     this.googleMapLocationLong = data.googleMapLocationLong;
     this.apartmentPhoto = data.apartmentPhoto;
+    this.includeUtilities = data.includeUtilities;
+    this.houseRule = data.houseRule;
   }
 }

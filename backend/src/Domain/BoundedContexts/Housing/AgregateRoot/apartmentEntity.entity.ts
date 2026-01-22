@@ -6,6 +6,7 @@ import { NumberOfRoom } from "../Value-Object/NumberOfRoom.vo";
 import { ApartmentPhotoDocumentEntity } from "../Entities/phohtoDocumentEntity.entity";
 import { ApartmentDataType } from "../Types/ApartmentDataType.type";
 import { AggregateRoot } from "../../../Shared/AgregateRoot/AggregateRoot";
+import { HouseRule } from "../Value-Object/HouseRole.vo";
 
 export class ApartmentAggregateRoot extends AggregateRoot<string> {
   private apartmentId: string;
@@ -17,7 +18,9 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
   private isVerified: boolean = false;
   private numberOfRoom: NumberOfRoom;
   private numberOfBed: NumberOfBed;
-  private isJoin: boolean; // be Roommate with students
+  private isJoin: boolean;
+  private houseRule: HouseRule;
+  private includeUtilities?: string;
 
   private createAt: Date;
   private updateAt: Date;
@@ -40,6 +43,8 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
     this.createAt = data.createAt;
     this.updateAt = data.updateAt;
     this.isVerified = data.IsVerified;
+    this.includeUtilities = data.includeUtilities;
+    this.houseRule = data.houseRule;
 
     this.landlord = data.landlordId;
     this.apartmentDocument = data.apartmentDocument;
@@ -86,7 +91,7 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
 
   public removePhoto(photoId: string): void {
     this.apartmentPhotoDocument = this.apartmentPhotoDocument.filter(
-      (p) => p.getPhotoId() !== photoId
+      (p) => p.getPhotoId() !== photoId,
     );
     this.updateAt = new Date();
   }
@@ -101,7 +106,7 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
   public updateApartmentDocument(apartmentDoc: ApartmentDocumentEntity): void {
     if (this.getIsVerified() === true) {
       throw new Error(
-        "cannot update apartment document for apartment that been verified "
+        "cannot update apartment document for apartment that been verified ",
       );
     }
 
@@ -111,7 +116,6 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
 
     this.apartmentDocument = apartmentDoc;
   }
-
 
   /**
    * ==================================================================================
@@ -187,6 +191,14 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
     return this.numberOfRoom.getValue() ?? undefined;
   }
 
+  public getIncludeUtilities(): string | undefined {
+    return this.includeUtilities ?? undefined;
+  }
+
+  public getHouseRule(): string {
+    return this.houseRule.getValue();
+  }
+
   /**
    * ==================================================================================
    *                              Update Methods sections
@@ -196,7 +208,7 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
   public changeApartmentDetails(
     title?: string,
     description?: string,
-    address?: string
+    address?: string,
   ) {
     if (title) this.title;
     if (description) this.description;
@@ -262,5 +274,15 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
 
   public updateTitle(title: string): void {
     this.title = title;
+  }
+
+  
+  public changeIncludedUtilities(data: string): void {
+    this.includeUtilities = data;
+  }
+
+  public changeHouseRule(data: HouseRule): void {
+    if (!data) return;
+    this.houseRule = data;
   }
 }

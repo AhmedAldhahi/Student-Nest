@@ -17,6 +17,7 @@ import {
   GetApartmentDetailForGuestQH,
   GetFilterApartmentQH,
   GetRandomlyThreeApartmentThatIsVisibleAndNotFullQH,
+  SearchForVisibleApartmentsQH,
   UpdateApartmentDetailCH,
   UpdateApartmentDocumentsCH,
   UserApartmentContext,
@@ -110,7 +111,8 @@ export function buildDependencies() {
       GetApartmentDetailsForGuestQueriesHandler: GetApartmentDetailForGuestQH(),
       GetFilterApartmentQueriesHandler:GetFilterApartmentQH(),
       GetRoommateProfileQueriesHandler:GetRoommateProfileQH(),
-      GetRoommateProfileThatMatchQueriesHandler:GetRoommateProfileThatMatchQH()
+      GetRoommateProfileThatMatchQueriesHandler:GetRoommateProfileThatMatchQH(),
+      SearchForVisibleApartmentsQueriesHandler:SearchForVisibleApartmentsQH(),
     },
 
     StrategyContext: {

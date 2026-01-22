@@ -17,7 +17,6 @@ const multerFileSchema = z.object({
   size: z.number().max(MAX_FILE_SIZE, "File size must be less than 5MB"),
 });
 
-// --- 3. Main Request Schema ---
 export const createApartmentSchema = z
   .object({
     body: z.object({
@@ -51,9 +50,11 @@ export const createApartmentSchema = z
       // Booleans logic (Correct)
       propertyStatus: z.preprocess(
         (val) => String(val) === "true",
-        z.boolean()
+        z.boolean(),
       ),
       isJoin: z.preprocess((val) => String(val) === "true", z.boolean()),
+      includeUtilities: z.string().max(255).optional(),
+      houseRule: z.string().max(255, "the max size of character is 255"),
 
       // Coercion logic (Correct for Map logic)
       googleMapLocationLat: z.string().min(1).max(24),
@@ -69,7 +70,7 @@ export const createApartmentSchema = z
         .refine(
           (files) =>
             files.every((file) => ACCEPTED_IMAGE_TYPES.includes(file.mimetype)),
-          "Only .jpg, .jpeg, .png, and .webp formats are supported for photos."
+          "Only .jpg, .jpeg, .png, and .webp formats are supported for photos.",
         ),
     }),
   })
@@ -114,10 +115,15 @@ export const UpdateApartmentSchema = z
       // Booleans logic (Correct)
       propertyStatus: z.preprocess(
         (val) => String(val) === "true",
-        z.boolean().optional()
+        z.boolean().optional(),
       ),
       isJoin: z
         .preprocess((val) => String(val) === "true", z.boolean())
+        .optional(),
+      includeUtilities: z.string().max(255).optional(),
+      houseRule: z
+        .string()
+        .max(255, "the max size of character is 255")
         .optional(),
 
       // Coercion logic (Correct for Map logic)
@@ -134,7 +140,7 @@ export const UpdateApartmentSchema = z
         .refine(
           (files) =>
             files.every((file) => ACCEPTED_IMAGE_TYPES.includes(file.mimetype)),
-          "Only .jpg, .jpeg, .png, and .webp formats are supported for photos."
+          "Only .jpg, .jpeg, .png, and .webp formats are supported for photos.",
         )
         .optional(),
     }),

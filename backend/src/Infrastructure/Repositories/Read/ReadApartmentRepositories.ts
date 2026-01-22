@@ -8,8 +8,10 @@ import { IApartmentDTO } from "../../../Domain/BoundedContexts/Housing/Represent
 import { IApartmentSimpleDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentSimpleDto";
 import { IApartmentForGuestDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentForGuestDTO";
 import { FilterOptionType } from "../../../Domain/BoundedContexts/Housing/Types/ApartmentFilterType.type";
+import { LeaseStatus } from "../../../Domain/BoundedContexts/Leases/Enum/LeaseStatus.enum";
 
 export class ReadApartmentRepositories implements IReadApartmentRepo {
+
   public async filterApartment(
     type: FilterOptionType,
   ): Promise<IApartmentSimpleDTO[] | null> {
@@ -44,7 +46,7 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
         minPrice: Number(type.minPrice),
       });
     }
-    
+
     if (type.maxPrice) {
       queryBuilder.andWhere("apartment.price <= :maxPrice", {
         maxPrice: Number(type.maxPrice),

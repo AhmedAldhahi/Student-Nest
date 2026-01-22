@@ -8,6 +8,9 @@ export interface AddNewApartmentRequest {
   numberOfBed: string;
   isJoin: boolean;
 
+  includeUtilities?: string | undefined;
+  houseRule: string;
+
   propertyStatus: boolean;
   Verified: boolean;
 

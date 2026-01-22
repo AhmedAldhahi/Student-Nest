@@ -10,20 +10,19 @@ import { IReadUserRepositories } from "../../../../Domain/BoundedContexts/Identi
 import { IUnitOfWork } from "../../../../Domain/Shared/Repositories/UnitOfWorkRepositories.repositories";
 import { IFileStorageService } from "../../../Interfaces/IFileStorage.interface";
 import { UpdateApartmentDetailResponse } from "../Dto/Respone/UpdateApartmentDetailResponse";
+import { HouseRule } from "../../../../Domain/BoundedContexts/Housing/Value-Object/HouseRole.vo";
 
-export class UpdateApartmentDetailForLandlordCommandHandler
-  implements ICommandHandlers<UpdateApartmentDetailByIdCommand>
-{
+export class UpdateApartmentDetailForLandlordCommandHandler implements ICommandHandlers<UpdateApartmentDetailByIdCommand> {
   constructor(
     private readonly uow: IUnitOfWork,
     private readonly readApartmentRepo: IReadApartmentRepo,
     private readonly readUserRepo: IReadUserRepositories,
     private readonly readLandlordRepo: IReadLandlordRepositories,
-    private readonly fileService: IFileStorageService
+    private readonly fileService: IFileStorageService,
   ) {}
 
   public async handle(
-    command: UpdateApartmentDetailByIdCommand
+    command: UpdateApartmentDetailByIdCommand,
   ): Promise<UpdateApartmentDetailResponse> {
     // We declare this outside to use it in the finally/success blocks
     let oldPhotosUrlsToDelete: string[] = [];
@@ -33,9 +32,9 @@ export class UpdateApartmentDetailForLandlordCommandHandler
       if (!user) throw new Error("User not found !!");
 
       const landlord = await this.readLandlordRepo.findLandlordById(
-        command.userId
+        command.userId,
       );
-                                                                                              
+
       user.ensureAccountIsActive();
 
       if (!landlord) throw new Error("Landlord account not found !!");
@@ -43,7 +42,7 @@ export class UpdateApartmentDetailForLandlordCommandHandler
       const apartment =
         await this.readApartmentRepo.findApartmentByIdForLandlord(
           command.id,
-          command.userId
+          command.userId,
         );
 
       if (!apartment) throw new Error("Apartment not found !!");
@@ -71,6 +70,14 @@ export class UpdateApartmentDetailForLandlordCommandHandler
 
         if (newPhoto.length > 0 && newPhoto.length < 7) {
         }
+      }
+
+      if (command.houseRule) {
+        apartment.changeHouseRule(HouseRule.create(command.houseRule));
+      }
+
+      if (command.includeUtilities) {
+        apartment.changeIncludedUtilities(command.includeUtilities);
       }
 
       //todo: fix the photo issue
