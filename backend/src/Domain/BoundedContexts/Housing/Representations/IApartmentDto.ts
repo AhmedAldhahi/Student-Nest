@@ -12,6 +12,8 @@ export interface IApartmentDTO {
   isJoin: boolean;
   createAt: Date;
   updateAt: Date;
+  houseRule: string;
+  includeUtilities: string | null;
 
   numberOfBed: string;
   numberOfRoom: string;
@@ -22,5 +24,3 @@ export interface IApartmentDTO {
   apartmentDocument: ApartmentDocumentEntity | null;
   apartmentPhoto: ApartmentPhotoDocumentEntity[];
 }
-
-

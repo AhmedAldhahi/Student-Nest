@@ -46,6 +46,12 @@ export class ApartmentModel {
   @Column({ type: "boolean", default: false, nullable: false })
   isJoin: boolean;
 
+  @Column({ type: "text", nullable: true })
+  includeUtilities: string | null;
+
+  @Column({ type: "text", nullable: true })
+  houseRule: string;
+
   @CreateDateColumn({ name: "createAt" })
   createAt: Date;
 
