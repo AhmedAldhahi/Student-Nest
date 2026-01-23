@@ -130,6 +130,7 @@ export class Server {
         LeaseRequest.Student,
         Payment.Student,
         RoommateProfileForStudent,
+        Lease.Student,
       ),
     );
 

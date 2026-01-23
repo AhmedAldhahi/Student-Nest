@@ -36,6 +36,7 @@ import {
   VerifiedOtpForgetPasswordCH,
 } from "./IdentityAndAccess";
 import {
+  CreateLeaseCH,
   GetForAllLeaseForSingleApartmentQH,
   SearchForAllLeaseForSingleApartmentQH,
   UserLeaseContext,
@@ -87,7 +88,8 @@ export function buildDependencies() {
       CreateNewReceiptForPaymentCommandHandler:AddReceiptForPaymentCH(),
       CreateRoommateProfileCommandHandler:createRoommateProfileCH(),
       updateRoommateProfileCommandHandler:UpdateRoommateProfileCH(),
-      UpdateWhatsappPhoneNumberCommandHandler:UpdateWhatsappPhoneNumberVisibleCH()
+      UpdateWhatsappPhoneNumberCommandHandler:UpdateWhatsappPhoneNumberVisibleCH(),
+      CreateLeaseCommandHandler:CreateLeaseCH()
     },
 
     QueriesHandler: {

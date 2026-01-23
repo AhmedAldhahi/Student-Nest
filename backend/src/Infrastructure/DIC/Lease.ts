@@ -1,3 +1,4 @@
+import { CreateLeaseCommandHandler } from "../../Application/BoundedContexts/Lease/CommandHandler/CreateLeaseCommandHandler";
 import { GetAllLeaseForLandlordQueriesHandler } from "../../Application/BoundedContexts/Lease/QueriesHandler/GetAllLeaseForLandlordQueriesHandler";
 import { GetAllLeaseForSingleApartmentQueriesHandler } from "../../Application/BoundedContexts/Lease/QueriesHandler/GetAllLeaseForSingleApartmentQueriesHandler";
 import { GetAllLeaseForStudentQueriesHandler } from "../../Application/BoundedContexts/Lease/QueriesHandler/GetAllLeaseForStudentQueriesHandler";
@@ -10,8 +11,11 @@ import { AdminLeaseStrategy } from "../../Application/BoundedContexts/Shared/Str
 import { LandlordLeaseStrategy } from "../../Application/BoundedContexts/Shared/Strategy/lease/LandlordLease.strategy";
 import { LeaseContext } from "../../Application/BoundedContexts/Shared/Strategy/lease/LeaseContext";
 import { StudentLeaseStrategy } from "../../Application/BoundedContexts/Shared/Strategy/lease/StudentLease.strategy";
+import { ReadApartmentRepositories } from "../Repositories/Read/ReadApartmentRepositories";
 import { ReadLeaseRepositories } from "../Repositories/Read/ReadLeaseRepositories";
+import { ReadLeaseRequestRepositories } from "../Repositories/Read/ReadLeaseRequest.Repositories";
 import { ReadUserRepositories } from "../Repositories/Read/ReadUserRepositories";
+import { UnitOfWork } from "../Repositories/unitOfWork.repositories";
 
 export function UserLeaseContext(): LeaseContext {
   // repo
@@ -24,17 +28,17 @@ export function UserLeaseContext(): LeaseContext {
 
   const getAllLandlordLeaseQH = new GetAllLeaseForLandlordQueriesHandler(
     ReadLeaseRepo,
-    readUserRepo
+    readUserRepo,
   );
 
   const searchForStudentLeaseQH = new GetAllLeaseForStudentSearchQueriesHandler(
     readUserRepo,
-    ReadLeaseRepo
+    ReadLeaseRepo,
   );
 
   const getAllStudentLeaseQH = new GetAllLeaseForStudentQueriesHandler(
     ReadLeaseRepo,
-    readUserRepo
+    readUserRepo,
   );
 
   const searchForLandlordLeaseQH =
@@ -45,18 +49,18 @@ export function UserLeaseContext(): LeaseContext {
   const adminStrategy = new AdminLeaseStrategy(queriesHandler, QueriesHandler);
   const landlordStrategy = new LandlordLeaseStrategy(
     getAllLandlordLeaseQH,
-    searchForLandlordLeaseQH
+    searchForLandlordLeaseQH,
   );
   const studentStrategy = new StudentLeaseStrategy(
     getAllStudentLeaseQH,
-    searchForStudentLeaseQH
+    searchForStudentLeaseQH,
   );
 
   return new LeaseContext(
     readUserRepo,
     adminStrategy,
     landlordStrategy,
-    studentStrategy
+    studentStrategy,
   );
 }
 
@@ -66,7 +70,7 @@ export function SearchForAllLeaseForSingleApartmentQH(): SearchForAllLeaseForLan
 
   return new SearchForAllLeaseForLandlordForSingleApartmentQueriesHandler(
     userRepo,
-    LeaseRepo
+    LeaseRepo,
   );
 }
 
@@ -75,4 +79,18 @@ export function GetForAllLeaseForSingleApartmentQH(): GetAllLeaseForSingleApartm
   const LeaseRepo = new ReadLeaseRepositories();
 
   return new GetAllLeaseForSingleApartmentQueriesHandler(userRepo, LeaseRepo);
+}
+
+export function CreateLeaseCH(): CreateLeaseCommandHandler {
+  const readUserRepo = new ReadUserRepositories();
+  const readLeaseRequestRepo = new ReadLeaseRequestRepositories();
+  const readApartmentRepo = new ReadApartmentRepositories();
+  const uow = new UnitOfWork();
+
+  return new CreateLeaseCommandHandler(
+    readUserRepo,
+    readLeaseRequestRepo,
+    readApartmentRepo,
+    uow,
+  );
 }

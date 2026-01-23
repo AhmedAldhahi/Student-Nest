@@ -6,40 +6,40 @@ export interface IReadLeaseRequestRepositories {
   findLeaseRequestByQuery(query: string): Promise<ILeaseRequestDTO[] | null>;
 
   findAllLeaseRequestForLandlord(
-    userId: string
+    userId: string,
   ): Promise<ILeaseRequestDTO[] | null>;
+
+  findLeaseRequestForApartment(
+    leaseRequestId: string,
+  ): Promise<LeaseRequestEntity | null>;
 
   SearchForLeaseRequestForLandlord(
     userId: string,
-    queries: string
+    queries: string,
   ): Promise<ILeaseRequestDTO[] | null>;
 
   findLeaseRequestByIdForLandlord(
     userId: string,
-    id: string
+    id: string,
   ): Promise<LeaseRequestEntity | null>;
 
   findAllLeaseRequestForLandlordForSingleApartment(
     userId: string,
-    apartmentId: string
+    apartmentId: string,
   ): Promise<ILeaseRequestDTO[] | null>;
 
   SearchForLeaseRequestForLandlordForSingleApartment(
     userId: string,
     apartmentId: string,
-    queries: string
+    queries: string,
   ): Promise<ILeaseRequestDTO[] | null>;
 
-
   findAllLeaseRequestForStudent(
-    userId: string
+    userId: string,
   ): Promise<ILeaseRequestDTO[] | null>;
 
   SearchForLeaseRequestForStudent(
     userId: string,
-    queries: string
-  ): Promise<ILeaseRequestDTO[] | null>
+    queries: string,
+  ): Promise<ILeaseRequestDTO[] | null>;
 }
-
-
-

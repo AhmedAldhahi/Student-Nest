@@ -6,11 +6,22 @@ import { LeaseRequestModel } from "../../Database/TypeOrm/entity/LeaseRequest";
 import { LeaseRequestMapper } from "../mapper/leaseRequest.mapper";
 import { ILeaseRequestDTO } from "../../../Domain/BoundedContexts/Leases/Representations/ILeaseRequestDTO";
 
-export class ReadLeaseRequestRepositories
-  implements IReadLeaseRequestRepositories
-{
+export class ReadLeaseRequestRepositories implements IReadLeaseRequestRepositories {
+  public async findLeaseRequestForApartment(
+    leaseRequestId: string,
+  ): Promise<LeaseRequestEntity | null> {
+    const leaseRequest = await AppDataSource.getInstance()
+      .getRepository(LeaseRequestModel)
+      .findOne({
+        where: { leaseRequestId: leaseRequestId },
+        relations: { student: true, landlord: true },
+      });
+
+    if (!leaseRequest) return null;
+    return LeaseRequestMapper.toEntity(leaseRequest);
+  }
   public async findAllLeaseRequestForStudent(
-    userId: string
+    userId: string,
   ): Promise<ILeaseRequestDTO[] | null> {
     try {
       const leaseRequest = await AppDataSource.getInstance()
@@ -66,7 +77,7 @@ export class ReadLeaseRequestRepositories
 
   public async SearchForLeaseRequestForStudent(
     userId: string,
-    queries: string
+    queries: string,
   ): Promise<ILeaseRequestDTO[] | null> {
     try {
       const queryCleaned = queries.trim();
@@ -147,7 +158,7 @@ export class ReadLeaseRequestRepositories
 
   public async findAllLeaseRequestForLandlordForSingleApartment(
     userId: string,
-    apartmentId: string
+    apartmentId: string,
   ): Promise<ILeaseRequestDTO[] | null> {
     try {
       const leaseRequests = await AppDataSource.getInstance()
@@ -199,7 +210,7 @@ export class ReadLeaseRequestRepositories
     } catch (error: any) {
       console.error(
         "Error fetching lease requests for single apartment:",
-        error
+        error,
       );
       throw error;
     }
@@ -208,7 +219,7 @@ export class ReadLeaseRequestRepositories
   public async SearchForLeaseRequestForLandlordForSingleApartment(
     userId: string,
     apartmentId: string,
-    queries: string
+    queries: string,
   ): Promise<ILeaseRequestDTO[] | null> {
     try {
       const queryCleaned = queries.trim();
@@ -278,7 +289,7 @@ export class ReadLeaseRequestRepositories
     } catch (error: any) {
       console.error(
         "Error searching lease requests for single apartment:",
-        error
+        error,
       );
       throw error;
     }
@@ -286,7 +297,7 @@ export class ReadLeaseRequestRepositories
 
   public async findLeaseRequestByIdForLandlord(
     userId: string,
-    id: string
+    id: string,
   ): Promise<LeaseRequestEntity | null> {
     try {
       const leaseRequest = await AppDataSource.getInstance()
@@ -336,14 +347,14 @@ export class ReadLeaseRequestRepositories
     } catch (error: any) {
       console.error(
         "Error fetching specific lease request for landlord:",
-        error
+        error,
       );
       throw error;
     }
   }
 
   public async findAllLeaseRequestForLandlord(
-    userId: string
+    userId: string,
   ): Promise<ILeaseRequestDTO[] | null> {
     try {
       const leaseRequest = await AppDataSource.getInstance()
@@ -398,7 +409,7 @@ export class ReadLeaseRequestRepositories
   }
   public async SearchForLeaseRequestForLandlord(
     userId: string,
-    queries: string
+    queries: string,
   ): Promise<ILeaseRequestDTO[] | null> {
     try {
       const queryCleaned = queries.trim();
@@ -530,7 +541,7 @@ export class ReadLeaseRequestRepositories
   }
 
   public async findLeaseRequestByQuery(
-    Queries: string
+    Queries: string,
   ): Promise<ILeaseRequestDTO[]> {
     try {
       const query = Queries.trim();

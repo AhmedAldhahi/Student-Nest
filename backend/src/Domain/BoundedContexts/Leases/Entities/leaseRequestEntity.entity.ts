@@ -9,7 +9,7 @@ export class LeaseRequestEntity extends AggregateRoot<string> {
   private requestMessage: string;
   private startDate: LeaseStartDate;
   private rentTerm: RentTerm;
-  private requestStatus: LeaseRequestStatus;
+  private requestStatus: LeaseRequestStatus = LeaseRequestStatus.Pending;
   private createAt: Date;
 
   private studentId: string;
@@ -22,7 +22,7 @@ export class LeaseRequestEntity extends AggregateRoot<string> {
     this.requestMessage = data.requestMessage;
     this.startDate = data.startDate;
     this.rentTerm = data.rentTerm;
-    this.requestStatus = data.requestStatus = LeaseRequestStatus.Pending;
+    this.requestStatus = data.requestStatus;
     this.createAt = data.createAt;
     this.landlordId = data.landlordId;
     this.apartmentId = data.apartmentId;
