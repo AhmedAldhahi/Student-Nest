@@ -2,6 +2,7 @@ import { EntityManager } from "typeorm";
 import { RoommateProfileAggregate } from "../../../Domain/BoundedContexts/RommateProfile/Aggregates/RommateProfile.aggregateRoot";
 import { IWriteRoommateProfile } from "../../../Domain/BoundedContexts/RommateProfile/Repositories/WriteRommateProfile.reposotries";
 import { RoommateProfileMapper } from "../mapper/roommateProfile.mapper";
+import { RoommateProfileModel } from "../../Database/TypeOrm/entity/RoommateProfile.entity";
 
 export class WriteRoommateProfileRepositories implements IWriteRoommateProfile {
   constructor(private readonly manager: EntityManager) {}
@@ -21,6 +22,7 @@ export class WriteRoommateProfileRepositories implements IWriteRoommateProfile {
   public async UpdateRoommateProfileForStudent(
     profile: RoommateProfileAggregate,
   ): Promise<void> {
-    throw new Error("Method not implemented.");
+    const model = RoommateProfileMapper.toModel(profile);
+    await this.manager.save(RoommateProfileModel, model);
   }
 }
