@@ -20,6 +20,7 @@ import { LeaseRequestForStudentController } from "./LeaseRequest/LeaseRequstForS
 import { PaymentForStudentController } from "./Payment/PaymentForStudent.controller";
 import { RoommateProfileControllerForStudent } from "./RoommateProfile/RoommateProfileControllerForStudent.controller";
 import { SettingController } from "./Shared/Setting.controller";
+import { LeaseControllerForStudent } from "./Lease/LeaseForStudent.controller";
 
 export const buildControllersBoundaryContext = () => {
   const { commandHandler, QueriesHandler, StrategyContext, SimpleFactory } =
@@ -131,6 +132,10 @@ export const buildControllersBoundaryContext = () => {
     commandHandler.UpdateWhatsappPhoneNumberCommandHandler,
   );
 
+  const LeaseForStudent = new LeaseControllerForStudent(
+    commandHandler.CreateLeaseCommandHandler,
+  );
+
   const Setting = new SettingController(
     commandHandler.UpdateWhatsappPhoneNumberCommandHandler,
   );
@@ -157,6 +162,7 @@ export const buildControllersBoundaryContext = () => {
   const Lease = {
     Landlord: LeaseForLandlord,
     Shared: SharedLease,
+    Student: LeaseForStudent,
   };
 
   return {

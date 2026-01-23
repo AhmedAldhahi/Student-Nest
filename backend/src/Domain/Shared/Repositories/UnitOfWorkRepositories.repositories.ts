@@ -10,6 +10,7 @@ import { IWritePaymentScheduleRepo } from "../../BoundedContexts/Payment/Reposit
 import { IWriteReceiptRepo } from "../../BoundedContexts/Payment/Repositories/writeReceiptRepo.Repositories";
 import { IWriteDomainEventRepo } from "./IWriteDomainEventRepo.repositories";
 import { IWriteRoommateProfile } from "../../BoundedContexts/RommateProfile/Repositories/WriteRommateProfile.reposotries";
+import { IWriteLeaseRepo } from "../../BoundedContexts/Leases/Repositories/Write/WriteLeaseRepositories.repositories";
 
 export interface IUnitOfWork {
   // cqrs
@@ -23,9 +24,9 @@ export interface IUnitOfWork {
   writeLeaseRequestRepo: IWriteLeaseRequestRepo;
   writePaymentScheduleRepo: IWritePaymentScheduleRepo;
   writePaymentReceiptRepo: IWriteReceiptRepo;
-  writeRoommateProfileRepo:IWriteRoommateProfile;
-  
-  
+  writeRoommateProfileRepo: IWriteRoommateProfile;
+  writeLeaseRepo: IWriteLeaseRepo;
+
   writeDomainEventRepo: IWriteDomainEventRepo;
 
   startTransaction(): Promise<void>;

@@ -1,0 +1,54 @@
+import { ApartmentPrice } from "../../Domain/BoundedContexts/Housing/Value-Object/ApartmentPrice.vo";
+import { MonthlyRent } from "../../Domain/BoundedContexts/Housing/Value-Object/MonthlyRent.vo";
+import { LeaseEndDate } from "../../Domain/BoundedContexts/Leases/Value-Object/LeaseEndDate.vo";
+import { LeaseStartDate } from "../../Domain/BoundedContexts/Leases/Value-Object/LeaseStartDate.vo";
+import { RentTerm } from "../../Domain/BoundedContexts/Leases/Value-Object/RentTerm.vo";
+
+export class AdapterHelper {
+  /**
+   *  Apartment Price to Monthly Rent
+   *  Start Date From Lease Request To Start Lease Date
+   *  rentTerm From Lease Request to EndDate in Lease
+   */
+
+public static CalculateEndDate(
+    startDate: LeaseStartDate, 
+    term: RentTerm
+  ): LeaseEndDate {
+    
+    const startDay = startDate.getDays();
+    const startMonth = startDate.getMonth();
+    const startYear = startDate.getYear();
+    
+    const dateObj = new Date(startYear, startMonth - 1, startDay);
+
+    const termValue = term.getValue(); 
+    if (!termValue) throw new Error("Rent Term is missing");
+    
+    const [termDays, termMonths, termYears] = termValue.split(/[-/.,]/).map(Number);
+
+    dateObj.setFullYear(dateObj.getFullYear() + termYears);
+    dateObj.setMonth(dateObj.getMonth() + termMonths);
+    dateObj.setDate(dateObj.getDate() + termDays);
+
+    const endDay = String(dateObj.getDate()).padStart(2, '0');
+    const endMonth = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const endYear = dateObj.getFullYear();
+
+    const endDateString = `${endDay}-${endMonth}-${endYear}`;
+
+    return LeaseEndDate.create(endDateString);
+  }
+
+  public static StartDateLeaseRequestToStartLeaseDate(date: Date): LeaseStartDate {
+    if (!date) throw new Error("Start date is required");
+
+    const d = date.getDate().toString().padStart(2, '0');
+    const m = (date.getMonth() + 1).toString().padStart(2, '0'); 
+    const y = date.getFullYear();
+    
+    const dateStr = `${d}-${m}-${y}`;
+
+    return LeaseStartDate.create(dateStr);
+  }
+}

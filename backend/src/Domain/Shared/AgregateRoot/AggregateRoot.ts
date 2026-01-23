@@ -15,7 +15,7 @@ export abstract class AggregateRoot<T> {
   }
 
 
-  protected addDomainEvent(event: IDomainEvent): void {
+  public addDomainEvent(event: IDomainEvent): void {
     this._domainEvents.push(event);
   }
 

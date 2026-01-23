@@ -29,4 +29,13 @@ export class DomainEventLogModel {
 
   @CreateDateColumn()
   occurredOn: Date;
+
+  @Column({ type: "datetime", nullable: true })
+  processedAt: Date | null;
+
+  @Column({ type: "text", nullable: true })
+  error: string | null;
+  
+  @Column({ type: "int", default: 0 })
+  retries: number;
 }

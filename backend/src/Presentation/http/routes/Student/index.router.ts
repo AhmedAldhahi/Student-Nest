@@ -9,12 +9,15 @@ import { PaymentRouter } from "./PaymentMangement.router";
 import { PaymentForStudentController } from "../../controllers/Payment/PaymentForStudent.controller";
 import { RoommateProfileControllerForStudent } from "../../controllers/RoommateProfile/RoommateProfileControllerForStudent.controller";
 import { RoommateProfileRouter } from "./RoommateProfile.router";
+import { LeaseControllerForStudent } from "../../controllers/Lease/LeaseForStudent.controller";
+import { LeaseRouter } from "./LeaseMangement.router";
 
 export const StudentIndexRouter = (
   apartmentController: ApartmentControllerForStudent,
   LeaseRequestsController: LeaseRequestForStudentController,
   paymentController: PaymentForStudentController,
-  roommateController:RoommateProfileControllerForStudent
+  roommateController: RoommateProfileControllerForStudent,
+  LeaseController: LeaseControllerForStudent,
 ): Router => {
   const router = Router();
 
@@ -24,7 +27,9 @@ export const StudentIndexRouter = (
 
   router.use("/payments", PaymentRouter(paymentController));
 
-  router.use("/roommate-profile",RoommateProfileRouter(roommateController));
+  router.use("/roommate-profile", RoommateProfileRouter(roommateController));
+
+  router.use("/leases", LeaseRouter(LeaseController));
 
   return router;
 };

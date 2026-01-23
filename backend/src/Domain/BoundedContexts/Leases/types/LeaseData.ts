@@ -11,6 +11,7 @@ export type LeaseDataType = {
   isStudentSigned: boolean;
   ActivationStatus: boolean;
   includeUtilities?: string;
+  
   leaseStartData: LeaseStartDate;
   leaseEndData: LeaseEndDate;
   monthlyRent: MonthlyRent;

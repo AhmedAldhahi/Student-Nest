@@ -10,7 +10,6 @@ import { UserLanguage } from "../../../../Domain/BoundedContexts/RommateProfile/
 import { NoiseTolerance } from "../../../../Domain/BoundedContexts/RommateProfile/Enum/Noise tolerance.enum";
 import { SleepSchedule } from "../../../../Domain/BoundedContexts/RommateProfile/Enum/SleepSchedule.enum";
 import { LifeCycleHabitModel } from "./LifeCycleHabits.entity";
-import { StudentAggregateRoot } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Aggregates/StudentAggregateRoot.entity";
 import { StudentModel } from "./Student.entity";
 
 @Entity("RoommateProfile")

@@ -10,6 +10,10 @@ export class RentTerm {
       throw new Error("Rent term is required");
     }
 
+    if (value.trim().length !== 8) {
+      throw new Error("the rent term must be exactly 8 digit ");
+    }
+
     const instance = new RentTerm(value.trim());
 
     instance.validateStructure();
@@ -26,16 +30,14 @@ export class RentTerm {
     return this.value;
   }
 
-  
   private validateStructure(): void {
     const val = this.value!;
-    
 
     const regex = /^(\d{1,2})[-/.,](\d{1,2})[-/.,](\d{1,2})$/;
 
     if (!regex.test(val)) {
       throw new Error(
-        `Invalid rent term format. Expected "DD,MM,YY" (e.g., "00,06,01" for 1 yr, 6 mos). Got: ${val}`
+        `Invalid rent term format. Expected "DD,MM,YY" (e.g., "00,06,01" for 1 yr, 6 mos). Got: ${val}`,
       );
     }
   }
@@ -58,15 +60,14 @@ export class RentTerm {
     }
   }
 
-
   private normalizeValue(): void {
     const { day, month, year } = this.parseValues();
-    
-    this.value = `${this.pad(day)},${this.pad(month)},${this.pad(year)}`;
+
+    this.value = `${this.pad(day)}-${this.pad(month)}-${this.pad(year)}`;
   }
 
   private parseValues(): { day: number; month: number; year: number } {
-    const parts = this.value!.split(/[-/.,]/); 
+    const parts = this.value!.split(/[-/.,]/);
     return {
       day: parseInt(parts[0], 10),
       month: parseInt(parts[1], 10),
@@ -75,6 +76,6 @@ export class RentTerm {
   }
 
   private pad(num: number): string {
-    return num.toString().padStart(2, '0');
+    return num.toString().padStart(2, "0");
   }
 }

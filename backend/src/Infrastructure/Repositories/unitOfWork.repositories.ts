@@ -24,6 +24,8 @@ import { PaymentReceiptRepositories } from "./Write/WritePaymentRecipt.repositor
 import { IWriteDomainEventRepo } from "../../Domain/Shared/Repositories/IWriteDomainEventRepo.repositories";
 import { IWriteRoommateProfile } from "../../Domain/BoundedContexts/RommateProfile/Repositories/WriteRommateProfile.reposotries";
 import { WriteRoommateProfileRepositories } from "./Write/WriteRoommateProfile.repositories";
+import { IWriteLeaseRepo } from "../../Domain/BoundedContexts/Leases/Repositories/Write/WriteLeaseRepositories.repositories";
+import { WriteLeaseRepositories } from "./Write/WriteLeaseRepositories";
 
 export class UnitOfWork implements IUnitOfWork {
   private queryRunner: QueryRunner | null = null;
@@ -41,6 +43,7 @@ export class UnitOfWork implements IUnitOfWork {
   public writePaymentReceiptRepo!: IWriteReceiptRepo;
   public writeDomainEventRepo!: IWriteDomainEventRepo;
   public writeRoommateProfileRepo!: IWriteRoommateProfile;
+  public writeLeaseRepo!: IWriteLeaseRepo;
 
   async startTransaction(): Promise<void> {
     this.queryRunner = AppDataSource.getInstance().createQueryRunner();
@@ -67,6 +70,8 @@ export class UnitOfWork implements IUnitOfWork {
     this.writeRoommateProfileRepo = new WriteRoommateProfileRepositories(
       manager,
     );
+
+    this.writeLeaseRepo = new WriteLeaseRepositories(manager);
   }
 
   async commitTransaction(): Promise<void> {
