@@ -9,6 +9,9 @@ import { createRoommateResponse } from "../Dto/Response/CreateRommateResponse";
 import { RoommateProfileAggregate } from "../../../../Domain/BoundedContexts/RommateProfile/Aggregates/RommateProfile.aggregateRoot";
 import { Age } from "../../../../Domain/BoundedContexts/RommateProfile/Value-Object/AgeValueObject.vo";
 import { IReadStudentRepositories } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadStudentRepositories.repositories";
+import { IEventBus } from "../../../../Domain/Shared/Event/IEventBus";
+import { DomainEventDispatcher } from "../../../../Domain/Shared/Event/DomainEventDispatcher";
+import { UpdateUserEvent } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Events/UpdateUserEvent.event";
 
 export class CreateRoommateProfileCommandHandler implements ICommandHandlers<CreateRoommateProfileCommand> {
   constructor(
@@ -16,6 +19,7 @@ export class CreateRoommateProfileCommandHandler implements ICommandHandlers<Cre
     private readonly readStudentRepo: IReadStudentRepositories,
     private readonly readRoommateProfileRepo: IReadRoommateProfileRepo,
     private readonly uow: IUnitOfWork,
+    private readonly eventBus:IEventBus,
   ) {}
 
   public async handle(
@@ -79,6 +83,9 @@ export class CreateRoommateProfileCommandHandler implements ICommandHandlers<Cre
       );
       await this.uow.writeStudentRepo.updateStudent(student);
       await this.uow.commitTransaction();
+
+      const event = new UpdateUserEvent(user.getUserId());
+      await this.eventBus.publish(event);
 
       return {
         message: "roommate profile created successfully",

@@ -1,9 +1,11 @@
+import { RemoveCashHandler } from "../../Application/BoundedContexts/Adminstration/EventHandler/RemoveCashHandler";
 import { CreateRoommateProfileCommandHandler } from "../../Application/BoundedContexts/RoommateProfile/CommandHandler/CreateRoommateProfileCommandHandler";
 import { UpdateWhatsappVisibleCommandHandler } from "../../Application/BoundedContexts/RoommateProfile/CommandHandler/UodateWhatsappVisableStatusCommandHandler";
 import { UpdateRoommateProfileCommandHandler } from "../../Application/BoundedContexts/RoommateProfile/CommandHandler/UpdateRoommateProfileCommandHandler";
 import { RemoveCashHandlerForEvent } from "../../Application/BoundedContexts/RoommateProfile/eventHandler/RemoveCashHandler";
 import { GetRoommateProfileThatMatched } from "../../Application/BoundedContexts/RoommateProfile/QueriesHandler/GetRoommatedProfileThatMatchedQueriesHandler";
 import { GetRoommateProfileQueriesHandler } from "../../Application/BoundedContexts/RoommateProfile/QueriesHandler/GetRoommateProfileQueriesHandler";
+import { UpdateUserEvent } from "../../Domain/BoundedContexts/IdentityAndAccess/Events/UpdateUserEvent.event";
 import { UpdateRoommateEvent } from "../../Domain/BoundedContexts/RommateProfile/Events/UpdateRoommateEvent.event";
 import { DomainEventDispatcher } from "../../Domain/Shared/Event/DomainEventDispatcher";
 import { InMemoryEventBus } from "../EventBus/InMemmoryEventBus";
@@ -19,12 +21,19 @@ export function createRoommateProfileCH(): CreateRoommateProfileCommandHandler {
   const readStudentRepo = new ReadStudentRepositories();
   const uow = new UnitOfWork();
   const readRoommateProfileRepo = new ReadRoommateProfileRepositories();
+  const eventDispatch = new DomainEventDispatcher();
+  const cashService = new RedisCashService();
+  const cashServiceHandler = new RemoveCashHandler(cashService);
+  eventDispatch.register(UpdateUserEvent.EVENT_KEY, cashServiceHandler);
+
+  const eventBus = new InMemoryEventBus(eventDispatch);
 
   return new CreateRoommateProfileCommandHandler(
     readUserRepo,
     readStudentRepo,
     readRoommateProfileRepo,
     uow,
+    eventBus,
   );
 }
 
