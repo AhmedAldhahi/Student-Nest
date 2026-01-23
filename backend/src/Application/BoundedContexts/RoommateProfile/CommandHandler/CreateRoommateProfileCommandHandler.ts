@@ -77,6 +77,7 @@ export class CreateRoommateProfileCommandHandler implements ICommandHandlers<Cre
       await this.uow.writeRoommateProfileRepo.AddRoommateProfileForStudent(
         roommateProfile,
       );
+      await this.uow.writeStudentRepo.updateStudent(student);
       await this.uow.commitTransaction();
 
       return {
