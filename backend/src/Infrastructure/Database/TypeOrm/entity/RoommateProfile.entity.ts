@@ -41,7 +41,9 @@ export class RoommateProfileModel {
   @Column({ nullable: false })
   studentId: string;
 
-  @OneToOne(() => StudentModel)
+  @OneToOne(() => StudentModel, { 
+    onDelete: "CASCADE" 
+  })
   @JoinColumn({ name: "studentId" })
   student: StudentModel;
 

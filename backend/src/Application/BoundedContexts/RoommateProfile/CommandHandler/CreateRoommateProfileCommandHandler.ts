@@ -72,7 +72,6 @@ export class CreateRoommateProfileCommandHandler implements ICommandHandlers<Cre
         studentId: command.userId,
       });
 
-      // 5. Update State & Persist
       student.createRoommateProfile(roommateProfile);
       student.markAsRoommateProfileCreated();
 
