@@ -10,9 +10,9 @@ export class RentTerm {
       throw new Error("Rent term is required");
     }
 
-    if (value.trim().length !== 8) {
-      throw new Error("the rent term must be exactly 8 digit ");
-    }
+    // if (value.trim().length !== 8) {
+    //   throw new Error("the rent term must be exactly 8 digit ");
+    // }
 
     const instance = new RentTerm(value.trim());
 

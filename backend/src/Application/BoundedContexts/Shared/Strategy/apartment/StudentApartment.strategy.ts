@@ -1,7 +1,5 @@
-import { GetApartmentDetailForGuestQueries } from "../../../Apartment/Queries/GetAllApartmentForGuest";
 import { GetApartmentByIdQueries } from "../../../Apartment/Queries/GetApartmentById";
 import { GetApartmentByIdQueriesHandler } from "../../../Apartment/QueriesHandler/GetApartmentByIdQueriesHandler";
-import { GetApartmentByIdForGuestQueriesHandler } from "../../../Apartment/QueriesHandler/GetApartmentForGuestUserQueriesHandler";
 import { IApartmentStrategy } from "./IApartment.strategy";
 
 export class StudentApartmentStrategy implements IApartmentStrategy {

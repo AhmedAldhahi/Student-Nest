@@ -56,6 +56,7 @@ export class ChangeStatusOfPaymentCommandHandler
           command.paymentId
         );
 
+
       if (!receipts || receipts.length === 0) {
         throw new Error("No receipt found for this payment to verify!");
       }
@@ -67,6 +68,7 @@ export class ChangeStatusOfPaymentCommandHandler
         receipt,
         command.status
       );
+
 
       await this.uow.startTransaction();
 
