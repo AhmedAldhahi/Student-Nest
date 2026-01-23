@@ -1,6 +1,6 @@
 import { IReadStudentRepositories } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadStudentRepositories.repositories";
 import { IReadUserRepositories } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadUserRepositories.repositories";
-import { UpdateRoommateEvent } from "../../../../Domain/BoundedContexts/RommateProfile/Events/UpdateRoommateEvent.event";
+import { RoommateProfileEvent } from "../../../../Domain/BoundedContexts/RommateProfile/Events/UpdateRoommateEvent.event";
 import { IReadLifeCycleHabit } from "../../../../Domain/BoundedContexts/RommateProfile/Repositories/ReadLifeCycleHabbit.reposotires";
 import { IReadRoommateProfileRepo } from "../../../../Domain/BoundedContexts/RommateProfile/Repositories/ReadRommateProfile.reposotries";
 import { Age } from "../../../../Domain/BoundedContexts/RommateProfile/Value-Object/AgeValueObject.vo";
@@ -112,7 +112,7 @@ export class UpdateRoommateProfileCommandHandler implements ICommandHandlers<Upd
 
       await this.uow.commitTransaction();
 
-      const event = new UpdateRoommateEvent(command.userId);
+      const event = new RoommateProfileEvent(command.userId);
       await this.eventBus.publish(event);
 
       return {

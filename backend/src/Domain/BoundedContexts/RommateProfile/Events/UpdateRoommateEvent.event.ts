@@ -1,6 +1,6 @@
 import { IDomainEvent } from "../../../Shared/Event/IDomainEvent";
 
-export class UpdateRoommateEvent implements IDomainEvent {
+export class RoommateProfileEvent implements IDomainEvent {
   public dateTimeOccurred: Date;
   public static EVENT_KEY = "RoommateProfile.update";
   constructor(public userId: string) {}
@@ -9,6 +9,6 @@ export class UpdateRoommateEvent implements IDomainEvent {
     return this.userId;
   }
   public getEventName(): string {
-    return UpdateRoommateEvent.EVENT_KEY;
+    return RoommateProfileEvent.EVENT_KEY;
   }
 }

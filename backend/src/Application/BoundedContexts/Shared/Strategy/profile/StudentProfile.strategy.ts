@@ -1,3 +1,4 @@
+import { CacheKeys } from "../../../../../Shared/constants/CacheKeys.constant";
 import { ICashMemoryService } from "../../../../Interfaces/ICash.interface";
 import { UpdateStudentCommand } from "../../../IdentityAndAccess/Command/UpdateStudentCommand";
 import { UpdateStudentCommandHandler } from "../../../IdentityAndAccess/CommandHandler/UpdateStudentCommandHandler";
@@ -12,11 +13,11 @@ export class StudentProfileStrategy implements IProfileStrategy {
   constructor(
     private readonly QueryHandler: GetStudentQueriesHandlers,
     private readonly commandHandler: UpdateStudentCommandHandler,
-    private readonly cashService: ICashMemoryService
+    private readonly cashService: ICashMemoryService,
   ) {}
 
   public async UserProfile(userId: string): Promise<GetStudentProfileResponse> {
-    const cashKey = `profile : ${userId}`;
+    const cashKey = CacheKeys.Profile(userId);
 
     const cashData = await this.cashService.get<any>(cashKey);
 
@@ -36,13 +37,14 @@ export class StudentProfileStrategy implements IProfileStrategy {
 
   public async UpdateUserProfile(
     userId: string,
-    dto: UpdateStudentProfileRequest
+    dto: UpdateStudentProfileRequest,
   ): Promise<UpdateProfileResponse> {
     try {
       const command = new UpdateStudentCommand(userId, dto);
+      
       await this.commandHandler.handle(command);
+      const cashKey = CacheKeys.Profile(userId);
 
-      const cashKey = `profile : ${userId}`;
       await this.cashService.delete(cashKey);
 
       return {

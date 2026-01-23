@@ -1,3 +1,4 @@
+import { CacheKeys } from "../../../../../Shared/constants/CacheKeys.constant";
 import { ICashMemoryService } from "../../../../Interfaces/ICash.interface";
 import { UpdateLandlordCommand } from "../../../IdentityAndAccess/Command/UpdateLandlordCommand";
 import { UpdateLandlordCommandHandler } from "../../../IdentityAndAccess/CommandHandler/UpdateLandlordCommandHandler";
@@ -12,13 +13,13 @@ export class LandlordProfileStrategy implements IProfileStrategy {
   constructor(
     private readonly QueryHandler: GetLandlordProfileQueriesHandlers,
     private readonly commandHandler: UpdateLandlordCommandHandler,
-    private readonly cashService: ICashMemoryService
+    private readonly cashService: ICashMemoryService,
   ) {}
 
   public async UserProfile(
-    userId: string
+    userId: string,
   ): Promise<GetLandlordProfileResponse> {
-    const cashKey = `profile : ${userId}`;
+    const cashKey = CacheKeys.Profile(userId);
 
     const cashData = await this.cashService.get<any>(cashKey);
 
@@ -38,13 +39,13 @@ export class LandlordProfileStrategy implements IProfileStrategy {
 
   public async UpdateUserProfile(
     userId: string,
-    dto: UpdateLandlordProfileRequest
+    dto: UpdateLandlordProfileRequest,
   ): Promise<UpdateProfileResponse> {
     try {
       const command = new UpdateLandlordCommand(userId, dto);
       await this.commandHandler.handle(command);
 
-      const cashKey = `profile : ${userId}`;
+      const cashKey = CacheKeys.Profile(userId);
       await this.cashService.delete(cashKey);
       return {
         message: "landlord profile update successfully ",

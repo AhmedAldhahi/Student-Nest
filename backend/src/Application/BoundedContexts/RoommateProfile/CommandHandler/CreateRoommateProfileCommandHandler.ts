@@ -10,8 +10,7 @@ import { RoommateProfileAggregate } from "../../../../Domain/BoundedContexts/Rom
 import { Age } from "../../../../Domain/BoundedContexts/RommateProfile/Value-Object/AgeValueObject.vo";
 import { IReadStudentRepositories } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadStudentRepositories.repositories";
 import { IEventBus } from "../../../../Domain/Shared/Event/IEventBus";
-import { DomainEventDispatcher } from "../../../../Domain/Shared/Event/DomainEventDispatcher";
-import { UpdateUserEvent } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Events/UpdateUserEvent.event";
+import { RoommateProfileEvent } from "../../../../Domain/BoundedContexts/RommateProfile/Events/UpdateRoommateEvent.event";
 
 export class CreateRoommateProfileCommandHandler implements ICommandHandlers<CreateRoommateProfileCommand> {
   constructor(
@@ -84,7 +83,7 @@ export class CreateRoommateProfileCommandHandler implements ICommandHandlers<Cre
       await this.uow.writeStudentRepo.updateStudent(student);
       await this.uow.commitTransaction();
 
-      const event = new UpdateUserEvent(user.getUserId());
+      const event = new RoommateProfileEvent(user.getUserId());
       await this.eventBus.publish(event);
 
       return {
