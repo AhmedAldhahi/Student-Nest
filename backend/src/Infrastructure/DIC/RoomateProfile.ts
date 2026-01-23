@@ -23,8 +23,8 @@ export function createRoommateProfileCH(): CreateRoommateProfileCommandHandler {
   const readRoommateProfileRepo = new ReadRoommateProfileRepositories();
   const eventDispatch = new DomainEventDispatcher();
   const cashService = new RedisCashService();
-  const cashServiceHandler = new RemoveCashHandler(cashService);
-  eventDispatch.register(UpdateUserEvent.EVENT_KEY, cashServiceHandler);
+  const cashServiceHandler = new RemoveCashHandlerForRoommateEvent(cashService);
+  eventDispatch.register(RoommateProfileEvent.EVENT_KEY, cashServiceHandler);
 
   const eventBus = new InMemoryEventBus(eventDispatch);
 
