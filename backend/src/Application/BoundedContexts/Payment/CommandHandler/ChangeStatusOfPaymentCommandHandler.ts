@@ -8,20 +8,18 @@ import { ICommandHandlers } from "../../Shared/abstraction/ICommandHandler";
 import { ChangeStatusOfPaymentCommand } from "../Command/ChangeStatusOfPaymentCommand";
 import { PaymentStatusResponse } from "../Dto/Respone/PaymentStatusResponse";
 
-export class ChangeStatusOfPaymentCommandHandler
-  implements ICommandHandlers<ChangeStatusOfPaymentCommand>
-{
+export class ChangeStatusOfPaymentCommandHandler implements ICommandHandlers<ChangeStatusOfPaymentCommand> {
   constructor(
     private readonly uow: IUnitOfWork,
     private readonly readUserRepo: IReadUserRepositories,
     private readonly readLandlordRepo: IReadLandlordRepositories,
     private readonly readPaymentScheduleRepo: IReadPaymentScheduleRepo,
     private readonly readLeaseRepo: IReadLeaseRepositories,
-    private readonly readReceiptRepo: IReadReceiptPaymentRepo
+    private readonly readReceiptRepo: IReadReceiptPaymentRepo,
   ) {}
 
   public async handle(
-    command: ChangeStatusOfPaymentCommand
+    command: ChangeStatusOfPaymentCommand,
   ): Promise<PaymentStatusResponse> {
     try {
       const user = await this.readUserRepo.findById(command.userId);
@@ -29,14 +27,14 @@ export class ChangeStatusOfPaymentCommandHandler
       user.ensureAccountIsActive();
 
       const landlord = await this.readLandlordRepo.findLandlordById(
-        command.userId
+        command.userId,
       );
       if (!landlord) throw new Error("Landlord profile not found!");
 
       // 2. Validate Lease Ownership
       const lease = await this.readLeaseRepo.findLeaseForLandlordById(
         command.userId,
-        command.leaseId
+        command.leaseId,
       );
       if (!lease) throw new Error("Lease not found or access denied!");
 
@@ -45,7 +43,7 @@ export class ChangeStatusOfPaymentCommandHandler
         await this.readPaymentScheduleRepo.FindPaymentScheduleById(
           command.userId,
           command.leaseId,
-          command.paymentId
+          command.paymentId,
         );
 
       if (!paymentSchedule) throw new Error("Payment schedule not found!");
@@ -53,9 +51,8 @@ export class ChangeStatusOfPaymentCommandHandler
       const receipts =
         await this.readReceiptRepo.findAllReceiptForPaymentScheduleById(
           command.userId,
-          command.paymentId
+          command.paymentId,
         );
-
 
       if (!receipts || receipts.length === 0) {
         throw new Error("No receipt found for this payment to verify!");
@@ -66,14 +63,13 @@ export class ChangeStatusOfPaymentCommandHandler
       landlord.updatePaymentScheduleStatus(
         paymentSchedule,
         receipt,
-        command.status
+        command.status,
       );
-
 
       await this.uow.startTransaction();
 
       await this.uow.writePaymentScheduleRepo.updatePaymentSchedule(
-        paymentSchedule
+        paymentSchedule,
       );
 
       await this.uow.writePaymentReceiptRepo.updateReceipt(receipt);

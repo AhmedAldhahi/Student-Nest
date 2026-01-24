@@ -7,5 +7,5 @@ export interface PaymentsResponse {
   amount: string;
   dueDate: string;
   leaseId: string;
-  verifiedByLandlord?: VerifiedLandlordStatus
+  verifiedByLandlord: VerifiedLandlordStatus | null
 }

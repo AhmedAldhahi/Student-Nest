@@ -18,7 +18,6 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
           where: {
             studentId: userId,
             apartmentId: apartmentId,
-            LeaseActivationStatus: true,
           },
           select: {
             leaseId: true,
