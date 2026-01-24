@@ -35,6 +35,9 @@ export class ReadLeaseRequestRepositories implements IReadLeaseRequestRepositori
             rentTerm: true,
             requestStatus: true,
             createAt: true,
+            landlordId:true,
+            studentId:true,
+            apartmentId:true,
 
             landlord: {
               userId: true,

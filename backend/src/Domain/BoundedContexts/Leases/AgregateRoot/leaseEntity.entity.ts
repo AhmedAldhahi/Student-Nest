@@ -94,7 +94,7 @@ export class LeaseAggregateRoot {
     const endMonth = endLease.getMonth() - 1;
     const endYear = endLease.getYear();
 
-    const expirationDate = new Date(endDy, endMonth, endYear);
+    const expirationDate = new Date(endYear, endMonth, endDy);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 

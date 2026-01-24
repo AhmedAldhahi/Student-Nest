@@ -63,7 +63,6 @@ export class CreateLeaseRequestCommandHandler implements ICommandHandlers<Create
         );
       }
 
-      // 5. Check if Student already has an Active Lease for this apartment
       const existingLeases =
         await this.readLeaseRepo.findAllLeaseContractForStudent(
           command.studentId,
@@ -94,14 +93,14 @@ export class CreateLeaseRequestCommandHandler implements ICommandHandlers<Create
             req.requestStatus === LeaseRequestStatus.Pending,
         );
 
+        console.log("existingPendingRequestDTO", pendingRequests);
+
         if (existingPendingRequestDTO) {
-          // 1. USE HELPER TO CONVERT DTO -> ENTITY
           const existingRequestEntity =
             AdapterHelper.FromILeaseRequestDTOToLeaseRequestEntity(
               existingPendingRequestDTO,
             );
 
-          // 2. CHECK LOGIC (3 Days Expiration)
           const THREE_DAYS_IN_MS = 3 * 24 * 60 * 60 * 1000;
           const now = new Date().getTime();
           const created = new Date(
