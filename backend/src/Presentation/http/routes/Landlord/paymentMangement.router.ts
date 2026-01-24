@@ -6,20 +6,16 @@ import { UpdatePaymentStatus } from "../../validation/Landlord/payment.validatio
 import { PaymentForLandlordController } from "../../controllers/Payment/PaymentForLandlord.controller";
 
 export const PaymentRouter = (
-  paymentController: PaymentForLandlordController
+  paymentController: PaymentForLandlordController,
 ): Router => {
   const router = Router();
-
-
-
-
 
   router.patch(
     "/:leaseId/:paymentId/status",
     isAuth,
     isLandlord,
     validation(UpdatePaymentStatus),
-    paymentController.editPaymentStatus
+    paymentController.editPaymentStatus,
   );
 
   return router;

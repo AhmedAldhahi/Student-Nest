@@ -7,5 +7,5 @@ export interface PaymentsResponse {
   amount: string;
   dueDate: string;
   leaseId: string;
-  verifiedByLandlord: VerifiedLandlordStatus | VerifiedLandlordStatus.Pending
+  verifiedByLandlord?: VerifiedLandlordStatus | VerifiedLandlordStatus.Pending;
 }
