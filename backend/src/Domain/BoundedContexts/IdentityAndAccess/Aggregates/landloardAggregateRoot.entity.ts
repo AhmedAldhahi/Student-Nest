@@ -10,6 +10,7 @@ import { ReceiptEntity } from "../../Payment/Entities/ReceiptEntities.entity";
 import { ApartmentDocumentEntity } from "../../Housing/Entities/apartmentDocumentEntity.entity";
 import { LandlordDataType } from "../types/ILandlordData.type";
 import { ApartmentAggregateRoot } from "../../Housing/AgregateRoot/apartmentEntity.entity";
+import { LeaseAggregateRoot } from "../../Leases/AgregateRoot/leaseEntity.entity";
 
 export class LandlordAggregateRoot extends AggregateRoot<string> {
   private userId: string;
@@ -96,10 +97,10 @@ export class LandlordAggregateRoot extends AggregateRoot<string> {
 
   public updatePaymentScheduleStatus(
     paymentSchedule: PaymentAggregateRoot,
+    lease: LeaseAggregateRoot,
     receipt: ReceiptEntity,
     status: VerifiedLandlordStatus,
   ): void {
-    
     if (receipt.getVerifiedByLandlord() === VerifiedLandlordStatus.Accept) {
       throw new Error("Accepted payment cannot be modified.");
     }
@@ -107,8 +108,9 @@ export class LandlordAggregateRoot extends AggregateRoot<string> {
     switch (status) {
       case VerifiedLandlordStatus.Accept:
         receipt.markAsVerified();
-
         paymentSchedule.acceptPayment();
+        lease.markAsActivated();
+
         break;
 
       case VerifiedLandlordStatus.Reject:
