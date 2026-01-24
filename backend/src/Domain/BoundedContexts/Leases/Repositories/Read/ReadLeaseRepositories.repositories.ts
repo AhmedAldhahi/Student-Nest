@@ -48,6 +48,8 @@ export interface IReadLeaseRepositories {
 
   findAllLeaseForStudent(userId: string): Promise<ILeaseEntityDTO[] | null>;
 
-  
-  
+  findAllLeaseContractForStudent(
+    userId: string,
+    apartmentId: string,
+  ): Promise<LeaseAggregateRoot[] >;
 }

@@ -119,12 +119,15 @@ export function CreateLeaseRequestCH(): CreateLeaseRequestCommandHandler {
   const studentRepo = new ReadStudentRepositories();
   const apartmentRepo = new ReadApartmentRepositories();
   const readLeaseRepo = new ReadLeaseRepositories();
+  const readLeaseRequestRep = new ReadLeaseRequestRepositories();
+
   const uow = new UnitOfWork();
 
   return new CreateLeaseRequestCommandHandler(
     userRepo,
     studentRepo,
     apartmentRepo,
+    readLeaseRequestRep,
     readLeaseRepo,
     uow,
   );

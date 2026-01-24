@@ -7,6 +7,65 @@ import { LeaseMapper } from "../mapper/lease.mapper";
 import { ILeaseEntityDTO } from "../../../Domain/BoundedContexts/Leases/Representations/ILeaseEntityDTO";
 
 export class ReadLeaseRepositories implements IReadLeaseRepositories {
+  public async findAllLeaseContractForStudent(
+    userId: string,
+    apartmentId: string,
+  ): Promise<LeaseAggregateRoot[]> {
+    try {
+      const leaseModel = await AppDataSource.getInstance()
+        .getRepository(LeaseModel)
+        .find({
+          where: {
+            studentId: userId,
+            apartmentId: apartmentId,
+            LeaseActivationStatus: true,
+          },
+          select: {
+            leaseId: true,
+            LeaseActivationStatus: true,
+            isLandlordSigned: true,
+            isStudentSigned: true,
+            houseRule: true,
+            leaseStartDate: true,
+            leaseEndDate: true,
+            monthlyRent: true,
+            leaseTerm: true,
+            includeUtilities: true,
+            createAt: true,
+            apartmentId: true,
+            landlord: {
+              userId: true,
+              user: {
+                Name: true,
+              },
+            },
+            student: {
+              userId: true,
+
+              user: {
+                Name: true,
+              },
+            },
+
+            apartment: {
+              apartmentId: true,
+              title: true,
+            },
+          },
+          relations: {
+            student: { user: true },
+            landlord: { user: true },
+            apartment: true,
+          },
+        });
+
+      if (!leaseModel || leaseModel.length === 0) return [];
+      return leaseModel.map((entity) => LeaseMapper.toEntity(entity));
+    } catch (error: any) {
+      console.error("fail to get all lease for students", error);
+      throw error;
+    }
+  }
   public async findLeaseForStudentById(
     userId: string,
     id: string,

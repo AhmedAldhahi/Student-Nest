@@ -50,6 +50,63 @@ export class LeaseAggregateRoot {
    * ==================================================================================
    */
 
+  public generatePaymentSchedule(): void {
+    const schedules: PaymentAggregateRoot[] = [];
+
+    const currentDueDate = new Date(
+      this.leaseStartData.getYear(),
+      this.leaseStartData.getMonth() - 1,
+      this.leaseStartData.getDays(),
+    );
+
+    const endDate = new Date(
+      this.leaseEndData.getYear(),
+      this.leaseEndData.getMonth() - 1,
+      this.leaseEndData.getDays(),
+    );
+
+    const rentValue = this.monthlyRent.getValue();
+    if (!rentValue) throw new Error("Monthly rent is missing");
+
+    while (currentDueDate < endDate) {
+      const newPayment = PaymentAggregateRoot.create({
+        paymentId: uuidv4(),
+        paymentStatus: PaymentStatus.UnPaid,
+        amount: PaymentAmount.create(rentValue),
+        dueDate: currentDueDate.toISOString().split("T")[0],
+        leaseId: this.leaseId,
+        paymentReceipt: null,
+      });
+
+      schedules.push(newPayment);
+
+      currentDueDate.setMonth(currentDueDate.getMonth() + 1);
+    }
+
+    this.paymentSchedule = schedules;
+  }
+
+  public checkIfLeaseExpiredLease(): boolean {
+    const endLease = this.leaseEndData;
+
+    // convert to date
+    const endDy = endLease.getDays();
+    const endMonth = endLease.getMonth() - 1;
+    const endYear = endLease.getYear();
+
+    const expirationDate = new Date(endDy, endMonth, endYear);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return today > expirationDate;
+  }
+
+  /**
+   * ==================================================================================
+   *                              Update Methods sections
+   * ==================================================================================
+   */
+
   public ActivateStatus(): void {
     this.activateStatus = true;
   }
@@ -104,42 +161,6 @@ export class LeaseAggregateRoot {
 
   public updateIncludeUtilities(util: string): void {
     this.includeUtilities = util;
-  }
-
-  public generatePaymentSchedule(): void {
-    const schedules: PaymentAggregateRoot[] = [];
-
-    const currentDueDate = new Date(
-      this.leaseStartData.getYear(),
-      this.leaseStartData.getMonth() - 1,
-      this.leaseStartData.getDays()
-    );
-
-    const endDate = new Date(
-      this.leaseEndData.getYear(),
-      this.leaseEndData.getMonth() - 1,
-      this.leaseEndData.getDays()
-    );
-
-    const rentValue = this.monthlyRent.getValue();
-    if (!rentValue) throw new Error("Monthly rent is missing");
-
-    while (currentDueDate < endDate) {
-      const newPayment = PaymentAggregateRoot.create({
-        paymentId: uuidv4(),
-        paymentStatus: PaymentStatus.UnPaid,
-        amount: PaymentAmount.create(rentValue),
-        dueDate: currentDueDate.toISOString().split("T")[0],
-        leaseId: this.leaseId,
-        paymentReceipt: null,
-      });
-
-      schedules.push(newPayment);
-
-      currentDueDate.setMonth(currentDueDate.getMonth() + 1);
-    }
-
-    this.paymentSchedule = schedules;
   }
 
   /**

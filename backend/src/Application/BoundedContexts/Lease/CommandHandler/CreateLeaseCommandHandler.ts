@@ -45,10 +45,8 @@ export class CreateLeaseCommandHandler implements ICommandHandlers<CreateLeaseCo
       }
 
       if (leaseRequest.getRequestLeaseStatus() === LeaseRequestStatus.Pending) {
-        throw new Error ("cannot create lease for request that still pending ");
+        throw new Error("cannot create lease for request that still pending ");
       }
-
-      
 
       const leaseStartData = leaseRequest.getStartDate();
 
@@ -86,8 +84,8 @@ export class CreateLeaseCommandHandler implements ICommandHandlers<CreateLeaseCo
         leaseId: leaseId,
         houseRule: apartment.getHouseRule(),
         ActivationStatus: false,
-        isLandlordSigned: false,
-        isStudentSigned: false,
+        isLandlordSigned: true,
+        isStudentSigned: true,
         includeUtilities: apartment.getIncludeUtilities(),
 
         leaseStartData: startDateVO,
