@@ -74,6 +74,7 @@ export class ChangeStatusOfPaymentCommandHandler implements ICommandHandlers<Cha
       );
 
       await this.uow.writePaymentReceiptRepo.updateReceipt(receipt);
+      await this.uow.writeLeaseRepo.updateLease(lease);
 
       await this.uow.commitTransaction();
 

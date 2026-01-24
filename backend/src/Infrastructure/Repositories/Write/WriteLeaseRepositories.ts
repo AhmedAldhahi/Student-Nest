@@ -7,6 +7,11 @@ import { LeaseModel } from "../../Database/TypeOrm/entity/Lease.entity";
 export class WriteLeaseRepositories implements IWriteLeaseRepo {
   constructor(private readonly manager: EntityManager) {}
 
+  public async updateLease(lease: LeaseAggregateRoot): Promise<void> {
+    const model = LeaseMapper.toModel(lease);
+    await this.manager.save(LeaseModel, model);
+  }
+
   public async createLease(lease: LeaseAggregateRoot): Promise<void> {
     const model = LeaseMapper.toModel(lease);
     await this.manager.save(LeaseModel, model);
