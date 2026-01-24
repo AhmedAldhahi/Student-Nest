@@ -16,7 +16,7 @@ export class LeaseMapper {
     const lastD = new LeaseEndDate(normalizedEnd);
 
     const paymentAggregates = (model.payments || []).map((p) =>
-      PaymentMapper.toDomain(p)
+      PaymentMapper.toDomain(p),
     );
 
     return new LeaseAggregateRoot({
@@ -81,7 +81,7 @@ export class LeaseMapper {
     leaseModel.createAt = entity.getCreateAt();
 
     leaseModel.payments = (entity.getPaymentSchedule() || []).map(
-      (paymentAggregate) => PaymentMapper.toModel(paymentAggregate)
+      (paymentAggregate) => PaymentMapper.toModel(paymentAggregate),
     );
 
     return leaseModel;

@@ -67,12 +67,16 @@ export class ChangeStatusOfPaymentCommandHandler implements ICommandHandlers<Cha
         command.status,
       );
 
+      console.log("lease Id :", command.leaseId);
+      console.log("lease id from aggregate id : ", paymentSchedule.getLeaseId());
+      console.log("apartment id :", command.paymentId);
+      console.log("user id : ", command.userId);
+
       await this.uow.startTransaction();
 
       await this.uow.writePaymentScheduleRepo.updatePaymentSchedule(
         paymentSchedule,
       );
-
       await this.uow.writePaymentReceiptRepo.updateReceipt(receipt);
       await this.uow.writeLeaseRepo.updateLease(lease);
 
