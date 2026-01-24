@@ -41,7 +41,9 @@ export class PaymentMapper {
       amount: model.amount,
       dueDate: model.dueDate,
       leaseId: model.leaseId,
-      verifiedByLandlord: model.receipt?.verifiedByLandlord,
+     verifiedByLandlord: model.receipt ? model.receipt.verifiedByLandlord : null,
     };
   }
+
+
 }
