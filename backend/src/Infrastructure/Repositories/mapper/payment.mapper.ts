@@ -1,4 +1,5 @@
 import { PaymentAggregateRoot } from "../../../Domain/BoundedContexts/Payment/AgregateRoot/Payment.AgregateRoot";
+import { VerifiedLandlordStatus } from "../../../Domain/BoundedContexts/Payment/Enum/VerfiedLandlordStatus.enum";
 import { PaymentsResponse } from "../../../Domain/BoundedContexts/Payment/Representations/IPaymentResponse";
 import { PaymentAmount } from "../../../Domain/BoundedContexts/Payment/Value-Object/PaymentAmount.vo";
 import { PaymentScheduleModel } from "../../Database/TypeOrm/entity/PaymentSchedual.entity";
@@ -41,9 +42,9 @@ export class PaymentMapper {
       amount: model.amount,
       dueDate: model.dueDate,
       leaseId: model.leaseId,
-     verifiedByLandlord: model.receipt ? model.receipt.verifiedByLandlord : null,
+      verifiedByLandlord: model.receipt
+        ? model.receipt.verifiedByLandlord
+        : VerifiedLandlordStatus.Pending,
     };
   }
-
-
 }
