@@ -13,11 +13,13 @@ import { RentTerm } from "../../../../Domain/BoundedContexts/Leases/Value-Object
 import { LeaseTerm } from "../../../../Domain/BoundedContexts/Leases/Value-Object/LeaseTerm.vo";
 import { createLeaseResponse } from "../Dto/Response/createLeaseReponse";
 import { LeaseRequestStatus } from "../../../../Domain/BoundedContexts/Leases/Enum/LeaseRequestStatus.enum";
+import { IReadLeaseRepositories } from "../../../../Domain/BoundedContexts/Leases/Repositories/Read/ReadLeaseRepositories.repositories";
 
 export class CreateLeaseCommandHandler implements ICommandHandlers<CreateLeaseCommand> {
   constructor(
     private readonly readUserRepo: IReadUserRepositories,
     private readonly readLeaseRequestRepo: IReadLeaseRequestRepositories,
+    private readonly readLeaseRepo: IReadLeaseRepositories,
     private readonly readApartmentRepo: IReadApartmentRepo,
     private readonly uow: IUnitOfWork,
   ) {}
@@ -45,7 +47,7 @@ export class CreateLeaseCommandHandler implements ICommandHandlers<CreateLeaseCo
       }
 
       if (leaseRequest.getRequestLeaseStatus() === LeaseRequestStatus.Pending) {
-        throw new Error("cannot create lease for request that still pending ");
+        throw new Error("can not create lease for request that still pending ");
       }
 
       const leaseStartData = leaseRequest.getStartDate();
@@ -59,6 +61,24 @@ export class CreateLeaseCommandHandler implements ICommandHandlers<CreateLeaseCo
       );
 
       if (!apartment) throw new Error("no apartment been found !!");
+
+      const existingLeases =
+        await this.readLeaseRepo.findAllLeaseContractForStudent(
+          leaseRequest.getStudent(),
+          apartment.getApartmentId(),
+        );
+
+      if (existingLeases && existingLeases.length > 0) {
+        const hasActiveLease = existingLeases.some(
+          (lease) => !lease.checkIfLeaseExpiredLease(),
+        );
+
+        if (hasActiveLease) {
+          throw new Error(
+            "Cannot create lease: This student already has an active, non-expired lease for this apartment.",
+          );
+        }
+      }
 
       const leaseId = uuidv4();
       const apartmentPrice = apartment.getApartmentPrice();
