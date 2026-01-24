@@ -62,6 +62,9 @@ export class LeaseRequestMapper {
       apartmentTitle: model.apartment.title,
       apartmentPrice: model.apartment.price,
       Major: model.student.Major,
+      apartmentId: model.apartmentId,
+      studentId: model.studentId,
+      landlordId:model.landlordId,
     };
   }
 }

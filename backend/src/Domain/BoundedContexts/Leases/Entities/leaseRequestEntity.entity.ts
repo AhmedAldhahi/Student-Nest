@@ -31,6 +31,22 @@ export class LeaseRequestEntity extends AggregateRoot<string> {
 
   /**
    * ==================================================================================
+   *                              Behavior Methods
+   * ==================================================================================
+   */
+
+  public isLeaseRequestExpired(): boolean {
+    const expirationDate = new Date(this.createAt);
+
+    expirationDate.setDate(expirationDate.getDate() + 3);
+
+    const now = new Date();
+
+    return now > expirationDate;
+  }
+
+  /**
+   * ==================================================================================
    *                              Getter Methods sections
    * ==================================================================================
    */

@@ -38,6 +38,8 @@ export interface IReadLeaseRequestRepositories {
     userId: string,
   ): Promise<ILeaseRequestDTO[] | null>;
 
+  
+
   SearchForLeaseRequestForStudent(
     userId: string,
     queries: string,

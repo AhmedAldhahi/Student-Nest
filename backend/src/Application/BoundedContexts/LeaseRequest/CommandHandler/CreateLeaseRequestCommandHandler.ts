@@ -11,12 +11,16 @@ import { CreateApartmentRequestCommand } from "../Command/CreateLeaseRequestComm
 import { v4 as uuidv4 } from "uuid";
 import { createLeaseRequestResponse } from "../Dto/Respone/createLeaseRequestResponse";
 import { IReadLeaseRepositories } from "../../../../Domain/BoundedContexts/Leases/Repositories/Read/ReadLeaseRepositories.repositories";
+import { IReadLeaseRequestRepositories } from "../../../../Domain/BoundedContexts/Leases/Repositories/Read/ReadLeaseRequestRepositories.repositories";
+import { LeaseStatus } from "../../../../Domain/BoundedContexts/Leases/Enum/LeaseStatus.enum";
+import { AdapterHelper } from "../../../../Shared/utils/AdapterHelper.util";
 
 export class CreateLeaseRequestCommandHandler implements ICommandHandlers<CreateApartmentRequestCommand> {
   constructor(
     private readonly readUserRepo: IReadUserRepositories,
     private readonly readStudentRepo: IReadStudentRepositories,
     private readonly readApartmentRepo: IReadApartmentRepo,
+    private readonly readLeaseRequestRepo: IReadLeaseRequestRepositories,
     private readonly readLeaseRepo: IReadLeaseRepositories,
     private readonly uow: IUnitOfWork,
   ) {}
@@ -58,7 +62,68 @@ export class CreateLeaseRequestCommandHandler implements ICommandHandlers<Create
           "The apartment is full. You cannot make a lease request until a lease ends.",
         );
       }
-      
+
+      // 5. Check if Student already has an Active Lease for this apartment
+      const existingLeases =
+        await this.readLeaseRepo.findAllLeaseContractForStudent(
+          command.studentId,
+          command.apartmentId,
+        );
+
+      if (existingLeases && existingLeases.length > 0) {
+        const hasActiveLease = existingLeases.some(
+          (lease) => !lease.checkIfLeaseExpiredLease(),
+        );
+
+        if (hasActiveLease) {
+          throw new Error(
+            "You cannot create a lease request; you already have an active lease for this apartment.",
+          );
+        }
+      }
+
+      const pendingRequests =
+        await this.readLeaseRequestRepo.findAllLeaseRequestForStudent(
+          command.studentId,
+        );
+
+      if (pendingRequests && pendingRequests.length > 0) {
+        const existingPendingRequestDTO = pendingRequests.find(
+          (req) =>
+            req.apartmentId === command.apartmentId &&
+            req.requestStatus === LeaseRequestStatus.Pending,
+        );
+
+        if (existingPendingRequestDTO) {
+          // 1. USE HELPER TO CONVERT DTO -> ENTITY
+          const existingRequestEntity =
+            AdapterHelper.FromILeaseRequestDTOToLeaseRequestEntity(
+              existingPendingRequestDTO,
+            );
+
+          // 2. CHECK LOGIC (3 Days Expiration)
+          const THREE_DAYS_IN_MS = 3 * 24 * 60 * 60 * 1000;
+          const now = new Date().getTime();
+          const created = new Date(
+            existingRequestEntity.getCreateAt(),
+          ).getTime();
+          const isExpired = now - created > THREE_DAYS_IN_MS;
+
+          if (isExpired) {
+            existingRequestEntity.reject();
+
+            await this.uow.startTransaction();
+            await this.uow.writeLeaseRequestRepo.updateLeaseRequest(
+              existingRequestEntity,
+            );
+            await this.uow.commitTransaction();
+          } else {
+            throw new Error(
+              "You already have a pending request for this apartment. Please wait 3 days for it to expire or contact the landlord.",
+            );
+          }
+        }
+      }
 
       const leaseRequestId = uuidv4();
       const NewLeaseRequest = new LeaseRequestEntity({
