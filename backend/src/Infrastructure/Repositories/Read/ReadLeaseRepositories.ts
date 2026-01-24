@@ -238,7 +238,7 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
   public async findLeaseForLandlordById(
     userId: string,
     id: string,
-  ): Promise<ILeaseEntityDTO | null> {
+  ): Promise<LeaseAggregateRoot | null> {
     try {
       const leaseModel = await AppDataSource.getInstance()
         .getRepository(LeaseModel)
@@ -253,7 +253,7 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
 
       if (!leaseModel) return null;
 
-      return LeaseMapper.toResponse(leaseModel);
+      return LeaseMapper.toEntity(leaseModel);
     } catch (error: any) {
       console.error("fail to get leases !!");
       throw error;

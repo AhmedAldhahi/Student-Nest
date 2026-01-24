@@ -62,6 +62,7 @@ export class ChangeStatusOfPaymentCommandHandler implements ICommandHandlers<Cha
 
       landlord.updatePaymentScheduleStatus(
         paymentSchedule,
+        lease,
         receipt,
         command.status,
       );

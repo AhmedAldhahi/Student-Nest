@@ -27,7 +27,7 @@ export interface IReadLeaseRepositories {
   findLeaseForLandlordById(
     userId: string,
     id: string,
-  ): Promise<ILeaseEntityDTO | null>;
+  ): Promise<LeaseAggregateRoot | null>;
 
   findAllLeaseForLandlordSearch(
     userId: string,

@@ -1,19 +1,16 @@
 import { ApartmentPrice } from "../../Domain/BoundedContexts/Housing/Value-Object/ApartmentPrice.vo";
 import { MonthlyRent } from "../../Domain/BoundedContexts/Housing/Value-Object/MonthlyRent.vo";
+import { LeaseAggregateRoot } from "../../Domain/BoundedContexts/Leases/AgregateRoot/leaseEntity.entity";
 import { LeaseRequestEntity } from "../../Domain/BoundedContexts/Leases/Entities/leaseRequestEntity.entity";
 import { LeaseRequestStatus } from "../../Domain/BoundedContexts/Leases/Enum/LeaseRequestStatus.enum";
+import { ILeaseEntityDTO } from "../../Domain/BoundedContexts/Leases/Representations/ILeaseEntityDTO";
 import { ILeaseRequestDTO } from "../../Domain/BoundedContexts/Leases/Representations/ILeaseRequestDTO";
 import { LeaseEndDate } from "../../Domain/BoundedContexts/Leases/Value-Object/LeaseEndDate.vo";
 import { LeaseStartDate } from "../../Domain/BoundedContexts/Leases/Value-Object/LeaseStartDate.vo";
+import { LeaseTerm } from "../../Domain/BoundedContexts/Leases/Value-Object/LeaseTerm.vo";
 import { RentTerm } from "../../Domain/BoundedContexts/Leases/Value-Object/RentTerm.vo";
 
 export class AdapterHelper {
-  /**
-   *  Apartment Price to Monthly Rent
-   *  Start Date From Lease Request To Start Lease Date
-   *  rentTerm From Lease Request to EndDate in Lease
-   */
-
   public static CalculateEndDate(
     startDate: LeaseStartDate,
     term: RentTerm,
