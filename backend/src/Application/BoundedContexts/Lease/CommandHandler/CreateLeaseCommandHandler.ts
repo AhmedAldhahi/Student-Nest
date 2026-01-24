@@ -80,6 +80,10 @@ export class CreateLeaseCommandHandler implements ICommandHandlers<CreateLeaseCo
         }
       }
 
+      
+
+
+
       const leaseId = uuidv4();
       const apartmentPrice = apartment.getApartmentPrice();
 
