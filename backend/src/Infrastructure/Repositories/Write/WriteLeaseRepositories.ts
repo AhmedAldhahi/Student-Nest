@@ -11,7 +11,22 @@ export class WriteLeaseRepositories implements IWriteLeaseRepo {
     try {
       const model = LeaseMapper.toModel(lease);
       (model as any).payments = undefined;
-      await this.manager.save(LeaseModel, model);
+
+      await this.manager.update(
+        LeaseModel,
+        { leaseId: model.leaseId },
+        {
+          leaseStartDate: model.leaseStartDate,
+          leaseEndDate: model.leaseEndDate,
+          houseRule: model.houseRule,
+          isLandlordSigned: model.isLandlordSigned,
+          isStudentSigned: model.isStudentSigned,
+          monthlyRent: model.monthlyRent,
+          LeaseActivationStatus: model.LeaseActivationStatus,
+          includeUtilities: model.includeUtilities,
+          createAt: model.createAt,
+        },
+      );
     } catch (error: any) {
       console.error("Error updating lease:", error);
       throw error;
