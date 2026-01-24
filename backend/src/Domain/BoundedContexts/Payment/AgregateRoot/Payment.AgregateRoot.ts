@@ -41,7 +41,7 @@ export class PaymentAggregateRoot extends AggregateRoot<string> {
     }
 
     this.paymentReceipt = receipt;
-    this.paymentStatus = PaymentStatus.UnPaid;
+    this.paymentStatus = PaymentStatus.Paid;
   }
 
   public acceptPayment(): void {

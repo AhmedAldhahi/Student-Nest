@@ -54,7 +54,7 @@ export class LandlordAggregateRoot extends AggregateRoot<string> {
 
   public AddApartmentDocumentFile(
     apartment: ApartmentAggregateRoot,
-    apartmentDoc: ApartmentDocumentEntity
+    apartmentDoc: ApartmentDocumentEntity,
   ) {
     // make need validation
     if (!apartmentDoc) {
@@ -68,7 +68,7 @@ export class LandlordAggregateRoot extends AggregateRoot<string> {
 
   public UpdateApartmentDocumentFile(
     apartment: ApartmentAggregateRoot,
-    apartmentDoc: ApartmentDocumentEntity
+    apartmentDoc: ApartmentDocumentEntity,
   ) {
     if (!apartmentDoc) {
       console.log("no document to add ");
@@ -81,7 +81,7 @@ export class LandlordAggregateRoot extends AggregateRoot<string> {
 
   public updateLeaseRequestStatus(
     leaseRequest: LeaseRequestEntity,
-    status: LeaseRequestStatus
+    status: LeaseRequestStatus,
   ) {
     this.ensureIsLandlordVerified();
 
@@ -97,10 +97,9 @@ export class LandlordAggregateRoot extends AggregateRoot<string> {
   public updatePaymentScheduleStatus(
     paymentSchedule: PaymentAggregateRoot,
     receipt: ReceiptEntity,
-    status: VerifiedLandlordStatus
+    status: VerifiedLandlordStatus,
   ): void {
-    
-    if (paymentSchedule.getPaymentStatus() === PaymentStatus.Paid) {
+    if (this.getLandlordVerified() === true) {
       throw new Error("Accepted payment cannot be modified.");
     }
 
