@@ -99,7 +99,8 @@ export class LandlordAggregateRoot extends AggregateRoot<string> {
     receipt: ReceiptEntity,
     status: VerifiedLandlordStatus,
   ): void {
-    if (this.getLandlordVerified() === true) {
+    
+    if (receipt.getVerifiedByLandlord() === VerifiedLandlordStatus.Accept) {
       throw new Error("Accepted payment cannot be modified.");
     }
 

@@ -38,7 +38,7 @@ export class PaymentAggregateRoot extends AggregateRoot<string> {
     // 2. State Validation: Can't upload if already paid
     if (this.paymentStatus === PaymentStatus.Paid) {
       throw new Error("Payment is already completed.");
-    }
+    } 
 
     this.paymentReceipt = receipt;
     this.paymentStatus = PaymentStatus.Paid;
