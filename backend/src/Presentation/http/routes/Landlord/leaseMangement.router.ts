@@ -3,7 +3,7 @@ import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 import { isLandlord } from "../../middlewares/auth/isLandloard.middleware";
 import { LeaseManagementForLandlord } from "../../controllers/Lease/LeaseForLandlord.controller";
 import { leaseRetrievalRateLimit } from "../../middlewares/rate-limited/Lease/RetreiveLeaseRateLimit.middleware";
-import { leaseSearchRateLimit } from "../../middlewares/rate-limited/Lease/SearchLeaseRateLimit.middleware";
+import { searchLeasesRateLimit } from "../../middlewares/rate-limited/Lease/searchLeaseRateLimit.middleware";
 
 export const LeaseRouter = (LeastController: LeaseManagementForLandlord): Router => {
   const router = Router();
@@ -18,7 +18,7 @@ export const LeaseRouter = (LeastController: LeaseManagementForLandlord): Router
 
   router.get(
     "/:apartmentId/search",
-    leaseSearchRateLimit,
+    searchLeasesRateLimit,
     isAuth,
     isLandlord,
     LeastController.SearchAllLeasesForSingleApartment
