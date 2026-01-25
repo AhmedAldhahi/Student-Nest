@@ -6,33 +6,53 @@ import {
   DeleteBatchSchema,
 } from "../../validation/shared/notificationMangement.validation.zod";
 import { isAuth } from "../../middlewares/auth/isAuth.middleware";
+import { deleteNotificationRateLimit } from "../../middlewares/rate-limited/Notification/deleteNotificationRateLimit.middleware";
+import { getNotificationRateLimit } from "../../middlewares/rate-limited/Notification/getNotificationRateLimit.middleware";
+import { updateNotificationStatusRateLimit } from "../../middlewares/rate-limited/Notification/updateNotificationStatusRateLimit.middleware";
 
 export const notificationRouter = (
-  notificationController: NotificationController
+  notificationController: NotificationController,
 ): Router => {
   const router = Router();
 
-  router.get("/", isAuth, notificationController.getAllNotification);
+  router.get(
+    "/",
+    getNotificationRateLimit,
+    isAuth,
+    notificationController.getAllNotification,
+  );
 
   router.patch(
     "/:id/notifications-status/",
+    updateNotificationStatusRateLimit,
     isAuth,
 
     validation(changeNotificationStatusSchema),
-    notificationController.updateNotificationsStatus
+    notificationController.updateNotificationsStatus,
   );
 
   router.delete(
     "/batch",
+    deleteNotificationRateLimit,
     isAuth,
     validation(DeleteBatchSchema),
 
-    notificationController.deleteSpecificNotifications
+    notificationController.deleteSpecificNotifications,
   );
 
-  router.delete("/:id", isAuth, notificationController.deleteNotificationById);
+  router.delete(
+    "/:id",
+    deleteNotificationRateLimit,
+    isAuth,
+    notificationController.deleteNotificationById,
+  );
 
-  router.delete("/", isAuth, notificationController.deleteAllNotification);
+  router.delete(
+    "/",
+    deleteNotificationRateLimit,
+    isAuth,
+    notificationController.deleteAllNotification,
+  );
 
   return router;
 };
