@@ -30,7 +30,7 @@ import { ReadLandlordRepositories } from "../Repositories/Read/ReadLandlordRepos
 import { ReadLeaseRepositories } from "../Repositories/Read/ReadLeaseRepositories";
 import { ReadUserRepositories } from "../Repositories/Read/ReadUserRepositories";
 import { UnitOfWork } from "../Repositories/unitOfWork.repositories";
-import { CloudinaryService } from "../Services/media/CloudinaryService.service";
+import { CloudinaryService } from "../Services/Media/CloudinaryService.service";
 
 export function AddNewApartmentCH(): CreateApartmentCommandHandler {
   const uow = new UnitOfWork();

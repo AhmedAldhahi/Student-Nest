@@ -34,10 +34,10 @@ import { ReadStudentRepositories } from "../Repositories/Read/ReadStudentReposit
 import { ReadUserRepositories } from "../Repositories/Read/ReadUserRepositories";
 import { UnitOfWork } from "../Repositories/unitOfWork.repositories";
 import { RedisCashService } from "../Services/Cashing/RadisCashe";
-import { MailtrapService } from "../Services/email/MailtrapService.service";
-import { CloudinaryService } from "../Services/media/CloudinaryService.service";
-import { BcryptPasswordHasher } from "../Services/security/BcryptPasswordHasher.service";
-import { JwtTokenService } from "../Services/security/TokenService.service";
+import { MailtrapService } from "../Services/Email/MailtrapService.service";
+import { CloudinaryService } from "../Services/Media/CloudinaryService.service";
+import { BcryptPasswordHasher } from "../Services/Security/BcryptPasswordHasher.service";
+import { JwtTokenService } from "../Services/Security/TokenService.service";
 
 export function RegisterLandlordCH(): CreateLandlordCommandHandler {
   const readUserRepo = new ReadUserRepositories();

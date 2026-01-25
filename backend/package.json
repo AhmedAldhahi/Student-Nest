@@ -34,6 +34,7 @@
     "cors": "^2.8.5",
     "debug": "^4.4.3",
     "dotenv": "^17.2.3",
+    "eiows": "^8.2.0",
     "express": "^4.21.2",
     "express-rate-limit": "^8.2.1",
     "express-winston": "^4.2.0",
@@ -50,12 +51,14 @@
     "redis": "^5.10.0",
     "reflect-metadata": "^0.2.2",
     "sendgrid": "^5.2.3",
+    "socket.io": "^4.8.3",
     "streamifier": "^0.1.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "ts-node": "^10.9.2",
     "typeorm": "^0.3.27",
     "uuid": "^8.3.2",
+    "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.52.0",
     "winston": "^3.18.3",
     "yamljs": "^0.3.0",
     "zod": "^4.2.1"
@@ -76,5 +79,9 @@
     "ts-jest": "^29.4.6",
     "ts-node-dev": "^2.0.0",
     "typedoc": "^0.28.14"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.1.0",
+    "utf-8-validate": "^6.0.6"
   }
 }

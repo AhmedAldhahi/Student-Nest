@@ -15,7 +15,7 @@ import { ReadPaymentReceiptRepositories } from "../Repositories/Read/ReadPayment
 import { ReadPaymentScheduleRepositories } from "../Repositories/Read/ReadPaymentScheule.Repostioreis";
 import { ReadUserRepositories } from "../Repositories/Read/ReadUserRepositories";
 import { UnitOfWork } from "../Repositories/unitOfWork.repositories";
-import { CloudinaryService } from "../Services/media/CloudinaryService.service";
+import { CloudinaryService } from "../Services/Media/CloudinaryService.service";
 
 export function ChangeStatusOfPaymentCH(): ChangeStatusOfPaymentCommandHandler {
   const uow = new UnitOfWork();

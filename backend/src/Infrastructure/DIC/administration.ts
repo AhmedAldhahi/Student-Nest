@@ -15,7 +15,7 @@ import { ReadLandlordRepositories } from "../Repositories/Read/ReadLandlordRepos
 import { ReadUserRepositories } from "../Repositories/Read/ReadUserRepositories";
 import { UnitOfWork } from "../Repositories/unitOfWork.repositories";
 import { RedisCashService } from "../Services/Cashing/RadisCashe";
-import { CloudinaryService } from "../Services/media/CloudinaryService.service";
+import { CloudinaryService } from "../Services/Media/CloudinaryService.service";
 
 export function ChangeLandlordVerificationStatusCH(): ChangeLandlordVerificationStatusCommandHandler {
   const uow = new UnitOfWork();

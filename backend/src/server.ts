@@ -17,6 +17,7 @@ import { SharedIndexRouter } from "./Presentation/http/routes/shared/index.route
 import { LandlordIndexRouter } from "./Presentation/http/routes/Landlord/index.router";
 import { buildControllersBoundaryContext } from "./Presentation/http/controllers/main.controller";
 import { StudentIndexRouter } from "./Presentation/http/routes/Student/index.router";
+
 export class Server {
   public app = express();
   public port = parseInt(process.env.PORT || "4000", 10);
@@ -25,13 +26,7 @@ export class Server {
   private dbDebug = debug("app:db");
   private httpDebug = debug("app:http");
 
-  async configure() {
-    this.app.use((req, res, next) => {
-      console.log("🔥 REQUEST HIT SERVER:", req.method, req.url);
-      next();
-    });
-
-    // Database Connection
+  public async connectedDB() {
     try {
       await AppDataSource.initialize();
       this.dbDebug("Database connected successfully.");
@@ -39,8 +34,9 @@ export class Server {
       this.dbDebug("Database connection failed: %O", error);
       throw error;
     }
+  }
 
-    // Logging - Morgan FIRST
+  public async connectToThirdParty() {
     this.app.use(
       morgan("dev", {
         stream: {
@@ -87,6 +83,19 @@ export class Server {
         credentials: true,
       }),
     );
+  }
+
+  public async configure() {
+    this.app.use((req, res, next) => {
+      console.log("🔥 REQUEST HIT SERVER:", req.method, req.url);
+      next();
+    });
+
+    // Database Connection
+    this.connectedDB();
+
+    // Third Party connect 
+    this.connectToThirdParty();
 
     const {
       authController,
@@ -160,7 +169,7 @@ export class Server {
     this.startupDebug("Server configuration completed.");
   }
 
-  async start() {
+  public async start() {
     await this.configure();
 
     this.app.listen(this.port, () => {
