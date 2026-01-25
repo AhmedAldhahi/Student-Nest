@@ -7,13 +7,6 @@ export const GetProfileRateLimit = rateLimit({
   windowMs: 1 * 60 * 1000,
   max: 30,
 
-  keyGenerator: (req: Request, res: Response) => {
-    if (req.user && req.user.userId) {
-      return req.user.userId;
-    }
-    return getIp(req);
-  },
-
   handler: (req: Request, res: Response) => {
     res.status(429).json({
       success: false,
