@@ -4,6 +4,7 @@ import { isLandlord } from "../../middlewares/auth/isLandloard.middleware";
 import { validation } from "../../middlewares/validation.middleware";
 import { UpdatePaymentStatus } from "../../validation/Landlord/payment.validation.zod";
 import { PaymentForLandlordController } from "../../controllers/Payment/PaymentForLandlord.controller";
+import { updatePaymentStatusRateLimit } from "../../middlewares/rate-limited/Payment/updatePaymentStatusRateLimit.middleware";
 
 export const PaymentRouter = (
   paymentController: PaymentForLandlordController,
@@ -12,6 +13,7 @@ export const PaymentRouter = (
 
   router.patch(
     "/:leaseId/:paymentId/status",
+    updatePaymentStatusRateLimit,
     isAuth,
     isLandlord,
     validation(UpdatePaymentStatus),

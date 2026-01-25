@@ -1,11 +1,10 @@
 import { Router } from "express";
 import { ProfileController } from "../../controllers/IdentityAndAccess/Profile.controller";
-import { GetProfile } from "../../middlewares/rate-limited/getProfileRatelimit.middleware";
 import { isAuth } from "../../middlewares/auth/isAuth.middleware";
-import { updateProfile } from "../../middlewares/rate-limited/updateProfileRateLimit.middleware";
-import { validation } from "../../middlewares/validation.middleware";
+import { updateProfile } from "../../middlewares/rate-limited/IdentityAndAccess/updateProfileRateLimit.middleware";
 import multer from "multer";
 import { RBAC } from "../../middlewares/auth/RBAC.middleware";
+import { GetProfileRateLimit } from "../../middlewares/rate-limited/IdentityAndAccess/getProfileRatelimit.middleware";
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -14,18 +13,18 @@ export const profileRouter = (profileController: ProfileController): Router => {
 
   router.get(
     "/profile",
-    GetProfile,
+    GetProfileRateLimit,
     isAuth,
     profileController.getProfileDetails
   );
 
   router.patch(
     "/profile",
+    updateProfile,
     upload.fields([
       { name: "photo", maxCount: 1 },
       { name: "verificationFile", maxCount: 1 },
     ]),
-    updateProfile,
     isAuth,
     RBAC,
     profileController.updateUserProfile

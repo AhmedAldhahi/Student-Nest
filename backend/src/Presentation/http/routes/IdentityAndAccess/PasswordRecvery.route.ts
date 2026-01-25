@@ -1,14 +1,14 @@
 import { Router } from "express";
 import { PasswordRecoverController } from "../../controllers/IdentityAndAccess/PasswordRecovery.controller";
-import { updateForgetPassword } from "../../middlewares/rate-limited/updateForgetPassword.middleware";
-import { otpResendRateLimited } from "../../middlewares/rate-limited/otpResendRateLimited.middleware";
+import { otpResendRateLimited } from "../../middlewares/rate-limited/IdentityAndAccess/otpResendRateLimited.middleware";
 import { ForgetPasswordSchema } from "../../validation/PasswordRecovery/passwordRecovert.zod";
 import {
   resendOtpSchema,
   VerifiedOTpSchema,
 } from "../../validation/verfication/VerficationSchema.zod";
 import { validation } from "../../middlewares/validation.middleware";
-import { otpVerifyRateLimited } from "../../middlewares/rate-limited/otpVerifyRateLimited.middleware";
+import { otpVerifyRateLimited } from "../../middlewares/rate-limited/IdentityAndAccess/otpVerifyRateLimited.middleware";
+import { loginUpdatePasswordRateLimited } from "../../middlewares/rate-limited/IdentityAndAccess/loginUpdatePasswordRateLimit.middleware";
 
 export const PasswordRecoveryRouter = (
   RecoveryPasswordController: PasswordRecoverController
@@ -17,7 +17,7 @@ export const PasswordRecoveryRouter = (
 
   router.patch(
     "/forget-password",
-    updateForgetPassword,
+    loginUpdatePasswordRateLimited,
     validation(ForgetPasswordSchema),
     RecoveryPasswordController.changeForgetPassword
   );

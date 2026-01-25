@@ -12,6 +12,7 @@ import { SharedLeaseManagementController } from "../../controllers/Lease/SharedL
 import { SharedPaymentController } from "../../controllers/Payment/SharedPayment.controller";
 import { SettingController } from "../../controllers/Shared/Setting.controller";
 import { SettingRouter } from "./setting.routes";
+import { globalSharedRateLimit } from "../../middlewares/rate-limited/GlobalRateLimit/GlobalSharedRateLimit.middleware";
 
 export const SharedIndexRouter = (
   apartmentController: SharedApartmentManagementController,
@@ -22,6 +23,8 @@ export const SharedIndexRouter = (
   settingController: SettingController,
 ): Router => {
   const router = Router();
+
+  router.use(globalSharedRateLimit)
 
   router.use("/apartments", ApartmentSharedRouter(apartmentController));
 

@@ -9,6 +9,9 @@ import {
 import { validationMedia } from "../../middlewares/validation.media.middleware.zod";
 import uploads from "../../../../Shared/utils/uploader.multer";
 import { ApartmentControllerForLandlord } from "../../controllers/Apartment/ApartmentControllerForLandlord";
+import { createApartmentRateLimit } from "../../middlewares/rate-limited/Apartment/createApartmentRateLimit.middleware";
+import { getApartmentRateLimit } from "../../middlewares/rate-limited/Apartment/getApartmentRateLimit.middleware";
+import { updateApartmentRateLimit } from "../../middlewares/rate-limited/Apartment/updateApartmentRateLimit.middleware";
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -23,6 +26,7 @@ export const ApartmentRouter = (
 
   router.post(
     "/",
+    createApartmentRateLimit,
     isAuth,
     isLandlord,
     apartmentUploads,
@@ -32,6 +36,7 @@ export const ApartmentRouter = (
 
   router.post(
     "/:apartmentId/document",
+    createApartmentRateLimit,
     isAuth,
     isLandlord,
     uploads.single("apartmentDocument"),
@@ -40,6 +45,7 @@ export const ApartmentRouter = (
 
   router.patch(
     "/:apartmentId/documents",
+    updateApartmentRateLimit,
     isAuth,
     isLandlord,
     uploads.single("apartmentDocument"),
@@ -48,6 +54,7 @@ export const ApartmentRouter = (
 
   router.patch(
     "/:id",
+    updateApartmentRateLimit,
     isAuth,
     isLandlord,
     apartmentUploads,
@@ -57,6 +64,7 @@ export const ApartmentRouter = (
 
   router.get(
     "/booked",
+    getApartmentRateLimit,
     isAuth,
     isLandlord,
     apartmentController.GetBookedApartment

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { VerificationController } from "../../controllers/IdentityAndAccess/Verification.controller";
-import { otpResendRateLimited } from "../../middlewares/rate-limited/otpResendRateLimited.middleware";
-import { otpVerifyRateLimited } from "../../middlewares/rate-limited/otpVerifyRateLimited.middleware";
+import { otpResendRateLimited } from "../../middlewares/rate-limited/IdentityAndAccess/otpResendRateLimited.middleware";
+import { otpVerifyRateLimited } from "../../middlewares/rate-limited/IdentityAndAccess/otpVerifyRateLimited.middleware";
 import { validation } from "../../middlewares/validation.middleware";
 import { resendOtpSchema, VerifiedOTpSchema } from "../../validation/verfication/VerficationSchema.zod";
 
@@ -12,8 +12,8 @@ export const createVerificationRouter = (
 
   router.post(
     "/resend-otp",
-    validation(resendOtpSchema),
     otpResendRateLimited,
+    validation(resendOtpSchema),
     verificationController.createResendOtp
   );
 

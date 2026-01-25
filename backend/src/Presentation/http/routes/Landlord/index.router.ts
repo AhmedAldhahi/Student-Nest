@@ -9,6 +9,7 @@ import { PaymentRouter } from "./paymentMangement.router";
 import { PaymentForLandlordController } from "../../controllers/Payment/PaymentForLandlord.controller";
 import { ApartmentControllerForLandlord } from "../../controllers/Apartment/ApartmentControllerForLandlord";
 import { LeaseManagementForLandlord } from "../../controllers/Lease/LeaseForLandlord.controller";
+import { globalLandlordRateLimit } from "../../middlewares/rate-limited/GlobalRateLimit/GlobalLandlordRateLimit.middleware";
 
 export const LandlordIndexRouter = (
   apartmentController: ApartmentControllerForLandlord,
@@ -17,6 +18,8 @@ export const LandlordIndexRouter = (
   paymentController: PaymentForLandlordController
 ): Router => {
   const router = Router();
+
+  router.use(globalLandlordRateLimit)
 
   router.use(
     "/apartments",

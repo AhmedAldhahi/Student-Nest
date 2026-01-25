@@ -4,6 +4,7 @@ import { LeaseRequestForStudentController } from "../../controllers/LeaseRequest
 import { CreateLeaseRequestSchema } from "../../validation/Student/leaseRequest";
 import { validation } from "../../middlewares/validation.middleware";
 import { isAuth } from "../../middlewares/auth/isAuth.middleware";
+import { createLeaseRequestRateLimit } from "../../middlewares/rate-limited/LeaseRequest/createLeaseRequestRateLimit.middleware";
 
 export const leaseRequestRouter = (
   leaseRequestControllers: LeaseRequestForStudentController
@@ -12,6 +13,7 @@ export const leaseRequestRouter = (
 
 router.post(
     "/:apartmentId", 
+    createLeaseRequestRateLimit,
     isAuth,
     isStudent,
     validation(CreateLeaseRequestSchema),

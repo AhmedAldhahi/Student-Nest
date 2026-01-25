@@ -5,6 +5,9 @@ import { validation } from "../../middlewares/validation.middleware";
 import { UpdateLeaseRequestStatusSchema } from "../../validation/Landlord/leaseRequest.valdation.zod";
 import { LeaseRequestContext } from "../../../../Application/BoundedContexts/Shared/Strategy/leaseRequest/LeaseRequestContext";
 import { LeastRequestForLandlordController } from "../../controllers/LeaseRequest/LeastRequestForLandlord.controller";
+import { getLeaseRequestsLimit } from "../../middlewares/rate-limited/LeaseRequest/getLeaseRequestRateLimit.middleware";
+import { searchLeaseRequestsLimit } from "../../middlewares/rate-limited/LeaseRequest/searchLeaseRequestRateLimit.middleware";
+import { updateLeaseRequestLimit } from "../../middlewares/rate-limited/LeaseRequest/updateLeaseRequestRateLimit.middleware";
 
 export const LeastRequestRouter = (
   leastRequestController: LeastRequestForLandlordController
@@ -13,6 +16,7 @@ export const LeastRequestRouter = (
 
   router.patch(
     "/:leastRequestId/status",
+    updateLeaseRequestLimit,
     isAuth,
     isLandlord,
     validation(UpdateLeaseRequestStatusSchema),
@@ -21,6 +25,7 @@ export const LeastRequestRouter = (
 
   router.get(
     "/:apartmentId",
+    getLeaseRequestsLimit,
     isAuth,
     isLandlord,
     leastRequestController.getAllLeasesRequestForSingleApartment
@@ -28,6 +33,7 @@ export const LeastRequestRouter = (
 
   router.get(
     "/:apartmentId/search",
+    searchLeaseRequestsLimit,
     isAuth,
     isLandlord,
     leastRequestController.searchForLeasesRequestForSingleApartment

@@ -7,20 +7,22 @@ import { userManagementRouter } from "./userMangement.routes";
 import { isAdmin } from "../../middlewares/auth/isAdmin.middleware";
 import { isAuth } from "../../middlewares/auth/isAuth.middleware";
 import { ApartmentManagementControllerForAdmin } from "../../controllers/Apartment/ApartmentControllerForAdmin";
+import { globalAdminRateLimit } from "../../middlewares/rate-limited/GlobalRateLimit/GlobalAdminRateLimit.middleware";
 
 export const AdminIndexRouter = (
   apartmentController: ApartmentManagementControllerForAdmin,
   auditLogController: AuditLogController,
-  userManagementController: UserManagementController
+  userManagementController: UserManagementController,
 ): Router => {
   const router = Router();
 
+  router.use(globalAdminRateLimit);
 
   router.use(
     "/apartments",
     isAuth,
     isAdmin,
-    ApartmentRouter(apartmentController)
+    ApartmentRouter(apartmentController),
   );
 
   router.use("/audit-log", isAuth, isAdmin, AuditLogRouter(auditLogController));

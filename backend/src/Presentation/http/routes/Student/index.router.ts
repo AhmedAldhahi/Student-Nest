@@ -11,6 +11,7 @@ import { RoommateProfileControllerForStudent } from "../../controllers/RoommateP
 import { RoommateProfileRouter } from "./RoommateProfile.router";
 import { LeaseControllerForStudent } from "../../controllers/Lease/LeaseForStudent.controller";
 import { LeaseRouter } from "./LeaseMangement.router";
+import { globalStudentRateLimit } from "../../middlewares/rate-limited/GlobalRateLimit/GlobalStudentRateLimit.middleware";
 
 export const StudentIndexRouter = (
   apartmentController: ApartmentControllerForStudent,
@@ -20,6 +21,8 @@ export const StudentIndexRouter = (
   LeaseController: LeaseControllerForStudent,
 ): Router => {
   const router = Router();
+
+  router.use(globalStudentRateLimit);
 
   router.use("/apartments", ApartmentRouter(apartmentController));
 

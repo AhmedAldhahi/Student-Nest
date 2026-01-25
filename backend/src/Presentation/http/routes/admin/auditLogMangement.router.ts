@@ -1,14 +1,16 @@
 import { Router } from "express";
 import { AuditLogController } from "../../controllers/Adminstration/auditLogManagement.controller";
+import { getAllAuditLogsRateLimit } from "../../middlewares/rate-limited/Adminstration/GetAllAuditLogRateLimit.middleware";
+import { searchAuditLogsRateLimit } from "../../middlewares/rate-limited/Adminstration/SearchForAuditLogRateLimit.middleware";
 
 export const AuditLogRouter = (
-  auditLogController: AuditLogController
+  auditLogController: AuditLogController,
 ): Router => {
   const router = Router();
 
-  router.get("/", auditLogController.GetAllAuditLog);
+  router.get("/", getAllAuditLogsRateLimit, auditLogController.GetAllAuditLog);
 
-  router.get("/search", auditLogController.GetAuditLogQuery);
+  router.get("/search", searchAuditLogsRateLimit,auditLogController.GetAuditLogQuery);
 
   return router;
 };
