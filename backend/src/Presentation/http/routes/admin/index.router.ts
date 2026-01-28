@@ -16,7 +16,7 @@ export const AdminIndexRouter = (
 ): Router => {
   const router = Router();
 
-  router.use(globalAdminRateLimit);
+  //router.use(globalAdminRateLimit);
 
   router.use(
     "/apartments",

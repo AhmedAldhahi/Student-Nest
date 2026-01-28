@@ -14,5 +14,5 @@ export const loginRateLimited = rateLimit({
     });
   },
 
-  skipSuccessfulRequests: true,
+  skipSuccessfulRequests: false,
 });

@@ -52,6 +52,7 @@ export class Server {
     this.app.use(express.json());
 
     this.app.use(auditMiddleware);
+    this.app.set('trust proxy', 1);
 
     // Winston request logging
     this.app.use(

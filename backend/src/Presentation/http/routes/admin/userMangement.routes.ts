@@ -26,7 +26,7 @@ export const userManagementRouter = (
 
   router.get(
     "/users/:userRole",
-    userRetrievalRateLimit,
+   // userRetrievalRateLimit,
     isAuth,
     isAdmin,
     userManagementRouter.getAllUsers
