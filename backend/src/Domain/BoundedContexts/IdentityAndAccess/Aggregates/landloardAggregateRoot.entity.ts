@@ -1,6 +1,5 @@
 import { AggregateRoot } from "../../../Shared/AgregateRoot/AggregateRoot";
 import { LeaseRequestStatus } from "../../Leases/Enum/LeaseRequestStatus.enum";
-import { PaymentStatus } from "../../Payment/Enum/PaymentStatus.enum";
 import { VerifiedLandlordStatus } from "../../Payment/Enum/VerfiedLandlordStatus.enum";
 import { GovernmentID } from "../Value-Object/UserGovId.vo";
 import { VerificationDocument } from "../Value-Object/VerficationDocument.vo";
@@ -92,7 +91,7 @@ export class LandlordAggregateRoot extends AggregateRoot<string> {
 
     if (status === LeaseRequestStatus.Reject) {
       leaseRequest.reject();
-    }
+    } 
   }
 
   public updatePaymentScheduleStatus(

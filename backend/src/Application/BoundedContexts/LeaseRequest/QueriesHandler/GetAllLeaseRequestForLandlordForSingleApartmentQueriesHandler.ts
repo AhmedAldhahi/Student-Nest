@@ -25,7 +25,6 @@ export class GetAllLeastRequestForSingleApartmentQueriesHandler
         command.apartmentId
       );
     } catch (error: any) {
-      console.log("fail to get all least request for single apartments !!");
       throw error;
     }
   }

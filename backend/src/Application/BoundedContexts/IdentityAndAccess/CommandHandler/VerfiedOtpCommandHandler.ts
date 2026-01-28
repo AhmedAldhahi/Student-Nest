@@ -26,13 +26,11 @@ export class VerifiedOtpCommandHandler
         throw new Error("User already verified.");
       }
 
-      console.log(user.getVerifiedEmail());
 
       // Get OTP and expiration
       const otp = user.getOtpForEmail();
       const otpExpired = user.getOtpExpiredForEmail();
 
-      console.log(otpExpired);
 
       if (!otp || !otpExpired) throw new Error("OTP not sent for this email.");
       if (new Date() > otpExpired)

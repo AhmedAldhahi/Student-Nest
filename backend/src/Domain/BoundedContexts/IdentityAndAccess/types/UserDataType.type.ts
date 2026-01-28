@@ -4,19 +4,6 @@ import { UserEmail } from "../Value-Object/UserEmail.vo";
 import { UserName } from "../Value-Object/UserName.vo";
 import { userPhoneNumber } from "../Value-Object/UserPhoneNumber.vo";
 
-// export interface IUserDataType {
-//   userId: string;
-//   password: string;
-//   name: UserName;
-//   dateOfBirth: UserDateOfBirth;
-//   phoneNumber: userPhoneNumber;
-//   email: UserEmail;
-//   role: UserRole;
-//   address?: string;
-//   photo?: string;
-//   createdAt: Date;
-// }
-
 export type UserDataType = {
   userId: string;
   password: string;

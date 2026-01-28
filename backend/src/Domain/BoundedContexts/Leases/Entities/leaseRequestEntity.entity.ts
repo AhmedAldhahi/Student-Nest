@@ -4,7 +4,7 @@ import { LeaseRequestDate } from "../types/LeaseRequestData";
 import { LeaseStartDate } from "../Value-Object/LeaseStartDate.vo";
 import { RentTerm } from "../Value-Object/RentTerm.vo";
 
-export class LeaseRequestEntity extends AggregateRoot<string> {
+export class LeaseRequestEntity  {
   private requestLeaseId: string;
   private requestMessage: string;
   private startDate: LeaseStartDate;
@@ -17,7 +17,6 @@ export class LeaseRequestEntity extends AggregateRoot<string> {
   private apartmentId: string;
 
   constructor(data: LeaseRequestDate) {
-    super(data.requestLeaseId);
     this.requestLeaseId = data.requestLeaseId;
     this.requestMessage = data.requestMessage;
     this.startDate = data.startDate;

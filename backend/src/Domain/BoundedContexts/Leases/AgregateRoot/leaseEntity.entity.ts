@@ -147,7 +147,7 @@ export class LeaseAggregateRoot {
     this.isLandlordSigned = false;
   }
 
-  public markStudentLandlordSigned(): void {
+  public markStudentSigned(): void {
     this.isStudentSigned = true;
   }
 
@@ -229,7 +229,7 @@ export class LeaseAggregateRoot {
     return this.isStudentSigned;
   }
 
-  public getPaymentSchedule() {
+  public getPaymentSchedule() : PaymentAggregateRoot [] | null {
     return this.paymentSchedule;
   }
 }

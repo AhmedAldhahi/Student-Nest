@@ -50,7 +50,6 @@ export class updateLeaseRequestCommandHandler
       };
     } catch (error: any) {
       await this.uow.rollbackTransaction();
-      console.log("fail to update leases request !!");
       throw error;
     } finally {
       await this.uow.releaseTransaction();

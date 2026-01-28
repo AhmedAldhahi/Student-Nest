@@ -32,7 +32,6 @@ export class ResendOtpCommandHandler
 
       user.setOtpForEmail(otp);
 
-      console.log(user.getOtpForEmail(), user.getOtpExpiredForEmail());
 
       await this.unitOfWork.startTransaction();
 

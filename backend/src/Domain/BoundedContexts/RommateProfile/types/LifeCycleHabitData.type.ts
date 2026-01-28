@@ -6,12 +6,12 @@ import { SharingLevel } from "../Enum/SharingLevel.enum";
 import { SmokingHabit } from "../Enum/SmokingHabit.enum";
 
 export type LifeCycleHabitData = {
-  habitId: string;
-  roommateProfileId:string;
-  guestPolicyType?: GuestPolicy;
-  petType?: PetType;
-  FoodPreferenceType?: DietaryPreference;
-  petPreferenceType?: PetPreference;
-  SharingLevelType?: SharingLevel;
-  SmokoHabitType?: SmokingHabit;
+  habitId: string
+  roommateProfileId:string
+  guestPolicyType?: GuestPolicy
+  petType?: PetType
+  FoodPreferenceType?: DietaryPreference
+  petPreferenceType?: PetPreference
+  SharingLevelType?: SharingLevel
+  SmokoHabitType?: SmokingHabit
 };

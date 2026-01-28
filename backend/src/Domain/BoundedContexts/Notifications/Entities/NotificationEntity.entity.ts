@@ -18,10 +18,6 @@ export class NotificationEntity {
     this.receiver = data.receiver;
   }
 
-  public setNotificationId(id: number): void {
-    this.notifyId = id;
-  }
-
   public getNotificationId(): number {
     return this.notifyId;
   }

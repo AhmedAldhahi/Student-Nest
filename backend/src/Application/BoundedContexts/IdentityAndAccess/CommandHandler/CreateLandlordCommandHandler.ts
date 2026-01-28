@@ -91,7 +91,6 @@ export class CreateLandlordCommandHandler
       };
     } catch (err) {
       await this.unitOfWork.rollbackTransaction();
-      console.log("Failed to register landlord!!", err);
       throw err;
     } finally {
       await this.unitOfWork.releaseTransaction(); // Always release here

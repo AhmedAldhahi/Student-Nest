@@ -1,6 +1,7 @@
 import { AggregateRoot } from "../../../Shared/AgregateRoot/AggregateRoot";
 import { UserAccountStatus } from "../Enum/UserAccountStatus.enum";
 import { UserRole } from "../Enum/UserRole.enum";
+import { UserRegisteredEvent } from "../Events/UserRegisterdEvent.event";
 import { OTP } from "../Value-Object/OTP.vo";
 import { UserDateOfBirth } from "../Value-Object/UserDateOfBirth.vo";
 import { UserEmail } from "../Value-Object/UserEmail.vo";
@@ -46,7 +47,22 @@ export class UserEntity extends AggregateRoot<string> {
 
   // factory method to add needed validation
   public static create(data: UserDataType) {
-    return new UserEntity(data);
+    const user = new UserEntity(data);
+
+    const Email = user.getEmail();
+    const Name = user.getName();
+    const otpValue = user.getOtpForEmail();
+
+    if (!Email) throw new Error("Email can not be undefined !!");
+    if (!Name) throw new Error("Name can not be undefined !!");
+    if (!otpValue)
+      throw new Error("otp value can not during register be undenied or null");
+
+    user.addDomainEvent(
+      new UserRegisteredEvent(user.getUserId(), Email, Name, otpValue),
+    );
+
+    return user
   }
 
   /**
@@ -114,7 +130,7 @@ export class UserEntity extends AggregateRoot<string> {
    * Verifies reset-password OTP.
    * Throws if OTP missing or already verified.
    */
-  public verifiedResetPasswordOTP(clientOTP: string) {
+  public verifiedResetPasswordOTP(clientOTP: string): void {
     if (this.resetPasswordVerified)
       throw new Error("reset password been verified !!");
 
@@ -135,7 +151,7 @@ export class UserEntity extends AggregateRoot<string> {
   }
 
   /** Clears reset password OTP after verification. */
-  public clearResetPasswordOTP() {
+  public clearResetPasswordOTP(): void {
     this.resetPasswordOTP = null;
   }
 
@@ -150,7 +166,7 @@ export class UserEntity extends AggregateRoot<string> {
     dateOfBirth?: UserDateOfBirth,
     phoneNumber?: userPhoneNumber,
     password?: string,
-    photo?: string
+    photo?: string,
   ): void {
     if (name) this.changeUserName(name);
     if (dateOfBirth) this.changeDateOfBirth(dateOfBirth);
@@ -214,23 +230,23 @@ export class UserEntity extends AggregateRoot<string> {
 
     if (this.emailVerified === false) {
       throw new Error(
-        "You have to verified you account before to go to your functionality "
+        "You have to verified you account before to go to your functionality ",
       );
     }
   }
 
   /** Marks the user account as banned. */
-  public banAccount() {
+  public banAccount(): void {
     this.accountStats = UserAccountStatus.banded;
   }
 
   /** Deactivates the user account. */
-  public deactivateAccount() {
+  public deactivateAccount(): void {
     this.accountStats = UserAccountStatus.deactivate;
   }
 
   /** Activates the user account. */
-  public activatedAccount() {
+  public activatedAccount(): void {
     this.accountStats = UserAccountStatus.activate;
   }
 
@@ -285,7 +301,7 @@ export class UserEntity extends AggregateRoot<string> {
   }
 
   /** Returns the reset-password OTP expiration date. */
-  public getOTPExpiredDateForResetPassword() {
+  public getOTPExpiredDateForResetPassword(): Date | undefined {
     return this.resetPasswordOTP?.getExpiresAt();
   }
 
