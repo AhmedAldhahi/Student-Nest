@@ -10,12 +10,13 @@ import { ApartmentDocumentEntity } from "../../Housing/Entities/apartmentDocumen
 import { LandlordDataType } from "../types/ILandlordData.type";
 import { ApartmentAggregateRoot } from "../../Housing/AgregateRoot/apartmentEntity.entity";
 import { LeaseAggregateRoot } from "../../Leases/AgregateRoot/leaseEntity.entity";
+import { LandlordRegisterEvent } from "../Events/LandlordRegisterdEvent.event";
 
 export class LandlordAggregateRoot extends AggregateRoot<string> {
   private userId: string;
   private landlordGovId: GovernmentID;
   private cliQAccount: string;
-  private isVerifiedLandlord: boolean;
+  private isVerifiedLandlord: boolean = false;
   private document: VerificationDocument;
 
   constructor(data: LandlordDataType) {
@@ -27,57 +28,20 @@ export class LandlordAggregateRoot extends AggregateRoot<string> {
     this.isVerifiedLandlord = data.isVerifiedLandlord ?? false;
   }
 
+  public static create(data: LandlordDataType) {
+    const newData = { ...data, isVerifiedLandlord: false };
+
+    const landlord = new LandlordAggregateRoot(newData);
+    landlord.addDomainEvent(new LandlordRegisterEvent(landlord.getUserId()));
+
+    return landlord;
+  }
+
   /**
    * ==================================================================================
    *                              Behavior Methods sections
    * ==================================================================================
    */
-
-  public addNewApartment(apartmentInfo: ApartmentAggregateRoot) {
-    this.ensureIsLandlordVerified();
-
-    if (
-      !apartmentInfo.getApartmentPhotoDocument() ||
-      apartmentInfo.getApartmentPhotoDocument().length === 0
-    ) {
-      throw new Error("apartment photo is require !!");
-    }
-
-    if (apartmentInfo.getApartmentPhotoDocument().length > 6) {
-      throw new Error("max size of photo is 6 ");
-    }
-
-    if (!apartmentInfo.getGoogleMapLocation()) {
-      throw new Error("apartment google map location is require ");
-    }
-  }
-
-  public AddApartmentDocumentFile(
-    apartment: ApartmentAggregateRoot,
-    apartmentDoc: ApartmentDocumentEntity,
-  ) {
-    // make need validation
-    if (!apartmentDoc) {
-      console.log("no document to add ");
-      return;
-    }
-    this.ensureIsLandlordVerified();
-
-    apartment.AddApartmentDocument(apartmentDoc);
-  }
-
-  public UpdateApartmentDocumentFile(
-    apartment: ApartmentAggregateRoot,
-    apartmentDoc: ApartmentDocumentEntity,
-  ) {
-    if (!apartmentDoc) {
-      console.log("no document to add ");
-      return;
-    }
-    this.ensureIsLandlordVerified();
-
-    apartment.updateApartmentDocument(apartmentDoc);
-  }
 
   public updateLeaseRequestStatus(
     leaseRequest: LeaseRequestEntity,
@@ -91,7 +55,7 @@ export class LandlordAggregateRoot extends AggregateRoot<string> {
 
     if (status === LeaseRequestStatus.Reject) {
       leaseRequest.reject();
-    } 
+    }
   }
 
   public updatePaymentScheduleStatus(

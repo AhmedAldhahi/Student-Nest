@@ -5,7 +5,7 @@ import { Request, Response } from "express";
 // Creating an apartment involves multiple file uploads and DB writes.
 export const createApartmentRateLimit = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour window
-  limit: 10, // Max 10 new apartments per hour (prevents spamming the platform)
+  limit: 50, // Max 10 new apartments per hour (prevents spamming the platform)
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req: Request, res: Response) => {

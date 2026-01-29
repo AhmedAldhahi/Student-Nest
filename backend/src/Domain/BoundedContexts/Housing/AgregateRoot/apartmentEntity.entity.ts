@@ -7,6 +7,7 @@ import { ApartmentPhotoDocumentEntity } from "../Entities/phohtoDocumentEntity.e
 import { ApartmentDataType } from "../Types/ApartmentDataType.type";
 import { AggregateRoot } from "../../../Shared/AgregateRoot/AggregateRoot";
 import { HouseRule } from "../Value-Object/HouseRole.vo";
+import { v4 as uuidv4 } from "uuid";
 
 export class ApartmentAggregateRoot extends AggregateRoot<string> {
   private apartmentId: string;
@@ -276,7 +277,6 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
     this.title = title;
   }
 
-  
   public changeIncludedUtilities(data: string): void {
     this.includeUtilities = data;
   }

@@ -1,8 +1,9 @@
+import { EVENT_KEY } from "../../../../Shared/constants/EventHelper.constant";
 import { IDomainEvent } from "../../../Shared/Event/IDomainEvent";
 
 export class UserRegisteredEvent implements IDomainEvent {
   public dateTimeOccurred: Date;
-  public static readonly EVENT_KEY = "Identity.Registered";
+  public static readonly EVENT_KEY = EVENT_KEY.USER_REGISTER;
 
   constructor(
     public readonly userId: string,

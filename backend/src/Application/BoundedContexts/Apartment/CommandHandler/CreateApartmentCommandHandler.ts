@@ -35,6 +35,7 @@ export class CreateApartmentCommandHandler implements ICommandHandlers<CreateApa
       if (!landlord) throw new Error("no user been found !!");
 
       user.ensureAccountIsActive();
+      landlord.ensureIsLandlordVerified();
 
       // 1. Upload Photos
       const photoEntities: ApartmentPhotoDocumentEntity[] = [];
@@ -80,8 +81,6 @@ export class CreateApartmentCommandHandler implements ICommandHandlers<CreateApa
         landlordId: landlord.getUserId(),
       });
 
-      landlord.addNewApartment(apartment);
-
       // 4. Save to Database
       await this.uow.startTransaction();
       await this.uow.writeApartmentRepo.InsertApartment(apartment);
@@ -107,8 +106,6 @@ export class CreateApartmentCommandHandler implements ICommandHandlers<CreateApa
         landlordName: user.getName()?.valueOf(),
       };
     } catch (error: any) {
-      console.error("🔥 CRASH: Fail to create apartment:", error);
-
       await this.uow.rollbackTransaction();
       throw error;
     } finally {
