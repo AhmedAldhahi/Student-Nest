@@ -4,6 +4,9 @@
 - Idempotency
 - Outbox Pattern:
 
+
+
+
 - rate limit with redis for cluster 
 - Circuit Breaker Pattern
 - Distributed Lock Pattern
@@ -11,4 +14,22 @@
 - Retries with Exponential Backoff
 - Graceful Degradation
 - Materialized Views Pattern
+
+
 - snapshot pattern
+
+
+
+// Performance issue 
+
+ - indexing 
+ - pagination 
+ - no eager
+ - compress json tool  => npm i compression 
+ - add cash for the admin 
+
+
+// security 
+
+need to check using ZAP 
+
