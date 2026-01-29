@@ -1,0 +1,190 @@
+import { ApartmentAggregateRoot } from "../../../Domain/BoundedContexts/Housing/AgregateRoot/apartmentEntity.entity";
+import { IApartmentDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentDto";
+import { IApartmentForGuestDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentForGuestDTO";
+import { IApartmentSimpleDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentSimpleDto";
+import { ApartmentPrice } from "../../../Domain/BoundedContexts/Housing/Value-Object/ApartmentPrice.vo";
+import { HouseRule } from "../../../Domain/BoundedContexts/Housing/Value-Object/HouseRole.vo";
+import { NumberOfBed } from "../../../Domain/BoundedContexts/Housing/Value-Object/NumberOfBed.vo";
+import { NumberOfRoom } from "../../../Domain/BoundedContexts/Housing/Value-Object/NumberOfRoom.vo";
+import { ApartmentModel } from "../../Database/TypeOrm/entity/Apartment.entity";
+import { ApartmentDocumentMapper } from "./apartmentDocument.mapper";
+import { apartmentPhotoMapper } from "./apartmentPhoto.mapper";
+import { GoogleMapMapper } from "./googleMap.mapper";
+
+export class ApartmentMapper {
+  public static toModel(apartment: ApartmentAggregateRoot): ApartmentModel {
+    const apartmentModel = new ApartmentModel();
+    const validateData = this.modelValidation(apartment);
+
+    apartmentModel.apartmentId = apartment.getApartmentId();
+    apartmentModel.isVisible = apartment.getIsVisible();
+    apartmentModel.title = apartment.getTitle();
+    apartmentModel.description = apartment.getDescription();
+    apartmentModel.address = apartment.getAddress();
+    apartmentModel.isVerified = apartment.getIsVerified();
+    apartmentModel.isJoin = apartment.getIsJoin();
+    apartmentModel.createAt = apartment.getCreateAt();
+    apartmentModel.updateAt = apartment.getUpdateAt();
+
+    // Relationship: Landlord
+    apartmentModel.landlordId = apartment.getLandlord();
+
+    // Value Objects extraction
+    apartmentModel.price = validateData.price;
+    apartmentModel.numberOfBed = validateData.numberOfBed; 
+    apartmentModel.numberOfRoom = validateData.numberOfRoom;
+    apartmentModel.houseRule = apartment.getHouseRule();
+    apartmentModel.includeUtilities = apartment.getIncludeUtilities() ?? null;
+
+    // Relationship: Location
+    apartmentModel.location = GoogleMapMapper.toModel(
+      apartment.getGoogleMapLocation(),
+    );
+
+    // Relationship: Photos (One-to-Many)
+    apartmentModel.photos = apartment
+      .getApartmentPhotoDocument()
+      .map((file) => apartmentPhotoMapper.toModel(file));
+
+    // Relationship: Document (One-to-One)
+    const apartmentDoc = apartment.getApartmentDocument();
+
+    if (apartmentDoc) {
+      apartmentModel.documents = ApartmentDocumentMapper.toModel(apartmentDoc);
+    } else {
+      apartmentModel.documents = null;
+    }
+
+    return apartmentModel;
+  }
+
+  public static modelValidation(apartment: ApartmentAggregateRoot) {
+    const price = apartment.getApartmentPrice();
+    const numberOfBed = apartment.getNumberOfBed();
+    const numberOfRoom = apartment.getNumberOfRoom();
+
+    if (!price) throw new Error("Cannot save apartment, price is required !! ");
+    if (!numberOfBed)
+      throw new Error("Cannot save apartment, number of bed is required !!");
+    if (!numberOfRoom)
+      throw new Error("Cannot save apartment , number of room is required !!");
+
+
+
+    return { price, numberOfBed, numberOfRoom };
+  }
+
+  public static toEntity(model: ApartmentModel): ApartmentAggregateRoot {
+    return new ApartmentAggregateRoot({
+      apartmentId: model.apartmentId,
+      isVisible: model.isVisible,
+      title: model.title,
+      description: model.description,
+      address: model.address,
+      IsVerified: model.isVerified,
+      isJoin: model.isJoin,
+      houseRule: new HouseRule(model.houseRule),
+      createAt: model.createAt,
+      updateAt: model.updateAt,
+
+      // Value Objects
+      numberOfBed: new NumberOfBed(model.numberOfBed),
+      numberOfRoom: new NumberOfRoom(model.numberOfRoom),
+      price: new ApartmentPrice(model.price),
+
+      // Relationships
+      landlordId: model.landlordId,
+      googleMapLocation: GoogleMapMapper.toEntity(model.location),
+
+      // Mapping Single Document back to Entity
+      apartmentDocument: model.documents
+        ? ApartmentDocumentMapper.toEntity(model.documents)
+        : null,
+
+      apartmentPhoto: model.photos
+        ? model.photos.map((file) => apartmentPhotoMapper.toEntity(file))
+        : [],
+    });
+  }
+
+  public static toResponsesSimple(model: ApartmentModel): IApartmentSimpleDTO {
+    return {
+      apartmentId: model.apartmentId,
+      isVisible: model.isVisible,
+      title: model.title,
+      description: model.description,
+      address: model.address,
+      isVerified: model.isVerified,
+      isJoin: model.isJoin,
+      numberOfBed: model.numberOfBed,
+      numberOfRoom: model.numberOfRoom,
+      price: model.price,
+      landlordName: model.landlord?.user?.Name,
+      landlordId: model.landlordId,
+
+      apartmentPhoto: model.photos
+        ? model.photos.map((file) => apartmentPhotoMapper.toEntity(file))
+        : [],
+
+      apartmentDocuments: model.documents
+        ? ApartmentDocumentMapper.toEntity(model.documents)
+        : null,
+    };
+  }
+
+  public static toResponsesDetail(model: ApartmentModel): IApartmentDTO {
+    return {
+      apartmentId: model.apartmentId,
+      isVisible: model.isVisible,
+      title: model.title,
+      description: model.description,
+      address: model.address,
+      isVerified: model.isVerified,
+      isJoin: model.isJoin,
+      numberOfBed: model.numberOfBed,
+      numberOfRoom: model.numberOfRoom,
+      price: model.price,
+      houseRule: model.houseRule,
+      includeUtilities: model.includeUtilities,
+      createAt: model.createAt,
+      updateAt: model.updateAt,
+      googleMapLocation: GoogleMapMapper.toEntity(model.location),
+      // Optional chaining
+      landlordName: model.landlord?.user?.Name,
+
+      apartmentDocument: model.documents
+        ? ApartmentDocumentMapper.toEntity(model.documents)
+        : null,
+
+      apartmentPhoto: model.photos
+        ? model.photos.map((file) => apartmentPhotoMapper.toEntity(file))
+        : [],
+    };
+  }
+
+  public static toResponsesDetailForGuest(
+    model: ApartmentModel,
+  ): IApartmentForGuestDTO {
+    return {
+      apartmentId: model.apartmentId,
+      isVisible: model.isVisible,
+      title: model.title,
+      description: model.description,
+      address: model.address,
+      isVerified: model.isVerified,
+      isJoin: model.isJoin,
+      numberOfBed: model.numberOfBed,
+      numberOfRoom: model.numberOfRoom,
+      price: model.price,
+      createAt: model.createAt,
+      updateAt: model.updateAt,
+      googleMapLocation: GoogleMapMapper.toEntity(model.location),
+      // Optional chaining
+      landlordName: model.landlord?.user?.Name,
+
+      apartmentPhoto: model.photos
+        ? model.photos.map((file) => apartmentPhotoMapper.toEntity(file))
+        : [],
+    };
+  }
+}

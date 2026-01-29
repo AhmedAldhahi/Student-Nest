@@ -1,0 +1,38 @@
+[
+    {
+        "userId": "adminahmed",
+        "Name": "Ahmed",
+        "Email": "adminahmed@example.com",
+        "Password": "passwordQ153!",
+        "PhoneNumber": "0797774077",
+        "DateOfBirth": "1990",
+        "Address": "Address 1",
+        "Role": "admin",
+        "isActive": "activate",
+        "emailVerfied": 1
+    },
+    {
+        "userId": "adminjameel",
+        "Name": "Jamel",
+        "Email": "adminjameel@example.com",
+        "Password": "passwordQ153!",
+        "PhoneNumber": "07977740771234567890",
+        "DateOfBirth": "1985",
+        "Address": "Address 2",
+        "Role": "admin",
+        "isActive": "activate",
+        "emailVerified": 1
+    },
+    {
+        "userId": "adminahmed",
+        "Name": "Abood",
+        "Email": "adminabood@example.com",
+        "Password": "passwordQ153!",
+        "PhoneNumber": "0797774077",
+        "DateOfBirth": "1980",
+        "Address": "Address 3",
+        "Role": "admin",
+        "isActive": "activate",
+        "emailVerified": 1
+    }
+]

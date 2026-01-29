@@ -1,0 +1,31 @@
+import { IReadApartmentRepo } from "../../../../Domain/BoundedContexts/Housing/Repositories/ReadApartmentRepo.repositoreis";
+import { IReadUserRepositories } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadUserRepositories.repositories";
+import { IQueriesHandlers } from "../../Shared/abstraction/IQueriesHandler";
+import { GetApartmentByIdQueries } from "../Queries/GetApartmentById";
+
+export class GetApartmentByIdForLandlordQueriesHandler
+  implements IQueriesHandlers<GetApartmentByIdQueries>
+{
+  constructor(
+    private readonly readUserRepo: IReadUserRepositories,
+    private readonly readApartmentRepo: IReadApartmentRepo
+  ) {}
+
+  public async handle(command: GetApartmentByIdQueries): Promise<any> {
+    try {
+      const user = await this.readUserRepo.findById(command.userId);
+      if (!user) throw new Error("no user been found !!");
+
+
+      user.ensureAccountIsActive();
+
+      return await this.readApartmentRepo.findApartmentDetailsByIdForLandlord(
+        command.id,
+        command.userId
+      );
+    } catch (error: any) {
+      console.error("fail to get apartments !!");
+      throw error;
+    }
+  }
+}
