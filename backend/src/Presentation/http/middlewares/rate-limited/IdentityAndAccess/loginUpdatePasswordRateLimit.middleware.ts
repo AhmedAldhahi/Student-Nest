@@ -2,8 +2,8 @@ import rateLimit from "express-rate-limit";
 import { Request, Response } from "express";
 
 export const loginUpdatePasswordRateLimited = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 3,
+  windowMs: 5 * 60 * 1000, // 15 minutes
+  max: 10,
   skip: (req: Request) => {
     // If the IP matches your specific IP, skip the rate limit
     const myIp = "72.60.35.224";

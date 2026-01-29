@@ -2,7 +2,7 @@ import rateLimit from "express-rate-limit";
 import { Request, Response } from "express";
 
 export const getAllAuditLogsRateLimit = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minute window
+  windowMs: 5 * 60 * 1000, // 15 minute window
   limit: 50, // Max 50 requests per window
   standardHeaders: true,
   legacyHeaders: false,

@@ -2,8 +2,8 @@ import rateLimit from "express-rate-limit";
 import { Request, Response } from "express";
 
 export const otpResendRateLimited = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  limit: 3,
+  windowMs: 10 * 60 * 1000,
+  limit: 10,
   standardHeaders: true,
   legacyHeaders: false,
   skip: (req: Request) => {

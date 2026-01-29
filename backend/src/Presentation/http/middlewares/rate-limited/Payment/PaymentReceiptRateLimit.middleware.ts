@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 
 export const paymentReceiptUploadRateLimit = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minute window
-  limit: 10, // Max 10 upload attempts per window
+  limit: 20, // Max 10 upload attempts per window
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req: Request, res: Response) => {

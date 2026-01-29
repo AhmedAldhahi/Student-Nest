@@ -3,7 +3,7 @@ import rateLimit from "express-rate-limit";
 
 export const deleteApartmentRateLimit = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour window
-  limit: 10, // Max 10 deletions per hour
+  limit: 50, // Max 10 deletions per hour
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req: Request, res: Response) => {

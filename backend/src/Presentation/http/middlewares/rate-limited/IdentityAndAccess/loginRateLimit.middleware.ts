@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 const getIp = (req: Request) => req.ip || req.socket.remoteAddress || "unknown";
 
 export const loginRateLimited = rateLimit({
-  windowMs: 15 * 60 * 1000,
+  windowMs: 5 * 60 * 1000,
   max: 10,
 
   skip: (req: Request) => {

@@ -2,7 +2,7 @@ import rateLimit from "express-rate-limit";
 import { Request, Response } from "express";
 
 export const createLeaseRequestRateLimit = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour window
+  windowMs: 5 * 60 * 1000, // 1 hour window
   limit: 10, // Max 10 applications per hour
   standardHeaders: true,
   legacyHeaders: false,
