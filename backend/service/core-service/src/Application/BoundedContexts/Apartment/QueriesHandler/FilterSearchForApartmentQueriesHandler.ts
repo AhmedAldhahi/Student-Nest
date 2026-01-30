@@ -16,14 +16,20 @@ export class FilterSearchForApartmentQueriesHandler implements IQueriesHandlers<
         filter.isJoint = command.isJoin;
       }
 
-      if (command.price && command.price.length === 2) {
-        if (command.price[0]) filter.minPrice = command.price[0];
-        if (command.price[1]) filter.maxPrice = command.price[1];
+      if (command.minPrice) {
+        filter.minAge = command.minAge;
       }
 
-      if (command.age && command.age.length === 2) {
-        if (command.age[0]) filter.minAge = command.age[0];
-        if (command.age[1]) filter.maxAge = command.age[1];
+      if (command.maxAge) {
+        filter.maxAge = command.maxAge;
+      }
+
+      if (command.minPrice) {
+        filter.minPrice = command.minPrice;
+      }
+
+      if (command.maxPrice) {
+        filter.maxPrice = command.maxPrice;
       }
 
       return await this.readApartmentRepo.filterApartment(filter);

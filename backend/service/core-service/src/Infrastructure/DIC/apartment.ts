@@ -247,3 +247,4 @@ export function SearchForVisibleApartmentsQH(): SearchForApartmentQueriesHandler
 
   return new SearchForApartmentQueriesHandler(readApartmentRepo);
 }
+

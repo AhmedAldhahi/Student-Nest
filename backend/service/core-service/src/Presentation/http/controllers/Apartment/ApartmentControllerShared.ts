@@ -138,15 +138,19 @@ export class SharedApartmentManagementController {
     }
   };
 
-public getFilterApartment = async (req: Request, res: Response) => {
+  public getFilterApartment = async (req: Request, res: Response) => {
     try {
-      const { age, price, University, isJoint } = req.query;
+      const { minAge, maxAge, minPrice, maxPrice, University, isJoint } =
+        req.query;
 
       const filterRequest: MakeFilterSearchRequest = {
-        age: age ? ((age as string).split(",") as [string, string]) : undefined,
-        price: price ? ((price as string).split(",") as [string, string]) : undefined,
+        minAge: minAge as string,
+        maxAge: maxAge as string,
+        minPrice: minPrice as string,
+        maxPrice: maxPrice as string,
         University: University as string,
-        isJoint: isJoint === 'true' ? true : isJoint === 'false' ? false : undefined,
+        isJoint:
+          isJoint === "true" ? true : isJoint === "false" ? false : undefined,
       };
 
       const result = await this.getFilterApartmentQH.handle(
@@ -154,10 +158,8 @@ public getFilterApartment = async (req: Request, res: Response) => {
       );
 
       return res.status(200).json(result);
-      
     } catch (error: any) {
-      console.error("Error in getFilterApartment Controller:", error);
-      return res.status(400).json({
+      return res.status(500).json({
         error: error.message || "internal server error",
       });
     }

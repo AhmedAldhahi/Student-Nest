@@ -1,6 +1,8 @@
 export interface MakeFilterSearchRequest {
-  age?: [string, string];
-  price?: [string, string];
+  minAge?:string;
+  maxAge?:string;
+  minPrice?:string;
+  maxPrice?:string;
   University?: string;
   isJoint?: boolean;
 }

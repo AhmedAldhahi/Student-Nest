@@ -1,4 +1,4 @@
-import { FindOptionsWhere, In, Like, SelectQueryBuilder } from "typeorm";
+import { FindOptionsWhere, ILike, In, Like, SelectQueryBuilder } from "typeorm";
 import { AppDataSource } from "../../Database/TypeOrm/data-source";
 import { ApartmentModel } from "../../Database/TypeOrm/entity/Apartment.entity";
 import { ApartmentMapper } from "../mapper/apartment.mapper";
@@ -8,7 +8,6 @@ import { IApartmentDTO } from "../../../Domain/BoundedContexts/Housing/Represent
 import { IApartmentSimpleDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentSimpleDto";
 import { IApartmentForGuestDTO } from "../../../Domain/BoundedContexts/Housing/Representations/IApartmentForGuestDTO";
 import { FilterOptionType } from "../../../Domain/BoundedContexts/Housing/Types/ApartmentFilterType.type";
-import { LeaseStatus } from "../../../Domain/BoundedContexts/Leases/Enum/LeaseStatus.enum";
 
 export class ReadApartmentRepositories implements IReadApartmentRepo {
   public async searchForVisibleApartments(

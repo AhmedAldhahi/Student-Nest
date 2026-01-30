@@ -6,6 +6,7 @@ import { FilterOptionType } from "../Types/ApartmentFilterType.type";
 export interface IReadApartmentRepo {
   findAllApartment(userId?: string): Promise<IApartmentSimpleDTO[] | null>;
 
+
   findAllApartmentForLandlord(
     userId: string,
   ): Promise<IApartmentSimpleDTO[] | null>;
