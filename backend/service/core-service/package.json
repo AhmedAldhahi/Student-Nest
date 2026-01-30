@@ -4,7 +4,7 @@
   "description": "Server side for the Student Nest application using Node.js, TypeScript, Express, and clean architecture.",
   "main": "index.js",
   "scripts": {
-    "dev": "DEBUG=app:* ts-node-dev --respawn --pretty  ./src/index.ts",
+    "dev": "DEBUG=app:* ts-node-dev --respawn --pretty --transpile-only ./src/index.ts",
     "build": "tsc",
     "start": "node dist/src/index.js",
     "docs": "typedoc",
