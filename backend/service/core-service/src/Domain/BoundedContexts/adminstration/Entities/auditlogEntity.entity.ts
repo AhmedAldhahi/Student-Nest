@@ -1,5 +1,5 @@
 import { AuditLogActionType } from "../Enum/AuditLogAction.enum";
-import { UserRole } from "../../IdentityAndAccess/Enum/UserRole.enum";
+import { UserRole } from "../../../Shared/Enum/UserRole.enum";
 import { AuditLogDataType } from "../Types/AuditLogDataType.type";
 
 export class AuditLogEntity {

@@ -1,4 +1,4 @@
-import { UserRole } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Enum/UserRole.enum";
+import { UserRole } from "../../../../Domain/Shared/Enum/UserRole.enum";
 import { GetAllLandlordByQueriesQueriesHandler } from "../../IdentityAndAccess/QueriesHandler/GetAllLandlordByQueriesQueriesHandler";
 import { GetAllStudentsByQueriesQueriesHandler } from "../../IdentityAndAccess/QueriesHandler/GetAllStudentByQueriesQueriesHandler ";
 import { GetUserQueriesQueries } from "../../IdentityAndAccess/Queries/GetUserByQeries";

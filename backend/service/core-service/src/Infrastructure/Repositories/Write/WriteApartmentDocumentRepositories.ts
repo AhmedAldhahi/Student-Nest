@@ -4,19 +4,18 @@ import { IWriteApartmentDocumentRepo } from "../../../Domain/BoundedContexts/Hou
 import { ApartmentDocumentMapper } from "../mapper/apartmentDocument.mapper";
 import { ApartmentDocumentModel } from "../../Database/TypeOrm/entity/ApartmentDocument.entity";
 
-export class WriteApartmentDocumentRepositories
-  implements IWriteApartmentDocumentRepo
-{
+export class WriteApartmentDocumentRepositories implements IWriteApartmentDocumentRepo {
   constructor(private readonly manege: EntityManager) {}
 
   public async InsertApartmentDocument(
-    apartmentDoc: ApartmentDocumentEntity
+    apartmentDoc: ApartmentDocumentEntity,
   ): Promise<void> {
-    
+    const model = ApartmentDocumentMapper.toModel(apartmentDoc);
+    await this.manege.save(ApartmentDocumentModel, model);
   }
 
   public async updateApartmentDocument(
-    apartmentDoc: ApartmentDocumentEntity
+    apartmentDoc: ApartmentDocumentEntity,
   ): Promise<void> {
     const model = ApartmentDocumentMapper.toModel(apartmentDoc);
     await this.manege.save(ApartmentDocumentModel, model);

@@ -2,7 +2,7 @@ import { EntityManager, In } from "typeorm";
 import { IWriteNotificationRepo } from "../../../Domain/BoundedContexts/Notifications/Repositories/IWriteNotficationRepositories.repositores";
 import { NotificationMapper } from "../mapper/notification.mapper";
 import { NotificationModel } from "../../Database/TypeOrm/entity/Notifcation.entity";
-import { UserRole } from "../../../Domain/BoundedContexts/IdentityAndAccess/Enum/UserRole.enum";
+import { UserRole } from "../../../Domain/Shared/Enum/UserRole.enum";
 import { AppDataSource } from "../../Database/TypeOrm/data-source";
 import { UserModel } from "../../Database/TypeOrm/entity/User.entity";
 import { NotificationEntity } from "../../../Domain/BoundedContexts/Notifications/Entities/NotificationEntity.entity";

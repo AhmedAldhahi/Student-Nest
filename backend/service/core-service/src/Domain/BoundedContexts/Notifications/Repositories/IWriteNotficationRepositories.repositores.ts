@@ -1,5 +1,5 @@
 import { NotificationEntity } from "../Entities/NotificationEntity.entity";
-import { UserRole } from "../../IdentityAndAccess/Enum/UserRole.enum";
+import { UserRole } from "../../../Shared/Enum/UserRole.enum";
 
 export interface IWriteNotificationRepo {
   createNotification(notification: NotificationEntity): Promise<void>;

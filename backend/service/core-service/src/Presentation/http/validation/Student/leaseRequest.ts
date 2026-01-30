@@ -5,6 +5,5 @@ export const CreateLeaseRequestSchema = z
     requestMessage: z.string(),
     startDate: z.string(),
     rentTerm: z.string(),
-    landlordId: z.string(),
   })
   .strict();

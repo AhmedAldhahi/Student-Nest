@@ -1,6 +1,6 @@
 import { GetAllStudentQueriesHandler } from "../../IdentityAndAccess/QueriesHandler/GetAllStudentQueriesHandler";
 import { GetAllLandlordQueriesHandler } from "../../IdentityAndAccess/QueriesHandler/GetAllLandlordQueriesHandler";
-import { UserRole } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Enum/UserRole.enum";
+import { UserRole } from "../../../../Domain/Shared/Enum/UserRole.enum";
 import { IReadUserRepositories } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadUserRepositories.repositories";
 export class UserSimpleFactory {
   constructor(

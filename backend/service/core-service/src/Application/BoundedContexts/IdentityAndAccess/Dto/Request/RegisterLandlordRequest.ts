@@ -1,4 +1,4 @@
-import { UserRole } from "../../../../../Domain/BoundedContexts/IdentityAndAccess/Enum/UserRole.enum";
+import { UserRole } from "../../../../../Domain/Shared/Enum/UserRole.enum";
 
 export interface RegisterLandlordRequest {
   // require

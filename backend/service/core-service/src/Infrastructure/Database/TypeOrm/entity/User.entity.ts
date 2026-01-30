@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
   OneToOne,
 } from "typeorm";
-import { UserRole } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Enum/UserRole.enum";
+import { UserRole } from "../../../../Domain/Shared/Enum/UserRole.enum";
 import { UserAccountStatus } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Enum/UserAccountStatus.enum";
 import { LandlordModel } from "./Landlord.entity";
 import { StudentModel } from "./Student.entity";

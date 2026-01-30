@@ -2,7 +2,7 @@ import { FindOptionsWhere, Like } from "typeorm";
 import { AuditLogEntity } from "../../../Domain/BoundedContexts/adminstration/Entities/auditlogEntity.entity";
 import { IReadAuditLogRepositories } from "../../../Domain/BoundedContexts/adminstration/Repositories/ReadAuditLogRepo.repositories";
 import { AuditLogMapper } from "../mapper/auditlog.mapper";
-import { UserRole } from "../../../Domain/BoundedContexts/IdentityAndAccess/Enum/UserRole.enum";
+import { UserRole } from "../../../Domain/Shared/Enum/UserRole.enum";
 import { AppDataSource } from "../../Database/TypeOrm/data-source";
 import { AuditLogModel } from "../../Database/TypeOrm/entity/AuditLog.entity";
 

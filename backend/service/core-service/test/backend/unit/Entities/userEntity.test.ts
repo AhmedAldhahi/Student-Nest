@@ -1,6 +1,6 @@
 import { UserEntity } from "../../../../src/Domain/BoundedContexts/IdentityAndAccess/Entities/userEntity.entity";
 import { UserAccountStatus } from "../../../../src/Domain/BoundedContexts/IdentityAndAccess/Enum/UserAccountStatus.enum";
-import { UserRole } from "../../../../src/Domain/BoundedContexts/IdentityAndAccess/Enum/UserRole.enum";
+import { UserRole } from "../../../../src/Domain/Shared/Enum/UserRole.enum";
 import { UserDataType } from "../../../../src/Domain/BoundedContexts/IdentityAndAccess/types/UserDataType.type";
 import { OTP } from "../../../../src/Domain/BoundedContexts/IdentityAndAccess/Value-Object/OTP.vo";
 import { UserDateOfBirth } from "../../../../src/Domain/BoundedContexts/IdentityAndAccess/Value-Object/UserDateOfBirth.vo";

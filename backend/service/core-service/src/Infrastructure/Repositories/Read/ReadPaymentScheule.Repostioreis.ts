@@ -53,7 +53,9 @@ export class ReadPaymentScheduleRepositories implements IReadPaymentScheduleRepo
           },
           relations: {
             receipt: true,
-            lease: true,
+            lease: {
+              landlord: true,
+            },
           },
           order: {
             dueDate: "ASC",

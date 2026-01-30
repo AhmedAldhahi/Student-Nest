@@ -4,7 +4,7 @@ import { DeleteUserCommandHandler } from "../../../../Application/BoundedContext
 import { ChangeUserActivateStatusCommandHandler } from "../../../../Application/BoundedContexts/Adminstration/CommandHandler/ChangeUserActivateStatus.CommandHandler";
 import { GetUserQueriesSimpleFactory } from "../../../../Application/BoundedContexts/Shared/SimpleFactory/GetUserQuerySimpleFactory";
 import { UserSimpleFactory } from "../../../../Application/BoundedContexts/Shared/SimpleFactory/GetUsersSimpleFactory";
-import { UserRole } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Enum/UserRole.enum";
+import { UserRole } from "../../../../Domain/Shared/Enum/UserRole.enum";
 
 export class UserManagementController {
   constructor(

@@ -68,8 +68,7 @@ export class CreateApartmentDocumentCommandHandler implements ICommandHandlers<A
       await this.uow.writeApartmentDocumentRepo.InsertApartmentDocument(
         apartmentDocuments,
       );
-      
-      await this.uow.writeApartmentRepo.updateApartment(apartment);
+
       await this.uow.commitTransaction();
 
       return { message: "Document added successfully", url: documentUrl };

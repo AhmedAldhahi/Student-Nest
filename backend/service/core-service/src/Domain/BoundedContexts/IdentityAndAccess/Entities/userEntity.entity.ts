@@ -1,6 +1,6 @@
 import { AggregateRoot } from "../../../Shared/AgregateRoot/AggregateRoot";
 import { UserAccountStatus } from "../Enum/UserAccountStatus.enum";
-import { UserRole } from "../Enum/UserRole.enum";
+import { UserRole } from "../../../Shared/Enum/UserRole.enum";
 import { UserRegisteredEvent } from "../Events/UserRegisterdEvent.event";
 import { OTP } from "../Value-Object/OTP.vo";
 import { UserDateOfBirth } from "../Value-Object/UserDateOfBirth.vo";

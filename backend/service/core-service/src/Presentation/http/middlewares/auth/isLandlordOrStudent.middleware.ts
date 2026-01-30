@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { UserRole } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Enum/UserRole.enum";
+import { UserRole } from "../../../../Domain/Shared/Enum/UserRole.enum";
 import { AppDataSource } from "../../../../Infrastructure/Database/TypeOrm/data-source";
 import { UserModel } from "../../../../Infrastructure/Database/TypeOrm/entity/User.entity";
 

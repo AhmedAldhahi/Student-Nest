@@ -1,6 +1,7 @@
 import { IReadLandlordRepositories } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadLandlordRepositories.repositoreies";
 import { IReadUserRepositories } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadUserRepositories.repositories";
 import { IReadLeaseRepositories } from "../../../../Domain/BoundedContexts/Leases/Repositories/Read/ReadLeaseRepositories.repositories";
+import { VerifiedLandlordStatus } from "../../../../Domain/BoundedContexts/Payment/Enum/VerfiedLandlordStatus.enum";
 import { IReadPaymentScheduleRepo } from "../../../../Domain/BoundedContexts/Payment/Repositories/ReadPaymentSchedualRepo.repostiores";
 import { IReadReceiptPaymentRepo } from "../../../../Domain/BoundedContexts/Payment/Repositories/ReadReceiptPaymentRepo.Repositories";
 import { IUnitOfWork } from "../../../../Domain/Shared/Repositories/UnitOfWorkRepositories.repositories";
@@ -60,23 +61,25 @@ export class ChangeStatusOfPaymentCommandHandler implements ICommandHandlers<Cha
 
       const receipt = receipts[0];
 
-      landlord.updatePaymentScheduleStatus(
-        paymentSchedule,
-        lease,
-        receipt,
-        command.status,
-      );
+      paymentSchedule.updatePaymentScheduleStatus(receipt, command.status);
 
-      console.log("lease Id :", command.leaseId);
-      console.log("lease id from aggregate id : ", paymentSchedule.getLeaseId());
-      console.log("apartment id :", command.paymentId);
-      console.log("user id : ", command.userId);
+      if (command.status === VerifiedLandlordStatus.Accept) {
+        const Lease = await this.readLeaseRepo.findLeaseForLandlordById(
+          command.userId,
+          command.leaseId,
+        );
+
+        if (!Lease)
+          throw new Error("Lease not found associated with this payment!");
+        Lease.markAsActivated();
+      }
 
       await this.uow.startTransaction();
 
       await this.uow.writePaymentScheduleRepo.updatePaymentSchedule(
         paymentSchedule,
       );
+      
       await this.uow.writePaymentReceiptRepo.updateReceipt(receipt);
       await this.uow.writeLeaseRepo.updateLease(lease);
 

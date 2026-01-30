@@ -1,4 +1,4 @@
-import { UserRole } from "../Enum/UserRole.enum";
+import { UserRole } from "../../../Shared/Enum/UserRole.enum";
 import { UserDateOfBirth } from "../Value-Object/UserDateOfBirth.vo";
 import { UserEmail } from "../Value-Object/UserEmail.vo";
 import { UserName } from "../Value-Object/UserName.vo";

@@ -8,6 +8,5 @@ export interface AddLeaseRequest {
   requestStatus: LeaseRequestStatus;
   createAt: Date;
   studentId: string;
-  landlordId: string;
   apartmentId: string;
 }

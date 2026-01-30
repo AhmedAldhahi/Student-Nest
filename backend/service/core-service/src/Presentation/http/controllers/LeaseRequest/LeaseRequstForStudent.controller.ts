@@ -26,7 +26,6 @@ export class LeaseRequestForStudentController {
         rentTerm: req.body.rentTerm,
         startDate: req.body.startDate,
         studentId: userId,
-        landlordId: req.body.landlordId,
         apartmentId: apartmentId,
         createAt: new Date(),
       });

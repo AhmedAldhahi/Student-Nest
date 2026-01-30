@@ -12,7 +12,6 @@ import { v4 as uuidv4 } from "uuid";
 import { createLeaseRequestResponse } from "../Dto/Respone/createLeaseRequestResponse";
 import { IReadLeaseRepositories } from "../../../../Domain/BoundedContexts/Leases/Repositories/Read/ReadLeaseRepositories.repositories";
 import { IReadLeaseRequestRepositories } from "../../../../Domain/BoundedContexts/Leases/Repositories/Read/ReadLeaseRequestRepositories.repositories";
-import { LeaseStatus } from "../../../../Domain/BoundedContexts/Leases/Enum/LeaseStatus.enum";
 import { AdapterHelper } from "../../../../Shared/utils/AdapterHelper.util";
 
 export class CreateLeaseRequestCommandHandler implements ICommandHandlers<CreateApartmentRequestCommand> {
@@ -40,13 +39,22 @@ export class CreateLeaseRequestCommandHandler implements ICommandHandlers<Create
 
       if (!student) throw new Error("no student been found !!");
 
-      const landlordUser = await this.readUserRepo.findById(command.landlordId);
-      if (!landlordUser) throw new Error("no landlord been found !!");
-
       const apartment = await this.readApartmentRepo.findApartmentById(
         command.apartmentId,
       );
       if (!apartment) throw new Error("no apartment been found !!");
+
+      // if (
+      //   apartment.getIsVisible() === false ||
+      //   apartment.getIsVerified() === false
+      // ) {
+      //   throw new Error("no apartment been found !!");
+      // }
+
+      const landlordUser = await this.readUserRepo.findById(
+        apartment.getLandlord(),
+      );
+      if (!landlordUser) throw new Error("no landlord been found !!");
 
       const leasesActiveNumber =
         await this.readLeaseRepo.countActiveLeasesByApartmentId(
@@ -132,12 +140,11 @@ export class CreateLeaseRequestCommandHandler implements ICommandHandlers<Create
         rentTerm: RentTerm.create(command.rentTerm),
         requestStatus: LeaseRequestStatus.Pending,
         createAt: new Date(),
-        landlordId: command.landlordId,
+        landlordId: apartment.getLandlord(),
         apartmentId: command.apartmentId,
         studentId: command.studentId,
       });
 
-      student.createLeaseRequestForApartment(NewLeaseRequest);
       await this.uow.startTransaction();
 
       await this.uow.writeLeaseRequestRepo.createLeaseRequest(NewLeaseRequest);

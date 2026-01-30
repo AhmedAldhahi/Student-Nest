@@ -6,18 +6,16 @@ import { ICommandHandlers } from "../../Shared/abstraction/ICommandHandler";
 import { ChangeLeaseRequestCommand } from "../Command/ChangeLeaseRequestCommand";
 import { leaseRequestResponse } from "../Dto/Respone/ChangeLeaseRequestResponse";
 
-export class updateLeaseRequestCommandHandler
-  implements ICommandHandlers<ChangeLeaseRequestCommand>
-{
+export class updateLeaseRequestCommandHandler implements ICommandHandlers<ChangeLeaseRequestCommand> {
   constructor(
     private readonly uow: IUnitOfWork,
     private readonly readUserRepo: IReadUserRepositories,
     private readonly readLandlordRepo: IReadLandlordRepositories,
-    private readonly readLeaseRequestRepo: IReadLeaseRequestRepositories
+    private readonly readLeaseRequestRepo: IReadLeaseRequestRepositories,
   ) {}
 
   public async handle(
-    command: ChangeLeaseRequestCommand
+    command: ChangeLeaseRequestCommand,
   ): Promise<leaseRequestResponse> {
     try {
       const user = await this.readUserRepo.findById(command.userId);
@@ -26,19 +24,19 @@ export class updateLeaseRequestCommandHandler
       user.ensureAccountIsActive();
 
       const landlord = await this.readLandlordRepo.findLandlordById(
-        command.userId
+        command.userId,
       );
       if (!landlord) throw new Error("no landlord been found !!");
 
       const leaseRequest =
         await this.readLeaseRequestRepo.findLeaseRequestByIdForLandlord(
           command.userId,
-          command.id
+          command.id,
         );
 
       if (!leaseRequest) throw new Error("no least request been found !!");
 
-      landlord.updateLeaseRequestStatus(leaseRequest, command.status);
+      leaseRequest.updateLeaseRequestStatus(command.status);
 
       await this.uow.startTransaction();
 

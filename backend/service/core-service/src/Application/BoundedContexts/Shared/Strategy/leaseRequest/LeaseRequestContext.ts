@@ -1,4 +1,4 @@
-import { UserRole } from "../../../../../Domain/BoundedContexts/IdentityAndAccess/Enum/UserRole.enum";
+import { UserRole } from "../../../../../Domain/Shared/Enum/UserRole.enum";
 import { IReadUserRepositories } from "../../../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadUserRepositories.repositories";
 import { AdminLeaseRequestStrategy } from "./AdminLeaseRequest.strategy";
 import { ILeaseRequestStrategy } from "./ILeaseRequest.strategy";

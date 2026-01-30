@@ -6,9 +6,7 @@ import { VerificationDocument } from "../Value-Object/VerficationDocument.vo";
 import { LeaseRequestEntity } from "../../Leases/Entities/leaseRequestEntity.entity";
 import { PaymentAggregateRoot } from "../../Payment/AgregateRoot/Payment.AgregateRoot";
 import { ReceiptEntity } from "../../Payment/Entities/ReceiptEntities.entity";
-import { ApartmentDocumentEntity } from "../../Housing/Entities/apartmentDocumentEntity.entity";
 import { LandlordDataType } from "../types/ILandlordData.type";
-import { ApartmentAggregateRoot } from "../../Housing/AgregateRoot/apartmentEntity.entity";
 import { LeaseAggregateRoot } from "../../Leases/AgregateRoot/leaseEntity.entity";
 import { LandlordRegisterEvent } from "../Events/LandlordRegisterdEvent.event";
 
@@ -43,68 +41,15 @@ export class LandlordAggregateRoot extends AggregateRoot<string> {
    * ==================================================================================
    */
 
-  public updateLeaseRequestStatus(
-    leaseRequest: LeaseRequestEntity,
-    status: LeaseRequestStatus,
-  ) {
-    this.ensureIsLandlordVerified();
-
-    if (status === LeaseRequestStatus.Accept) {
-      leaseRequest.accept();
-    }
-
-    if (status === LeaseRequestStatus.Reject) {
-      leaseRequest.reject();
-    }
-  }
-
-  public updatePaymentScheduleStatus(
-    paymentSchedule: PaymentAggregateRoot,
-    lease: LeaseAggregateRoot,
-    receipt: ReceiptEntity,
-    status: VerifiedLandlordStatus,
-  ): void {
-    if (receipt.getVerifiedByLandlord() === VerifiedLandlordStatus.Accept) {
-      throw new Error("Accepted payment cannot be modified.");
-    }
-
-    switch (status) {
-      case VerifiedLandlordStatus.Accept:
-        receipt.markAsVerified();
-        paymentSchedule.acceptPayment();
-        lease.markAsActivated();
-
-        break;
-
-      case VerifiedLandlordStatus.Reject:
-        receipt.markAsNotVerified();
-
-        paymentSchedule.rejectPayment();
-        break;
-
-      case VerifiedLandlordStatus.Pending:
-        break;
-
-      default:
-        throw new Error("Invalid verification status provided.");
-    }
-  }
-
-  /**
-   * ==================================================================================
-   *                              Update Methods sections
-   * ==================================================================================
-   */
-
-  public updateVerificationFile(file: VerificationDocument): void {
-    this.document = file;
-    this.isVerifiedLandlord = false;
-  }
-
   public ensureIsLandlordVerified(): void {
     if (this.isVerifiedLandlord === false) {
       throw new Error("you have to be verified to apply your functionality ");
     }
+  }
+
+  public updateVerificationFile(file: VerificationDocument): void {
+    this.document = file;
+    this.isVerifiedLandlord = false;
   }
 
   public markLandlordAsVerified(): void {

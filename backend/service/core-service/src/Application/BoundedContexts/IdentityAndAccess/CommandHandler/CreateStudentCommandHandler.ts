@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { StudentAggregateRoot } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Aggregates/StudentAggregateRoot.entity";
 import { UserEntity } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Entities/userEntity.entity";
-import { UserRole } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Enum/UserRole.enum";
+import { UserRole } from "../../../../Domain/Shared/Enum/UserRole.enum";
 import { IReadUserRepositories } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Repositories/ReadUserRepositories.repositories";
 import { OTP } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/OTP.vo";
 import { StudentCard } from "../../../../Domain/BoundedContexts/IdentityAndAccess/Value-Object/StudentCard.vo";

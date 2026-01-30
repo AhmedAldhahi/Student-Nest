@@ -4,7 +4,7 @@ import { LeaseRequestDate } from "../types/LeaseRequestData";
 import { LeaseStartDate } from "../Value-Object/LeaseStartDate.vo";
 import { RentTerm } from "../Value-Object/RentTerm.vo";
 
-export class LeaseRequestEntity  {
+export class LeaseRequestEntity {
   private requestLeaseId: string;
   private requestMessage: string;
   private startDate: LeaseStartDate;
@@ -28,6 +28,19 @@ export class LeaseRequestEntity  {
     this.studentId = data.studentId;
   }
 
+  public static create(data: LeaseRequestDate) {
+    const leaseRequest = new LeaseRequestEntity(data);
+
+    if (!leaseRequest.getRequestMessage()) {
+      throw new Error("lease request message is require !!");
+    }
+
+    if (!leaseRequest.getApartment()) {
+      throw new Error("can not send lease request for unknown apartments !!");
+    }
+    return leaseRequest;
+  }
+
   /**
    * ==================================================================================
    *                              Behavior Methods
@@ -42,6 +55,28 @@ export class LeaseRequestEntity  {
     const now = new Date();
 
     return now > expirationDate;
+  }
+
+  public updateLeaseRequestStatus(status: LeaseRequestStatus): void {
+    if (status === LeaseRequestStatus.Accept) {
+      this.accept();
+    }
+
+    if (status === LeaseRequestStatus.Reject) {
+      this.reject();
+    }
+  }
+
+  public pending(): void {
+    this.requestStatus = LeaseRequestStatus.Pending;
+  }
+
+  public accept(): void {
+    this.requestStatus = LeaseRequestStatus.Accept;
+  }
+
+  public reject(): void {
+    this.requestStatus = LeaseRequestStatus.Reject;
   }
 
   /**
@@ -83,24 +118,6 @@ export class LeaseRequestEntity  {
 
   public getApartment(): string {
     return this.apartmentId;
-  }
-
-  /**
-   * ==================================================================================
-   *                              Behavior  Methods
-   * ==================================================================================
-   */
-
-  public pending(): void {
-    this.requestStatus = LeaseRequestStatus.Pending;
-  }
-
-  public accept(): void {
-    this.requestStatus = LeaseRequestStatus.Accept;
-  }
-
-  public reject(): void {
-    this.requestStatus = LeaseRequestStatus.Reject;
   }
 
   /**

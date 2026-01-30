@@ -6,7 +6,6 @@ import { GovernmentID } from "../Value-Object/UserGovId.vo";
 import { VerificationDocument } from "../Value-Object/VerficationDocument.vo";
 import { StudentDataType } from "../types/StudentDataType.type";
 import { AggregateRoot } from "../../../Shared/AgregateRoot/AggregateRoot";
-import { LeaseRequestEntity } from "../../Leases/Entities/leaseRequestEntity.entity";
 import { RoommateProfileAggregate } from "../../RommateProfile/Aggregates/RommateProfile.aggregateRoot";
 
 export class StudentAggregateRoot extends AggregateRoot<string> {
@@ -40,16 +39,6 @@ export class StudentAggregateRoot extends AggregateRoot<string> {
    *                              Behavior Methods sections
    * ==================================================================================
    */
-
-  public createLeaseRequestForApartment(leaseRequest: LeaseRequestEntity) {
-    if (!leaseRequest.getRequestMessage()) {
-      throw new Error("lease request message is require !!");
-    }
-
-    if (!leaseRequest.getApartment()) {
-      throw new Error("can not send lease request for unknown apartments !!");
-    }
-  }
 
   public createRoommateProfile(roommateProfile: RoommateProfileAggregate) {
     if (!roommateProfile.getLanguage()) {

@@ -3,6 +3,7 @@ import { PaymentStatus } from "../Enum/PaymentStatus.enum";
 import { ReceiptEntity } from "../Entities/ReceiptEntities.entity";
 import { PaymentDataType } from "../Types/PaymentData";
 import { PaymentAmount } from "../Value-Object/PaymentAmount.vo";
+import { VerifiedLandlordStatus } from "../Enum/VerfiedLandlordStatus.enum";
 
 export class PaymentAggregateRoot extends AggregateRoot<string> {
   private paymentId: string;
@@ -38,10 +39,39 @@ export class PaymentAggregateRoot extends AggregateRoot<string> {
     // 2. State Validation: Can't upload if already paid
     if (this.paymentStatus === PaymentStatus.Paid) {
       throw new Error("Payment is already completed.");
-    } 
+    }
 
     this.paymentReceipt = receipt;
     this.paymentStatus = PaymentStatus.Paid;
+  }
+
+  public updatePaymentScheduleStatus(
+    receipt: ReceiptEntity,
+    status: VerifiedLandlordStatus,
+  ): void {
+    if (receipt.getVerifiedByLandlord() === VerifiedLandlordStatus.Accept) {
+      throw new Error("Accepted payment cannot be modified.");
+    }
+
+    switch (status) {
+      case VerifiedLandlordStatus.Accept:
+        receipt.markAsVerified();
+        this.acceptPayment();
+
+        break;
+
+      case VerifiedLandlordStatus.Reject:
+        receipt.markAsNotVerified();
+
+        this.rejectPayment();
+        break;
+
+      case VerifiedLandlordStatus.Pending:
+        break;
+
+      default:
+        throw new Error("Invalid verification status provided.");
+    }
   }
 
   public acceptPayment(): void {

@@ -8,7 +8,6 @@ export class CreateApartmentRequestCommand implements ICommand {
   public rentTerm: string;
   public createAt: Date;
   public studentId: string;
-  public landlordId: string;
   public apartmentId: string;
 
   constructor(data: AddLeaseRequest) {
@@ -17,7 +16,6 @@ export class CreateApartmentRequestCommand implements ICommand {
     this.startDate = data.startDate;
     this.rentTerm = data.rentTerm;
     this.studentId = data.studentId;
-    this.landlordId = data.landlordId;
     this.apartmentId = data.apartmentId;
   }
 }
