@@ -64,14 +64,7 @@ export class ChangeStatusOfPaymentCommandHandler implements ICommandHandlers<Cha
       paymentSchedule.updatePaymentScheduleStatus(receipt, command.status);
 
       if (command.status === VerifiedLandlordStatus.Accept) {
-        const Lease = await this.readLeaseRepo.findLeaseForLandlordById(
-          command.userId,
-          command.leaseId,
-        );
-
-        if (!Lease)
-          throw new Error("Lease not found associated with this payment!");
-        Lease.markAsActivated();
+        lease.markAsActivated();
       }
 
       await this.uow.startTransaction();
@@ -79,7 +72,7 @@ export class ChangeStatusOfPaymentCommandHandler implements ICommandHandlers<Cha
       await this.uow.writePaymentScheduleRepo.updatePaymentSchedule(
         paymentSchedule,
       );
-      
+
       await this.uow.writePaymentReceiptRepo.updateReceipt(receipt);
       await this.uow.writeLeaseRepo.updateLease(lease);
 

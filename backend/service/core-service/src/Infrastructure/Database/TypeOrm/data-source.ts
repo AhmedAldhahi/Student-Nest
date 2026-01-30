@@ -1,5 +1,4 @@
 import { DataSource } from "typeorm";
-import { LeaseRequestModel } from "./entity/LeaseRequest";
 
 export class AppDataSource {
   // Private constructor to prevent instantiation
