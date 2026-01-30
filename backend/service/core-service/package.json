@@ -8,7 +8,7 @@
     "build": "tsc",
     "start": "node dist/src/index.js",
     "docs": "typedoc",
-    "test": "jest",
+    "test": "jest --reporters=default ",
     "test:watch": "jest --watchAll"
   },
   "author": "abdalrahman alkayyali",

@@ -31,8 +31,8 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
             leaseTerm: true,
             includeUtilities: true,
             createAt: true,
-            studentId:true,
-            landlordId:true,
+            studentId: true,
+            landlordId: true,
             apartmentId: true,
             landlord: {
               userId: true,
@@ -424,7 +424,7 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
   public async findAllLeaseForLandlordForSingleApartment(
     userId: string,
     apartmentId: string,
-  ): Promise<ILeaseEntityDTO[] | null> {
+  ): Promise<ILeaseEntityDTO[]> {
     try {
       const leasesModel = await AppDataSource.getInstance()
         .getRepository(LeaseModel)

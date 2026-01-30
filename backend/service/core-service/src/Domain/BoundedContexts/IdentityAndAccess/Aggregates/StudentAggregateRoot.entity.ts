@@ -40,33 +40,6 @@ export class StudentAggregateRoot extends AggregateRoot<string> {
    * ==================================================================================
    */
 
-  public createRoommateProfile(roommateProfile: RoommateProfileAggregate) {
-    if (!roommateProfile.getLanguage()) {
-      throw new Error("the language field is missed !!");
-    }
-
-    if (!roommateProfile.getMaxAge()) {
-      throw new Error("the max age field is missed !!");
-    }
-
-    if (!roommateProfile.getMinAge()) {
-      throw new Error("the min age field is missed !!");
-    }
-
-    if (!roommateProfile.getNoiseTolerance()) {
-      throw new Error("the noise tolerance field is require !!");
-    }
-    if (!roommateProfile.getSleepSchedule()) {
-      throw new Error("the sleep schedule field is require !!");
-    }
-  }
-
-  /**
-   * ==================================================================================
-   *                              Update Methods sections
-   * ==================================================================================
-   */
-
   public markAsRoommateProfileCreated(): void {
     this.roommateProfileStatus = true;
   }

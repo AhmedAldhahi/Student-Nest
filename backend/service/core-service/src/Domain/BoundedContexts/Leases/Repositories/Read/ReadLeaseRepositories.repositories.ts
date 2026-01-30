@@ -14,7 +14,7 @@ export interface IReadLeaseRepositories {
   findAllLeaseForLandlordForSingleApartment(
     userId: string,
     apartmentId: string,
-  ): Promise<ILeaseEntityDTO[] | null>;
+  ): Promise<ILeaseEntityDTO[]>;
 
   findAllLeaseForLandlordForSingleApartmentByQueries(
     userId: string,
@@ -51,5 +51,5 @@ export interface IReadLeaseRepositories {
   findAllLeaseContractForStudent(
     userId: string,
     apartmentId: string,
-  ): Promise<LeaseAggregateRoot[] >;
+  ): Promise<LeaseAggregateRoot[]>;
 }

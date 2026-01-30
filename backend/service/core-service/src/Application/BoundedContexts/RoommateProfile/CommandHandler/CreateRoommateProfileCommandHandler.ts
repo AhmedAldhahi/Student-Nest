@@ -58,7 +58,6 @@ export class CreateRoommateProfileCommandHandler implements ICommandHandlers<Cre
         SmokoHabitType: command.SmokoHabitType,
       });
 
-      // 4. Create Aggregate Root
       const roommateProfile = RoommateProfileAggregate.create({
         roommateId: roommateProfileId, 
         Language: command.Language,
@@ -72,7 +71,6 @@ export class CreateRoommateProfileCommandHandler implements ICommandHandlers<Cre
         studentId: command.userId,
       });
 
-      student.createRoommateProfile(roommateProfile);
       student.markAsRoommateProfileCreated();
 
       await this.uow.startTransaction();
