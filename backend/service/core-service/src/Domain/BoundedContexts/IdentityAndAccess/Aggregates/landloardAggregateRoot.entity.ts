@@ -1,13 +1,7 @@
 import { AggregateRoot } from "../../../Shared/AgregateRoot/AggregateRoot";
-import { LeaseRequestStatus } from "../../Leases/Enum/LeaseRequestStatus.enum";
-import { VerifiedLandlordStatus } from "../../Payment/Enum/VerfiedLandlordStatus.enum";
 import { GovernmentID } from "../Value-Object/UserGovId.vo";
 import { VerificationDocument } from "../Value-Object/VerficationDocument.vo";
-import { LeaseRequestEntity } from "../../Leases/Entities/leaseRequestEntity.entity";
-import { PaymentAggregateRoot } from "../../Payment/AgregateRoot/Payment.AgregateRoot";
-import { ReceiptEntity } from "../../Payment/Entities/ReceiptEntities.entity";
 import { LandlordDataType } from "../types/ILandlordData.type";
-import { LeaseAggregateRoot } from "../../Leases/AgregateRoot/leaseEntity.entity";
 import { LandlordRegisterEvent } from "../Events/LandlordRegisterdEvent.event";
 
 export class LandlordAggregateRoot extends AggregateRoot<string> {
