@@ -10,7 +10,7 @@ export class RoommateProfileAggregate extends AggregateRoot<string> {
   private roommateProfileId: string;
   private language: UserLanguage;
   private noiseTolerance: NoiseTolerance;
-  private minAge: Age; 
+  private minAge: Age;
   private maxAge: Age;
   private sleepSchedule: SleepSchedule;
   private LifeCycleHabit: LifeCycleHabitEntity;
@@ -34,7 +34,28 @@ export class RoommateProfileAggregate extends AggregateRoot<string> {
 
   //Factory method
   public static create(data: RoommateProfileData) {
-    return new RoommateProfileAggregate(data);
+    const roommateProfile = new RoommateProfileAggregate(data);
+
+    if (!roommateProfile.getLanguage()) {
+      throw new Error("the language field is missed !!");
+    }
+
+    if (!roommateProfile.getMaxAge()) {
+      throw new Error("the max age field is missed !!");
+    }
+
+    if (!roommateProfile.getMinAge()) {
+      throw new Error("the min age field is missed !!");
+    }
+
+    if (!roommateProfile.getNoiseTolerance()) {
+      throw new Error("the noise tolerance field is require !!");
+    }
+    if (!roommateProfile.getSleepSchedule()) {
+      throw new Error("the sleep schedule field is require !!");
+    }
+
+    return roommateProfile;
   }
 
   /**

@@ -47,7 +47,7 @@ export class UpdateApartmentDetailForLandlordCommandHandler implements ICommandH
 
       if (!apartment) throw new Error("Apartment not found !!");
 
-      // TODO: need to fix price when it have student must throw error
+      //TODO: need to fix price when it have student must throw error
 
       if (command.address) apartment.updateAddress(command.address);
       if (command.description) apartment.updateDescription(command.description);
@@ -79,6 +79,9 @@ export class UpdateApartmentDetailForLandlordCommandHandler implements ICommandH
       if (command.includeUtilities) {
         apartment.changeIncludedUtilities(command.includeUtilities);
       }
+
+      apartment.markAsNotVerified();
+      apartment.markAsNotVisible();
 
       //todo: fix the photo issue
 
