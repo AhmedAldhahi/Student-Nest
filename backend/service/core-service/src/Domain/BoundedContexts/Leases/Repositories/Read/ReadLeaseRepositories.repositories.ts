@@ -52,4 +52,6 @@ export interface IReadLeaseRepositories {
     userId: string,
     apartmentId: string,
   ): Promise<LeaseAggregateRoot[]>;
+
+  getAllActiveLeasesCounts(): Promise<{ apartmentId: string; activeCount: number }[]>;
 }

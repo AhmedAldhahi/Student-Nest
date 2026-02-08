@@ -7,6 +7,29 @@ import { LeaseMapper } from "../mapper/lease.mapper";
 import { ILeaseEntityDTO } from "../../../Domain/BoundedContexts/Leases/Representations/ILeaseEntityDTO";
 
 export class ReadLeaseRepositories implements IReadLeaseRepositories {
+  public async getAllActiveLeasesCounts(): Promise<
+    { apartmentId: string; activeCount: number }[]
+  > {
+    try {
+      const results = await AppDataSource.getInstance()
+        .getRepository(LeaseModel)
+        .createQueryBuilder("lease")
+        .select("lease.apartmentId", "apartmentId")
+        .addSelect("COUNT(lease.leaseId)", "activeCount")
+        .where("lease.LeaseActivationStatus = :status", { status: true })
+        .groupBy("lease.apartmentId")
+        .getRawMany();
+
+      return results.map((row) => ({
+        apartmentId: row.apartmentId,
+        activeCount: Number(row.activeCount),
+      }));
+    } catch (error) {
+      console.error("Failed to get active lease counts", error);
+      return [];
+    }
+  }
+
   public async findAllLeaseContractForStudent(
     userId: string,
     apartmentId: string,
@@ -248,7 +271,7 @@ export class ReadLeaseRepositories implements IReadLeaseRepositories {
             landlord: { user: true },
             student: { user: true },
             apartment: true,
-            payments:true,
+            payments: true,
           },
         });
 

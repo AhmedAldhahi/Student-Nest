@@ -113,6 +113,7 @@ export function UserApartmentContext(): ApartmentContext {
   const ReadUseRepo = new ReadUserRepositories();
   const ReadApartmentDocumentRepo = new ReadApartmentDocumentRepositories();
   const ReadLandlordRepo = new ReadLandlordRepositories();
+  const ReadLeaseRepo = new ReadLeaseRepositories();
 
   const uow = new UnitOfWork();
   const fileService = new CloudinaryService();
@@ -124,14 +125,19 @@ export function UserApartmentContext(): ApartmentContext {
   );
   const queriesHandler = new GetAllApartmentByQueryForAdminQueriesHandler(
     ReadApartmentRepo,
+    ReadLeaseRepo,
   );
 
   const GetAllApartmentQH = new GetAllApartmentForAdminQueriesHandler(
     ReadApartmentRepo,
+    ReadLeaseRepo,
   );
 
   const GetAllApartmentPrefixQH =
-    new GetAllApartmentByQueriesForLandlordQueriesHandler(ReadApartmentRepo);
+    new GetAllApartmentByQueriesForLandlordQueriesHandler(
+      ReadApartmentRepo,
+      ReadLeaseRepo,
+    );
 
   const GetApartmentDocumentByIdQH = new GetApartmentDocumentByIdQueriesHandler(
     ReadApartmentDocumentRepo,
@@ -142,7 +148,10 @@ export function UserApartmentContext(): ApartmentContext {
   );
 
   const GetAllApartmentForLandlord =
-    new GetAllApartmentByLandlordQueriesHandler(ReadApartmentRepo);
+    new GetAllApartmentByLandlordQueriesHandler(
+      ReadApartmentRepo,
+      ReadLeaseRepo,
+    );
 
   const DeleteApartmentByIdForLandlord =
     new deleteApartmentByIdForLandlordCommandHandler(
@@ -166,6 +175,7 @@ export function UserApartmentContext(): ApartmentContext {
 
   const getGustApartmentDetailsQH = new GetApartmentByIdForGuestQueriesHandler(
     ReadApartmentRepo,
+    ReadLeaseRepo,
   );
 
   const adminStrategy = new AdminApartmentStrategy(
@@ -232,8 +242,11 @@ export function GetAllVisibleAndNotFullApartmentQH(): GetAllVisibleAndNotFullApa
 
 export function GetApartmentDetailForGuestQH(): GetApartmentByIdForGuestQueriesHandler {
   const readApartmentRepo = new ReadApartmentRepositories();
-
-  return new GetApartmentByIdForGuestQueriesHandler(readApartmentRepo);
+  const readLeaseRepo = new ReadLeaseRepositories();
+  return new GetApartmentByIdForGuestQueriesHandler(
+    readApartmentRepo,
+    readLeaseRepo,
+  );
 }
 
 export function GetFilterApartmentQH(): FilterSearchForApartmentQueriesHandler {
@@ -247,4 +260,3 @@ export function SearchForVisibleApartmentsQH(): SearchForApartmentQueriesHandler
 
   return new SearchForApartmentQueriesHandler(readApartmentRepo);
 }
-

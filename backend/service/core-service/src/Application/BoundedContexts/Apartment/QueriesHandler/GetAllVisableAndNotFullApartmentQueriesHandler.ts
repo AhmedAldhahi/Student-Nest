@@ -1,44 +1,43 @@
 import { IReadApartmentRepo } from "../../../../Domain/BoundedContexts/Housing/Repositories/ReadApartmentRepo.repositoreis";
 import { IApartmentSimpleDTO } from "../../../../Domain/BoundedContexts/Housing/Representations/IApartmentSimpleDto";
 import { IReadLeaseRepositories } from "../../../../Domain/BoundedContexts/Leases/Repositories/Read/ReadLeaseRepositories.repositories";
+import { ApartmentUtils } from "../../../../Shared/utils/apartmentUtil.util"; // Import Utils
 import { IQueriesHandlers } from "../../Shared/abstraction/IQueriesHandler";
 import { ApartmentBased } from "../Queries/ApartmentBases";
 
-export class GetAllVisibleAndNotFullApartmentQueriesHandler
-  implements IQueriesHandlers<ApartmentBased>
-{
+export class GetAllVisibleAndNotFullApartmentQueriesHandler implements IQueriesHandlers<ApartmentBased> {
   constructor(
     private readonly readApartmentRepo: IReadApartmentRepo,
-    private readonly readLeaseRepo: IReadLeaseRepositories
+    private readonly readLeaseRepo: IReadLeaseRepositories,
   ) {}
 
   public async handle(): Promise<IApartmentSimpleDTO[]> {
     try {
       const verifiedApartments =
-        await this.readApartmentRepo.FindAllApartmentThatBeenVerified();
+        (await this.readApartmentRepo.FindAllApartmentThatBeenVerified()) || [];
 
-      if (!verifiedApartments || verifiedApartments.length === 0) return [];
+      if (verifiedApartments.length === 0) return [];
 
-      const availableApartments: IApartmentSimpleDTO[] = [];
+      const leaseCounts = await this.readLeaseRepo.getAllActiveLeasesCounts();
 
-      for (const apt of verifiedApartments) {
-        if (!apt.isVisible) continue;
+      const apartmentsWithCounts = verifiedApartments.map((apt) => {
+        const countData = leaseCounts.find(
+          (c) => c.apartmentId === apt.apartmentId,
+        );
 
-        const activeLeasesCount =
-          await this.readLeaseRepo.countActiveLeasesByApartmentId(
-            apt.apartmentId
-          );
+        return {
+          ...apt,
+          activeLeasesCount: countData ? countData.activeCount : 0,
+        };
+      });
 
-        const capacity = parseInt(apt.numberOfRoom || "0");
+      const processedApartments =
+        ApartmentUtils.processApartmentStatus(apartmentsWithCounts);
 
-        if (activeLeasesCount < capacity) {
-          availableApartments.push(apt);
-        }
-      }
-
-      return availableApartments;
+      return processedApartments.filter((apt) => apt.isVisible);
     } catch (error: any) {
-      throw new Error(`Failed to fetch featured apartments: ${error.message}`);
+      console.error(`Failed to fetch featured apartments: ${error.message}`);
+      throw new Error(`Failed to fetch featured apartments`);
     }
   }
 }

@@ -19,7 +19,6 @@ export class GetAllApartmentThatBeenBookedQueriesHandler
       if (!user) throw new Error("no user been found !!");
       user.ensureAccountIsActive();
 
-      // 1. Get all leases for this landlord
       const leases = await this.readLeaseRepo.findAllLeaseForLandlord(
         command.userId
       );
@@ -28,12 +27,10 @@ export class GetAllApartmentThatBeenBookedQueriesHandler
         return [];
       }
 
-      // 2. Extract unique Apartment IDs
       const uniqueApartmentIds = [
         ...new Set(leases.map((lease) => lease.apartmentId)),
       ];
 
-      // 3. Fetch the Apartment Data
       const apartments = await this.readApartmentRepo.findAllApartmentBasedArray(
         uniqueApartmentIds,
         command.userId
