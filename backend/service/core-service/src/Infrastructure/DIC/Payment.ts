@@ -16,6 +16,7 @@ import { ReadPaymentScheduleRepositories } from "../Repositories/Read/ReadPaymen
 import { ReadUserRepositories } from "../Repositories/Read/ReadUserRepositories";
 import { UnitOfWork } from "../Repositories/unitOfWork.repositories";
 import { CloudinaryService } from "../Services/Media/CloudinaryService.service";
+import { KafkaMessageBroker } from "../Services/messagine/KafkaMessageBroker.service";
 
 export function ChangeStatusOfPaymentCH(): ChangeStatusOfPaymentCommandHandler {
   const uow = new UnitOfWork();
@@ -32,6 +33,7 @@ export function ChangeStatusOfPaymentCH(): ChangeStatusOfPaymentCommandHandler {
     readPaymentScheduleRepo,
     readLeaseRepo,
     readReceiptRepo,
+    KafkaMessageBroker.getInstance(),
   );
 }
 

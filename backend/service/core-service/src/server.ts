@@ -17,6 +17,7 @@ import { SharedIndexRouter } from "./Presentation/http/routes/shared/index.route
 import { LandlordIndexRouter } from "./Presentation/http/routes/Landlord/index.router";
 import { buildControllersBoundaryContext } from "./Presentation/http/controllers/main.controller";
 import { StudentIndexRouter } from "./Presentation/http/routes/Student/index.router";
+import { KafkaMessageBroker } from "./Infrastructure/Services/messagine/KafkaMessageBroker.service";
 
 export class Server {
   public app = express();
@@ -36,6 +37,16 @@ export class Server {
     }
   }
 
+  public async connectMessageBroker() {
+    try {
+      const broker = KafkaMessageBroker.getInstance();
+      await broker.connect();
+      this.startupDebug(" Kafka connected and ready.");
+    } catch (error) {
+      this.startupDebug(" Kafka connection failed: %O", error);
+    }
+  }
+
   public async connectToThirdParty() {
     this.app.use(
       morgan("dev", {
@@ -45,16 +56,13 @@ export class Server {
       }),
     );
 
-    // Security
     this.app.use(helmet());
 
-    // Body parsers
     this.app.use(express.json());
 
     this.app.use(auditMiddleware);
-    this.app.set('trust proxy', 1);
+    this.app.set("trust proxy", 1);
 
-    // Winston request logging
     this.app.use(
       expressWinston.logger({
         transports: [
@@ -92,12 +100,12 @@ export class Server {
       next();
     });
 
-    
-
     // Database Connection
     this.connectedDB();
 
-    // Third Party connect 
+    this.connectMessageBroker();
+
+    // Third Party connect
     this.connectToThirdParty();
 
     const {

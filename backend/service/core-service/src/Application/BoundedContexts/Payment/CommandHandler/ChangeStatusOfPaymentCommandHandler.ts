@@ -5,6 +5,7 @@ import { VerifiedLandlordStatus } from "../../../../Domain/BoundedContexts/Payme
 import { IReadPaymentScheduleRepo } from "../../../../Domain/BoundedContexts/Payment/Repositories/ReadPaymentSchedualRepo.repostiores";
 import { IReadReceiptPaymentRepo } from "../../../../Domain/BoundedContexts/Payment/Repositories/ReadReceiptPaymentRepo.Repositories";
 import { IUnitOfWork } from "../../../../Domain/Shared/Repositories/UnitOfWorkRepositories.repositories";
+import { IMessageBroker } from "../../../Interfaces/IMessageBroker.interface";
 import { ICommandHandlers } from "../../Shared/abstraction/ICommandHandler";
 import { ChangeStatusOfPaymentCommand } from "../Command/ChangeStatusOfPaymentCommand";
 import { PaymentStatusResponse } from "../Dto/Respone/PaymentStatusResponse";
@@ -17,6 +18,7 @@ export class ChangeStatusOfPaymentCommandHandler implements ICommandHandlers<Cha
     private readonly readPaymentScheduleRepo: IReadPaymentScheduleRepo,
     private readonly readLeaseRepo: IReadLeaseRepositories,
     private readonly readReceiptRepo: IReadReceiptPaymentRepo,
+    private readonly messageBroker: IMessageBroker,
   ) {}
 
   public async handle(
@@ -77,6 +79,11 @@ export class ChangeStatusOfPaymentCommandHandler implements ICommandHandlers<Cha
       await this.uow.writeLeaseRepo.updateLease(lease);
 
       await this.uow.commitTransaction();
+
+      if (command.status === VerifiedLandlordStatus.Accept) {
+        await this.messageBroker.send("lease-activated-topic", lease);
+      }
+      
 
       return {
         message: "payment status update successfully ",
