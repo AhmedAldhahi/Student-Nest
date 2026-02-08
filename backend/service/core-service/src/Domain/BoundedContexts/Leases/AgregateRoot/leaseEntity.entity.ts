@@ -7,8 +7,10 @@ import { LeaseEndDate } from "../Value-Object/LeaseEndDate.vo";
 import { LeaseStartDate } from "../Value-Object/LeaseStartDate.vo";
 import { LeaseTerm } from "../Value-Object/LeaseTerm.vo";
 import { v4 as uuidv4 } from "uuid";
+import { AggregateRoot } from "../../../Shared/AgregateRoot/AggregateRoot";
+import { CreateLeaseEvent } from "../Event/LeaseEvent.event";
 
-export class LeaseAggregateRoot {
+export class LeaseAggregateRoot extends AggregateRoot<string> {
   private leaseId: string;
   private isLandlordSigned: boolean;
   private isStudentSigned: boolean;
@@ -28,6 +30,7 @@ export class LeaseAggregateRoot {
   private paymentSchedule: PaymentAggregateRoot[] | null;
 
   constructor(data: LeaseDataType) {
+    super(data.leaseId);
     this.leaseId = data.leaseId;
     this.activateStatus = data.ActivationStatus;
     this.isLandlordSigned = data.isLandlordSigned;
@@ -42,6 +45,32 @@ export class LeaseAggregateRoot {
     this.apartmentId = data.apartmentId;
     this.createAt = data.createAt;
     this.paymentSchedule = data.paymentSchedule;
+  }
+
+  public static create(data: LeaseDataType) {
+    const lease = new LeaseAggregateRoot(data);
+
+    const leaseStartDate = lease.getLeaseStartDate();
+    const leaseEndDate = lease.getLeaseEndDate();
+    const monthlyRent = lease.getMonthlyRent();
+
+    if (!leaseStartDate)
+      throw new Error("lease start date can not be undefined ");
+
+    if (!leaseEndDate) throw new Error("lease end date can not be undefined ");
+
+    if (!monthlyRent) throw new Error("month rent can not be undefined");
+
+    lease.addDomainEvent(
+      new CreateLeaseEvent(
+        lease.getLeaseId(),
+        leaseStartDate,
+        leaseEndDate,
+        monthlyRent,
+      ),
+    );
+
+    return lease;
   }
 
   /**
@@ -83,7 +112,22 @@ export class LeaseAggregateRoot {
       currentDueDate.setMonth(currentDueDate.getMonth() + 1);
     }
 
-    this.paymentSchedule = schedules;
+    // now for sort
+    // first from old year
+    // then old month
+    // old day
+    // then move to new year and so
+    const sorted = schedules.sort(
+      (schedulesA: PaymentAggregateRoot, schedulesB: PaymentAggregateRoot) => {
+        const timeA = new Date(schedulesA.getDueDate());
+        timeA.setHours(0, 0, 0, 0);
+        const timeB = new Date(schedulesB.getDueDate());
+        timeB.setHours(0, 0, 0, 0);
+        return timeA.getTime() - timeB.getTime();
+      },
+    );
+
+    this.paymentSchedule = sorted;
   }
 
   public checkIfLeaseExpiredLease(): boolean {
@@ -229,7 +273,7 @@ export class LeaseAggregateRoot {
     return this.isStudentSigned;
   }
 
-  public getPaymentSchedule() : PaymentAggregateRoot [] | null {
+  public getPaymentSchedule(): PaymentAggregateRoot[] | null {
     return this.paymentSchedule;
   }
 }

@@ -49,9 +49,7 @@ export class MailtrapService implements IEmailService {
 
     try {
       await this.transport.sendMail(message);
-      console.log("Email sent successfully");
     } catch (error: any) {
-      console.error("Mailtrap error:", error.message);
       throw new Error("Failed to send email");
     }
   }

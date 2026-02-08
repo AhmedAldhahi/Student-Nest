@@ -3,12 +3,10 @@ import { IReadLeaseRequestRepositories } from "../../../../Domain/BoundedContext
 import { IQueriesHandlers } from "../../Shared/abstraction/IQueriesHandler";
 import { GetLeaseRequestByQuery } from "../Queries/GetLeaseRequestByQuery.Queries";
 
-export class SearchForLeaseRequestForLandlordQueriesHandler
-  implements IQueriesHandlers<GetLeaseRequestByQuery>
-{
+export class SearchForLeaseRequestForLandlordQueriesHandler implements IQueriesHandlers<GetLeaseRequestByQuery> {
   constructor(
     private readonly readUserRepo: IReadUserRepositories,
-    private readonly readLeaseRequestRepo: IReadLeaseRequestRepositories
+    private readonly readLeaseRequestRepo: IReadLeaseRequestRepositories,
   ) {}
 
   public async handle(command: GetLeaseRequestByQuery): Promise<any> {
@@ -18,10 +16,9 @@ export class SearchForLeaseRequestForLandlordQueriesHandler
 
       return await this.readLeaseRequestRepo.SearchForLeaseRequestForLandlord(
         command.userId,
-        command.Query
+        command.Query,
       );
     } catch (error: any) {
-      console.log("fail to search for leases Request !!");
       throw error;
     }
   }

@@ -15,7 +15,6 @@ export class SharedApartmentManagementController {
   public getAllApartments = async (req: Request, res: Response) => {
     try {
       const userId = req.user?.userId;
-      console.log("userId : ", userId);
 
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
@@ -34,7 +33,6 @@ export class SharedApartmentManagementController {
   public getApartmentsByQueries = async (req: Request, res: Response) => {
     try {
       const userId = req.user?.userId;
-      console.log("user id : ", userId);
       const query = (req.query.q as string) || "";
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
@@ -58,7 +56,6 @@ export class SharedApartmentManagementController {
       const userId = req.user?.userId;
       const { apartmentId } = req.params;
 
-      console.log(`user id : ${userId}  and the id : ${apartmentId}`);
 
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });
@@ -102,9 +99,6 @@ export class SharedApartmentManagementController {
     try {
       const { id } = req.params;
       const userId = req.user?.userId;
-
-      console.log("id ", id);
-      console.log("user id", userId);
 
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });

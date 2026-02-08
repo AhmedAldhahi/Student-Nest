@@ -6,12 +6,12 @@ export class Age {
 
     const trimmed = age.trim();
 
-    if (trimmed.length > 2)
-      throw new Error("the min/max age can not be more that 2 digit");
-
     if (!/^\d+$/.test(trimmed)) {
       throw new Error("Age must be a whole number");
     }
+
+    if (trimmed.length > 2)
+      throw new Error("the min/max age can not be more that 2 digit");
 
     const ageNum = Number.parseInt(trimmed, 10);
 

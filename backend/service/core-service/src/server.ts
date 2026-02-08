@@ -89,7 +89,6 @@ export class Server {
   public async configure() {
     this.app.use((req, res, next) => {
       console.log("🔥 REQUEST HIT SERVER:", req.method, req.url);
-      console.log("🔥 CLIENT IP DETECTED:", req.ip);
       next();
     });
 

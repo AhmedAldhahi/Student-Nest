@@ -31,7 +31,7 @@ export class ApartmentMapper {
 
     // Value Objects extraction
     apartmentModel.price = validateData.price;
-    apartmentModel.numberOfBed = validateData.numberOfBed; 
+    apartmentModel.numberOfBed = validateData.numberOfBed;
     apartmentModel.numberOfRoom = validateData.numberOfRoom;
     apartmentModel.houseRule = apartment.getHouseRule();
     apartmentModel.includeUtilities = apartment.getIncludeUtilities() ?? null;
@@ -68,8 +68,6 @@ export class ApartmentMapper {
       throw new Error("Cannot save apartment, number of bed is required !!");
     if (!numberOfRoom)
       throw new Error("Cannot save apartment , number of room is required !!");
-
-
 
     return { price, numberOfBed, numberOfRoom };
   }

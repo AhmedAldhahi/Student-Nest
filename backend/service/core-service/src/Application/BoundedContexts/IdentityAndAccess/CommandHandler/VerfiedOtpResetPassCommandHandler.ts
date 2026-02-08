@@ -25,7 +25,6 @@ export class VerifiedOTPForgetPassCommandHandler
         throw new Error("User already verified.");
       }
 
-      console.log(user.getVerifiedResetPassword());
 
       // Get OTP and expiration
       const otp = user.getOTPForResetPassword();

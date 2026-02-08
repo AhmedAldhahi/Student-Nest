@@ -358,7 +358,6 @@ export class ReadApartmentRepositories implements IReadApartmentRepo {
     id: string,
     userId: string,
   ): Promise<IApartmentDTO | null> {
-    console.log(`id ${id} and user id ${userId}`);
     try {
       const apartment = await AppDataSource.getInstance()
         .getRepository(ApartmentModel)

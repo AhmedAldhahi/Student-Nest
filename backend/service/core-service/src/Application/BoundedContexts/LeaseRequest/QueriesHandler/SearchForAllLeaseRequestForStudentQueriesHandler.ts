@@ -21,7 +21,6 @@ export class SearchForLeaseRequestForStudentQueriesHandler
         command.Query
       );
     } catch (error: any) {
-      console.log("fail to search for leases Request !!");
       throw error;
     }
   }

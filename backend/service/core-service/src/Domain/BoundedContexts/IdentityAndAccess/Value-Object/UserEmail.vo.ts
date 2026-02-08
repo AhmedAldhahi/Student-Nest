@@ -13,9 +13,12 @@ export class UserEmail {
   }
 
   public static create(value: string): UserEmail {
-    if (!value) throw new Error("email field is require !!");
+    if (!value || value.trim().length < 10) {
+      throw new Error("A valid email is required.");
+    }
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!value || !emailRegex.test(value) || value.trim().length < 10) {
+    if (!emailRegex.test(value.trim())) {
       throw new Error("A valid email is required.");
     }
 

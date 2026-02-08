@@ -9,7 +9,7 @@ export class PaymentAmount {
 
     const trimmed = amount.trim();
 
-    if (!/^\d+(\.\d{1,2})?$/.test(trimmed)) {
+    if (!/^-?\d+(\.\d{1,2})?$/.test(trimmed)) {
       throw new Error("Payment amount must be a valid number");
     }
 

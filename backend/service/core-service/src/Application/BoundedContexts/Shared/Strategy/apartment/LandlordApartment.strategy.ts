@@ -26,7 +26,6 @@ export class LandlordApartmentStrategy implements IApartmentStrategy {
     
     try {
       const Queries = new GetApartmentByIdQueries(id, userId);
-      console.log("landlord strategy is ", userId);
 
       return await this.GetApartmentDetailForLandlordQH.handle(Queries);
     } catch (error: any) {

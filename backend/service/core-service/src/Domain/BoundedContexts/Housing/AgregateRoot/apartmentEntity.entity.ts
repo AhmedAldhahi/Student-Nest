@@ -43,6 +43,7 @@ export class ApartmentAggregateRoot extends AggregateRoot<string> {
     this.createAt = data.createAt;
     this.updateAt = data.updateAt;
     this.isVerified = data.IsVerified;
+    this.isVisible = data.isVisible;
     this.includeUtilities = data.includeUtilities;
     this.houseRule = data.houseRule;
 

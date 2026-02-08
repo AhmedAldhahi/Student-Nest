@@ -1,124 +1,82 @@
 import { UserName } from "../../../../src/Domain/BoundedContexts/IdentityAndAccess/Value-Object/UserName.vo";
 
-describe("user name value object validation", () => {
-  describe("validate user name Object", () => {
-    test("should create valid user name with start length at least 3 ", () => {
-      const input = "ann";
-      const userName = new UserName(input);
+describe("UserName value object validation", () => {
+
+  describe("Valid user names", () => {
+    test("should allow a simple name without spaces", () => {
+      const input = "Ali";
+      const userName = UserName.create(input);
       expect(userName.getValue()).toBe(input);
     });
 
-    test("should user name not been null ", () => {
-      const input = "ahmad";
-      const userName = new UserName(input);
+    test("should allow a name with one space between words", () => {
+      const input = "Ali Ahmad";
+      const userName = UserName.create(input);
       expect(userName.getValue()).toBe(input);
     });
 
-    test("should user name  start with alphabetic  ", () => {
-      const input = "ahmad";
-      const userName = new UserName(input);
+    test("should allow underscores and numbers after first letter", () => {
+      const input = "Ali_3";
+      const userName = UserName.create(input);
       expect(userName.getValue()).toBe(input);
     });
 
-    test("should user name not have whitespace ", () => {
-      const input = "ahmad   ";
-      const userName = new UserName(input);
-      expect(userName.getValue()).toBe(input);
-    });
-
-    test("should name length  at most 25 ", () => {
-      const input = "ahmad";
-      const userName = new UserName(input);
-      expect(userName.getValue()).toBe(input);
-    });
-
-    test("it not have any symbol charter ", () => {
-      const input = "ahmad_";
-      const userName = new UserName(input);
-      expect(userName.getValue()).toBe(input);
-    });
-
-    test("it allow have any number or underscore but not first charter ", () => {
-      const input = "ahmad_3";
-      const userName = new UserName(input);
+    test("should allow name of maximum 25 characters", () => {
+      const input = "A".repeat(25);
+      const userName = UserName.create(input);
       expect(userName.getValue()).toBe(input);
     });
   });
 
-  describe("invalid user name object", () => {
-    test("should not create user name with length less than 3", () => {
-      const input = "a"; // Invalid, length is less than 3
-      expect(() => new UserName(input)).toThrow(
-        "User name is too short or null"
+  describe("Invalid user names", () => {
+    test("should not allow names shorter than 3 characters", () => {
+      expect(() => UserName.create("Al")).toThrow("User name is too short or null");
+    });
+
+    test("should not allow empty or null names", () => {
+      expect(() => UserName.create("")).toThrow("user name is required !!");
+    });
+
+    test("should not allow names starting with non-letter", () => {
+      expect(() => UserName.create("3Ali")).toThrow(
+        "Name must start with a letter, can contain letters, numbers, underscores, and at most one space between words"
+      );
+      expect(() => UserName.create("_Ali")).toThrow(
+        "Name must start with a letter, can contain letters, numbers, underscores, and at most one space between words"
       );
     });
 
-    test("should not create user name with null value", () => {
-      const input = ""; // Invalid, null input
-      expect(() => new UserName(input)).toThrow("User name is required");
-    });
-
-    test("should not create user name with whitespace only", () => {
-      const input = "   "; // Invalid, whitespace only
-      expect(() => new UserName(input)).toThrow(
-        "User name is too short or null"
-      );
-    });
-
-    test("should not create user name starting with a number", () => {
-      const input = "3ahmad"; // Invalid, starts with a number
-      expect(() => new UserName(input)).toThrow(
-        "Name must start with a letter and can only contain letters, numbers, or underscores"
-      );
-    });
-
-    test("should not create user name with more than 25 characters", () => {
-      const input = "a".repeat(26); // Invalid, length exceeds 25
-      expect(() => new UserName(input)).toThrow(
+    test("should not allow names with more than 25 characters", () => {
+      expect(() => UserName.create("A".repeat(26))).toThrow(
         "UserName must be at most 25 characters long."
       );
     });
 
-    test("should not create user name with symbols", () => {
-      const input = "ahmad!"; // Invalid, contains a symbol
-      expect(() => new UserName(input)).toThrow(
-        "Name must start with a letter and can only contain letters, numbers, or underscores"
+    test("should not allow multiple consecutive spaces", () => {
+      expect(() => UserName.create("Ali  Ahmad")).toThrow(
+        "Name must start with a letter, can contain letters, numbers, underscores, and at most one space between words"
+      );
+      expect(() => UserName.create("Ali   Ahmad")).toThrow(
+        "Name must start with a letter, can contain letters, numbers, underscores, and at most one space between words"
       );
     });
 
-
-
-    test("should not create user name with space in the middle", () => {
-      const input = "ah mad"; // Invalid, contains space in the middle
-      expect(() => new UserName(input)).toThrow(
-        "Name must start with a letter and can only contain letters, numbers, or underscores"
+    test("should not allow more than one space in the middle", () => {
+      expect(() => UserName.create("Ali Ahmad Majed")).toThrow(
+        "Name must start with a letter, can contain letters, numbers, underscores, and at most one space between words"
       );
     });
 
-    test("should not create user name starting with an underscore", () => {
-      const input = "_ahmad"; // Invalid, starts with an underscore
-      expect(() => new UserName(input)).toThrow(
-        "Name must start with a letter and can only contain letters, numbers, or underscores"
+    test("should not allow symbols in the name", () => {
+      expect(() => UserName.create("Ali!")).toThrow(
+        "Name must start with a letter, can contain letters, numbers, underscores, and at most one space between words"
       );
     });
 
-    test("should not create user name with only numbers", () => {
-      const input = "123"; // Invalid, only numbers
-      expect(() => new UserName(input)).toThrow(
-        "Name must start with a letter and can only contain letters, numbers, or underscores"
+    test("should not allow name with only numbers", () => {
+      expect(() => UserName.create("123")).toThrow(
+        "Name must start with a letter, can contain letters, numbers, underscores, and at most one space between words"
       );
     });
   });
 });
-
-/*
-no null or whait space allow 
-check that name is not null
-it not start with number or any charchater 
-it not have space
- it length at most 25 
- at least  3
-it not have any symbol charter
-
- it only enable to alphabatic and number and underscore 
-*/

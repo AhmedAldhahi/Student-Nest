@@ -8,7 +8,6 @@ export class RemoveCashHandlerForRoommateEvent implements IHandle<RoommateProfil
   public async handle(event: RoommateProfileEvent): Promise<void> {
     try {
       const cashKey = CacheKeys.Profile(event.userId);
-      console.log(`[Cache] Deleting key: ${cashKey}`);
       await this.cashService.delete(cashKey);
     } catch (error: any) {
       console.error("fail to delete from cash memory !!", error);

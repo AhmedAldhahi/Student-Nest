@@ -23,44 +23,25 @@ export class AuditLogModel {
   @CreateDateColumn({ type: "timestamp" })
   actionTimestamp: Date;
 
-  // 1. The Relation Object
   @ManyToOne(() => UserModel, {
-    nullable: false, // Based on your previous code (was not nullable)
-    onDelete: "CASCADE", // Or "SET NULL" if you want to keep logs after user delete
+    nullable: false, 
+    onDelete: "CASCADE", 
   })
-  @JoinColumn({ name: "targetUserId" }) // Maps this relation to the column 'targetUserId'
+  @JoinColumn({ name: "targetUserId" }) 
   targetUser: UserModel;
 
-  // 2. The Foreign Key Column (Optional but recommended for direct ID access)
   @Column({ type: "varchar", length: 36, nullable: false })
   targetUserId: string;
 
-  // @Column({ type: "varchar", length: 150 })
-  // targetUserName: string;
-
-  // @Column({ type: "enum", enum: UserRole })
-  // targetUserRole: UserRole;
-
   @ManyToOne(() => UserModel, {
     nullable: true,
-    onDelete: "SET NULL", // If admin is deleted, keep the log but set ID to null
+    onDelete: "SET NULL", 
   })
   @JoinColumn({ name: "performedByUserId" })
   performedByUser: UserModel | null;
 
-  // 2. The Foreign Key Column
   @Column({ type: "varchar", length: 36, nullable: true })
   performedByUserId: string | null;
-
-  // @Column({ type: "varchar", length: 36, nullable: true })
-  // performedByUserId: string | undefined;
-
-  // @Column({ type: "varchar", length: 150, nullable: true })
-  // performedByUserName: string | undefined;
-
-  // @Column({ type: "enum", enum: UserRole, nullable: true })
-  // performedByUserRole: UserRole | undefined;
-
   @Column({ type: "varchar", length: 100 })
   record: string;
 

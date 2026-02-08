@@ -3,7 +3,7 @@ import { IDomainEvent } from "../../../Shared/Event/IDomainEvent";
 
 export class LandlordRegisterEvent implements IDomainEvent {
   public dateTimeOccurred: Date;
-  public static EVENT_KEY = EVENT_KEY.LANDLORD_REGISTER;
+  public static EVENT_KEY = EVENT_KEY.LANDLORD_REGISTERED;
   constructor(public userId: string) {}
 
   public getAggregateId(): string {

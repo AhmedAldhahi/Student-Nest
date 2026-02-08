@@ -13,8 +13,8 @@ export class GoogleMapLocationModel {
   latitude: string;
 
   @OneToOne(() => ApartmentModel, (apartment) => apartment.location, {
-    onDelete: "CASCADE", // If Apartment is deleted, delete this location
+    onDelete: "CASCADE", 
   })
-  @JoinColumn({ name: "apartmentId", referencedColumnName: "apartmentId" }) // Creates 'apartmentId' column in this table
+  @JoinColumn({ name: "apartmentId", referencedColumnName: "apartmentId" }) 
   apartment: ApartmentModel;
 }

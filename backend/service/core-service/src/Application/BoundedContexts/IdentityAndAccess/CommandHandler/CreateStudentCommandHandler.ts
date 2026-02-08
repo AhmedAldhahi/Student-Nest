@@ -101,7 +101,6 @@ export class CreateStudentCommandHandler implements ICommandHandlers<CreateStude
       };
     } catch (error: any) {
       await this.unitOfWork.rollbackTransaction();
-      console.log("Failed to register student!!", error);
       throw error;
     } finally {
       await this.unitOfWork.releaseTransaction();

@@ -49,6 +49,10 @@ export class PaymentAggregateRoot extends AggregateRoot<string> {
     receipt: ReceiptEntity,
     status: VerifiedLandlordStatus,
   ): void {
+    if (!this.paymentReceipt) {
+      throw new Error("No receipt has been uploaded for this payment yet.");
+    }
+
     if (receipt.getVerifiedByLandlord() === VerifiedLandlordStatus.Accept) {
       throw new Error("Accepted payment cannot be modified.");
     }

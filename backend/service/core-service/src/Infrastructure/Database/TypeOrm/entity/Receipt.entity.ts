@@ -34,6 +34,7 @@ export class ReceiptModel {
   @OneToOne(() => PaymentScheduleModel, (payment) => payment.receipt, {
     onDelete: "CASCADE",
   })
+  
   @JoinColumn({ name: "scheduleId" }) 
   payment: PaymentScheduleModel;
 }

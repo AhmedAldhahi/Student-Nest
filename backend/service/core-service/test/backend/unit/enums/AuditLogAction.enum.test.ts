@@ -25,12 +25,19 @@ describe("AuditLogActionType Enum", () => {
     expect(AuditLogActionType.POST).toEqual("POST");
     expect(AuditLogActionType.GET).toEqual("GET");
     expect(AuditLogActionType.PATCH).toEqual("PATCH");
-    expect(AuditLogActionType.POST).toEqual("PUT");
+    expect(AuditLogActionType.PUT).toEqual("PUT");
     expect(AuditLogActionType.DELETe).toEqual("DELETE");
   });
 
   test("should return all possible actions", () => {
     const actions = Object.values(AuditLogActionType);
-    expect(actions).toEqual(["POST", "GET", "PUT", "PATCH,DELETE"]);
+     expect(actions).toEqual([
+    "POST",
+    "DELETE",
+    "GET",
+    "PUT",
+    "PATCH",
+    "UNKNOWN",
+  ]);
   });
 });

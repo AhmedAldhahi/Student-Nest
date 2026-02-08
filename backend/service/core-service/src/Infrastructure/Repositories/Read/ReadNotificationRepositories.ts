@@ -12,7 +12,6 @@ export class readNotificationRepositories
     userId: string
   ): Promise<INotificationDTO[] | null> {
     try {
-      console.log("🔍 Repository received userId:", userId);
       const notification = await AppDataSource.getInstance()
         .getRepository(NotificationModel)
         .find({

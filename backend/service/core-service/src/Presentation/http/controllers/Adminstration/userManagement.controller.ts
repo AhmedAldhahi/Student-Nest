@@ -22,8 +22,6 @@ export class UserManagementController {
       const { Verified } = req.body;
       const userId = req.user?.userId;
 
-      console.log("parameter id : ", landlordId);
-      console.log("Verified status : ", Verified);
 
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });

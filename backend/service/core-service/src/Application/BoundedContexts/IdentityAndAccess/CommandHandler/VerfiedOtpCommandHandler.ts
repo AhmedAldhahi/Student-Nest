@@ -21,13 +21,11 @@ export class VerifiedOtpCommandHandler
       const user = await this.readUserRepo.findByEmail(command.email);
       if (!user) throw new Error("No user found for this email.");
 
-      // Check if already verified
       if (user.getVerifiedEmail()) {
         throw new Error("User already verified.");
       }
 
 
-      // Get OTP and expiration
       const otp = user.getOtpForEmail();
       const otpExpired = user.getOtpExpiredForEmail();
 

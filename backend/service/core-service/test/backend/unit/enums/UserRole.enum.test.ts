@@ -21,6 +21,6 @@ describe("UserRole Enum", () => {
 
   test("should return all possible roles", () => {
     const roles = Object.values(UserRole);
-    expect(roles).toEqual(["admin", "landlord", "student"]);
+    expect(roles).toEqual(["admin", "landlord", "student", "Guest"]);
   });
 });

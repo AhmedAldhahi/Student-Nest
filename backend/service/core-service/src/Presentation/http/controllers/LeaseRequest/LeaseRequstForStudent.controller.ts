@@ -9,7 +9,6 @@ export class LeaseRequestForStudentController {
   public createLeaseRequest = async (req: Request, res: Response) => {
     try {
       const userId = req.user?.userId;
-      console.log("user id ", userId);
 
       if (!userId)
         return res.status(400).json({ error: "no user id been found !!" });

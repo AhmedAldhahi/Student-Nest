@@ -1,10 +1,8 @@
 import { DataSource } from "typeorm";
 
 export class AppDataSource {
-  // Private constructor to prevent instantiation
   private constructor() {}
 
-  // Static inner class to hold the instance of DataSource
   private static RegistryHolder = class {
     static instance = new DataSource({
       type: "mysql",

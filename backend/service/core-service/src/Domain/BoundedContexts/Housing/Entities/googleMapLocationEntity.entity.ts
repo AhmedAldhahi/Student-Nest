@@ -1,6 +1,5 @@
 import { GoogleMapLocationData } from "../Types/GoogleMapLocationData.type";
 
-
 export class GoogleMapLocationEntity {
   private googleMapLocationId: string;
   private longitude: string;

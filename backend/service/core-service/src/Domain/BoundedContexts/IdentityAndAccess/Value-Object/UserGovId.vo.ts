@@ -22,7 +22,6 @@ export class GovernmentID {
   }
 
   public static create(value: string): GovernmentID {
-    console.log("value : ",value);
 
     if (!value || value.trim().length === 0) 
       throw new Error("the government id is require");

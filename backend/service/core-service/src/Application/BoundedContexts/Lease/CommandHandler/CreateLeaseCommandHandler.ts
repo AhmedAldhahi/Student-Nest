@@ -14,6 +14,7 @@ import { LeaseTerm } from "../../../../Domain/BoundedContexts/Leases/Value-Objec
 import { createLeaseResponse } from "../Dto/Response/createLeaseReponse";
 import { LeaseRequestStatus } from "../../../../Domain/BoundedContexts/Leases/Enum/LeaseRequestStatus.enum";
 import { IReadLeaseRepositories } from "../../../../Domain/BoundedContexts/Leases/Repositories/Read/ReadLeaseRepositories.repositories";
+import { IEventBus } from "../../../../Domain/Shared/Event/IEventBus";
 
 export class CreateLeaseCommandHandler implements ICommandHandlers<CreateLeaseCommand> {
   constructor(
@@ -22,6 +23,7 @@ export class CreateLeaseCommandHandler implements ICommandHandlers<CreateLeaseCo
     private readonly readLeaseRepo: IReadLeaseRepositories,
     private readonly readApartmentRepo: IReadApartmentRepo,
     private readonly uow: IUnitOfWork,
+    //private readonly eventBus:IEventBus,
   ) {}
 
   public async handle(

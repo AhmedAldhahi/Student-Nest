@@ -13,7 +13,6 @@ export class NotificationController {
   public getAllNotification = async (req: Request, res: Response) => {
     try {
       const userId = req.user?.userId;
-      console.log(userId);
 
       if (!userId)
         return res.status(400).json({ error: "no user id found !!" });

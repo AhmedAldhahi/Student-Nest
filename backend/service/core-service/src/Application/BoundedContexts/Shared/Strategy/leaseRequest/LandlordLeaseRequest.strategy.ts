@@ -18,7 +18,6 @@ export class LandlordLeaseRequestStrategy implements ILeaseRequestStrategy {
       const queries = new GetLeaseRequestByQuery(Queries, userId);
       return await this.searchForLeaseRequestForLandlord.handle(queries);
     } catch (error: any) {
-      console.log("fail to search for leases request for landlords !!");
       throw error;
     }
   }

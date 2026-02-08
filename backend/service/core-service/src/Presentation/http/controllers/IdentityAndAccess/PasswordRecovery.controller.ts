@@ -20,7 +20,6 @@ export class PasswordRecoverController {
 
       return res.status(200).json(result);
     } catch (error: any) {
-      console.log("failed to update forgetting password !!");
       const status = error.statusCode || 400;
       return res
         .status(status)

@@ -44,12 +44,9 @@ export class CreateLeaseRequestCommandHandler implements ICommandHandlers<Create
       );
       if (!apartment) throw new Error("no apartment been found !!");
 
-      // if (
-      //   apartment.getIsVisible() === false ||
-      //   apartment.getIsVerified() === false
-      // ) {
-      //   throw new Error("no apartment been found !!");
-      // }
+      if (!apartment.getIsVisible() || !apartment.getIsVerified()) {
+        throw new Error("no apartment been found or it's not verified yet !!");
+      }
 
       const landlordUser = await this.readUserRepo.findById(
         apartment.getLandlord(),
@@ -101,7 +98,6 @@ export class CreateLeaseRequestCommandHandler implements ICommandHandlers<Create
             req.requestStatus === LeaseRequestStatus.Pending,
         );
 
-        console.log("existingPendingRequestDTO", pendingRequests);
 
         if (existingPendingRequestDTO) {
           const existingRequestEntity =

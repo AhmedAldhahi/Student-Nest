@@ -13,8 +13,7 @@ export class AuthController {
   ) {}
 
   public registerLandlord = async (req: Request, res: Response) => {
-    console.log(req.body);
-    console.log(req.file);
+
 
     try {
       let fileBeenUpload = req.file;

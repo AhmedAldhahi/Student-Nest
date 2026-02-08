@@ -47,7 +47,6 @@ export class LeaseModel {
   @CreateDateColumn({ name: "createAt" })
   createAt: Date;
 
-  // --- STUDENT (Correct) ---
   @ManyToOne(() => StudentModel, (student) => student.leases, {
     nullable: true,
     onDelete: "SET NULL",

@@ -19,7 +19,6 @@ export const isGuest = async (
 
     return next();
   } catch (error: any) {
-    console.log(error);
     return res.status(500).json({ error: "Internal Server Error " });
   }
 };

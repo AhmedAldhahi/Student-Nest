@@ -3,7 +3,7 @@ import { IDomainEvent } from "../../../Shared/Event/IDomainEvent";
 
 export class UserRegisteredEvent implements IDomainEvent {
   public dateTimeOccurred: Date;
-  public static readonly EVENT_KEY = EVENT_KEY.USER_REGISTER;
+  public static readonly EVENT_KEY = EVENT_KEY.USER_REGISTERED;
 
   constructor(
     public readonly userId: string,

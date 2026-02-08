@@ -148,7 +148,6 @@ export class ApartmentControllerForLandlord {
         userId: userId,
       });
 
-      console.log(" Success. Sending response.");
       return res.status(200).json(result);
     } catch (error: any) {
       if (error?.stack) {
