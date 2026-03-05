@@ -103,7 +103,7 @@ export class Server {
     // Database Connection
     this.connectedDB();
 
-    this.connectMessageBroker();
+    //this.connectMessageBroker();
 
     // Third Party connect
     this.connectToThirdParty();
