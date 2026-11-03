@@ -1,0 +1,29 @@
+import rateLimit from "express-rate-limit";
+import { Request, Response } from "express";
+
+export const registerApiRateLimited = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  limit: 5,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+
+  skip: (req: Request) => {
+    // If the IP matches your specific IP, skip the rate limit
+    const myIp = "72.60.35.224";
+    if (req.ip === myIp) return true;
+
+    if (req.ip === "::1" || req.ip === "127.0.0.1") return true;
+
+    // OR: Skip if a specific secret header is present (easier for testing)
+    if (req.headers["x-bypass-limit"] === "my-secret-token") return true;
+
+    return false;
+  },
+
+  handler: (req: Request, res: Response) => {
+    res.status(429).json({
+      success: false,
+      message: "Too many registration attempts.",
+    });
+  },
+});
